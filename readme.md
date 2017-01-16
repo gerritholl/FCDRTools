@@ -7,9 +7,12 @@ Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) file
 ## Contents
 
 * `reader` - reading utilities
+* `writer` - writing utilities
+* `test` - test classes
 
 ## Dependencies
 
 The FCDR Tools depend on a number of modules, namely:
 
 * `xarray`
+* `netcdf4`

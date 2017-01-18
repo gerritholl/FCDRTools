@@ -15,7 +15,7 @@ class FCDRWriter:
         ds.to_netcdf(file, format=format)
 
     @classmethod
-    def createTemplateEasy(cls, sensorType):
+    def createTemplateEasy(cls, sensorType, width, height):
         """
         Create a template dataset for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
@@ -26,15 +26,27 @@ class FCDRWriter:
         dataset.attrs["license"] = "This dataset is released for use under CC-BY licence and was developed in the EC " \
                                    "FIDUCEO project “Fidelity and Uncertainty in Climate Data Records from Earth " \
                                    "Observations”. Grant Agreement: 638822."
-        dataset.attrs["institution"] = "FIDUCEO"  # @todo 2 tb/tb this must be a parameter 2017-01-16
-        dataset.attrs["title"] = "FIDUCEO dataset"  # @todo 2 tb/tb this must be a parameter 2017-01-16
-        dataset.attrs["source"] = "The original data reference"  # @todo 2 tb/tb this must be a parameter 2017-01-16
-        dataset.attrs["history"] = "What we did"  # @todo 2 tb/tb this must be a parameter 2017-01-16
-        dataset.attrs["references"] = "http://www.fiduceo.eu/publications"  # @todo 2 tb/tb this must be a parameter (?) 2017-01-16
-        dataset.attrs["comment"] = "The legal things?"  # @todo 2 tb/tb this must be a parameter (?) 2017-01-16
+        # @todo tb/tb 2 the following dictionary entries have to be supplied by the data generators
+        dataset.attrs["institution"] = None
+        dataset.attrs["title"] = None
+        dataset.attrs["source"] = None
+        dataset.attrs["history"] = None
+        dataset.attrs["references"] = None
+        dataset.attrs["comment"] = None
 
-        defaultArray = xr.DataArray(np.random.rand(2, 2), coords=[[0,1], [0,1]] ,dims=['x', 'y'])
+        cls.addAvhrrOriginalVariables(dataset, height, width)
+
+        return dataset
+
+    @classmethod
+    def addAvhrrOriginalVariables(cls, dataset, height, width):
+        defaultArray = FCDRWriter.createDefaultArray(height, width, float)
         dataset["lat"] = Variable({"x", "y"}, defaultArray)
         dataset["lon"] = Variable({"x", "y"}, defaultArray)
 
-        return dataset
+    @staticmethod
+    def createDefaultArray(height, width, dtype):
+        emptyFloat = np.empty([width, height], dtype)
+        emptyFloat.fill(np.nan)
+        defaultArray = xr.DataArray(emptyFloat, dims={'x': width, 'y': height})
+        return defaultArray

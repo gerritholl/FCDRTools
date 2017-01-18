@@ -4,8 +4,8 @@ from writer.fcdr_writer import FCDRWriter
 
 
 class FCDRWriterTest(unittest.TestCase):
-    def testCreateTemplate_AVHRR(self):
-        ds = FCDRWriter.createTemplate('AVHRR11')
+    def testCreateTemplateEasy_AVHRR(self):
+        ds = FCDRWriter.createTemplateEasy('AVHRR11')
 
         self.assertIsNotNone(ds)
 
@@ -19,4 +19,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertEquals("What we did", attributes["history"])
         self.assertEquals("http://www.fiduceo.eu/publications", attributes["references"])
         self.assertEquals("The legal things?", attributes["comment"])
-        self.assertEquals("The license text", attributes["license"])
+        self.assertEquals("This dataset is released for use under CC-BY licence and was developed in the EC FIDUCEO "
+                          "project “Fidelity and Uncertainty in Climate Data Records from Earth Observations”. Grant "
+                          "Agreement: 638822.", attributes["license"])
+
+        latitude = ds.variables["lat"]
+        longitude = ds.variables["lon"]

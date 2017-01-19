@@ -1,6 +1,8 @@
 import numpy as np
 import xarray as xr
-from xarray import Variable
+
+from writer.templates.amsub import AMSUB
+from writer.templates.avhrr import AVHRR
 
 
 class FCDRWriter:
@@ -34,19 +36,11 @@ class FCDRWriter:
         dataset.attrs["references"] = None
         dataset.attrs["comment"] = None
 
-        cls.addAvhrrOriginalVariables(dataset, height, width)
+        if sensorType=='AVHRR':
+            AVHRR.add_original_variables(dataset, height, width)
+        else:
+            AMSUB.add_original_variables(dataset, height, width)
 
         return dataset
 
-    @classmethod
-    def addAvhrrOriginalVariables(cls, dataset, height, width):
-        defaultArray = FCDRWriter.createDefaultArray(height, width, float)
-        dataset["lat"] = Variable({"x", "y"}, defaultArray)
-        dataset["lon"] = Variable({"x", "y"}, defaultArray)
 
-    @staticmethod
-    def createDefaultArray(height, width, dtype):
-        emptyFloat = np.empty([width, height], dtype)
-        emptyFloat.fill(np.nan)
-        defaultArray = xr.DataArray(emptyFloat, dims={'x': width, 'y': height})
-        return defaultArray

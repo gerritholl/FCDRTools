@@ -1,5 +1,4 @@
 import unittest
-import numpy as np
 
 from writer.fcdr_writer import FCDRWriter
 
@@ -9,26 +8,23 @@ class FCDRWriterTest(unittest.TestCase):
         ds = FCDRWriter.createTemplateEasy('AVHRR', 409, 12198)
         self.assertIsNotNone(ds)
 
-        self.verifyGlobalAttributes(ds.attrs)
+        self._verifyGlobalAttributes(ds.attrs)
 
-        latitude = ds.variables["lat"]
-        longitude = ds.variables["lon"]
-
-        lonData = np.zeros((409, 12198))
-        longitude.data = lonData
+        latitude = ds.variables["latitude"]
+        longitude = ds.variables["longitude"]
 
     def testCreateTemplateEasy_AMSUB(self):
         ds = FCDRWriter.createTemplateEasy('AMSUB', 90, 2561)
         self.assertIsNotNone(ds)
 
-        self.verifyGlobalAttributes(ds.attrs)
+        self._verifyGlobalAttributes(ds.attrs)
 
-        #latitude = ds.variables["Latitude"]
-        #longitude = ds.variables["Longitude"]
+        latitude = ds.variables["latitude"]
+        longitude = ds.variables["longitude"]
 
-    def verifyGlobalAttributes(self, attributes):
+    def _verifyGlobalAttributes(self, attributes):
         self.assertIsNotNone(attributes)
-        self.assertEquals("CF-1.6", attributes["Conventions"])
-        self.assertEquals("This dataset is released for use under CC-BY licence and was developed in the EC FIDUCEO "
+        self.assertEqual("CF-1.6", attributes["Conventions"])
+        self.assertEqual("This dataset is released for use under CC-BY licence and was developed in the EC FIDUCEO "
                           "project “Fidelity and Uncertainty in Climate Data Records from Earth Observations”. Grant "
                           "Agreement: 638822.", attributes["license"])

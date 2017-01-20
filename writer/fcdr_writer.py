@@ -36,8 +36,8 @@ class FCDRWriter:
         dataset.attrs["comment"] = None
 
         if sensorType == 'AVHRR':
-            AVHRR.add_original_variables(dataset, height, width)
+            AVHRR.add_original_variables(dataset, width, height)
         else:
-            AMSUB.add_original_variables(dataset, height, width)
+            AMSUB.add_original_variables(dataset, width, height)
 
         return dataset

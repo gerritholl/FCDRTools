@@ -10,7 +10,7 @@ class DefaultData:
             empty_array.fill(fill_value)
         else:
             empty_array.fill(9.96921E36)
-        default_array = xr.DataArray(empty_array, dims={'x': width, 'y': height})
+        default_array = xr.DataArray(empty_array, dims=['y', 'x'])
         return default_array
 
     @staticmethod
@@ -20,5 +20,5 @@ class DefaultData:
             empty_array.fill(fill_value)
         else:
             empty_array.fill(9.96921E36)
-        default_array = xr.DataArray(empty_array, dims={'x': width, 'y': height, 'channel': num_channels})
+        default_array = xr.DataArray(empty_array, dims=['channel', 'y', 'x'])
         return default_array

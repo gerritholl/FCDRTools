@@ -6,7 +6,7 @@ from writer.default_data import DefaultData
 class TemplateUtil:
     @staticmethod
     def add_geolocation_variables(dataset, width, height):
-        default_array = DefaultData.create_default_array(width, height, float, -32768.0)
+        default_array = DefaultData.create_default_array(width, height, float, fill_value=-32768.0)
 
         variable = Variable(["y", "x"], default_array)
         variable.attrs["_FillValue"] = -32768.0

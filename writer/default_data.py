@@ -4,21 +4,64 @@ import xarray as xr
 
 class DefaultData:
     @staticmethod
-    def create_default_array(width, height, dtype, fill_value=None):
-        empty_array = np.empty([height, width], dtype)
+    def create_default_vector(size, dtype, fill_value=None):
+        empty_array = np.empty([size], dtype)
+
         if fill_value is not None:
             empty_array.fill(fill_value)
         else:
-            empty_array.fill(9.96921E36)
-        default_array = xr.DataArray(empty_array, dims=['y', 'x'])
+            default_fill_value = DefaultData.get_default_fill_value(dtype)
+            empty_array.fill(default_fill_value)
+
+        default_array = xr.DataArray(empty_array, dims=['y'])
+        return default_array
+
+    @staticmethod
+    def create_default_array(width, height, dtype, dims_names=None, fill_value=None):
+        empty_array = np.empty([height, width], dtype)
+
+        if fill_value is not None:
+            empty_array.fill(fill_value)
+        else:
+            default_fill_value = DefaultData.get_default_fill_value(dtype)
+            empty_array.fill(default_fill_value)
+
+        if dims_names is not None:
+            default_array = xr.DataArray(empty_array, dims=dims_names)
+        else:
+            default_array = xr.DataArray(empty_array, dims=['y', 'x'])
+
         return default_array
 
     @staticmethod
     def create_default_array_3d(width, height, num_channels, dtype, fill_value=None):
         empty_array = np.empty([num_channels, height, width], dtype)
+
         if fill_value is not None:
             empty_array.fill(fill_value)
         else:
-            empty_array.fill(9.96921E36)
+            default_fill_value = DefaultData.get_default_fill_value(dtype)
+            empty_array.fill(default_fill_value)
+
         default_array = xr.DataArray(empty_array, dims=['channel', 'y', 'x'])
         return default_array
+
+    @staticmethod
+    def get_default_fill_value(dtype):
+        """
+        Returns a CF conforming default fill value for the data type
+        :param dtype: numpy dtype
+        :return: the fill value
+        """
+        if dtype == np.int8:
+            return -127
+        elif dtype == np.int16:
+            return -32767
+        elif dtype == np.int32:
+            return -2147483647
+        elif dtype == np.int64:
+            return -9223372036854775806
+        elif dtype == np.float32:
+            return 9.96921E36
+        elif dtype == np.float64:
+            return 9.969209968386869E36

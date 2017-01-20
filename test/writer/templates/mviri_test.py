@@ -20,4 +20,4 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(-32768.0, longitude.attrs["_FillValue"])
         self.assertEqual("longitude", longitude.attrs["standard_name"])
         self.assertEqual("degrees_east", longitude.attrs["units"])
-        self.assertEqual(-32768.0, longitude.data[0, 0])
+        self.assertEqual(-32768.0, longitude.data[1, 0])

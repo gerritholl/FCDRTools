@@ -1,7 +1,6 @@
 import xarray as xr
 
-from writer.templates.amsub import AMSUB
-from writer.templates.avhrr import AVHRR
+from writer.templates.template_factory import TemplateFactory
 
 
 class FCDRWriter:
@@ -35,9 +34,9 @@ class FCDRWriter:
         dataset.attrs["references"] = None
         dataset.attrs["comment"] = None
 
-        if sensorType == 'AVHRR':
-            AVHRR.add_original_variables(dataset, width, height)
-        else:
-            AMSUB.add_original_variables(dataset, width, height)
+        template_factory = TemplateFactory()
+        sensor_template = template_factory.get_template(sensorType)
+
+        sensor_template.add_original_variables(dataset, width, height)
 
         return dataset

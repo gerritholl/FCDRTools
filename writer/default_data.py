@@ -28,13 +28,17 @@ class DefaultData:
         return default_array
 
     @staticmethod
-    def create_default_array_3d(width, height, num_channels, dtype, fill_value=None):
+    def create_default_array_3d(width, height, num_channels, dtype, fill_value=None, dims_names=None):
         if fill_value is None:
             fill_value = DefaultData.get_default_fill_value(dtype)
 
         empty_array = np.full([num_channels, height, width], fill_value, dtype)
 
-        default_array = xr.DataArray(empty_array, dims=['channel', 'y', 'x'])
+        if dims_names is not None:
+            default_array = xr.DataArray(empty_array, dims=dims_names)
+        else:
+            default_array = xr.DataArray(empty_array, dims=['channel', 'y', 'x'])
+
         return default_array
 
     @staticmethod

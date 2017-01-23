@@ -8,24 +8,24 @@ from writer.templates.amsub import AMSUB
 class AMSUBTest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
-        AMSUB.add_original_variables(ds, 2, 4)
+        AMSUB.add_original_variables(ds, 4)
 
         latitude = ds.variables["latitude"]
-        self.assertEqual((4, 2), latitude.shape)
+        self.assertEqual((4, 90), latitude.shape)
         self.assertEqual(-32768.0, latitude.data[0, 0])
         self.assertEqual(-32768.0, latitude.attrs["_FillValue"])
         self.assertEqual("latitude", latitude.attrs["standard_name"])
         self.assertEqual("degrees_north", latitude.attrs["units"])
 
         longitude = ds.variables["longitude"]
-        self.assertEqual((4, 2), longitude.shape)
+        self.assertEqual((4, 90), longitude.shape)
         self.assertEqual(-32768.0, longitude.data[1, 0])
         self.assertEqual(-32768.0, longitude.attrs["_FillValue"])
         self.assertEqual("longitude", longitude.attrs["standard_name"])
         self.assertEqual("degrees_east", longitude.attrs["units"])
 
         btemps = ds.variables["btemps"]
-        self.assertEqual((5, 4, 2), btemps.shape)
+        self.assertEqual((5, 4, 90), btemps.shape)
         self.assertEqual(-999999, btemps.data[0, 2, 0])
         self.assertEqual(-999999, btemps.attrs["_FillValue"])
         self.assertEqual("toa_brightness_temperature", btemps.attrs["standard_name"])
@@ -83,7 +83,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("scanline year", scnlinyr.attrs["standard_name"])
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
-        self.assertEqual((4, 2), sat_azimuth.shape)
+        self.assertEqual((4, 90), sat_azimuth.shape)
         self.assertEqual(-999999, sat_azimuth.data[2, 1])
         self.assertEqual(-999999, sat_azimuth.attrs["_FillValue"])
         self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["standard_name"])
@@ -91,7 +91,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("degree", sat_azimuth.attrs["units"])
 
         sat_zenith = ds.variables["satellite_zenith_angle"]
-        self.assertEqual((4, 2), sat_zenith.shape)
+        self.assertEqual((4, 90), sat_zenith.shape)
         self.assertEqual(-999999, sat_zenith.data[2, 1])
         self.assertEqual(-999999, sat_zenith.attrs["_FillValue"])
         self.assertEqual("sensor_zenith_angle", sat_zenith.attrs["standard_name"])
@@ -99,7 +99,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("degree", sat_zenith.attrs["units"])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
-        self.assertEqual((4, 2), sol_azimuth.shape)
+        self.assertEqual((4, 90), sol_azimuth.shape)
         self.assertEqual(-999999, sol_azimuth.data[3, 0])
         self.assertEqual(-999999, sol_azimuth.attrs["_FillValue"])
         self.assertEqual("solar_azimuth_angle", sol_azimuth.attrs["standard_name"])
@@ -107,7 +107,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("degree", sol_azimuth.attrs["units"])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
-        self.assertEqual((4, 2), sol_zenith.shape)
+        self.assertEqual((4,90), sol_zenith.shape)
         self.assertEqual(-999999, sol_zenith.data[3, 0])
         self.assertEqual(-999999, sol_zenith.attrs["_FillValue"])
         self.assertEqual("solar_zenith_angle", sol_zenith.attrs["standard_name"])

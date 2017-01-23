@@ -5,7 +5,7 @@ from writer.fcdr_writer import FCDRWriter
 
 class FCDRWriterTest(unittest.TestCase):
     def testCreateTemplateEasy_AVHRR(self):
-        ds = FCDRWriter.createTemplateEasy('AVHRR', 409, 12198)
+        ds = FCDRWriter.createTemplateEasy('AVHRR', 12198)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
@@ -14,7 +14,7 @@ class FCDRWriterTest(unittest.TestCase):
         longitude = ds.variables["longitude"]
 
     def testCreateTemplateEasy_AMSUB(self):
-        ds = FCDRWriter.createTemplateEasy('AMSUB', 90, 2561)
+        ds = FCDRWriter.createTemplateEasy('AMSUB', 2561)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)

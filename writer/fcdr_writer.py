@@ -15,7 +15,7 @@ class FCDRWriter:
         ds.to_netcdf(file, format=format)
 
     @classmethod
-    def createTemplateEasy(cls, sensorType, width, height):
+    def createTemplateEasy(cls, sensorType, height):
         """
         Create a template dataset for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
@@ -37,6 +37,6 @@ class FCDRWriter:
         template_factory = TemplateFactory()
         sensor_template = template_factory.get_template(sensorType)
 
-        sensor_template.add_original_variables(dataset, width, height)
+        sensor_template.add_original_variables(dataset, height)
 
         return dataset

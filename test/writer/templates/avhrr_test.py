@@ -8,7 +8,7 @@ from writer.templates.avhrr import AVHRR
 class AVHRRTest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
-        AVHRR.add_original_variables(ds, 3, 4)
+        AVHRR.add_original_variables(ds, 5)
 
         latitude = ds.variables["latitude"]
         self.assertEqual(-32768.0, latitude.attrs["_FillValue"])

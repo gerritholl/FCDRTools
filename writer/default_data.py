@@ -52,16 +52,17 @@ class DefaultData:
         Returns a CF conforming default fill value for the data type
         :param dtype: numpy dtype
         :return: the fill value
+        :type: numpy dtype
         """
         if dtype == np.int8:
-            return -127
+            return np.int8(-127)
         elif dtype == np.int16:
-            return -32767
+            return np.int16(-32767)
         elif dtype == np.int32:
-            return -2147483647
+            return np.int32(-2147483647)
         elif dtype == np.int64:
-            return -9223372036854775806
+            return np.int64(-9223372036854775806)
         elif dtype == np.float32:
-            return 9.96921E36
+            return np.float32(9.96921E36)
         elif dtype == np.float64:
-            return 9.969209968386869E36
+            return np.float64(9.969209968386869E36)

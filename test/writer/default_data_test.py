@@ -21,6 +21,6 @@ class DefaultDataTest(unittest.TestCase):
         self.assertEqual(-32767, DefaultData.get_default_fill_value(np.int16))
         self.assertEqual(-2147483647, DefaultData.get_default_fill_value(np.int32))
         self.assertEqual(-9223372036854775806, DefaultData.get_default_fill_value(np.int64))
-        self.assertEqual(9.96921E36, DefaultData.get_default_fill_value(np.float32))
+        self.assertEqual(np.float32(9.96921E36), DefaultData.get_default_fill_value(np.float32))
         self.assertEqual(9.969209968386869E36, DefaultData.get_default_fill_value(np.float64))
 

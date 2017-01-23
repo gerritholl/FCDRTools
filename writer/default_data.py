@@ -5,26 +5,20 @@ import xarray as xr
 class DefaultData:
     @staticmethod
     def create_default_vector(size, dtype, fill_value=None):
-        empty_array = np.empty([size], dtype)
+        if fill_value is None:
+            fill_value = DefaultData.get_default_fill_value(dtype)
 
-        if fill_value is not None:
-            empty_array.fill(fill_value)
-        else:
-            default_fill_value = DefaultData.get_default_fill_value(dtype)
-            empty_array.fill(default_fill_value)
+        empty_array = np.full([size], fill_value, dtype)
 
         default_array = xr.DataArray(empty_array, dims=['y'])
         return default_array
 
     @staticmethod
     def create_default_array(width, height, dtype, dims_names=None, fill_value=None):
-        empty_array = np.empty([height, width], dtype)
+        if fill_value is None:
+            fill_value = DefaultData.get_default_fill_value(dtype)
 
-        if fill_value is not None:
-            empty_array.fill(fill_value)
-        else:
-            default_fill_value = DefaultData.get_default_fill_value(dtype)
-            empty_array.fill(default_fill_value)
+        empty_array = np.full([height, width], fill_value, dtype)
 
         if dims_names is not None:
             default_array = xr.DataArray(empty_array, dims=dims_names)
@@ -35,13 +29,10 @@ class DefaultData:
 
     @staticmethod
     def create_default_array_3d(width, height, num_channels, dtype, fill_value=None):
-        empty_array = np.empty([num_channels, height, width], dtype)
+        if fill_value is None:
+            fill_value = DefaultData.get_default_fill_value(dtype)
 
-        if fill_value is not None:
-            empty_array.fill(fill_value)
-        else:
-            default_fill_value = DefaultData.get_default_fill_value(dtype)
-            empty_array.fill(default_fill_value)
+        empty_array = np.full([num_channels, height, width], fill_value, dtype)
 
         default_array = xr.DataArray(empty_array, dims=['channel', 'y', 'x'])
         return default_array

@@ -53,6 +53,8 @@ class DefaultData:
             return np.int8(-127)
         elif dtype == np.int16:
             return np.int16(-32767)
+        elif dtype == np.uint16:
+            return np.uint16(-1)
         elif dtype == np.int32:
             return np.int32(-2147483647)
         elif dtype == np.int64:

@@ -19,6 +19,7 @@ class DefaultDataTest(unittest.TestCase):
     def test_get_default_fill_value(self):
         self.assertEqual(-127, DefaultData.get_default_fill_value(np.int8))
         self.assertEqual(-32767, DefaultData.get_default_fill_value(np.int16))
+        self.assertEqual(np.uint16(-1), DefaultData.get_default_fill_value(np.uint16))
         self.assertEqual(-2147483647, DefaultData.get_default_fill_value(np.int32))
         self.assertEqual(-9223372036854775806, DefaultData.get_default_fill_value(np.int64))
         self.assertEqual(np.float32(9.96921E36), DefaultData.get_default_fill_value(np.float32))

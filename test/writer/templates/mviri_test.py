@@ -77,3 +77,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), count.attrs["_FillValue"])
         self.assertEqual("Image counts", count.attrs["standard_name"])
         self.assertEqual("count", count.attrs["units"])
+
+    def test_get_swath_width(self):
+        self.assertEqual(4000, MVIRI.get_swath_width())

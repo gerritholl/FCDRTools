@@ -98,6 +98,10 @@ class AMSUB:
         dataset["solar_zenith_angle"] = variable
 
     @staticmethod
+    def get_swath_width():
+        return SWATH_WIDTH
+
+    @staticmethod
     def create_angle_variable(height, standard_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int32, fill_value=-999999)
         variable = Variable(["y", "x"], default_array)

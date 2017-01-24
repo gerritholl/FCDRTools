@@ -68,3 +68,6 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("0, 1, 2, 3", scnlinf.attrs["flag_values"])
         self.assertEqual("earth_view space_view icct_view iwct_view", scnlinf.attrs["flag_meanings"])
         self.assertEqual("scanline_bitfield", scnlinf.attrs["standard_name"])
+
+    def test_get_swath_width(self):
+        self.assertEqual(56, HIRS.get_swath_width())

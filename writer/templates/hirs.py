@@ -66,3 +66,7 @@ class HIRS:
         variable.attrs["flag_values"] = "0, 1, 2, 3"
         variable.attrs["flag_meanings"] = "earth_view space_view icct_view iwct_view"
         dataset["scnlinf"] = variable
+
+    @staticmethod
+    def get_swath_width():
+        return SWATH_WIDTH

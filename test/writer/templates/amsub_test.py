@@ -113,3 +113,6 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("solar_zenith_angle", sol_zenith.attrs["standard_name"])
         self.assertEqual(0.01, sol_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sol_zenith.attrs["units"])
+
+    def test_get_swath_width(self):
+        self.assertEqual(90, AMSUB.get_swath_width())

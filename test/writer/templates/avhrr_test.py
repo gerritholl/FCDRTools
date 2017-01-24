@@ -106,6 +106,9 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(10000, ict_temp.attrs["valid_max"])
         self.assertEqual(-20000, ict_temp.attrs["valid_min"])
 
+    def test_get_swath_width(self):
+        self.assertEqual(409, AVHRR.get_swath_width())
+
     def assert_correct_channel_refl_variable(self, variable, long_name):
         self.assertEqual((5, 409), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.data[0, 8])

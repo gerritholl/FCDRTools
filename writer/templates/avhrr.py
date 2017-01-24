@@ -101,6 +101,10 @@ class AVHRR:
         dataset["T_ICT"] = variable
 
     @staticmethod
+    def get_swath_width():
+        return SWATH_WIDTH
+
+    @staticmethod
     def add_temperature_attributes(variable):
         variable.attrs["add_offset"] = 273.15
         variable.attrs["scale_factor"] = 0.01

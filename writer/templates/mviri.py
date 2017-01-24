@@ -69,3 +69,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "Image counts"
         variable.attrs["units"] = "count"
         dataset["count"] = variable
+
+    @staticmethod
+    def get_swath_width():
+        return SWATH_WIDTH

@@ -1,5 +1,6 @@
 import xarray as xr
 
+from writer.templates.easy_fcdr import EasyFCDR
 from writer.templates.template_factory import TemplateFactory
 
 
@@ -35,7 +36,10 @@ class FCDRWriter:
         dataset.attrs["comment"] = None
 
         template_factory = TemplateFactory()
+
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height)
+
+        EasyFCDR.add_variables(dataset, sensor_template.get_swath_width(), height)
 
         return dataset

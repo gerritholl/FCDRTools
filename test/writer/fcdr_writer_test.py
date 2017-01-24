@@ -35,6 +35,9 @@ class FCDRWriterTest(unittest.TestCase):
         # geometry
         self._verify_geometry_variables(ds)
 
+        # easy FCDR variables
+        self._verify_easy_fcdr_variables(ds)
+
     def testCreateTemplateEasy_AVHRR(self):
         ds = FCDRWriter.createTemplateEasy('AVHRR', 12198)
         self.assertIsNotNone(ds)
@@ -66,6 +69,9 @@ class FCDRWriterTest(unittest.TestCase):
         t_ict = ds.variables["T_ICT"]
         self.assertIsNotNone(t_ict)
 
+        # easy FCDR variables
+        self._verify_easy_fcdr_variables(ds)
+
     def testCreateTemplateEasy_HIRS(self):
         ds = FCDRWriter.createTemplateEasy('HIRS', 211)
         self.assertIsNotNone(ds)
@@ -89,6 +95,9 @@ class FCDRWriterTest(unittest.TestCase):
         scnlinf = ds.variables["scnlinf"]
         self.assertIsNotNone(scnlinf)
 
+        # easy FCDR variables
+        self._verify_easy_fcdr_variables(ds)
+
     def testCreateTemplateEasy_MVIRI(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI', 4000)
         self.assertIsNotNone(ds)
@@ -107,6 +116,9 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geometry_variables(ds)
         count = ds.variables["count"]
         self.assertIsNotNone(count)
+
+        # easy FCDR variables
+        self._verify_easy_fcdr_variables(ds)
 
     def _verifyGlobalAttributes(self, attributes):
         self.assertIsNotNone(attributes)
@@ -130,3 +142,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(sol_azimuth)
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertIsNotNone(sol_zenith)
+
+    def _verify_easy_fcdr_variables(self, ds):
+        u_random = ds.variables["u_random"]
+        self.assertIsNotNone(u_random)
+        u_systematic = ds.variables["u_systematic"]
+        self.assertIsNotNone(u_systematic)

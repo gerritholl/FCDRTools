@@ -36,7 +36,6 @@ class FCDRWriter:
 
         template_factory = TemplateFactory()
         sensor_template = template_factory.get_template(sensorType)
-
         sensor_template.add_original_variables(dataset, height)
 
         return dataset

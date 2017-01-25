@@ -1,3 +1,5 @@
+import os
+
 import xarray as xr
 
 from writer.templates.easy_fcdr import EasyFCDR
@@ -6,14 +8,19 @@ from writer.templates.template_factory import TemplateFactory
 
 class FCDRWriter:
     @classmethod
-    def write(cls, ds, file, format=None):
+    def write(cls, ds, file):
         """
         Save a dataset to NetCDF file.
         :param ds: The dataset
         :param file: File path
-        :param format: NetCDF format flavour, one of 'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_64BIT', 'NETCDF3_CLASSIC'.
          """
-        ds.to_netcdf(file, format=format)
+        if os.path.isfile(file):
+            raise Exception("The file already exists: " + file)
+
+        ds.to_netcdf(file, format='netCDF4', engine='netcdf4')
+        # @todo 2 tb/tb implement compression 2017-01-25
+        #  encoding={'Ch1_Bt': {"zlib" : True, "complevel" : 5}}) - but
+        #  this is only per-variable ... tedious, we don't want that!
 
     @classmethod
     def createTemplateEasy(cls, sensorType, height):

@@ -14,29 +14,44 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geolocation_variables(ds)
 
         # sensor specific
-        btemps = ds.variables["btemps"]
-        self.assertIsNotNone(btemps)
-        chanqual = ds.variables["chanqual"]
-        self.assertIsNotNone(chanqual)
-        instrtemp = ds.variables["instrtemp"]
-        self.assertIsNotNone(instrtemp)
-        qualind = ds.variables["qualind"]
-        self.assertIsNotNone(qualind)
-        scanqual = ds.variables["scanqual"]
-        self.assertIsNotNone(scanqual)
-        scnlin = ds.variables["scnlin"]
-        self.assertIsNotNone(scnlin)
-        scnlindy = ds.variables["scnlindy"]
-        self.assertIsNotNone(scnlindy)
-        scnlintime = ds.variables["scnlintime"]
-        self.assertIsNotNone(scnlintime)
-        scnlinyr = ds.variables["scnlinyr"]
-        self.assertIsNotNone(scnlinyr)
-        # geometry
-        self._verify_geometry_variables(ds)
+        self._verify_amsub_specific_variables(ds)
 
         # easy FCDR variables
         self._verify_easy_fcdr_variables(ds)
+
+    def testCreateTemplateFull_AMSUB(self):
+        ds = FCDRWriter.createTemplateFull('AMSUB', 2562)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # sensor specific
+        self._verify_amsub_specific_variables(ds)
+
+        # full FCDR variables
+        u_btemps = ds.variables["u_btemps"]
+        self.assertIsNotNone(u_btemps)
+        u_syst_btemps = ds.variables["u_syst_btemps"]
+        self.assertIsNotNone(u_syst_btemps)
+        u_random_btemps = ds.variables["u_random_btemps"]
+        self.assertIsNotNone(u_random_btemps)
+        u_instrtemp = ds.variables["u_instrtemp"]
+        self.assertIsNotNone(u_instrtemp)
+        u_latitude = ds.variables["u_latitude"]
+        self.assertIsNotNone(u_latitude)
+        u_longitude = ds.variables["u_longitude"]
+        self.assertIsNotNone(u_longitude)
+        u_satellite_azimuth_angle = ds.variables["u_satellite_azimuth_angle"]
+        self.assertIsNotNone(u_satellite_azimuth_angle)
+        u_satellite_zenith_angle = ds.variables["u_satellite_zenith_angle"]
+        self.assertIsNotNone(u_satellite_zenith_angle)
+        u_solar_azimuth_angle = ds.variables["u_solar_azimuth_angle"]
+        self.assertIsNotNone(u_solar_azimuth_angle)
+        u_solar_zenith_angle = ds.variables["u_solar_zenith_angle"]
+        self.assertIsNotNone(u_solar_zenith_angle)
 
     def testCreateTemplateEasy_AVHRR(self):
         ds = FCDRWriter.createTemplateEasy('AVHRR', 12198)
@@ -148,3 +163,26 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(u_random)
         u_systematic = ds.variables["u_systematic"]
         self.assertIsNotNone(u_systematic)
+
+    def _verify_amsub_specific_variables(self, ds):
+        btemps = ds.variables["btemps"]
+        self.assertIsNotNone(btemps)
+        chanqual = ds.variables["chanqual"]
+        self.assertIsNotNone(chanqual)
+        instrtemp = ds.variables["instrtemp"]
+        self.assertIsNotNone(instrtemp)
+        qualind = ds.variables["qualind"]
+        self.assertIsNotNone(qualind)
+        scanqual = ds.variables["scanqual"]
+        self.assertIsNotNone(scanqual)
+        scnlin = ds.variables["scnlin"]
+        self.assertIsNotNone(scnlin)
+        scnlindy = ds.variables["scnlindy"]
+        self.assertIsNotNone(scnlindy)
+        scnlintime = ds.variables["scnlintime"]
+        self.assertIsNotNone(scnlintime)
+        scnlinyr = ds.variables["scnlinyr"]
+        self.assertIsNotNone(scnlinyr)
+        # geometry
+        self._verify_geometry_variables(ds)
+

@@ -98,6 +98,15 @@ class AMSUB:
         variable = AMSUB.create_angle_variable(height, "solar_zenith_angle")
         dataset["solar_zenith_angle"] = variable
 
+        # acquisition_time
+        default_array = DefaultData.create_default_vector(height, np.int32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        variable.attrs["standard_name"] = "time"
+        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
+        variable.attrs["units"] = "s"
+        dataset["acquisition_time"] = variable
+
     @staticmethod
     def get_swath_width():
         return SWATH_WIDTH

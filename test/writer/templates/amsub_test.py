@@ -116,6 +116,14 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual(0.01, sol_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sol_zenith.attrs["units"])
 
+        acquisition_time = ds.variables["acquisition_time"]
+        self.assertEqual((4,), acquisition_time.shape)
+        self.assertEqual(-2147483647, acquisition_time.data[2])
+        self.assertEqual(-2147483647, acquisition_time.attrs["_FillValue"])
+        self.assertEqual("time", acquisition_time.attrs["standard_name"])
+        self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", acquisition_time.attrs["long_name"])
+        self.assertEqual("s", acquisition_time.attrs["units"])
+
     def test_get_swath_width(self):
         self.assertEqual(90, AMSUB.get_swath_width())
 

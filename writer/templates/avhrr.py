@@ -5,6 +5,8 @@ from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil
 
 SWATH_WIDTH = 409
+PRT_WIDTH = 3
+
 
 class AVHRR:
     @staticmethod
@@ -20,7 +22,7 @@ class AVHRR:
         variable.attrs["units"] = "s"
         dataset["Time"] = variable
 
-        #scanline
+        # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
@@ -70,34 +72,34 @@ class AVHRR:
         dataset["solar_zenith_angle"] = variable
 
         # Ch1_Bt
-        variable = AVHRR.create_channel_refl_variable(height, "Channel 1 Reflectance")
+        variable = AVHRR._create_channel_refl_variable(height, "Channel 1 Reflectance")
         dataset["Ch1_Bt"] = variable
 
         # Ch2_Bt
-        variable = AVHRR.create_channel_refl_variable(height, "Channel 2 Reflectance")
+        variable = AVHRR._create_channel_refl_variable(height, "Channel 2 Reflectance")
         dataset["Ch2_Bt"] = variable
 
         # Ch3a_Bt
-        variable = AVHRR.create_channel_refl_variable(height, "Channel 3a Reflectance")
+        variable = AVHRR._create_channel_refl_variable(height, "Channel 3a Reflectance")
         dataset["Ch3a_Bt"] = variable
 
         # Ch3b_Bt
-        variable = AVHRR.create_channel_bt_variable(height, "Channel 3b Brightness Temperature")
+        variable = AVHRR._create_channel_bt_variable(height, "Channel 3b Brightness Temperature")
         dataset["Ch3b_Bt"] = variable
 
         # Ch4_Bt
-        variable = AVHRR.create_channel_bt_variable(height, "Channel 4 Brightness Temperature")
+        variable = AVHRR._create_channel_bt_variable(height, "Channel 4 Brightness Temperature")
         dataset["Ch4_Bt"] = variable
 
         # Ch5_Bt
-        variable = AVHRR.create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
+        variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
 
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["standard_name"] = "Temperature of the internal calibration target"
-        AVHRR.add_temperature_attributes(variable)
+        AVHRR._add_temperature_attributes(variable)
         dataset["T_ICT"] = variable
 
     @staticmethod
@@ -105,7 +107,74 @@ class AVHRR:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_temperature_attributes(variable):
+    def add_uncertainty_variables(dataset, height):
+        # u_latitude
+        variable = AVHRR._create_angle_uncertainty_variable("latitude", height)
+        dataset["u_latitude"] = variable
+
+        # u_longitude
+        variable = AVHRR._create_angle_uncertainty_variable("longitude", height)
+        dataset["u_longitude"] = variable
+
+        # u_time
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "uncertainty of time"
+        variable.attrs["units"] = "s"
+        dataset["u_time"] = variable
+
+        # u_satellite_azimuth_angle
+        variable = AVHRR._create_angle_uncertainty_variable("satellite azimuth angle", height)
+        dataset["u_satellite_azimuth_angle"] = variable
+
+        # u_satellite_zenith_angle
+        variable = AVHRR._create_angle_uncertainty_variable("satellite zenith angle", height)
+        dataset["u_satellite_zenith_angle"] = variable
+
+        # u_solar_azimuth_angle
+        variable = AVHRR._create_angle_uncertainty_variable("solar azimuth angle", height)
+        dataset["u_solar_azimuth_angle"] = variable
+
+        # u_solar_zenith_angle
+        variable = AVHRR._create_angle_uncertainty_variable("solar zenith angle", height)
+        dataset["u_solar_zenith_angle"] = variable
+
+        # PRT_C
+        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.int16)
+        variable = Variable(["y", "n_prt"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["standard_name"] = "Prt counts"
+        variable.attrs["units"] = "count"
+        dataset["PRT_C"] = variable
+
+        # u_prt
+        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
+        variable = Variable(["y", "n_prt"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Uncertainty on the PRT counts"
+        variable.attrs["units"] = "count"
+        dataset["u_prt"] = variable
+
+        # R_ICT
+        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
+        variable = Variable(["y", "n_prt"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Radiance of the PRT"
+        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        dataset["R_ICT"] = variable
+
+    @staticmethod
+    def _create_angle_uncertainty_variable(angle_name, height):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "uncertainty of " + angle_name
+        variable.attrs["units"] = "degree"
+        return variable
+
+    @staticmethod
+    def _add_temperature_attributes(variable):
         variable.attrs["add_offset"] = 273.15
         variable.attrs["scale_factor"] = 0.01
         variable.attrs["units"] = "kelvin"
@@ -113,7 +182,7 @@ class AVHRR:
         variable.attrs["valid_min"] = -20000
 
     @staticmethod
-    def create_channel_refl_variable(height, long_name):
+    def _create_channel_refl_variable(height, long_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
@@ -127,11 +196,11 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def create_channel_bt_variable(height, long_name):
+    def _create_channel_bt_variable(height, long_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = long_name
-        AVHRR.add_temperature_attributes(variable)
+        AVHRR._add_temperature_attributes(variable)
         return variable

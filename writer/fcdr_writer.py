@@ -17,10 +17,12 @@ class FCDRWriter:
         if os.path.isfile(file):
             raise Exception("The file already exists: " + file)
 
-        ds.to_netcdf(file, format='netCDF4', engine='netcdf4')
-        # @todo 2 tb/tb implement compression 2017-01-25
-        #  encoding={'Ch1_Bt': {"zlib" : True, "complevel" : 5}}) - but
-        #  this is only per-variable ... tedious, we don't want that!
+        # set up compression parameter for ALL variables. Unfortunately, xarray does not allow
+        # one set of compression params per file, only per variable. tb 2017-01-25
+        comp = dict(zlib=True, complevel=5)
+        encoding = {var: comp for var in ds.data_vars}
+
+        ds.to_netcdf(file, format='netCDF4', engine='netcdf4', encoding=encoding)
 
     @classmethod
     def createTemplateEasy(cls, sensorType, height):

@@ -15,7 +15,8 @@ class AMSUB:
         TemplateUtil.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int32, BTEMPS_FILL_VALUE)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int32,
+                                                            BTEMPS_FILL_VALUE)
         variable = Variable(["channel", "y", "x"], default_array)
         variable.attrs["_FillValue"] = BTEMPS_FILL_VALUE
         variable.attrs["standard_name"] = "toa_brightness_temperature"
@@ -100,6 +101,73 @@ class AMSUB:
     @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
+
+    @staticmethod
+    def add_uncertainty_variables(dataset, height):
+        # u_btemps
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
+        variable = Variable(["channel", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "total uncertainty of brightness temperature"
+        variable.attrs["units"] = "K"
+        dataset["u_btemps"] = variable
+
+        # u_syst_btemps
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
+        variable = Variable(["channel", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "systematic uncertainty of brightness temperature"
+        variable.attrs["units"] = "K"
+        dataset["u_syst_btemps"] = variable
+
+        # u_random_btemps
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
+        variable = Variable(["channel", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "noise on brightness temperature"
+        variable.attrs["units"] = "K"
+        dataset["u_random_btemps"] = variable
+
+        # u_instrtemp
+        default_array = DefaultData.create_default_vector(height, np.float32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "uncertainty of instrument temperature"
+        variable.attrs["units"] = "K"
+        dataset["u_instrtemp"] = variable
+
+        # u_latitude
+        variable = AMSUB.create_angle_uncertainty_variable("latitude", height)
+        dataset["u_latitude"] = variable
+
+        # u_longitude
+        variable = AMSUB.create_angle_uncertainty_variable("longitude", height)
+        dataset["u_longitude"] = variable
+
+        # u_satellite_azimuth_angle
+        variable = AMSUB.create_angle_uncertainty_variable("satellite azimuth angle", height)
+        dataset["u_satellite_azimuth_angle"] = variable
+
+        # u_satellite_zenith_angle
+        variable = AMSUB.create_angle_uncertainty_variable("satellite zenith angle", height)
+        dataset["u_satellite_zenith_angle"] = variable
+
+        # u_solar_azimuth_angle
+        variable = AMSUB.create_angle_uncertainty_variable("solar azimuth angle", height)
+        dataset["u_solar_azimuth_angle"] = variable
+
+        # u_solar_zenith_angle
+        variable = AMSUB.create_angle_uncertainty_variable("solar zenith angle", height)
+        dataset["u_solar_zenith_angle"] = variable
+
+    @staticmethod
+    def create_angle_uncertainty_variable(angle_name, height):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "uncertainty of " + angle_name
+        variable.attrs["units"] = "degree"
+        return variable
 
     @staticmethod
     def create_angle_variable(height, standard_name):

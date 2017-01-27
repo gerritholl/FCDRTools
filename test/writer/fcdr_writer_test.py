@@ -10,6 +10,8 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
+        self.assertEqual(21, len(ds.variables))
+
         # geolocation
         self._verify_geolocation_variables(ds)
 
@@ -24,6 +26,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(29, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -59,39 +63,78 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
+        self.assertEqual(19, len(ds.variables))
+
         # geolocation
         self._verify_geolocation_variables(ds)
 
         # sensor specific
-        time = ds.variables["Time"]
-        self.assertIsNotNone(time)
-        scanline = ds.variables["scanline"]
-        self.assertIsNotNone(scanline)
-        # geometry
-        self._verify_geometry_variables(ds)
-        ch1_bt = ds.variables["Ch1_Bt"]
-        self.assertIsNotNone(ch1_bt)
-        ch2_bt = ds.variables["Ch2_Bt"]
-        self.assertIsNotNone(ch2_bt)
-        ch3a_bt = ds.variables["Ch3a_Bt"]
-        self.assertIsNotNone(ch3a_bt)
-        ch3b_bt = ds.variables["Ch3b_Bt"]
-        self.assertIsNotNone(ch3b_bt)
-        ch4_bt = ds.variables["Ch4_Bt"]
-        self.assertIsNotNone(ch4_bt)
-        ch5_bt = ds.variables["Ch5_Bt"]
-        self.assertIsNotNone(ch5_bt)
-        t_ict = ds.variables["T_ICT"]
-        self.assertIsNotNone(t_ict)
+        self._verify_avhrr_specific_variables(ds)
 
         # easy FCDR variables
         self._verify_easy_fcdr_variables(ds)
+
+    def testCreateTemplateFull_AVHRR(self):
+        ds = FCDRWriter.createTemplateFull('AVHRR', 13667)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(71, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # sensor specific
+        self._verify_avhrr_specific_variables(ds)
+
+        # variables of full FCDR
+        u_latitude = ds.variables["u_latitude"]
+        self.assertIsNotNone(u_latitude)
+        u_longitude = ds.variables["u_longitude"]
+        self.assertIsNotNone(u_longitude)
+        u_time = ds.variables["u_time"]
+        self.assertIsNotNone(u_time)
+        u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
+        self.assertIsNotNone(u_sat_azimuth)
+        u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
+        self.assertIsNotNone(u_sat_zenith)
+        u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
+        self.assertIsNotNone(u_sol_azimuth)
+        u_sol_zenith = ds.variables["u_solar_zenith_angle"]
+        self.assertIsNotNone(u_sol_zenith)
+
+        prt_c = ds.variables["PRT_C"]
+        self.assertIsNotNone(prt_c)
+        u_prt = ds.variables["u_prt"]
+        self.assertIsNotNone(u_prt)
+        r_ict = ds.variables["R_ICT"]
+        self.assertIsNotNone(r_ict)
+        t_inst = ds.variables["T_instr"]
+        self.assertIsNotNone(t_inst)
+
+        Ch1_Csp = ds.variables["Ch1_Csp"]
+        self.assertIsNotNone(Ch1_Csp)
+        Ch2_Csp = ds.variables["Ch2_Csp"]
+        self.assertIsNotNone(Ch2_Csp)
+        Ch3a_Csp = ds.variables["Ch3a_Csp"]
+        self.assertIsNotNone(Ch3a_Csp)
+        Ch3b_Csp = ds.variables["Ch3b_Csp"]
+        self.assertIsNotNone(Ch3b_Csp)
+        Ch4_Csp = ds.variables["Ch4_Csp"]
+        self.assertIsNotNone(Ch4_Csp)
+        Ch5_Csp = ds.variables["Ch5_Csp"]
+        self.assertIsNotNone(Ch5_Csp)
+
+        # @todo 2 tb/tb continue here 2017-01-27
 
     def testCreateTemplateEasy_HIRS(self):
         ds = FCDRWriter.createTemplateEasy('HIRS', 211)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(14, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -118,6 +161,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(13, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -186,3 +231,24 @@ class FCDRWriterTest(unittest.TestCase):
         # geometry
         self._verify_geometry_variables(ds)
 
+    def _verify_avhrr_specific_variables(self, ds):
+        time = ds.variables["Time"]
+        self.assertIsNotNone(time)
+        scanline = ds.variables["scanline"]
+        self.assertIsNotNone(scanline)
+        # geometry
+        self._verify_geometry_variables(ds)
+        ch1_bt = ds.variables["Ch1_Bt"]
+        self.assertIsNotNone(ch1_bt)
+        ch2_bt = ds.variables["Ch2_Bt"]
+        self.assertIsNotNone(ch2_bt)
+        ch3a_bt = ds.variables["Ch3a_Bt"]
+        self.assertIsNotNone(ch3a_bt)
+        ch3b_bt = ds.variables["Ch3b_Bt"]
+        self.assertIsNotNone(ch3b_bt)
+        ch4_bt = ds.variables["Ch4_Bt"]
+        self.assertIsNotNone(ch4_bt)
+        ch5_bt = ds.variables["Ch5_Bt"]
+        self.assertIsNotNone(ch5_bt)
+        t_ict = ds.variables["T_ICT"]
+        self.assertIsNotNone(t_ict)

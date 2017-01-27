@@ -42,7 +42,7 @@ class HIRSTest(unittest.TestCase):
 
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 6, 56), l_earth.shape)
-        self.assertEqual(-999.0, l_earth.data[0, 2,4])
+        self.assertEqual(-999.0, l_earth.data[0, 2, 4])
         self.assertEqual(-999.0, l_earth.attrs["_FillValue"])
         self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
         self.assertEqual("mW m^-2 sr^-1 cm", l_earth.attrs["units"])
@@ -71,3 +71,120 @@ class HIRSTest(unittest.TestCase):
 
     def test_get_swath_width(self):
         self.assertEqual(56, HIRS.get_swath_width())
+
+    def test_add_uncertainty_variables(self):
+        ds = xr.Dataset()
+        HIRS.add_uncertainty_variables(ds, 7)
+
+        u_lat = ds.variables["u_lat"]
+        self.assertEqual((7, 56), u_lat.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.data[3, 3])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.attrs["_FillValue"])
+        self.assertEqual("uncertainty_latitude", u_lat.attrs["standard_name"])
+        self.assertEqual("degree", u_lat.attrs["units"])
+
+        u_lon = ds.variables["u_lon"]
+        self.assertEqual((7, 56), u_lon.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.data[4, 4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.attrs["_FillValue"])
+        self.assertEqual("uncertainty_longitude", u_lon.attrs["standard_name"])
+        self.assertEqual("degree", u_lon.attrs["units"])
+
+        u_time = ds.variables["u_time"]
+        self.assertEqual((7, 56), u_time.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.data[5, 5])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.attrs["_FillValue"])
+        self.assertEqual("uncertainty_time", u_time.attrs["standard_name"])
+        self.assertEqual("s", u_time.attrs["units"])
+
+        u_c_earth = ds.variables["u_c_earth"]
+        self.assertEqual((20, 7, 56), u_c_earth.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_c_earth.data[6, 6, 6])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_c_earth.attrs["_FillValue"])
+        self.assertEqual("uncertainty_counts_Earth", u_c_earth.attrs["standard_name"])
+        self.assertEqual("count", u_c_earth.attrs["units"])
+
+        u_L_earth_random = ds.variables["u_L_earth_random"]
+        self.assertEqual((20, 7, 56), u_L_earth_random.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_random.data[7, 0, 7])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_random.attrs["_FillValue"])
+        self.assertEqual("uncertainty_radiance_Earth_random", u_L_earth_random.attrs["standard_name"])
+        self.assertEqual("mW m^-2 sr^-1 cm", u_L_earth_random.attrs["units"])
+
+        u_L_earth_sr = ds.variables["u_L_earth_structuredrandom"]
+        self.assertEqual((20, 7, 56), u_L_earth_sr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_sr.data[8, 1, 8])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_sr.attrs["_FillValue"])
+        self.assertEqual("uncertainty_radiance_Earth_structured_random", u_L_earth_sr.attrs["standard_name"])
+        self.assertEqual("mW m^-2 sr^-1 cm", u_L_earth_sr.attrs["units"])
+
+        u_L_earth_sys = ds.variables["u_L_earth_systematic"]
+        self.assertEqual((20, 7, 56), u_L_earth_sys.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_sys.data[9, 2, 9])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_sys.attrs["_FillValue"])
+        self.assertEqual("uncertainty_radiance_Earth_systematic", u_L_earth_sys.attrs["standard_name"])
+        self.assertEqual("mW m^-2 sr^-1 cm", u_L_earth_sys.attrs["units"])
+
+        u_L_earth_total = ds.variables["u_L_earth_total"]
+        self.assertEqual((20, 7, 56), u_L_earth_total.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_total.data[10, 3, 10])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_L_earth_total.attrs["_FillValue"])
+        self.assertEqual("uncertainty_radiance_Earth_total", u_L_earth_total.attrs["standard_name"])
+        self.assertEqual("mW m^-2 sr^-1 cm", u_L_earth_total.attrs["units"])
+
+        S_u_L_earth = ds.variables["S_u_L_earth"]
+        self.assertEqual((20, 20), S_u_L_earth.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), S_u_L_earth.data[11, 4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), S_u_L_earth.attrs["_FillValue"])
+        self.assertEqual("covariance_radiance_Earth", S_u_L_earth.attrs["standard_name"])
+
+        u_bt_random = ds.variables["u_bt_random"]
+        self.assertEqual((19, 7, 56), u_bt_random.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_random.data[13, 6, 13])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_random.attrs["_FillValue"])
+        self.assertEqual("uncertainty_bt_random", u_bt_random.attrs["standard_name"])
+        self.assertEqual("K", u_bt_random.attrs["units"])
+
+        u_bt_structuredrandom = ds.variables["u_bt_structuredrandom"]
+        self.assertEqual((19, 7, 56), u_bt_structuredrandom.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_structuredrandom.data[14, 0, 14])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_structuredrandom.attrs["_FillValue"])
+        self.assertEqual("uncertainty_bt_structured_random", u_bt_structuredrandom.attrs["standard_name"])
+        self.assertEqual("K", u_bt_structuredrandom.attrs["units"])
+
+        u_bt_sys = ds.variables["u_bt_systematic"]
+        self.assertEqual((19, 7, 56), u_bt_sys.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_sys.data[15, 1, 15])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_sys.attrs["_FillValue"])
+        self.assertEqual("uncertainty_bt_systematic", u_bt_sys.attrs["standard_name"])
+        self.assertEqual("K", u_bt_sys.attrs["units"])
+
+        u_bt_total = ds.variables["u_bt_total"]
+        self.assertEqual((19, 7, 56), u_bt_total.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_total.data[15, 1, 15])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_bt_total.attrs["_FillValue"])
+        self.assertEqual("uncertainty_bt_total", u_bt_total.attrs["standard_name"])
+        self.assertEqual("K", u_bt_total.attrs["units"])
+
+        S_bt = ds.variables["S_bt"]
+        self.assertEqual((19,19), S_bt.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), S_bt.data[12, 3])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), S_bt.attrs["_FillValue"])
+        self.assertEqual("covariance_brightness_temperature", S_bt.attrs["standard_name"])
+
+        # @ todo 1 tb/tb missing: calibration coefficients and the associated uncertainties 2017-0-27
+
+        Tc_baseplate = ds.variables["Tc_baseplate"]
+        self.assertEqual((7,), Tc_baseplate.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), Tc_baseplate.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), Tc_baseplate.attrs["_FillValue"])
+        self.assertEqual("temperature_baseplate_counts", Tc_baseplate.attrs["standard_name"])
+        self.assertEqual("count", Tc_baseplate.attrs["units"])
+
+        Tc_ch = ds.variables["Tc_ch"]
+        self.assertEqual((7,), Tc_ch.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), Tc_ch.data[5])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), Tc_ch.attrs["_FillValue"])
+        self.assertEqual("temperature_coolerhousing_counts", Tc_ch.attrs["standard_name"])
+        self.assertEqual("count", Tc_ch.attrs["units"])
+

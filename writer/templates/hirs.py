@@ -70,3 +70,114 @@ class HIRS:
     @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
+
+    @staticmethod
+    def add_uncertainty_variables(dataset, height):
+        # u_lat
+        variable = HIRS._create_angle_variable(height, "uncertainty_latitude")
+        dataset["u_lat"] = variable
+
+        # u_lon
+        variable = HIRS._create_angle_variable(height, "uncertainty_longitude")
+        dataset["u_lon"] = variable
+
+        # u_time
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty_time")
+        variable.attrs["units"] = "s"
+        dataset["u_time"] = variable
+
+        # u_c_earth
+        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_counts_Earth")
+        variable.attrs["units"] = "count"
+        dataset["u_c_earth"] = variable
+
+        # u_L_earth_random
+        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_random")
+        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        dataset["u_L_earth_random"] = variable
+
+        # u_L_earth_structuredrandom
+        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_structured_random")
+        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        dataset["u_L_earth_structuredrandom"] = variable
+
+        # u_L_earth_systematic
+        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_systematic")
+        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        dataset["u_L_earth_systematic"] = variable
+
+        # u_L_earth_total
+        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_total")
+        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        dataset["u_L_earth_total"] = variable
+
+        # S_u_L_earth
+        variable = TemplateUtil.create_float_variable(NUM_RAD_CHANNELS, NUM_RAD_CHANNELS, "covariance_radiance_Earth",
+                                                      dim_names=["rad_channel", "rad_channel"])
+        dataset["S_u_L_earth"] = variable
+
+        # u_bt_random
+        variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_random")
+        variable.attrs["units"] = "K"
+        dataset["u_bt_random"] = variable
+
+        # u_bt_structuredrandom
+        variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_structured_random")
+        variable.attrs["units"] = "K"
+        dataset["u_bt_structuredrandom"] = variable
+
+        # u_bt_systematic
+        variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_systematic")
+        variable.attrs["units"] = "K"
+        dataset["u_bt_systematic"] = variable
+
+        # u_bt_total
+        variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_total")
+        variable.attrs["units"] = "K"
+        dataset["u_bt_total"] = variable
+
+        # S_bt
+        variable = TemplateUtil.create_float_variable(NUM_CHANNELS, NUM_CHANNELS, "covariance_brightness_temperature",
+                                                      dim_names=["channel", "channel"])
+        dataset["S_bt"] = variable
+
+        # Tc_baseplate
+        variable = HIRS._create_counts_vector(height, "temperature_baseplate_counts")
+        dataset["Tc_baseplate"] = variable
+
+        # Tc_ch
+        variable = HIRS._create_counts_vector(height, "temperature_coolerhousing_counts")
+        dataset["Tc_ch"] = variable
+
+    @staticmethod
+    def _create_counts_vector(height, standard_name):
+        default_array = DefaultData.create_default_vector(height, np.int32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        variable.attrs["standard_name"] = standard_name
+        variable.attrs["units"] = "count"
+        return variable
+
+    @staticmethod
+    def _create_3d_rad_uncertainty_variable(height, standard_name):
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32,
+                                                            dims_names=["rad_channel", "y", "x"])
+        variable = Variable(["rad_channel", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = standard_name
+        return variable
+
+    @staticmethod
+    def _create_3d_bt_uncertainty_variable(height, standard_name):
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,
+                                                            dims_names=["channel", "y", "x"])
+        variable = Variable(["channel", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = standard_name
+        return variable
+
+    @staticmethod
+    def _create_angle_variable(height, standard_name):
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
+        variable.attrs["units"] = "degree"
+        return variable

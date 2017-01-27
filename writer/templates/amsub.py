@@ -171,10 +171,7 @@ class AMSUB:
 
     @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "uncertainty of " + angle_name
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
         variable.attrs["units"] = "degree"
         return variable
 

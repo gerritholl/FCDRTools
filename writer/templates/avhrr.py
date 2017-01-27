@@ -14,7 +14,7 @@ class AVHRR:
         TemplateUtil.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # Time
-        variable = AVHRR._create_float_variable(height, "time")
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "time")
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
         dataset["Time"] = variable
@@ -29,7 +29,7 @@ class AVHRR:
         dataset["scanline"] = variable
 
         # satellite_azimuth_angle
-        variable = AVHRR._create_float_variable(height, "sensor_azimuth_angle")
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle")
         variable.attrs["units"] = "degree"
         dataset["satellite_azimuth_angle"] = variable
 
@@ -46,7 +46,7 @@ class AVHRR:
         dataset["satellite_zenith_angle"] = variable
 
         # solar_azimuth_angle
-        variable = AVHRR._create_float_variable(height, "solar_azimuth_angle")
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle")
         variable.attrs["units"] = "degree"
         dataset["solar_azimuth_angle"] = variable
 
@@ -108,7 +108,7 @@ class AVHRR:
         dataset["u_longitude"] = variable
 
         # u_time
-        variable = AVHRR._create_float_variable(height, "uncertainty of time")
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of time")
         variable.attrs["units"] = "s"
         dataset["u_time"] = variable
 
@@ -237,16 +237,8 @@ class AVHRR:
 
     @staticmethod
     def _create_counts_uncertainty_variable(height, standard_name):
-        variable = AVHRR._create_float_variable(height, standard_name)
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "count"
-        return variable
-
-    @staticmethod
-    def _create_float_variable(height, standard_name):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = standard_name
         return variable
 
     @staticmethod
@@ -260,19 +252,19 @@ class AVHRR:
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
-        variable = AVHRR._create_float_variable(height, "uncertainty of " + angle_name)
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
         variable.attrs["units"] = "degree"
         return variable
 
     @staticmethod
     def _create_refl_uncertainty_variable(height, standard_name):
-        variable = AVHRR._create_float_variable(height, standard_name)
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "percent"
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, standard_name):
-        variable = AVHRR._create_float_variable(height, standard_name)
+        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "K"
         return variable
 

@@ -8,6 +8,7 @@ FILL_VALUE = -999.0
 COUNTS_FILL_VALUE = 99999
 NUM_CHANNELS = 19
 NUM_RAD_CHANNELS = 20
+NUM_COEFFS = 3
 SWATH_WIDTH = 56
 
 
@@ -141,19 +142,109 @@ class HIRS:
                                                       dim_names=["channel", "channel"])
         dataset["S_bt"] = variable
 
-        # Tc_baseplate
-        variable = HIRS._create_counts_vector(height, "temperature_baseplate_counts")
-        dataset["Tc_baseplate"] = variable
+        # calcof
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_COEFFS, np.float32,
+                                                            dims_names=["coeffs", "y", "x"])
+        variable = Variable(["coeffs", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "calibration_coefficients"
+        dataset["calcof"] = variable
 
-        # Tc_ch
-        variable = HIRS._create_counts_vector(height, "temperature_coolerhousing_counts")
-        dataset["Tc_ch"] = variable
+        # u_calcof
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_COEFFS, np.float32,
+                                                            dims_names=["coeffs", "y", "x"])
+        variable = Variable(["coeffs", "y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "uncertainty_calibration_coefficients"
+        dataset["u_calcof"] = variable
+
+        dataset["Tc_baseplate"] = HIRS._create_counts_vector(height, "temperature_baseplate_counts")
+        dataset["Tc_ch"] = HIRS._create_counts_vector(height, "temperature_coolerhousing_counts")
+        dataset["Tc_elec"] = HIRS._create_counts_vector(height, "temperature_electronics_counts")
+        dataset["Tc_fsr"] = HIRS._create_counts_vector(height, "temperature_first_stage_radiator_counts")
+        dataset["Tc_fwh"] = HIRS._create_counts_vector(height, "temperature_filter_wheel_housing_counts")
+        dataset["Tc_fwm"] = HIRS._create_counts_vector(height, "temperature_filter_wheel_monitor_counts")
+        dataset["Tc_icct"] = HIRS._create_counts_vector(height, "temperature_internal_cold_calibration_target_counts")
+        dataset["Tc_iwct"] = HIRS._create_counts_vector(height, "temperature_internal_warm_calibration_target_counts")
+        dataset["Tc_patch_exp"] = HIRS._create_counts_vector(height, "temperature_patch_expanded_scale_counts")
+        dataset["Tc_patch_full"] = HIRS._create_counts_vector(height, "temperature_patch_full_range_counts")
+        dataset["Tc_tlscp_prim"] = HIRS._create_counts_vector(height, "temperature_telescope_primary_counts")
+        dataset["Tc_tlscp_sec"] = HIRS._create_counts_vector(height, "temperature_telescope_secondary_counts")
+        dataset["Tc_tlscp_tert"] = HIRS._create_counts_vector(height, "temperature_telescope_tertiary_counts")
+        dataset["Tc_scanmirror"] = HIRS._create_counts_vector(height, "temperature_scanmirror_counts")
+        dataset["Tc_scanmotor"] = HIRS._create_counts_vector(height, "temperature_scanmotor_counts")
+
+        dataset["u_Tc_baseplate"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_baseplate_counts")
+        dataset["u_Tc_ch"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_coolerhousing_counts")
+        dataset["u_Tc_elec"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_electronics_counts")
+        dataset["u_Tc_fsr"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_first_stage_radiator_counts")
+        dataset["u_Tc_fwh"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_filter_wheel_housing_counts")
+        dataset["u_Tc_fwm"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_filter_wheel_monitor_counts")
+        dataset["u_Tc_icct"] = HIRS._create_counts_uncertainty_vector(height,"uncertainty_temperature_internal_cold_calibration_target_counts")
+        dataset["u_Tc_iwct"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_internal_warm_calibration_target_counts")
+        dataset["u_Tc_patch_exp"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_patch_expanded_scale_counts")
+        dataset["u_Tc_patch_full"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_patch_full_range_counts")
+        dataset["u_Tc_tlscp_prim"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_telescope_primary_counts")
+        dataset["u_Tc_tlscp_sec"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_telescope_secondary_counts")
+        dataset["u_Tc_tlscp_tert"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_telescope_tertiary_counts")
+        dataset["u_Tc_scanmirror"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_scanmirror_counts")
+        dataset["u_Tc_scanmotor"] = HIRS._create_counts_uncertainty_vector(height, "uncertainty_temperature_scanmotor_counts")
+
+        dataset["TK_baseplate"] = HIRS._create_temperature_vector(height, "temperature_baseplate_K")
+        dataset["TK_ch"] = HIRS._create_temperature_vector(height, "temperature_coolerhousing_K")
+        dataset["TK_elec"] = HIRS._create_temperature_vector(height, "temperature_electronics_K")
+        dataset["TK_fsr"] = HIRS._create_temperature_vector(height, "temperature_first_stage_radiator_K")
+        dataset["TK_fwh"] = HIRS._create_temperature_vector(height, "temperature_filter_wheel_housing_K")
+        dataset["TK_fwm"] = HIRS._create_temperature_vector(height, "temperature_filter_wheel_monitor_K")
+        dataset["TK_icct"] = HIRS._create_temperature_vector(height, "temperature_internal_cold_calibration_target_K")
+        dataset["TK_iwct"] = HIRS._create_temperature_vector(height, "temperature_internal_warm_calibration_target_K")
+        dataset["TK_patch_exp"] = HIRS._create_temperature_vector(height, "temperature_patch_expanded_scale_K")
+        dataset["TK_patch_full"] = HIRS._create_temperature_vector(height, "temperature_patch_full_range_K")
+        dataset["TK_tlscp_prim"] = HIRS._create_temperature_vector(height, "temperature_telescope_primary_K")
+        dataset["TK_tlscp_sec"] = HIRS._create_temperature_vector(height, "temperature_telescope_secondary_K")
+        dataset["TK_tlscp_tert"] = HIRS._create_temperature_vector(height, "temperature_telescope_tertiary_K")
+        dataset["TK_scanmirror"] = HIRS._create_temperature_vector(height, "temperature_scanmirror_K")
+        dataset["TK_scanmotor"] = HIRS._create_temperature_vector(height, "temperature_scanmotor_K")
+
+        dataset["u_TK_baseplate"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_baseplate_K")
+        dataset["u_TK_ch"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_coolerhousing_K")
+        dataset["u_TK_elec"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_electronics_K")
+        dataset["u_TK_fsr"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_first_stage_radiator_K")
+        dataset["u_TK_fwh"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_filter_wheel_housing_K")
+        dataset["u_TK_fwm"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_filter_wheel_monitor_K")
+        dataset["u_TK_icct"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_internal_cold_calibration_target_K")
+        dataset["u_TK_iwct"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_internal_warm_calibration_target_K")
+        dataset["u_TK_patch_exp"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_patch_expanded_scale_K")
+        dataset["u_TK_patch_full"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_patch_full_range_K")
+        dataset["u_TK_tlscp_prim"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_telescope_primary_K")
+        dataset["u_TK_tlscp_sec"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_telescope_secondary_K")
+        dataset["u_TK_tlscp_tert"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_telescope_tertiary_K")
+        dataset["u_TK_scanmirror"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmirror_K")
+        dataset["u_TK_scanmotor"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmotor_K")
+
+    @staticmethod
+    def _create_temperature_vector(height, standard_name):
+        default_array = DefaultData.create_default_vector(height, np.float32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = standard_name
+        variable.attrs["units"] = "K"
+        return variable
 
     @staticmethod
     def _create_counts_vector(height, standard_name):
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        variable.attrs["standard_name"] = standard_name
+        variable.attrs["units"] = "count"
+        return variable
+
+    @staticmethod
+    def _create_counts_uncertainty_vector(height, standard_name):
+        default_array = DefaultData.create_default_vector(height, np.float32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "count"
         return variable

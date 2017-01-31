@@ -134,24 +134,24 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(14, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
 
         # sensor specific
-        bt = ds.variables["bt"]
-        self.assertIsNotNone(bt)
-        c_earth = ds.variables["c_earth"]
-        self.assertIsNotNone(c_earth)
-        l_earth = ds.variables["L_earth"]
-        self.assertIsNotNone(l_earth)
-        sat_za = ds.variables["sat_za"]
-        self.assertIsNotNone(sat_za)
-        scanline = ds.variables["scanline"]
-        self.assertIsNotNone(scanline)
-        scnlinf = ds.variables["scnlinf"]
-        self.assertIsNotNone(scnlinf)
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["c_earth"])
+        self.assertIsNotNone(ds.variables["L_earth"])
+        self.assertIsNotNone(ds.variables["sat_za"])
+        self.assertIsNotNone(ds.variables["sat_aa"])
+        self.assertIsNotNone(ds.variables["sol_za"])
+        self.assertIsNotNone(ds.variables["sol_aa"])
+        self.assertIsNotNone(ds.variables["scanline"])
+        self.assertIsNotNone(ds.variables["scnlinf"])
+        self.assertIsNotNone(ds.variables["linqualflags"])
+        self.assertIsNotNone(ds.variables["chqualflags"])
+        self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
         self._verify_easy_fcdr_variables(ds)

@@ -54,6 +54,27 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("sensor_zenith_angle", sat_za.attrs["standard_name"])
         self.assertEqual("degree", sat_za.attrs["units"])
 
+        sat_aa = ds.variables["sat_aa"]
+        self.assertEqual((6, 56), sat_aa.shape)
+        self.assertEqual(-999.0, sat_aa.data[5, 5])
+        self.assertEqual(-999.0, sat_aa.attrs["_FillValue"])
+        self.assertEqual("local_azimuth_angle", sat_aa.attrs["standard_name"])
+        self.assertEqual("degree", sat_aa.attrs["units"])
+
+        sol_za = ds.variables["sol_za"]
+        self.assertEqual((6, 56), sol_za.shape)
+        self.assertEqual(-999.0, sol_za.data[3, 3])
+        self.assertEqual(-999.0, sol_za.attrs["_FillValue"])
+        self.assertEqual("solar_zenith_angle", sol_za.attrs["standard_name"])
+        self.assertEqual("degree", sol_za.attrs["units"])
+
+        sol_aa = ds.variables["sol_aa"]
+        self.assertEqual((6, 56), sol_aa.shape)
+        self.assertEqual(-999.0, sol_aa.data[4, 4])
+        self.assertEqual(-999.0, sol_aa.attrs["_FillValue"])
+        self.assertEqual("solar_azimuth_angle", sol_aa.attrs["standard_name"])
+        self.assertEqual("degree", sol_aa.attrs["units"])
+
         scanline = ds.variables["scanline"]
         self.assertEqual((6,), scanline.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.data[3])
@@ -68,6 +89,30 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("0, 1, 2, 3", scnlinf.attrs["flag_values"])
         self.assertEqual("earth_view space_view icct_view iwct_view", scnlinf.attrs["flag_meanings"])
         self.assertEqual("scanline_bitfield", scnlinf.attrs["standard_name"])
+
+        qualind = ds.variables["qualind"]
+        self.assertEqual((6,), qualind.shape)
+        self.assertEqual(0, qualind.data[5])
+        self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", qualind.attrs["flag_masks"])
+        self.assertEqual("do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete", qualind.attrs["flag_meanings"])
+        self.assertEqual("quality_indicator_bitfield", qualind.attrs["standard_name"])
+
+        linqualflags = ds.variables["linqualflags"]
+        self.assertEqual((6,), linqualflags.shape)
+        self.assertEqual(0, linqualflags.data[0])
+        self.assertEqual("256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456", linqualflags.attrs["flag_masks"])
+        self.assertEqual("time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant", linqualflags.attrs["flag_meanings"])
+        self.assertEqual("scanline_quality_flags_bitfield", linqualflags.attrs["standard_name"])
+
+        chqualflags = ds.variables["chqualflags"]
+        self.assertEqual((6,), chqualflags.shape)
+        self.assertEqual(0, chqualflags.data[0])
+        self.assertEqual("channel_quality_flags_bitfield", chqualflags.attrs["standard_name"])
+
+        mnfrqualflags = ds.variables["mnfrqualflags"]
+        self.assertEqual((6,), mnfrqualflags.shape)
+        self.assertEqual(0, mnfrqualflags.data[0])
+        self.assertEqual("minor_frame_quality_flags_bitfield", mnfrqualflags.attrs["standard_name"])
 
     def test_get_swath_width(self):
         self.assertEqual(56, HIRS.get_swath_width())
@@ -247,6 +292,34 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_temperature_variable(ds, "u_TK_tlscp_tert", "uncertainty_temperature_telescope_tertiary_K")
         self._assert_line_temperature_variable(ds, "u_TK_scanmirror", "uncertainty_temperature_scanmirror_K")
         self._assert_line_temperature_variable(ds, "u_TK_scanmotor", "uncertainty_temperature_scanmotor_K")
+
+        u_sol_za = ds.variables["u_sol_za"]
+        self.assertEqual((7, 56), u_sol_za.shape)
+        self.assertEqual(-999.0, u_sol_za.data[4, 4])
+        self.assertEqual(-999.0, u_sol_za.attrs["_FillValue"])
+        self.assertEqual("uncertainty_solar_zenith_angle", u_sol_za.attrs["standard_name"])
+        self.assertEqual("degree", u_sol_za.attrs["units"])
+
+        u_sol_aa = ds.variables["u_sol_aa"]
+        self.assertEqual((7, 56), u_sol_aa.shape)
+        self.assertEqual(-999.0, u_sol_aa.data[5, 5])
+        self.assertEqual(-999.0, u_sol_aa.attrs["_FillValue"])
+        self.assertEqual("uncertainty_solar_azimuth_angle", u_sol_aa.attrs["standard_name"])
+        self.assertEqual("degree", u_sol_aa.attrs["units"])
+
+        u_sat_za = ds.variables["u_sat_za"]
+        self.assertEqual((7, 56), u_sat_za.shape)
+        self.assertEqual(-999.0, u_sat_za.data[5, 5])
+        self.assertEqual(-999.0, u_sat_za.attrs["_FillValue"])
+        self.assertEqual("uncertainty_satellite_zenith_angle", u_sat_za.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_za.attrs["units"])
+
+        u_sat_aa = ds.variables["u_sat_aa"]
+        self.assertEqual((7, 56), u_sat_aa.shape)
+        self.assertEqual(-999.0, u_sat_aa.data[6, 6])
+        self.assertEqual(-999.0, u_sat_aa.attrs["_FillValue"])
+        self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_aa.attrs["units"])
 
     def _assert_line_counts_variable(self, ds, name, standard_name):
         variable = ds.variables[name]

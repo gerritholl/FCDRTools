@@ -43,13 +43,10 @@ class HIRS:
         variable.attrs["units"] = "mW m^-2 sr^-1 cm"
         dataset["L_earth"] = variable
 
-        # sat_za
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=FILL_VALUE)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = FILL_VALUE
-        variable.attrs["standard_name"] = "sensor_zenith_angle"
-        variable.attrs["units"] = "degree"
-        dataset["sat_za"] = variable
+        dataset["sat_za"] = HIRS._create_geo_angle_variable("sensor_zenith_angle", height)
+        dataset["sat_aa"] = HIRS._create_geo_angle_variable("local_azimuth_angle", height)
+        dataset["sol_za"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height)
+        dataset["sol_aa"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
 
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
@@ -67,6 +64,43 @@ class HIRS:
         variable.attrs["flag_values"] = "0, 1, 2, 3"
         variable.attrs["flag_meanings"] = "earth_view space_view icct_view iwct_view"
         dataset["scnlinf"] = variable
+
+        # qualind
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "quality_indicator_bitfield"
+        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128"
+        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete"
+        dataset["qualind"] = variable
+
+        # linqualflags
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "scanline_quality_flags_bitfield"
+        variable.attrs["flag_masks"] = "256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456"
+        variable.attrs["flag_meanings"] = "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
+        dataset["linqualflags"] = variable
+
+        # chqualflags
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "channel_quality_flags_bitfield"
+        dataset["chqualflags"] = variable
+
+        # mnfrqualflags
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "minor_frame_quality_flags_bitfield"
+        dataset["mnfrqualflags"] = variable
+
+    @staticmethod
+    def _create_geo_angle_variable(angle, height):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=FILL_VALUE)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = FILL_VALUE
+        variable.attrs["standard_name"] = angle
+        variable.attrs["units"] = "degree"
+        return variable
 
     @staticmethod
     def get_swath_width():
@@ -221,6 +255,11 @@ class HIRS:
         dataset["u_TK_tlscp_tert"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_telescope_tertiary_K")
         dataset["u_TK_scanmirror"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmirror_K")
         dataset["u_TK_scanmotor"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmotor_K")
+
+        dataset["u_sol_za"] = HIRS._create_geo_angle_variable("uncertainty_solar_zenith_angle", height)
+        dataset["u_sol_aa"] = HIRS._create_geo_angle_variable("uncertainty_solar_azimuth_angle", height)
+        dataset["u_sat_za"] = HIRS._create_geo_angle_variable("uncertainty_satellite_zenith_angle", height)
+        dataset["u_sat_aa"] = HIRS._create_geo_angle_variable("uncertainty_local_azimuth_angle", height)
 
     @staticmethod
     def _create_temperature_vector(height, standard_name):

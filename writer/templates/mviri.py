@@ -5,7 +5,8 @@ from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil
 
 SWATH_WIDTH = 4000
-
+SRF_SIZE = 176
+SOL_IRR_SIZE = 24
 
 class MVIRI:
     @staticmethod
@@ -73,3 +74,33 @@ class MVIRI:
     @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
+
+    @staticmethod
+    def add_uncertainty_variables(dataset, height):
+        # srf
+        default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
+        variable = Variable(["srf_size"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Spectral Response Function"
+        dataset["srf"] = variable
+
+        # a0
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Calibration Coefficient at Launch"
+        dataset["a0"] = variable
+
+        # a1
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Time variation of a0"
+        dataset["a1"] = variable
+
+        # sol_irr
+        default_array = DefaultData.create_default_vector(SOL_IRR_SIZE, np.float32)
+        variable = Variable(["sol_irr_size"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = "Solar Irradiance"
+        dataset["sol_irr"] = variable

@@ -80,3 +80,31 @@ class MVIRITest(unittest.TestCase):
 
     def test_get_swath_width(self):
         self.assertEqual(4000, MVIRI.get_swath_width())
+
+    def test_add_uncertainty_variables(self):
+        ds = xr.Dataset()
+        MVIRI.add_uncertainty_variables(ds, 7)
+
+        srf = ds.variables["srf"]
+        self.assertEqual((176,), srf.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.data[114])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.attrs["_FillValue"])
+        self.assertEqual("Spectral Response Function", srf.attrs["standard_name"])
+
+        a0 = ds.variables["a0"]
+        self.assertEqual((7, 4000), a0.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.data[2, 114])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.attrs["_FillValue"])
+        self.assertEqual("Calibration Coefficient at Launch", a0.attrs["standard_name"])
+
+        a1 = ds.variables["a1"]
+        self.assertEqual((7, 4000), a1.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.data[3, 115])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.attrs["_FillValue"])
+        self.assertEqual("Time variation of a0", a1.attrs["standard_name"])
+
+        sol_irr = ds.variables["sol_irr"]
+        self.assertEqual((24,), sol_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.attrs["_FillValue"])
+        self.assertEqual("Solar Irradiance", sol_irr.attrs["standard_name"])

@@ -108,3 +108,83 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.data[4])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.attrs["_FillValue"])
         self.assertEqual("Solar Irradiance", sol_irr.attrs["standard_name"])
+
+        u_lat = ds.variables["u_lat"]
+        self.assertEqual((7, 4000), u_lat.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.data[5, 109])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Latitude", u_lat.attrs["standard_name"])
+        self.assertEqual("degree", u_lat.attrs["units"])
+
+        u_lon = ds.variables["u_lon"]
+        self.assertEqual((7, 4000), u_lon.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.data[6, 110])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Longitude", u_lon.attrs["standard_name"])
+        self.assertEqual("degree", u_lon.attrs["units"])
+
+        u_time = ds.variables["u_time"]
+        self.assertEqual((7, 4000), u_time.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.data[0, 111])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Time", u_time.attrs["standard_name"])
+        self.assertEqual("s", u_time.attrs["units"])
+
+        u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
+        self.assertEqual((7, 4000), u_sat_zenith.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.data[0, 111])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Satellite Zenith Angle", u_sat_zenith.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_zenith.attrs["units"])
+
+        u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
+        self.assertEqual((7, 4000), u_sat_azimuth.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.data[0, 111])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Satellite Azimuth Angle", u_sat_azimuth.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_azimuth.attrs["units"])
+
+        u_sol_zenith = ds.variables["u_solar_zenith_angle"]
+        self.assertEqual((7, 4000), u_sol_zenith.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.data[1, 112])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Solar Zenith Angle", u_sol_zenith.attrs["standard_name"])
+        self.assertEqual("degree", u_sol_zenith.attrs["units"])
+
+        u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
+        self.assertEqual((7, 4000), u_sol_azimuth.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.data[2, 113])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Solar Azimuth Angle", u_sol_azimuth.attrs["standard_name"])
+        self.assertEqual("degree", u_sol_azimuth.attrs["units"])
+
+        u_tot_count = ds.variables["u_tot_count"]
+        self.assertEqual((7, 4000), u_tot_count.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_tot_count.data[2, 113])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_tot_count.attrs["_FillValue"])
+        self.assertEqual("Total Uncertainty in counts", u_tot_count.attrs["standard_name"])
+        self.assertEqual("count", u_tot_count.attrs["units"])
+
+        u_srf = ds.variables["u_srf"]
+        self.assertEqual((176,), u_srf.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_srf.data[116])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_srf.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in SRF", u_srf.attrs["standard_name"])
+
+        u_a0 = ds.variables["u_a0"]
+        self.assertEqual((7, 4000), u_a0.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0.data[5, 117])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in a0", u_a0.attrs["standard_name"])
+
+        u_a1 = ds.variables["u_a1"]
+        self.assertEqual((7, 4000), u_a1.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1.data[6, 118])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in a1", u_a1.attrs["standard_name"])
+
+        u_sol_irr = ds.variables["u_sol_irr"]
+        self.assertEqual((24,), u_sol_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_irr.data[7])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_irr.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Solar Irradiance", u_sol_irr.attrs["standard_name"])

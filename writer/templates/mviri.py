@@ -8,6 +8,7 @@ SWATH_WIDTH = 4000
 SRF_SIZE = 176
 SOL_IRR_SIZE = 24
 
+
 class MVIRI:
     @staticmethod
     def add_original_variables(dataset, height):
@@ -32,37 +33,10 @@ class MVIRI:
         variable.attrs["scale_factor"] = 0.025
         dataset["time_delta"] = variable
 
-        # satellite_azimuth_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "sensor_azimuth_angle"
-        variable.attrs["units"] = "degree"
-        dataset["satellite_azimuth_angle"] = variable
-
-        # satellite_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "sensor_zenith_angle"
-        variable.attrs["units"] = "degree"
-        dataset["satellite_zenith_angle"] = variable
-
-        # solar_azimuth_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "solar_azimuth_angle"
-        variable.attrs["units"] = "degree"
-        dataset["solar_azimuth_angle"] = variable
-
-        # solar_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "solar_zenith_angle"
-        variable.attrs["units"] = "degree"
-        dataset["solar_zenith_angle"] = variable
+        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable(height, "sensor_azimuth_angle")
+        dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable(height, "sensor_zenith_angle")
+        dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable(height, "solar_azimuth_angle")
+        dataset["solar_zenith_angle"] = MVIRI._create_angle_variable(height, "solar_zenith_angle")
 
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
@@ -105,21 +79,8 @@ class MVIRI:
         variable.attrs["standard_name"] = "Solar Irradiance"
         dataset["sol_irr"] = variable
 
-        # u_lat
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Latitude"
-        variable.attrs["units"] = "degree"
-        dataset["u_lat"] = variable
-
-        # u_lon
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Longitude"
-        variable.attrs["units"] = "degree"
-        dataset["u_lon"] = variable
+        dataset["u_lat"] = MVIRI._create_angle_variable(height, "Uncertainty in Latitude")
+        dataset["u_lon"] = MVIRI._create_angle_variable(height, "Uncertainty in Longitude")
 
         # u_time
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
@@ -129,37 +90,10 @@ class MVIRI:
         variable.attrs["units"] = "s"
         dataset["u_time"] = variable
 
-        # u_satellite_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Satellite Zenith Angle"
-        variable.attrs["units"] = "degree"
-        dataset["u_satellite_zenith_angle"] = variable
-
-        # u_satellite_azimuth_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Satellite Azimuth Angle"
-        variable.attrs["units"] = "degree"
-        dataset["u_satellite_azimuth_angle"] = variable
-
-        # u_solar_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Solar Zenith Angle"
-        variable.attrs["units"] = "degree"
-        dataset["u_solar_zenith_angle"] = variable
-
-        # u_solar_azimuth_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Solar Azimuth Angle"
-        variable.attrs["units"] = "degree"
-        dataset["u_solar_azimuth_angle"] = variable
+        dataset["u_satellite_zenith_angle"] = MVIRI._create_angle_variable(height, "Uncertainty in Satellite Zenith Angle")
+        dataset["u_satellite_azimuth_angle"] = MVIRI._create_angle_variable(height, "Uncertainty in Satellite Azimuth Angle")
+        dataset["u_solar_zenith_angle"] = MVIRI._create_angle_variable(height, "Uncertainty in Solar Zenith Angle")
+        dataset["u_solar_azimuth_angle"] = MVIRI._create_angle_variable(height, "Uncertainty in Solar Azimuth Angle")
 
         # u_tot_count
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
@@ -196,3 +130,12 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
         variable.attrs["standard_name"] = "Uncertainty in Solar Irradiance"
         dataset["u_sol_irr"] = variable
+
+    @staticmethod
+    def _create_angle_variable(height, standard_name):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["standard_name"] = standard_name
+        variable.attrs["units"] = "degree"
+        return variable

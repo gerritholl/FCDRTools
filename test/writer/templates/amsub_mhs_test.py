@@ -4,13 +4,13 @@ import numpy as np
 import xarray as xr
 
 from writer.default_data import DefaultData
-from writer.templates.amsub import AMSUB
+from writer.templates.amsub_mhs import AMSUB_MHS
 
 
-class AMSUBTest(unittest.TestCase):
+class AMSUB_MHSTest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
-        AMSUB.add_original_variables(ds, 4)
+        AMSUB_MHS.add_original_variables(ds, 4)
 
         latitude = ds.variables["latitude"]
         self.assertEqual((4, 90), latitude.shape)
@@ -39,6 +39,8 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual((5, 4), chanqual.shape)
         self.assertEqual(0, chanqual.data[0, 3])
         self.assertEqual("status_flag", chanqual.attrs["standard_name"])
+        self.assertEqual("1, 2, 4, 8, 16, 32", chanqual.attrs["flag_masks"])
+        self.assertEqual("some_bad_prt_temps some_bad_space_view_counts some_bad_bb_counts no_good_prt_temps no_good_space_view_counts no_good_bb_counts", chanqual.attrs["flag_meanings"])
 
         instrtemp = ds.variables["instrtemp"]
         self.assertEqual((4,), instrtemp.shape)
@@ -52,11 +54,15 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual((4,), qualind.shape)
         self.assertEqual(0, qualind.data[1])
         self.assertEqual("status_flag", qualind.attrs["standard_name"])
+        self.assertEqual("33554432, 67108864, 134217728, 268435456, 536870912, 1073741824, 2147483648", qualind.attrs["flag_masks"])
+        self.assertEqual("instr_status_changed first_good_clock_update no_earth_loc no_calib data_gap_precedes time_seq_error not_use_scan", qualind.attrs["flag_meanings"])
 
         scanqual = ds.variables["scanqual"]
         self.assertEqual((4,), scanqual.shape)
         self.assertEqual(0, scanqual.data[1])
         self.assertEqual("status_flag", scanqual.attrs["standard_name"])
+        self.assertEqual("8, 16, 32, 64, 128, 1024, 2048, 4096, 8192, 16384, 32768, 1048576, 2097152, 4194304, 8388608", scanqual.attrs["flag_masks"])
+        self.assertEqual("earth_loc_quest_ant_pos earth_loc_quest_reas earth_loc_quest_margin earth_loc_quest_time no_earth_loc_time uncalib_instr_mode uncalib_channels calib_marg_prt uncalib_bad_prt calib_few_scans uncalib_bad_time repeat_scan_times inconsistent_time time_field_bad time_field_inferred", scanqual.attrs["flag_meanings"])
 
         scnlin = ds.variables["scnlin"]
         self.assertEqual((4,), scnlin.shape)
@@ -125,11 +131,11 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual("s", acquisition_time.attrs["units"])
 
     def test_get_swath_width(self):
-        self.assertEqual(90, AMSUB.get_swath_width())
+        self.assertEqual(90, AMSUB_MHS.get_swath_width())
 
     def test_add_uncertainty_variables(self):
         ds = xr.Dataset()
-        AMSUB.add_uncertainty_variables(ds, 4)
+        AMSUB_MHS.add_uncertainty_variables(ds, 4)
 
         u_btemps = ds.variables["u_btemps"]
         self.assertEqual((5, 4, 90), u_btemps.shape)

@@ -10,6 +10,9 @@ class TemplateFactoryTest(unittest.TestCase):
         amsub = template_factory.get_sensor_template("AMSUB")
         self.assertIsNotNone(amsub)
 
+        mhs = template_factory.get_sensor_template("MHS")
+        self.assertIsNotNone(mhs)
+
         avhrr = template_factory.get_sensor_template("AVHRR")
         self.assertIsNotNone(avhrr)
 

@@ -184,7 +184,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(attributes)
         self.assertEqual("CF-1.6", attributes["Conventions"])
         self.assertEqual(
-            "This dataset is released for use under CC-BY (https://creativecommons.org/licenses/by/4.0/) licence and was developed in the EC "
+            "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
             "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
             "Observations\". Grant Agreement: 638822.", attributes["licence"])
 

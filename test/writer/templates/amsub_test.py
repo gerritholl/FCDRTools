@@ -45,6 +45,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual(-2147483647, instrtemp.data[0])
         self.assertEqual(-2147483647, instrtemp.attrs["_FillValue"])
         self.assertEqual("K", instrtemp.attrs["units"])
+        self.assertEqual("instrument_temperature", instrtemp.attrs["long_name"])
         self.assertEqual(0.01, instrtemp.attrs["scale_factor"])
 
         qualind = ds.variables["qualind"]
@@ -61,19 +62,18 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual((4,), scnlin.shape)
         self.assertEqual(-2147483647, scnlin.data[2])
         self.assertEqual(-2147483647, scnlin.attrs["_FillValue"])
-        self.assertEqual("scanline", scnlin.attrs["standard_name"])
+        self.assertEqual("scanline", scnlin.attrs["long_name"])
 
         scnlindy = ds.variables["scnlindy"]
         self.assertEqual((4,), scnlindy.shape)
         self.assertEqual(-2147483647, scnlindy.data[3])
         self.assertEqual(-2147483647, scnlindy.attrs["_FillValue"])
-        self.assertEqual("scanline day", scnlindy.attrs["standard_name"])
+        self.assertEqual("Acquisition day of year of scan", scnlindy.attrs["long_name"])
 
         scnlintime = ds.variables["scnlintime"]
         self.assertEqual((4,), scnlintime.shape)
         self.assertEqual(-2147483647, scnlintime.data[0])
         self.assertEqual(-2147483647, scnlintime.attrs["_FillValue"])
-        self.assertEqual("scanline time", scnlintime.attrs["standard_name"])
         self.assertEqual("Acquisition time of scan in milliseconds since beginning of the day",
                          scnlintime.attrs["long_name"])
         self.assertEqual("ms", scnlintime.attrs["units"])
@@ -82,7 +82,7 @@ class AMSUBTest(unittest.TestCase):
         self.assertEqual((4,), scnlinyr.shape)
         self.assertEqual(-2147483647, scnlinyr.data[1])
         self.assertEqual(-2147483647, scnlinyr.attrs["_FillValue"])
-        self.assertEqual("scanline year", scnlinyr.attrs["standard_name"])
+        self.assertEqual("Acquisition year of scan", scnlinyr.attrs["long_name"])
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((4, 90), sat_azimuth.shape)

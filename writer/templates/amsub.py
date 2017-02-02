@@ -38,6 +38,7 @@ class AMSUB:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
         variable.attrs["units"] = "K"
         variable.attrs["scale_factor"] = 0.01
+        variable.attrs["long_name"] = "instrument_temperature"
         dataset["instrtemp"] = variable
 
         # qualind
@@ -56,21 +57,20 @@ class AMSUB:
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
-        variable.attrs["standard_name"] = "scanline"
+        variable.attrs["long_name"] = "scanline"
         dataset["scnlin"] = variable
 
         # scnlindy
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
-        variable.attrs["standard_name"] = "scanline day"
+        variable.attrs["long_name"] = "Acquisition day of year of scan"
         dataset["scnlindy"] = variable
 
         # scnlintime
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
-        variable.attrs["standard_name"] = "scanline time"
         variable.attrs["long_name"] = "Acquisition time of scan in milliseconds since beginning of the day"
         variable.attrs["units"] = "ms"
         dataset["scnlintime"] = variable
@@ -79,7 +79,7 @@ class AMSUB:
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
-        variable.attrs["standard_name"] = "scanline year"
+        variable.attrs["long_name"] = "Acquisition year of scan"
         dataset["scnlinyr"] = variable
 
         # satellite_azimuth_angle

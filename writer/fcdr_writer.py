@@ -65,9 +65,10 @@ class FCDRWriter:
     @classmethod
     def _add_standard_global_attributes(cls, dataset):
         dataset.attrs["Conventions"] = "CF-1.6"
-        dataset.attrs["license"] = "This dataset is released for use under CC-BY licence and was developed in the EC " \
-                                   "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
-                                   "Observations\". Grant Agreement: 638822."
+        dataset.attrs[
+            "licence"] = "This dataset is released for use under CC-BY (https://creativecommons.org/licenses/by/4.0/) licence and was developed in the EC " \
+                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
+                         "Observations\". Grant Agreement: 638822."
         # @todo tb/tb 2 the following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None
         dataset.attrs["title"] = None

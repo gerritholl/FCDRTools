@@ -89,42 +89,25 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_avhrr_specific_variables(ds)
 
         # variables of full FCDR
-        u_latitude = ds.variables["u_latitude"]
-        self.assertIsNotNone(u_latitude)
-        u_longitude = ds.variables["u_longitude"]
-        self.assertIsNotNone(u_longitude)
-        u_time = ds.variables["u_time"]
-        self.assertIsNotNone(u_time)
-        u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
-        self.assertIsNotNone(u_sat_azimuth)
-        u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
-        self.assertIsNotNone(u_sat_zenith)
-        u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
-        self.assertIsNotNone(u_sol_azimuth)
-        u_sol_zenith = ds.variables["u_solar_zenith_angle"]
-        self.assertIsNotNone(u_sol_zenith)
+        self.assertIsNotNone(ds.variables["u_latitude"])
+        self.assertIsNotNone(ds.variables["u_longitude"])
+        self.assertIsNotNone(ds.variables["u_time"])
+        self.assertIsNotNone(ds.variables["u_satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["u_satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["u_solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["u_solar_zenith_angle"])
 
-        prt_c = ds.variables["PRT_C"]
-        self.assertIsNotNone(prt_c)
-        u_prt = ds.variables["u_prt"]
-        self.assertIsNotNone(u_prt)
-        r_ict = ds.variables["R_ICT"]
-        self.assertIsNotNone(r_ict)
-        t_inst = ds.variables["T_instr"]
-        self.assertIsNotNone(t_inst)
+        self.assertIsNotNone(ds.variables["PRT_C"])
+        self.assertIsNotNone(ds.variables["u_prt"])
+        self.assertIsNotNone(ds.variables["R_ICT"])
+        self.assertIsNotNone(ds.variables["T_instr"])
 
-        Ch1_Csp = ds.variables["Ch1_Csp"]
-        self.assertIsNotNone(Ch1_Csp)
-        Ch2_Csp = ds.variables["Ch2_Csp"]
-        self.assertIsNotNone(Ch2_Csp)
-        Ch3a_Csp = ds.variables["Ch3a_Csp"]
-        self.assertIsNotNone(Ch3a_Csp)
-        Ch3b_Csp = ds.variables["Ch3b_Csp"]
-        self.assertIsNotNone(Ch3b_Csp)
-        Ch4_Csp = ds.variables["Ch4_Csp"]
-        self.assertIsNotNone(Ch4_Csp)
-        Ch5_Csp = ds.variables["Ch5_Csp"]
-        self.assertIsNotNone(Ch5_Csp)
+        self.assertIsNotNone(ds.variables["Ch1_Csp"])
+        self.assertIsNotNone(ds.variables["Ch2_Csp"])
+        self.assertIsNotNone(ds.variables["Ch3a_Csp"])
+        self.assertIsNotNone(ds.variables["Ch3b_Csp"])
+        self.assertIsNotNone(ds.variables["Ch4_Csp"])
+        self.assertIsNotNone(ds.variables["Ch5_Csp"])
 
         # @todo 2 tb/tb continue here 2017-01-27
 
@@ -134,7 +117,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(22, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -148,6 +131,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["sol_za"])
         self.assertIsNotNone(ds.variables["sol_aa"])
         self.assertIsNotNone(ds.variables["scanline"])
+        self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["linqualflags"])
         self.assertIsNotNone(ds.variables["chqualflags"])

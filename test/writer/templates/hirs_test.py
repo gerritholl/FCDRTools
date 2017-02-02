@@ -82,6 +82,14 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("scanline_number", scanline.attrs["standard_name"])
         self.assertEqual("number", scanline.attrs["units"])
 
+        time = ds.variables["time"]
+        self.assertEqual((6,), time.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), time.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), time.attrs["_FillValue"])
+        self.assertEqual("time", time.attrs["standard_name"])
+        self.assertEqual("true", time.attrs["_Unsigned"])
+        self.assertEqual("s", time.attrs["units"])
+
         scnlinf = ds.variables["scnlinf"]
         self.assertEqual((6,), scnlinf.shape)
         self.assertEqual(9, scnlinf.data[4])

@@ -56,6 +56,15 @@ class HIRS:
         variable.attrs["units"] = "number"
         dataset["scanline"] = variable
 
+        # time
+        default_array = DefaultData.create_default_vector(height, np.int32)
+        variable = Variable(["y"], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        variable.attrs["_Unsigned"] = "true"
+        variable.attrs["standard_name"] = "time"
+        variable.attrs["units"] = "s"
+        dataset["time"] = variable
+
         # scnlinf
         default_array = DefaultData.create_default_vector(height, np.int8, fill_value=9)
         variable = Variable(["y"], default_array)

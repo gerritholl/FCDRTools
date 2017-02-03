@@ -141,25 +141,18 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_easy_fcdr_variables(ds)
 
     def testCreateTemplateEasy_MVIRI(self):
-        ds = FCDRWriter.createTemplateEasy('MVIRI', 4000)
+        ds = FCDRWriter.createTemplateEasy('MVIRI', 5000)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
 
         self.assertEqual(13, len(ds.variables))
 
-        # geolocation
-        self._verify_geolocation_variables(ds)
-
         # sensor specific
-        time = ds.variables["time"]
-        self.assertIsNotNone(time)
-        time_delta = ds.variables["time_delta"]
-        self.assertIsNotNone(time_delta)
-        # geometry
-        self._verify_geometry_variables(ds)
-        count = ds.variables["count"]
-        self.assertIsNotNone(count)
+        self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["timedelta"])
+
+        self.assertIsNotNone(ds.variables["count"])
 
         # easy FCDR variables
         self._verify_easy_fcdr_variables(ds)

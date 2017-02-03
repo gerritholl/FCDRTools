@@ -117,7 +117,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(22, len(ds.variables))
+        self.assertEqual(23, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)

@@ -9,6 +9,7 @@ COUNTS_FILL_VALUE = 99999
 NUM_CHANNELS = 19
 NUM_RAD_CHANNELS = 20
 NUM_COEFFS = 3
+NUM_MINOR_FRAME=23
 SWATH_WIDTH = 56
 
 
@@ -23,6 +24,7 @@ class HIRS:
         variable.attrs["_FillValue"] = FILL_VALUE
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["units"] = "K"
+        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
 
         # c_earth
@@ -30,8 +32,10 @@ class HIRS:
                                                             COUNTS_FILL_VALUE, ["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
         variable.attrs["_FillValue"] = COUNTS_FILL_VALUE
-        variable.attrs["standard_name"] = "counts_Earth"
+        variable.attrs["long_name"] = "counts_earth"
         variable.attrs["units"] = "count"
+        variable.attrs["_Unsigned"] = "true"
+        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["c_earth"] = variable
 
         # L_earth
@@ -41,10 +45,12 @@ class HIRS:
         variable.attrs["_FillValue"] = FILL_VALUE
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
         variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["L_earth"] = variable
 
         dataset["sat_za"] = HIRS._create_geo_angle_variable("sensor_zenith_angle", height)
-        dataset["sat_aa"] = HIRS._create_geo_angle_variable("local_azimuth_angle", height)
+        dataset["sat_aa"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
+        dataset["sat_aa"].variable.attrs["long_name"] = "local_azimuth_angle"
         dataset["sol_za"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height)
         dataset["sol_aa"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
 
@@ -52,8 +58,8 @@ class HIRS:
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
-        variable.attrs["standard_name"] = "scanline_number"
-        variable.attrs["units"] = "number"
+        variable.attrs["long_name"] = "scanline_number"
+        variable.attrs["units"] = "count"
         dataset["scanline"] = variable
 
         # time
@@ -62,6 +68,7 @@ class HIRS:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
         variable.attrs["_Unsigned"] = "true"
         variable.attrs["standard_name"] = "time"
+        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
         dataset["time"] = variable
 
@@ -69,7 +76,8 @@ class HIRS:
         default_array = DefaultData.create_default_vector(height, np.int8, fill_value=9)
         variable = Variable(["y"], default_array)
         variable.attrs["_FillValue"] = 9
-        variable.attrs["standard_name"] = "scanline_bitfield"
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scanline_bitfield"
         variable.attrs["flag_values"] = "0, 1, 2, 3"
         variable.attrs["flag_meanings"] = "earth_view space_view icct_view iwct_view"
         dataset["scnlinf"] = variable
@@ -77,7 +85,8 @@ class HIRS:
         # qualind
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
         variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "quality_indicator_bitfield"
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "quality_indicator_bitfield"
         variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128"
         variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete"
         dataset["qualind"] = variable
@@ -85,21 +94,24 @@ class HIRS:
         # linqualflags
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
         variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "scanline_quality_flags_bitfield"
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scanline_quality_flags_bitfield"
         variable.attrs["flag_masks"] = "256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456"
         variable.attrs["flag_meanings"] = "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
         dataset["linqualflags"] = variable
 
         # chqualflags
-        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "channel_quality_flags_bitfield"
+        default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.int32, dims_names=["y", "channel"], fill_value=0)
+        variable = Variable(["y", "channel"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "channel_quality_flags_bitfield"
         dataset["chqualflags"] = variable
 
         # mnfrqualflags
-        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "minor_frame_quality_flags_bitfield"
+        default_array = DefaultData.create_default_array(NUM_MINOR_FRAME, height, np.int32, dims_names=["y", "minor_frame"], fill_value=0)
+        variable = Variable(["y",  "minor_frame"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
         dataset["mnfrqualflags"] = variable
 
     @staticmethod

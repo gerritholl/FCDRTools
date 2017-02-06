@@ -2,6 +2,7 @@ import numpy as np
 from xarray import Variable
 
 from writer.default_data import DefaultData
+from writer.templates.templateutil import TemplateUtil as tu
 
 FULL_DIMENSION = 5000
 IR_DIMENSION = 2500
@@ -20,7 +21,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         dataset["time"] = variable
 
         # timedelta
@@ -35,12 +36,12 @@ class MVIRI:
 
         dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
                                                                               standard_name="sensor_azimuth_angle")
-        dataset["satellite_azimuth_angle"].attrs["_Unsigned"] = "true"
+        tu.set_unsigned(dataset["satellite_azimuth_angle"])
         dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248,
                                                                              standard_name="sensor_zenith_angle")
         dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
                                                                           standard_name="solar_azimuth_angle")
-        dataset["solar_azimuth_angle"].attrs["_Unsigned"] = "true"
+        tu.set_unsigned(dataset["solar_azimuth_angle"])
         dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248,
                                                                          standard_name="solar_zenith_angle")
 
@@ -50,7 +51,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
         variable.attrs["long_name"] = "Image counts"
         variable.attrs["units"] = "count"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         dataset["count"] = variable
 
         # reflectance
@@ -59,7 +60,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["units"] = "percent"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 1.52588E-05
         dataset["reflectance"] = variable
 
@@ -95,7 +96,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
         variable.attrs["standard_name"] = "Uncertainty in Time"
         variable.attrs["units"] = "s"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         dataset["u_time"] = variable
 
         dataset["u_satellite_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
@@ -117,7 +118,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["long_name"] = "Total Uncertainty in counts"
         variable.attrs["units"] = "count"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_tot_count"] = variable
 
@@ -127,7 +128,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["long_name"] = "Uncertainty in SRF"
         variable.attrs["scale_factor"] = 1.52588E-05
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         dataset["u_srf"] = variable
 
         # u_a0
@@ -157,7 +158,7 @@ class MVIRI:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["long_name"] = "Uncertainty due to shot noise"
         variable.attrs["units"] = "count"
-        variable.attrs["_Unsigned"] = "true"
+        tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_shot-noise"] = variable
 
@@ -173,7 +174,7 @@ class MVIRI:
             variable.attrs["long_name"] = long_name
 
         if unsigned is True:
-            variable.attrs["_Unsigned"] = "true"
+            tu.set_unsigned(variable)
 
         variable.attrs["units"] = "degree"
         variable.attrs["scale_factor"] = scale_factor

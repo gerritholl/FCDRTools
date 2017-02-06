@@ -2,7 +2,7 @@ import numpy as np
 from xarray import Variable
 
 from writer.default_data import DefaultData
-from writer.templates.templateutil import TemplateUtil
+from writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
@@ -11,10 +11,10 @@ PRT_WIDTH = 3
 class AVHRR:
     @staticmethod
     def add_original_variables(dataset, height):
-        TemplateUtil.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # Time
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "time")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "time")
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
         dataset["Time"] = variable
@@ -29,7 +29,7 @@ class AVHRR:
         dataset["scanline"] = variable
 
         # satellite_azimuth_angle
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle")
         variable.attrs["units"] = "degree"
         dataset["satellite_azimuth_angle"] = variable
 
@@ -46,7 +46,7 @@ class AVHRR:
         dataset["satellite_zenith_angle"] = variable
 
         # solar_azimuth_angle
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle")
         variable.attrs["units"] = "degree"
         dataset["solar_azimuth_angle"] = variable
 
@@ -108,7 +108,7 @@ class AVHRR:
         dataset["u_longitude"] = variable
 
         # u_time
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of time")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of time")
         variable.attrs["units"] = "s"
         dataset["u_time"] = variable
 
@@ -160,9 +160,9 @@ class AVHRR:
         variable.attrs["units"] = "K"
         dataset["T_instr"] = variable
 
-
         # Chx_Csp
-        standard_names = ["Ch1 Space counts", "Ch2 Space counts", "Ch3a Space counts", "Ch3b Space counts", "Ch4 Space counts", "Ch5 Space counts"]
+        standard_names = ["Ch1 Space counts", "Ch2 Space counts", "Ch3a Space counts", "Ch3b Space counts",
+                          "Ch4 Space counts", "Ch5 Space counts"]
         names = ["Ch1_Csp", "Ch2_Csp", "Ch3a_Csp", "Ch3b_Csp", "Ch4_Csp", "Ch5_Csp"]
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
@@ -172,42 +172,55 @@ class AVHRR:
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
         # Chx_Ce
-        standard_names = ["Ch1 Earth counts", "Ch2 Earth counts", "Ch3a Earth counts", "Ch3b Earth counts", "Ch4 Earth counts", "Ch5 Earth counts"]
+        standard_names = ["Ch1 Earth counts", "Ch2 Earth counts", "Ch3a Earth counts", "Ch3b Earth counts",
+                          "Ch4 Earth counts", "Ch5 Earth counts"]
         names = ["Ch1_Ce", "Ch2_Ce", "Ch3a_Ce", "Ch3b_Ce", "Ch4_Ce", "Ch5_Ce"]
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
         # Chx_u_Csp
-        standard_names = ["Ch1 Uncertainty on space counts", "Ch2 Uncertainty on space counts", "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts", "Ch4 Uncertainty on space counts", "Ch5 Uncertainty on space counts"]
+        standard_names = ["Ch1 Uncertainty on space counts", "Ch2 Uncertainty on space counts",
+                          "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts",
+                          "Ch4 Uncertainty on space counts", "Ch5 Uncertainty on space counts"]
         names = ["Ch1_u_Csp", "Ch2_u_Csp", "Ch3a_u_Csp", "Ch3b_u_Csp", "Ch4_u_Csp", "Ch5_u_Csp"]
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_Cict
-        standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts", "Ch5 Uncertainty on ICT counts"]
+        standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts",
+                          "Ch5 Uncertainty on ICT counts"]
         names = ["Ch3b_u_Cict", "Ch4_u_Cict", "Ch5_u_Cict"]
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_u_Ce
-        standard_names = ["Ch1 Uncertainty on earth counts", "Ch2 Uncertainty on earth counts", "Ch3a Uncertainty on earth counts", "Ch3b Uncertainty on earth counts", "Ch4 Uncertainty on earth counts", "Ch5 Uncertainty on earth counts"]
+        standard_names = ["Ch1 Uncertainty on earth counts", "Ch2 Uncertainty on earth counts",
+                          "Ch3a Uncertainty on earth counts", "Ch3b Uncertainty on earth counts",
+                          "Ch4 Uncertainty on earth counts", "Ch5 Uncertainty on earth counts"]
         names = ["Ch1_u_Ce", "Ch2_u_Ce", "Ch3a_u_Ce", "Ch3b_u_Ce", "Ch4_u_Ce", "Ch5_u_Ce"]
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_u_Refl
-        standard_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance", "Ch3a Total uncertainty on reflectance"]
+        standard_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance",
+                          "Ch3a Total uncertainty on reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
         AVHRR._add_refl_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_u_Bt
-        standard_names = ["Ch3b Total uncertainty on brightness temperature", "Ch4 Total uncertainty on brightness temperature", "Ch5 Total uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Total uncertainty on brightness temperature",
+                          "Ch4 Total uncertainty on brightness temperature",
+                          "Ch5 Total uncertainty on brightness temperature"]
         names = ["Ch3b_u_Bt", "Ch4_u_Bt", "Ch5_u_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_ur_Bt
-        standard_names = ["Ch3b Random uncertainty on brightness temperature", "Ch4 Random uncertainty on brightness temperature", "Ch5 Random uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Random uncertainty on brightness temperature",
+                          "Ch4 Random uncertainty on brightness temperature",
+                          "Ch5 Random uncertainty on brightness temperature"]
         names = ["Ch3b_ur_Bt", "Ch4_ur_Bt", "Ch5_ur_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_us_Bt
-        standard_names = ["Ch3b Systematic uncertainty on brightness temperature", "Ch4 Systematic uncertainty on brightness temperature", "Ch5 Systematic uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Systematic uncertainty on brightness temperature",
+                          "Ch4 Systematic uncertainty on brightness temperature",
+                          "Ch5 Systematic uncertainty on brightness temperature"]
         names = ["Ch3b_us_Bt", "Ch4_us_Bt", "Ch5_us_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
@@ -237,7 +250,7 @@ class AVHRR:
 
     @staticmethod
     def _create_counts_uncertainty_variable(height, standard_name):
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "count"
         return variable
 
@@ -252,19 +265,19 @@ class AVHRR:
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
         variable.attrs["units"] = "degree"
         return variable
 
     @staticmethod
     def _create_refl_uncertainty_variable(height, standard_name):
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "percent"
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, standard_name):
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, standard_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
         variable.attrs["units"] = "K"
         return variable
 

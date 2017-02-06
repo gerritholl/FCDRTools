@@ -31,3 +31,7 @@ class TemplateUtil:
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
         variable.attrs["standard_name"] = standard_name
         return variable
+
+    @staticmethod
+    def set_unsigned(variable):
+        variable.attrs["_Unsigned"] = "true"

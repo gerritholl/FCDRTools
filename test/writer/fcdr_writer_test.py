@@ -146,13 +146,14 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(13, len(ds.variables))
+        self.assertEqual(16, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["timedelta"])
-
         self.assertIsNotNone(ds.variables["count"])
+        self.assertIsNotNone(ds.variables["reflectance"])
+        self.assertIsNotNone(ds.variables["srf"])
 
         # easy FCDR variables
         self._verify_easy_fcdr_variables(ds)

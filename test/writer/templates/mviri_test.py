@@ -101,6 +101,13 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("solar_irradiance_per_unit_wavelength", sol_irr.attrs["standard_name"])
         self.assertEqual("W*m-2*nm-1", sol_irr.attrs["units"])
 
+        sol_eff_irr = ds.variables["sol_eff_irr"]
+        self.assertEqual((), sol_eff_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.attrs["_FillValue"])
+        self.assertEqual("Solar effective Irradiance", sol_eff_irr.attrs["long_name"])
+        self.assertEqual("W*m-2", sol_eff_irr.attrs["units"])
+
         u_lat = ds.variables["u_latitude"]
         self.assertEqual((5000, 5000), u_lat.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_lat.data[5, 109])
@@ -180,17 +187,55 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(1.52588E-05, u_srf.attrs["scale_factor"])
         self.assertEqual("true", u_srf.attrs["_Unsigned"])
 
+        a0 = ds.variables["a0"]
+        self.assertEqual((), a0.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.attrs["_FillValue"])
+        self.assertEqual("Calibration Coefficient at Launch", a0.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count", a0.attrs["units"])
+
+        a1 = ds.variables["a1"]
+        self.assertEqual((), a1.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.attrs["_FillValue"])
+        self.assertEqual("Time variation of a0", a1.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
+
+        dse = ds.variables["dSE"]
+        self.assertEqual((), dse.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), dse.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), dse.attrs["_FillValue"])
+        self.assertEqual("Sun-Earth distance", dse.attrs["long_name"])
+        self.assertEqual("au", dse.attrs["units"])
+        self.assertEqual(0.00390625, dse.attrs["scale_factor"])
+        self.assertEqual("true", dse.attrs["_Unsigned"])
+
+        k_space = ds.variables["K_space"]
+        self.assertEqual((), k_space.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), k_space.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), k_space.attrs["_FillValue"])
+        self.assertEqual("Space count", k_space.attrs["long_name"])
+        self.assertEqual("count", k_space.attrs["units"])
+        self.assertEqual(0.00390625, k_space.attrs["scale_factor"])
+        self.assertEqual("true", k_space.attrs["_Unsigned"])
+
         u_a0 = ds.variables["u_a0"]
-        self.assertEqual((5000, 5000), u_a0.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0.data[5, 117])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0.attrs["_FillValue"])
+        self.assertEqual((), u_a0.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a0.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a0.attrs["_FillValue"])
         self.assertEqual("Uncertainty in a0", u_a0.attrs["standard_name"])
+        self.assertEqual("Wm^-2sr^-1/count", u_a0.attrs["units"])
+        self.assertEqual(1.52588E-05, u_a0.attrs["scale_factor"])
+        self.assertEqual("true", u_a0.attrs["_Unsigned"])
 
         u_a1 = ds.variables["u_a1"]
-        self.assertEqual((5000, 5000), u_a1.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1.data[6, 118])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1.attrs["_FillValue"])
+        self.assertEqual((), u_a1.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.attrs["_FillValue"])
         self.assertEqual("Uncertainty in a1", u_a1.attrs["standard_name"])
+        self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", u_a1.attrs["units"])
+        self.assertEqual(0.000762939, u_a1.attrs["scale_factor"])
+        self.assertEqual("true", u_a1.attrs["_Unsigned"])
 
         u_sol_irr = ds.variables["u_sol_irr"]
         self.assertEqual((24,), u_sol_irr.shape)

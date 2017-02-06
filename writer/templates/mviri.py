@@ -85,6 +85,14 @@ class MVIRI:
         variable.attrs["units"] = "W*m-2*nm-1"
         dataset["sol_irr"] = variable
 
+        # sol_eff_irr
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["long_name"] = "Solar effective Irradiance"
+        variable.attrs["units"] = "W*m-2"
+        dataset["sol_eff_irr"] = variable
+
         dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude",
                                                                  unsigned=True)
         dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude",
@@ -131,18 +139,60 @@ class MVIRI:
         tu.set_unsigned(variable)
         dataset["u_srf"] = variable
 
-        # u_a0
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32)
-        variable = Variable(["y", "x"], default_array)
+        # a0
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["long_name"] = "Calibration Coefficient at Launch"
+        variable.attrs["units"] = "Wm^-2sr^-1/count"
+        dataset["a0"] = variable
+
+        # a1
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        variable.attrs["long_name"] = "Time variation of a0"
+        variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
+        dataset["a1"] = variable
+
+        # dSE
+        default_array = DefaultData.get_default_fill_value(np.int8)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
+        variable.attrs["long_name"] = "Sun-Earth distance"
+        variable.attrs["units"] = "au"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 0.00390625
+        dataset["dSE"] = variable
+
+        # K_space
+        default_array = DefaultData.get_default_fill_value(np.int8)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
+        variable.attrs["long_name"] = "Space count"
+        variable.attrs["units"] = "count"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 0.00390625
+        dataset["K_space"] = variable
+
+        # u_a0
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["standard_name"] = "Uncertainty in a0"
+        variable.attrs["units"] = "Wm^-2sr^-1/count"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 1.52588E-05
         dataset["u_a0"] = variable
 
         # u_a1
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
         variable.attrs["standard_name"] = "Uncertainty in a1"
+        variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 0.000762939
         dataset["u_a1"] = variable
 
         # u_sol_irr

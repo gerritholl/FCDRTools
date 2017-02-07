@@ -223,7 +223,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual((), u_a0.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a0.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a0.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in a0", u_a0.attrs["standard_name"])
+        self.assertEqual("Uncertainty in a0", u_a0.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count", u_a0.attrs["units"])
         self.assertEqual(1.52588E-05, u_a0.attrs["scale_factor"])
         self.assertEqual("true", u_a0.attrs["_Unsigned"])
@@ -232,16 +232,27 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual((), u_a1.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in a1", u_a1.attrs["standard_name"])
+        self.assertEqual("Uncertainty in a1", u_a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", u_a1.attrs["units"])
         self.assertEqual(0.000762939, u_a1.attrs["scale_factor"])
         self.assertEqual("true", u_a1.attrs["_Unsigned"])
 
-        u_sol_irr = ds.variables["u_sol_irr"]
-        self.assertEqual((24,), u_sol_irr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_irr.data[7])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_irr.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in Solar Irradiance", u_sol_irr.attrs["standard_name"])
+        u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
+        self.assertEqual((), u_sol_eff_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_sol_eff_irr.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_sol_eff_irr.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_eff_irr.attrs["long_name"])
+        self.assertEqual(0.001525879, u_sol_eff_irr.attrs["scale_factor"])
+        self.assertEqual("true", u_sol_eff_irr.attrs["_Unsigned"])
+
+        u_e_noise = ds.variables["u_e-noise"]
+        self.assertEqual((), u_e_noise.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_e_noise.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_e_noise.attrs["_FillValue"])
+        self.assertEqual("Uncertainty due to Electronics noise", u_e_noise.attrs["long_name"])
+        self.assertEqual(7.62939E-05, u_e_noise.attrs["scale_factor"])
+        self.assertEqual("count", u_e_noise.attrs["units"])
+        self.assertEqual("true", u_e_noise.attrs["_Unsigned"])
 
         u_shot = ds.variables["u_shot-noise"]
         self.assertEqual((5000, 5000), u_shot.shape)
@@ -251,3 +262,30 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", u_shot.attrs["units"])
         self.assertEqual("true", u_shot.attrs["_Unsigned"])
         self.assertEqual(7.62939E-05, u_shot.attrs["scale_factor"])
+
+        u_dSE = ds.variables["u_dSE"]
+        self.assertEqual((), u_dSE.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_dSE.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_dSE.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Sun-Earth distance", u_dSE.attrs["long_name"])
+        self.assertEqual("au", u_dSE.attrs["units"])
+        self.assertEqual("true", u_dSE.attrs["_Unsigned"])
+        self.assertEqual(7.62939E-05, u_dSE.attrs["scale_factor"])
+
+        u_digitization = ds.variables["u_digitization"]
+        self.assertEqual((), u_digitization.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_digitization.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_digitization.attrs["_FillValue"])
+        self.assertEqual("Uncertainty due to digitization", u_digitization.attrs["long_name"])
+        self.assertEqual(7.62939E-05, u_digitization.attrs["scale_factor"])
+        self.assertEqual("count", u_digitization.attrs["units"])
+        self.assertEqual("true", u_digitization.attrs["_Unsigned"])
+
+        u_space = ds.variables["u_space"]
+        self.assertEqual((), u_space.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_space.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_space.attrs["_FillValue"])
+        self.assertEqual("Uncertainty of space count", u_space.attrs["long_name"])
+        self.assertEqual(7.62939E-05, u_space.attrs["scale_factor"])
+        self.assertEqual("count", u_space.attrs["units"])
+        self.assertEqual("true", u_space.attrs["_Unsigned"])

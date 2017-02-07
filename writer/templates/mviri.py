@@ -179,7 +179,7 @@ class MVIRI:
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
-        variable.attrs["standard_name"] = "Uncertainty in a0"
+        variable.attrs["long_name"] = "Uncertainty in a0"
         variable.attrs["units"] = "Wm^-2sr^-1/count"
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 1.52588E-05
@@ -189,18 +189,20 @@ class MVIRI:
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
-        variable.attrs["standard_name"] = "Uncertainty in a1"
+        variable.attrs["long_name"] = "Uncertainty in a1"
         variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.000762939
         dataset["u_a1"] = variable
 
-        # u_sol_irr
-        default_array = DefaultData.create_default_vector(SOL_IRR_SIZE, np.float32)
-        variable = Variable(["sol_irr_size"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = "Uncertainty in Solar Irradiance"
-        dataset["u_sol_irr"] = variable
+        # u_sol_eff_irr
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 0.001525879
+        dataset["u_sol_eff_irr"] = variable
 
         # u_shot-noise
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
@@ -211,6 +213,46 @@ class MVIRI:
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_shot-noise"] = variable
+
+        # u_dSE
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["long_name"] = "Uncertainty in Sun-Earth distance"
+        variable.attrs["units"] = "au"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 7.62939E-05
+        dataset["u_dSE"] = variable
+
+        # u_e-noise
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
+        variable.attrs["units"] = "count"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 7.62939E-05
+        dataset["u_e-noise"] = variable
+
+        # u_digitization
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["long_name"] = "Uncertainty due to digitization"
+        variable.attrs["units"] = "count"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 7.62939E-05
+        dataset["u_digitization"] = variable
+
+        # u_space
+        default_array = DefaultData.get_default_fill_value(np.int16)
+        variable = Variable([], default_array)
+        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        variable.attrs["long_name"] = "Uncertainty of space count"
+        variable.attrs["units"] = "count"
+        tu.set_unsigned(variable)
+        variable.attrs["scale_factor"] = 7.62939E-05
+        dataset["u_space"] = variable
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False):

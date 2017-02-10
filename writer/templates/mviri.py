@@ -20,7 +20,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         tu.set_unsigned(variable)
         dataset["time"] = variable
 
@@ -30,7 +30,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Delta time at pixel acquisition against central pixel"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         variable.attrs["scale_factor"] = 0.001831083
         dataset["timedelta"] = variable
 
@@ -50,7 +50,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Image counts"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         dataset["count"] = variable
 
@@ -59,7 +59,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_reflectance"
-        variable.attrs["units"] = "percent"
+        tu.add_units(variable, "percent")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 1.52588E-05
         dataset["reflectance"] = variable
@@ -82,7 +82,7 @@ class MVIRI:
         variable = Variable(["srf_size"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "solar_irradiance_per_unit_wavelength"
-        variable.attrs["units"] = "W*m-2*nm-1"
+        tu.add_units(variable, "W*m-2*nm-1")
         dataset["sol_irr"] = variable
 
         # sol_eff_irr
@@ -90,7 +90,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Solar effective Irradiance"
-        variable.attrs["units"] = "W*m-2"
+        tu.add_units(variable, "W*m-2")
         dataset["sol_eff_irr"] = variable
 
         dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude",
@@ -103,7 +103,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Uncertainty in Time"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         tu.set_unsigned(variable)
         dataset["u_time"] = variable
 
@@ -125,7 +125,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Total Uncertainty in counts"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_tot_count"] = variable
@@ -144,7 +144,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Calibration Coefficient at Launch"
-        variable.attrs["units"] = "Wm^-2sr^-1/count"
+        tu.add_units(variable, "Wm^-2sr^-1/count")
         dataset["a0"] = variable
 
         # a1
@@ -152,7 +152,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Time variation of a0"
-        variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
+        tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         dataset["a1"] = variable
 
         # dSE
@@ -160,7 +160,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Sun-Earth distance"
-        variable.attrs["units"] = "au"
+        tu.add_units(variable, "au")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.00390625
         dataset["dSE"] = variable
@@ -170,7 +170,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Space count"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.00390625
         dataset["K_space"] = variable
@@ -180,7 +180,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in a0"
-        variable.attrs["units"] = "Wm^-2sr^-1/count"
+        tu.add_units(variable, "Wm^-2sr^-1/count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 1.52588E-05
         dataset["u_a0"] = variable
@@ -190,7 +190,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in a1"
-        variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
+        tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.000762939
         dataset["u_a1"] = variable
@@ -209,7 +209,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to shot noise"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_shot-noise"] = variable
@@ -219,7 +219,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in Sun-Earth distance"
-        variable.attrs["units"] = "au"
+        tu.add_units(variable, "au")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_dSE"] = variable
@@ -229,7 +229,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_e-noise"] = variable
@@ -239,7 +239,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to digitization"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_digitization"] = variable
@@ -249,7 +249,7 @@ class MVIRI:
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty of space count"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
         dataset["u_space"] = variable
@@ -268,6 +268,6 @@ class MVIRI:
         if unsigned is True:
             tu.set_unsigned(variable)
 
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         variable.attrs["scale_factor"] = scale_factor
         return variable

@@ -102,7 +102,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("Temperature of the internal calibration target", ict_temp.attrs["standard_name"])
         self.assertEqual(273.15, ict_temp.attrs["add_offset"])
         self.assertEqual(0.01, ict_temp.attrs["scale_factor"])
-        self.assertEqual("kelvin", ict_temp.attrs["units"])
+        self.assertEqual("K", ict_temp.attrs["units"])
         self.assertEqual(10000, ict_temp.attrs["valid_max"])
         self.assertEqual(-20000, ict_temp.attrs["valid_min"])
 
@@ -294,6 +294,6 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(long_name, variable.attrs["long_name"])
         self.assertEqual(273.15, variable.attrs["add_offset"])
         self.assertEqual(0.01, variable.attrs["scale_factor"])
-        self.assertEqual("kelvin", variable.attrs["units"])
+        self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(-20000, variable.attrs["valid_min"])

@@ -16,7 +16,7 @@ class AVHRR:
         # Time
         variable = tu.create_float_variable(SWATH_WIDTH, height, "time")
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         dataset["Time"] = variable
 
         # scanline
@@ -30,7 +30,7 @@ class AVHRR:
 
         # satellite_azimuth_angle
         variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle")
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         dataset["satellite_azimuth_angle"] = variable
 
         # satellite_zenith_angle
@@ -40,14 +40,14 @@ class AVHRR:
         variable.attrs["standard_name"] = "sensor_zenith_angle"
         variable.attrs["add_offset"] = 0.0
         variable.attrs["scale_factor"] = 0.01
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
         dataset["satellite_zenith_angle"] = variable
 
         # solar_azimuth_angle
         variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle")
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         dataset["solar_azimuth_angle"] = variable
 
         # solar_zenith_angle
@@ -57,7 +57,7 @@ class AVHRR:
         variable.attrs["standard_name"] = "solar_zenith_angle"
         variable.attrs["add_offset"] = 0.0
         variable.attrs["scale_factor"] = 0.01
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = 0
         dataset["solar_zenith_angle"] = variable
@@ -109,7 +109,7 @@ class AVHRR:
 
         # u_time
         variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of time")
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         dataset["u_time"] = variable
 
         # u_satellite_azimuth_angle
@@ -133,7 +133,7 @@ class AVHRR:
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "Prt counts"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         dataset["PRT_C"] = variable
 
         # u_prt
@@ -141,7 +141,7 @@ class AVHRR:
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Uncertainty on the PRT counts"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         dataset["u_prt"] = variable
 
         # R_ICT
@@ -149,7 +149,7 @@ class AVHRR:
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Radiance of the PRT"
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["R_ICT"] = variable
 
         # T_instr
@@ -157,7 +157,7 @@ class AVHRR:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Instrument temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["T_instr"] = variable
 
         # Chx_Csp
@@ -251,7 +251,7 @@ class AVHRR:
     @staticmethod
     def _create_counts_uncertainty_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         return variable
 
     @staticmethod
@@ -260,32 +260,32 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = standard_name
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         return variable
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
         variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         return variable
 
     @staticmethod
     def _create_refl_uncertainty_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
-        variable.attrs["units"] = "percent"
+        tu.add_units(variable, "percent")
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         return variable
 
     @staticmethod
     def _add_temperature_attributes(variable):
         variable.attrs["add_offset"] = 273.15
         variable.attrs["scale_factor"] = 0.01
-        variable.attrs["units"] = "kelvin"
+        tu.add_units(variable, "K")
         variable.attrs["valid_max"] = 10000
         variable.attrs["valid_min"] = -20000
 
@@ -298,7 +298,7 @@ class AVHRR:
         variable.attrs["long_name"] = long_name
         variable.attrs["add_offset"] = 0.0
         variable.attrs["scale_factor"] = 1e-4
-        variable.attrs["units"] = "percent"
+        tu.add_units(variable, "percent")
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
         return variable

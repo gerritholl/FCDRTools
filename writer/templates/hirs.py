@@ -23,7 +23,7 @@ class HIRS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
 
@@ -33,7 +33,7 @@ class HIRS:
         variable = Variable(["rad_channel", "y", "x"], default_array)
         tu.add_fill_value(variable, COUNTS_FILL_VALUE)
         variable.attrs["long_name"] = "counts_earth"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["c_earth"] = variable
@@ -44,7 +44,7 @@ class HIRS:
         variable = Variable(["rad_channel", "y", "x"], default_array)
         tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["L_earth"] = variable
 
@@ -59,7 +59,7 @@ class HIRS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "scanline_number"
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         dataset["scanline"] = variable
 
         # time
@@ -69,7 +69,7 @@ class HIRS:
         tu.set_unsigned(variable)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         dataset["time"] = variable
 
         # scnlinf
@@ -125,7 +125,7 @@ class HIRS:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = angle
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         return variable
 
     @staticmethod
@@ -144,32 +144,32 @@ class HIRS:
 
         # u_time
         variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty_time")
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         dataset["u_time"] = variable
 
         # u_c_earth
         variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_counts_Earth")
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         dataset["u_c_earth"] = variable
 
         # u_L_earth_random
         variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_random")
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["u_L_earth_random"] = variable
 
         # u_L_earth_structuredrandom
         variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_structured_random")
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["u_L_earth_structuredrandom"] = variable
 
         # u_L_earth_systematic
         variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_systematic")
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["u_L_earth_systematic"] = variable
 
         # u_L_earth_total
         variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_radiance_Earth_total")
-        variable.attrs["units"] = "mW m^-2 sr^-1 cm"
+        tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["u_L_earth_total"] = variable
 
         # S_u_L_earth
@@ -179,22 +179,22 @@ class HIRS:
 
         # u_bt_random
         variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_random")
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_bt_random"] = variable
 
         # u_bt_structuredrandom
         variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_structured_random")
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_bt_structuredrandom"] = variable
 
         # u_bt_systematic
         variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_systematic")
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_bt_systematic"] = variable
 
         # u_bt_total
         variable = HIRS._create_3d_bt_uncertainty_variable(height, "uncertainty_bt_total")
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_bt_total"] = variable
 
         # S_bt
@@ -315,7 +315,7 @@ class HIRS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         return variable
 
     @staticmethod
@@ -324,7 +324,7 @@ class HIRS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = standard_name
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         return variable
 
     @staticmethod
@@ -333,7 +333,7 @@ class HIRS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
-        variable.attrs["units"] = "count"
+        tu.add_units(variable, "count")
         return variable
 
     @staticmethod
@@ -357,5 +357,5 @@ class HIRS:
     @staticmethod
     def _create_angle_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         return variable

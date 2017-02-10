@@ -20,7 +20,7 @@ class AMSUB_MHS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, BTEMPS_FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         variable.attrs["scale_factor"] = 0.01
         variable.attrs["ancillary_variables"] = "chanqual qualind scanqual"
         dataset["btemps"] = variable
@@ -38,7 +38,7 @@ class AMSUB_MHS:
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         variable.attrs["scale_factor"] = 0.01
         variable.attrs["long_name"] = "instrument_temperature"
         dataset["instrtemp"] = variable
@@ -78,7 +78,7 @@ class AMSUB_MHS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = "Acquisition time of scan in milliseconds since beginning of the day"
-        variable.attrs["units"] = "ms"
+        tu.add_units(variable, "ms")
         dataset["scnlintime"] = variable
 
         # scnlinyr
@@ -110,7 +110,7 @@ class AMSUB_MHS:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        variable.attrs["units"] = "s"
+        tu.add_units(variable, "s")
         dataset["acquisition_time"] = variable
 
     @staticmethod
@@ -124,7 +124,7 @@ class AMSUB_MHS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "total uncertainty of brightness temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_btemps"] = variable
 
         # u_syst_btemps
@@ -132,7 +132,7 @@ class AMSUB_MHS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "systematic uncertainty of brightness temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_syst_btemps"] = variable
 
         # u_random_btemps
@@ -140,7 +140,7 @@ class AMSUB_MHS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "noise on brightness temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_random_btemps"] = variable
 
         # u_instrtemp
@@ -148,7 +148,7 @@ class AMSUB_MHS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "uncertainty of instrument temperature"
-        variable.attrs["units"] = "K"
+        tu.add_units(variable, "K")
         dataset["u_instrtemp"] = variable
 
         # u_latitude
@@ -178,7 +178,7 @@ class AMSUB_MHS:
     @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
         variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         return variable
 
     @staticmethod
@@ -187,6 +187,6 @@ class AMSUB_MHS:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, -999999)
         variable.attrs["standard_name"] = standard_name
-        variable.attrs["units"] = "degree"
+        tu.add_units(variable, "degree")
         variable.attrs["scale_factor"] = 0.01
         return variable

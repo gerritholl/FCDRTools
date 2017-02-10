@@ -39,3 +39,7 @@ class TemplateUtil:
     @staticmethod
     def add_fill_value(variable, fill_value):
         variable.attrs["_FillValue"] = fill_value
+
+    @staticmethod
+    def add_units(variable, units):
+        variable.attrs["units"] = units

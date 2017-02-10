@@ -21,7 +21,7 @@ class HIRS:
         # bt
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, FILL_VALUE)
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = FILL_VALUE
+        tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["units"] = "K"
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
@@ -31,7 +31,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.int32,
                                                             COUNTS_FILL_VALUE, ["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = COUNTS_FILL_VALUE
+        tu.add_fill_value(variable, COUNTS_FILL_VALUE)
         variable.attrs["long_name"] = "counts_earth"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -42,7 +42,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32,
                                                             FILL_VALUE, ["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = FILL_VALUE
+        tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
         variable.attrs["units"] = "mW m^-2 sr^-1 cm"
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
@@ -57,7 +57,7 @@ class HIRS:
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "scanline_number"
         variable.attrs["units"] = "count"
         dataset["scanline"] = variable
@@ -65,7 +65,7 @@ class HIRS:
         # time
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         tu.set_unsigned(variable)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
@@ -75,7 +75,7 @@ class HIRS:
         # scnlinf
         default_array = DefaultData.create_default_vector(height, np.int8, fill_value=9)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = 9
+        tu.add_fill_value(variable, 9)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "scanline_bitfield"
         variable.attrs["flag_values"] = "0, 1, 2, 3"
@@ -123,7 +123,7 @@ class HIRS:
     def _create_geo_angle_variable(angle, height):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=FILL_VALUE)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = FILL_VALUE
+        tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = angle
         variable.attrs["units"] = "degree"
         return variable
@@ -206,7 +206,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_COEFFS, np.float32,
                                                             dims_names=["coeffs", "y", "x"])
         variable = Variable(["coeffs", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "calibration_coefficients"
         dataset["calcof"] = variable
 
@@ -214,7 +214,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_COEFFS, np.float32,
                                                             dims_names=["coeffs", "y", "x"])
         variable = Variable(["coeffs", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "uncertainty_calibration_coefficients"
         dataset["u_calcof"] = variable
 
@@ -313,7 +313,7 @@ class HIRS:
     def _create_temperature_vector(height, standard_name):
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "K"
         return variable
@@ -322,7 +322,7 @@ class HIRS:
     def _create_counts_vector(height, standard_name):
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "count"
         return variable
@@ -331,7 +331,7 @@ class HIRS:
     def _create_counts_uncertainty_vector(height, standard_name):
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "count"
         return variable
@@ -341,7 +341,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32,
                                                             dims_names=["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
         return variable
 
@@ -350,7 +350,7 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,
                                                             dims_names=["channel", "y", "x"])
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = standard_name
         return variable
 

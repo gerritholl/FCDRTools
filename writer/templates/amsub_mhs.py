@@ -2,7 +2,7 @@ import numpy as np
 from xarray import Variable
 
 from writer.default_data import DefaultData
-from writer.templates.templateutil import TemplateUtil
+from writer.templates.templateutil import TemplateUtil as tu
 
 NUM_CHANNELS = 5
 BTEMPS_FILL_VALUE = -999999
@@ -12,13 +12,13 @@ SWATH_WIDTH = 90
 class AMSUB_MHS:
     @staticmethod
     def add_original_variables(dataset, height):
-        TemplateUtil.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int32,
                                                             BTEMPS_FILL_VALUE)
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = BTEMPS_FILL_VALUE
+        tu.add_fill_value(variable, BTEMPS_FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["units"] = "K"
         variable.attrs["scale_factor"] = 0.01
@@ -37,7 +37,7 @@ class AMSUB_MHS:
         # instrtemp
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["units"] = "K"
         variable.attrs["scale_factor"] = 0.01
         variable.attrs["long_name"] = "instrument_temperature"
@@ -62,21 +62,21 @@ class AMSUB_MHS:
         # scnlin
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = "scanline"
         dataset["scnlin"] = variable
 
         # scnlindy
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = "Acquisition day of year of scan"
         dataset["scnlindy"] = variable
 
         # scnlintime
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = "Acquisition time of scan in milliseconds since beginning of the day"
         variable.attrs["units"] = "ms"
         dataset["scnlintime"] = variable
@@ -84,7 +84,7 @@ class AMSUB_MHS:
         # scnlinyr
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = "Acquisition year of scan"
         dataset["scnlinyr"] = variable
 
@@ -107,7 +107,7 @@ class AMSUB_MHS:
         # acquisition_time
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
@@ -122,7 +122,7 @@ class AMSUB_MHS:
         # u_btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "total uncertainty of brightness temperature"
         variable.attrs["units"] = "K"
         dataset["u_btemps"] = variable
@@ -130,7 +130,7 @@ class AMSUB_MHS:
         # u_syst_btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "systematic uncertainty of brightness temperature"
         variable.attrs["units"] = "K"
         dataset["u_syst_btemps"] = variable
@@ -138,7 +138,7 @@ class AMSUB_MHS:
         # u_random_btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
         variable = Variable(["channel", "y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "noise on brightness temperature"
         variable.attrs["units"] = "K"
         dataset["u_random_btemps"] = variable
@@ -146,7 +146,7 @@ class AMSUB_MHS:
         # u_instrtemp
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "uncertainty of instrument temperature"
         variable.attrs["units"] = "K"
         dataset["u_instrtemp"] = variable
@@ -177,7 +177,7 @@ class AMSUB_MHS:
 
     @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
-        variable = TemplateUtil.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
         variable.attrs["units"] = "degree"
         return variable
 
@@ -185,7 +185,7 @@ class AMSUB_MHS:
     def create_angle_variable(height, standard_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int32, fill_value=-999999)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = -999999
+        tu.add_fill_value(variable, -999999)
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "degree"
         variable.attrs["scale_factor"] = 0.01

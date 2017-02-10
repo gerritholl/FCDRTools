@@ -17,7 +17,7 @@ class MVIRI:
         # time
         default_array = DefaultData.create_default_vector(IR_DIMENSION, np.int32)
         variable = Variable(["y_ir"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         variable.attrs["units"] = "s"
@@ -27,7 +27,7 @@ class MVIRI:
         # timedelta
         default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int16)
         variable = Variable(["y_ir", "x_ir"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Delta time at pixel acquisition against central pixel"
         variable.attrs["units"] = "s"
@@ -48,7 +48,7 @@ class MVIRI:
         # count
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Image counts"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -57,7 +57,7 @@ class MVIRI:
         # reflectance
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["units"] = "percent"
         tu.set_unsigned(variable)
@@ -67,7 +67,7 @@ class MVIRI:
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
         variable = Variable(["srf_size"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Spectral Response Function"
         dataset["srf"] = variable
 
@@ -80,7 +80,7 @@ class MVIRI:
         # sol_irr
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
         variable = Variable(["srf_size"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "solar_irradiance_per_unit_wavelength"
         variable.attrs["units"] = "W*m-2*nm-1"
         dataset["sol_irr"] = variable
@@ -88,7 +88,7 @@ class MVIRI:
         # sol_eff_irr
         default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Solar effective Irradiance"
         variable.attrs["units"] = "W*m-2"
         dataset["sol_eff_irr"] = variable
@@ -101,7 +101,7 @@ class MVIRI:
         # u_time
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Uncertainty in Time"
         variable.attrs["units"] = "s"
         tu.set_unsigned(variable)
@@ -123,7 +123,7 @@ class MVIRI:
         # u_tot_count
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Total Uncertainty in counts"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -133,7 +133,7 @@ class MVIRI:
         # u_srf
         default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.int16)
         variable = Variable(["srf_size", "srf_size"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in SRF"
         variable.attrs["scale_factor"] = 1.52588E-05
         tu.set_unsigned(variable)
@@ -142,7 +142,7 @@ class MVIRI:
         # a0
         default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Calibration Coefficient at Launch"
         variable.attrs["units"] = "Wm^-2sr^-1/count"
         dataset["a0"] = variable
@@ -150,7 +150,7 @@ class MVIRI:
         # a1
         default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Time variation of a0"
         variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
         dataset["a1"] = variable
@@ -158,7 +158,7 @@ class MVIRI:
         # dSE
         default_array = DefaultData.get_default_fill_value(np.int8)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Sun-Earth distance"
         variable.attrs["units"] = "au"
         tu.set_unsigned(variable)
@@ -168,7 +168,7 @@ class MVIRI:
         # K_space
         default_array = DefaultData.get_default_fill_value(np.int8)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int8)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Space count"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -178,7 +178,7 @@ class MVIRI:
         # u_a0
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in a0"
         variable.attrs["units"] = "Wm^-2sr^-1/count"
         tu.set_unsigned(variable)
@@ -188,7 +188,7 @@ class MVIRI:
         # u_a1
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in a1"
         variable.attrs["units"] = "Wm^-2sr^-1/count day^-1 10^5"
         tu.set_unsigned(variable)
@@ -198,7 +198,7 @@ class MVIRI:
         # u_sol_eff_irr
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.001525879
@@ -207,7 +207,7 @@ class MVIRI:
         # u_shot-noise
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to shot noise"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -217,7 +217,7 @@ class MVIRI:
         # u_dSE
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in Sun-Earth distance"
         variable.attrs["units"] = "au"
         tu.set_unsigned(variable)
@@ -227,7 +227,7 @@ class MVIRI:
         # u_e-noise
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -237,7 +237,7 @@ class MVIRI:
         # u_digitization
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty due to digitization"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -247,7 +247,7 @@ class MVIRI:
         # u_space
         default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty of space count"
         variable.attrs["units"] = "count"
         tu.set_unsigned(variable)
@@ -258,7 +258,7 @@ class MVIRI:
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False):
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         if standard_name is not None:
             variable.attrs["standard_name"] = standard_name
 

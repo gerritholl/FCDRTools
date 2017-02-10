@@ -10,13 +10,13 @@ class TemplateUtil:
         default_array = DefaultData.create_default_array(width, height, float, fill_value=-32768.0)
 
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = -32768.0
+        TemplateUtil.add_fill_value(variable, -32768)
         variable.attrs["standard_name"] = "latitude"
         variable.attrs["units"] = "degrees_north"
         dataset["latitude"] = variable
 
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = -32768.0
+        TemplateUtil.add_fill_value(variable, -32768)
         variable.attrs["standard_name"] = "longitude"
         variable.attrs["units"] = "degrees_east"
         dataset["longitude"] = variable
@@ -35,3 +35,7 @@ class TemplateUtil:
     @staticmethod
     def set_unsigned(variable):
         variable.attrs["_Unsigned"] = "true"
+
+    @staticmethod
+    def add_fill_value(variable, fill_value):
+        variable.attrs["_FillValue"] = fill_value

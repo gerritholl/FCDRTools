@@ -22,7 +22,7 @@ class AVHRR:
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "scanline"
         variable.attrs["long_name"] = "Level 1b line number"
         variable.attrs["valid_min"] = 0
@@ -36,7 +36,7 @@ class AVHRR:
         # satellite_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "sensor_zenith_angle"
         variable.attrs["add_offset"] = 0.0
         variable.attrs["scale_factor"] = 0.01
@@ -53,7 +53,7 @@ class AVHRR:
         # solar_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "solar_zenith_angle"
         variable.attrs["add_offset"] = 0.0
         variable.attrs["scale_factor"] = 0.01
@@ -88,7 +88,7 @@ class AVHRR:
 
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "Temperature of the internal calibration target"
         AVHRR._add_temperature_attributes(variable)
         dataset["T_ICT"] = variable
@@ -131,7 +131,7 @@ class AVHRR:
         # PRT_C
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.int16)
         variable = Variable(["y", "n_prt"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "Prt counts"
         variable.attrs["units"] = "count"
         dataset["PRT_C"] = variable
@@ -139,7 +139,7 @@ class AVHRR:
         # u_prt
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
         variable = Variable(["y", "n_prt"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Uncertainty on the PRT counts"
         variable.attrs["units"] = "count"
         dataset["u_prt"] = variable
@@ -147,7 +147,7 @@ class AVHRR:
         # R_ICT
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
         variable = Variable(["y", "n_prt"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Radiance of the PRT"
         variable.attrs["units"] = "mW m^-2 sr^-1 cm"
         dataset["R_ICT"] = variable
@@ -155,7 +155,7 @@ class AVHRR:
         # T_instr
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "Instrument temperature"
         variable.attrs["units"] = "K"
         dataset["T_instr"] = variable
@@ -258,7 +258,7 @@ class AVHRR:
     def _create_counts_variable(height, standard_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int32)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int32)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = standard_name
         variable.attrs["units"] = "count"
         return variable
@@ -293,7 +293,7 @@ class AVHRR:
     def _create_channel_refl_variable(height, long_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
         variable.attrs["add_offset"] = 0.0
@@ -307,7 +307,7 @@ class AVHRR:
     def _create_channel_bt_variable(height, long_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.int16)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = long_name
         AVHRR._add_temperature_attributes(variable)

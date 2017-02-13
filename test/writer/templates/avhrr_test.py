@@ -229,17 +229,24 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", "Ch2 Total uncertainty on reflectance")
         self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", "Ch3a Total uncertainty on reflectance")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt", "Ch3b Total uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt",
+                                                     "Ch3b Total uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_u_Bt", "Ch4 Total uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_u_Bt", "Ch5 Total uncertainty on brightness temperature")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_ur_Bt", "Ch3b Random uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_ur_Bt", "Ch4 Random uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_ur_Bt", "Ch5 Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_ur_Bt",
+                                                     "Ch3b Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_ur_Bt",
+                                                     "Ch4 Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_ur_Bt",
+                                                     "Ch5 Random uncertainty on brightness temperature")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_us_Bt", "Ch3b Systematic uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt", "Ch4 Systematic uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt", "Ch5 Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_us_Bt",
+                                                     "Ch3b Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt",
+                                                     "Ch4 Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt",
+                                                     "Ch5 Systematic uncertainty on brightness temperature")
 
     def _assert_correct_counts_variable(self, ds, name, standard_name):
         variable = ds.variables[name]

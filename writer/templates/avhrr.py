@@ -85,6 +85,7 @@ class AVHRR:
         variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
 
+        # T_ICT
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))

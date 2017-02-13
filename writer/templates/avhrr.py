@@ -39,7 +39,7 @@ class AVHRR:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "sensor_zenith_angle"
         variable.attrs["add_offset"] = 0.0
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "degree")
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
@@ -56,7 +56,7 @@ class AVHRR:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "solar_zenith_angle"
         variable.attrs["add_offset"] = 0.0
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "degree")
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = 0
@@ -288,7 +288,7 @@ class AVHRR:
     @staticmethod
     def _add_temperature_attributes(variable):
         variable.attrs["add_offset"] = 273.15
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "K")
         variable.attrs["valid_max"] = 10000
         variable.attrs["valid_min"] = -20000
@@ -301,7 +301,7 @@ class AVHRR:
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
         variable.attrs["add_offset"] = 0.0
-        variable.attrs["scale_factor"] = 1e-4
+        tu.add_scale_factor(variable, 1e-4)
         tu.add_units(variable, "percent")
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0

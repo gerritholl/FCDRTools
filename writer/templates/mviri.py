@@ -32,7 +32,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Delta time at pixel acquisition against central pixel"
         tu.add_units(variable, "s")
-        variable.attrs["scale_factor"] = 0.001831083
+        tu.add_scale_factor(variable, 0.001831083)
         dataset["timedelta"] = variable
 
         dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
@@ -53,7 +53,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "toa_reflectance"
         tu.add_units(variable, "percent")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 1.52588E-05
+        tu.add_scale_factor(variable, 1.52588E-05)
         dataset["reflectance"] = variable
 
         # srf
@@ -77,7 +77,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         tu.set_unsigned(variable)
         tu.add_units(variable, "percent")
-        variable.attrs["scale_factor"] = 1.52588E-05
+        tu.add_scale_factor(variable, 1.52588E-05)
         dataset["u_random"] = variable
 
         # u_non_random
@@ -87,7 +87,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         tu.set_unsigned(variable)
         tu.add_units(variable, "percent")
-        variable.attrs["scale_factor"] = 1.52588E-05
+        tu.add_scale_factor(variable, 1.52588E-05)
         dataset["u_non_random"] = variable
 
     @staticmethod
@@ -157,7 +157,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Total Uncertainty in counts"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.EIFFEL
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
         variable.attrs[corr.SCAN_CORR_SCALE] = [-2, 2]
@@ -172,7 +172,7 @@ class MVIRI:
         variable = Variable(["srf_size", "srf_size"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in SRF"
-        variable.attrs["scale_factor"] = 1.52588E-05
+        tu.add_scale_factor(variable, 1.52588E-05)
         tu.set_unsigned(variable)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
@@ -209,7 +209,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Sun-Earth distance"
         tu.add_units(variable, "au")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 0.00390625
+        tu.add_scale_factor(variable, 0.00390625)
         dataset["dSE"] = variable
 
         # K_space
@@ -219,7 +219,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Space count"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 0.00390625
+        tu.add_scale_factor(variable, 0.00390625)
         dataset["K_space"] = variable
 
         # u_a0
@@ -229,7 +229,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty in a0"
         tu.add_units(variable, "Wm^-2sr^-1/count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 1.52588E-05
+        tu.add_scale_factor(variable, 1.52588E-05)
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a0"] = variable
 
@@ -240,7 +240,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty in a1"
         tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 0.000762939
+        tu.add_scale_factor(variable, 0.000762939)
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a1"] = variable
 
@@ -250,7 +250,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 0.001525879
+        tu.add_scale_factor(variable, 0.001525879)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
@@ -270,7 +270,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty due to shot noise"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_shot-noise"] = variable
 
         # u_dSE
@@ -280,7 +280,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty in Sun-Earth distance"
         tu.add_units(variable, "au")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_dSE"] = variable
 
         # u_e-noise
@@ -290,7 +290,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_e-noise"] = variable
 
         # u_digitization
@@ -300,7 +300,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty due to digitization"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_digitization"] = variable
 
         # u_space
@@ -310,7 +310,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty of space count"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        variable.attrs["scale_factor"] = 7.62939E-05
+        tu.add_scale_factor(variable, 7.62939E-05)
         variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
         variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
         variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
@@ -358,5 +358,5 @@ class MVIRI:
             tu.set_unsigned(variable)
 
         tu.add_units(variable, "degree")
-        variable.attrs["scale_factor"] = scale_factor
+        tu.add_scale_factor(variable, scale_factor)
         return variable

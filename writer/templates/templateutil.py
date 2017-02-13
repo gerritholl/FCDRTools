@@ -43,3 +43,7 @@ class TemplateUtil:
     @staticmethod
     def add_units(variable, units):
         variable.attrs["units"] = units
+
+    @staticmethod
+    def add_scale_factor(variable, scale_factor):
+        variable.attrs["scale_factor"] = scale_factor

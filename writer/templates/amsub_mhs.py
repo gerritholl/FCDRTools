@@ -21,7 +21,7 @@ class AMSUB_MHS:
         tu.add_fill_value(variable, BTEMPS_FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         tu.add_units(variable, "K")
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         variable.attrs["ancillary_variables"] = "chanqual qualind scanqual"
         dataset["btemps"] = variable
 
@@ -39,7 +39,7 @@ class AMSUB_MHS:
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         tu.add_units(variable, "K")
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         variable.attrs["long_name"] = "instrument_temperature"
         dataset["instrtemp"] = variable
 
@@ -192,5 +192,5 @@ class AMSUB_MHS:
         tu.add_fill_value(variable, -999999)
         variable.attrs["standard_name"] = standard_name
         tu.add_units(variable, "degree")
-        variable.attrs["scale_factor"] = 0.01
+        tu.add_scale_factor(variable, 0.01)
         return variable

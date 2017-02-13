@@ -23,7 +23,6 @@ class AVHRR:
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "scanline"
         variable.attrs["long_name"] = "Level 1b line number"
         variable.attrs["valid_min"] = 0
         dataset["scanline"] = variable
@@ -62,17 +61,17 @@ class AVHRR:
         variable.attrs["valid_min"] = 0
         dataset["solar_zenith_angle"] = variable
 
-        # Ch1_Bt
+        # Ch1_Ref
         variable = AVHRR._create_channel_refl_variable(height, "Channel 1 Reflectance")
-        dataset["Ch1_Bt"] = variable
+        dataset["Ch1_Ref"] = variable
 
-        # Ch2_Bt
+        # Ch2_Ref
         variable = AVHRR._create_channel_refl_variable(height, "Channel 2 Reflectance")
-        dataset["Ch2_Bt"] = variable
+        dataset["Ch2_Ref"] = variable
 
-        # Ch3a_Bt
+        # Ch3a_Ref
         variable = AVHRR._create_channel_refl_variable(height, "Channel 3a Reflectance")
-        dataset["Ch3a_Bt"] = variable
+        dataset["Ch3a_Ref"] = variable
 
         # Ch3b_Bt
         variable = AVHRR._create_channel_bt_variable(height, "Channel 3b Brightness Temperature")
@@ -89,7 +88,7 @@ class AVHRR:
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "Temperature of the internal calibration target"
+        variable.attrs["long_name"] = "Temperature of the internal calibration target"
         AVHRR._add_temperature_attributes(variable)
         dataset["T_ICT"] = variable
 

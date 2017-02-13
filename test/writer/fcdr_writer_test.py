@@ -253,23 +253,15 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geometry_variables(ds)
 
     def _verify_avhrr_specific_variables(self, ds):
-        time = ds.variables["Time"]
-        self.assertIsNotNone(time)
-        scanline = ds.variables["scanline"]
-        self.assertIsNotNone(scanline)
+        self.assertIsNotNone(ds.variables["Time"])
+        self.assertIsNotNone(ds.variables["scanline"])
         # geometry
         self._verify_geometry_variables(ds)
-        ch1_bt = ds.variables["Ch1_Bt"]
-        self.assertIsNotNone(ch1_bt)
-        ch2_bt = ds.variables["Ch2_Bt"]
-        self.assertIsNotNone(ch2_bt)
-        ch3a_bt = ds.variables["Ch3a_Bt"]
-        self.assertIsNotNone(ch3a_bt)
-        ch3b_bt = ds.variables["Ch3b_Bt"]
-        self.assertIsNotNone(ch3b_bt)
-        ch4_bt = ds.variables["Ch4_Bt"]
-        self.assertIsNotNone(ch4_bt)
-        ch5_bt = ds.variables["Ch5_Bt"]
-        self.assertIsNotNone(ch5_bt)
-        t_ict = ds.variables["T_ICT"]
-        self.assertIsNotNone(t_ict)
+
+        self.assertIsNotNone(ds.variables["Ch1_Ref"])
+        self.assertIsNotNone(ds.variables["Ch2_Ref"])
+        self.assertIsNotNone(ds.variables["Ch3a_Ref"])
+        self.assertIsNotNone(ds.variables["Ch3b_Bt"])
+        self.assertIsNotNone(ds.variables["Ch4_Bt"])
+        self.assertIsNotNone(ds.variables["Ch5_Bt"])
+        self.assertIsNotNone(ds.variables["T_ICT"])

@@ -38,7 +38,6 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5,), scanline.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.data[3])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.attrs["_FillValue"])
-        self.assertEqual("scanline", scanline.attrs["standard_name"])
         self.assertEqual("Level 1b line number", scanline.attrs["long_name"])
         self.assertEqual(0, scanline.attrs["valid_min"])
 
@@ -77,14 +76,14 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(18000, sol_zenith.attrs["valid_max"])
         self.assertEqual(0, sol_zenith.attrs["valid_min"])
 
-        ch1_bt = ds.variables["Ch1_Bt"]
-        self._assert_correct_refl_variable(ch1_bt, "Channel 1 Reflectance")
+        ch1_ref = ds.variables["Ch1_Ref"]
+        self._assert_correct_refl_variable(ch1_ref, "Channel 1 Reflectance")
 
-        ch2_bt = ds.variables["Ch2_Bt"]
-        self._assert_correct_refl_variable(ch2_bt, "Channel 2 Reflectance")
+        ch2_ref = ds.variables["Ch2_Ref"]
+        self._assert_correct_refl_variable(ch2_ref, "Channel 2 Reflectance")
 
-        ch3a_bt = ds.variables["Ch3a_Bt"]
-        self._assert_correct_refl_variable(ch3a_bt, "Channel 3a Reflectance")
+        ch3a_ref = ds.variables["Ch3a_Ref"]
+        self._assert_correct_refl_variable(ch3a_ref, "Channel 3a Reflectance")
 
         ch3b_bt = ds.variables["Ch3b_Bt"]
         self._assert_correct_bt_variable(ch3b_bt, "Channel 3b Brightness Temperature")
@@ -99,7 +98,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5,), ict_temp.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), ict_temp.data[1])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), ict_temp.attrs["_FillValue"])
-        self.assertEqual("Temperature of the internal calibration target", ict_temp.attrs["standard_name"])
+        self.assertEqual("Temperature of the internal calibration target", ict_temp.attrs["long_name"])
         self.assertEqual(273.15, ict_temp.attrs["add_offset"])
         self.assertEqual(0.01, ict_temp.attrs["scale_factor"])
         self.assertEqual("K", ict_temp.attrs["units"])

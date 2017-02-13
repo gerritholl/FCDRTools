@@ -111,7 +111,7 @@ class AVHRRTest(unittest.TestCase):
 
     def test_add_uncertainty_variables(self):
         ds = xr.Dataset()
-        AVHRR.add_uncertainty_variables(ds, 5)
+        AVHRR.add_full_fcdr_variables(ds, 5)
 
         u_latitude = ds.variables["u_latitude"]
         self.assertEqual((5, 409), u_latitude.shape)

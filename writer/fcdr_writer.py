@@ -2,7 +2,6 @@ import os
 
 import xarray as xr
 
-from writer.templates.easy_fcdr import EasyFCDR
 from writer.templates.template_factory import TemplateFactory
 
 
@@ -38,8 +37,7 @@ class FCDRWriter:
 
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height)
-
-        EasyFCDR.add_variables(dataset, sensor_template.get_swath_width(), height)
+        sensor_template.add_easy_fcdr_variables(dataset, height)
 
         return dataset
 
@@ -58,7 +56,7 @@ class FCDRWriter:
 
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height)
-        sensor_template.add_uncertainty_variables(dataset, height)
+        sensor_template.add_full_fcdr_variables(dataset, height)
 
         return dataset
 

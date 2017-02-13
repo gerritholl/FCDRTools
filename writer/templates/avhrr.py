@@ -98,7 +98,11 @@ class AVHRR:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_uncertainty_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height):
+        pass
+
+    @staticmethod
+    def add_full_fcdr_variables(dataset, height):
         # u_latitude
         variable = AVHRR._create_angle_uncertainty_variable("latitude", height)
         dataset["u_latitude"] = variable

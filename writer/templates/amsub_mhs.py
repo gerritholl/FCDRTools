@@ -118,7 +118,11 @@ class AMSUB_MHS:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_uncertainty_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height):
+        pass
+
+    @staticmethod
+    def add_full_fcdr_variables(dataset, height):
         # u_btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
         variable = Variable(["channel", "y", "x"], default_array)

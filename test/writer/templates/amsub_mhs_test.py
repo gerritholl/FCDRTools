@@ -135,7 +135,7 @@ class AMSUB_MHSTest(unittest.TestCase):
 
     def test_add_uncertainty_variables(self):
         ds = xr.Dataset()
-        AMSUB_MHS.add_uncertainty_variables(ds, 4)
+        AMSUB_MHS.add_full_fcdr_variables(ds, 4)
 
         u_btemps = ds.variables["u_btemps"]
         self.assertEqual((5, 4, 90), u_btemps.shape)

@@ -45,15 +45,6 @@ class MVIRI:
         dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248,
                                                                          standard_name="solar_zenith_angle")
 
-        # count
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
-        variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
-        variable.attrs["long_name"] = "Image counts"
-        tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
-        dataset["count"] = variable
-
         # reflectance
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
@@ -76,7 +67,41 @@ class MVIRI:
         return FULL_DIMENSION
 
     @staticmethod
-    def add_uncertainty_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height):
+        # height is ignored - supplied just for interface compatibility tb 2017-02-05
+        # u_random
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["long_name"] = "random uncertainty per pixel"
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.set_unsigned(variable)
+        tu.add_units(variable, "percent")
+        variable.attrs["scale_factor"] = 1.52588E-05
+        dataset["u_random"] = variable
+
+        # u_non_random
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["long_name"] = "non-random uncertainty per pixel"
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.set_unsigned(variable)
+        tu.add_units(variable, "percent")
+        variable.attrs["scale_factor"] = 1.52588E-05
+        dataset["u_non_random"] = variable
+
+    @staticmethod
+    def add_full_fcdr_variables(dataset, height):
+        # height is ignored - supplied just for interface compatibility tb 2017-02-05
+
+        # count
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        variable.attrs["long_name"] = "Image counts"
+        tu.add_units(variable, "count")
+        tu.set_unsigned(variable)
+        dataset["count"] = variable
+
         # sol_irr
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
         variable = Variable(["srf_size"], default_array)

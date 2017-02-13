@@ -133,7 +133,11 @@ class HIRS:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_uncertainty_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height):
+        pass
+
+    @staticmethod
+    def add_full_fcdr_variables(dataset, height):
         # u_lat
         variable = HIRS._create_angle_variable(height, "uncertainty_latitude")
         dataset["u_lat"] = variable

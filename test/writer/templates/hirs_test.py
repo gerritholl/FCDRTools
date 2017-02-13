@@ -138,7 +138,7 @@ class HIRSTest(unittest.TestCase):
 
     def test_add_uncertainty_variables(self):
         ds = xr.Dataset()
-        HIRS.add_uncertainty_variables(ds, 7)
+        HIRS.add_full_fcdr_variables(ds, 7)
 
         u_lat = ds.variables["u_lat"]
         self.assertEqual((7, 56), u_lat.shape)

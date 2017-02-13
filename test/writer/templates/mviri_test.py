@@ -64,14 +64,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("degree", sol_zenith.attrs["units"])
         self.assertEqual(0.005493248, sol_zenith.attrs["scale_factor"])
 
-        count = ds.variables["count"]
-        self.assertEqual((5000, 5000), count.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[0, 113])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])
-        self.assertEqual("Image counts", count.attrs["long_name"])
-        self.assertEqual("count", count.attrs["units"])
-        self.assertEqual("true", count.attrs["_Unsigned"])
-
         reflectance = ds.variables["reflectance"]
         self.assertEqual((5000, 5000), reflectance.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.data[3, 115])
@@ -79,7 +71,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("toa_reflectance", reflectance.attrs["standard_name"])
         self.assertEqual("percent", reflectance.attrs["units"])
         self.assertEqual(1.52588E-05, reflectance.attrs["scale_factor"])
-        self.assertEqual("true", count.attrs["_Unsigned"])
+        self.assertEqual("true", reflectance.attrs["_Unsigned"])
 
         srf = ds.variables["srf"]
         self.assertEqual((1000,), srf.shape)
@@ -90,9 +82,39 @@ class MVIRITest(unittest.TestCase):
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI.get_swath_width())
 
-    def test_add_uncertainty_variables(self):
+    def test_add_easy_fcdr_variables(self):
         ds = xr.Dataset()
-        MVIRI.add_uncertainty_variables(ds, 7)
+        MVIRI.add_easy_fcdr_variables(ds, 8)
+
+        u_random = ds.variables["u_random"]
+        self.assertEqual((5000, 5000), u_random.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_random.data[118, 234])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_random.attrs["_FillValue"])
+        self.assertEqual("random uncertainty per pixel", u_random.attrs["long_name"])
+        self.assertEqual("true", u_random.attrs["_Unsigned"])
+        self.assertEqual(1.52588E-05, u_random.attrs["scale_factor"])
+        self.assertEqual("percent", u_random.attrs["units"])
+
+        u_non_random = ds.variables["u_non_random"]
+        self.assertEqual((5000, 5000), u_non_random.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_non_random.data[118, 234])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_non_random.attrs["_FillValue"])
+        self.assertEqual("non-random uncertainty per pixel", u_non_random.attrs["long_name"])
+        self.assertEqual("true", u_non_random.attrs["_Unsigned"])
+        self.assertEqual(1.52588E-05, u_non_random.attrs["scale_factor"])
+        self.assertEqual("percent", u_non_random.attrs["units"])
+
+    def test_add_full_fcdr_variables(self):
+        ds = xr.Dataset()
+        MVIRI.add_full_fcdr_variables(ds, 7)
+
+        count = ds.variables["count"]
+        self.assertEqual((5000, 5000), count.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[0, 113])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])
+        self.assertEqual("Image counts", count.attrs["long_name"])
+        self.assertEqual("count", count.attrs["units"])
+        self.assertEqual("true", count.attrs["_Unsigned"])
 
         sol_irr = ds.variables["sol_irr"]
         self.assertEqual((1000,), sol_irr.shape)

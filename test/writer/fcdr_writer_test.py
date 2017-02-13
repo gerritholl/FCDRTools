@@ -10,7 +10,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(19, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -19,7 +19,7 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_amsub_specific_variables(ds)
 
         # easy FCDR variables
-        self._verify_easy_fcdr_variables(ds)
+        # TODO 1 tb/tb 2017-02-13
 
     def testCreateTemplateFull_AMSUB(self):
         ds = FCDRWriter.createTemplateFull('AMSUB', 2562)
@@ -63,7 +63,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(19, len(ds.variables))
+        self.assertEqual(17, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -72,7 +72,7 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_avhrr_specific_variables(ds)
 
         # easy FCDR variables
-        self._verify_easy_fcdr_variables(ds)
+        # TODO 1 tb/tb 2017-02-13
 
     def testCreateTemplateFull_AVHRR(self):
         ds = FCDRWriter.createTemplateFull('AVHRR', 13667)
@@ -117,7 +117,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(23, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -138,7 +138,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
-        self._verify_easy_fcdr_variables(ds)
+        # TODO 1 tb/tb 2017-02-13
 
     def testCreateTemplateEasy_MVIRI(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI', 5000)
@@ -146,17 +146,65 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(16, len(ds.variables))
+        self.assertEqual(15, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["timedelta"])
+        self.assertIsNotNone(ds.variables["reflectance"])
+        self.assertIsNotNone(ds.variables["srf"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+
+        # easy FCDR uncertainties
+        self.assertIsNotNone(ds.variables["u_random"])
+        self.assertIsNotNone(ds.variables["u_non_random"])
+
+    def testCreateTemplateFull_MVIRI(self):
+        ds = FCDRWriter.createTemplateFull('MVIRI', 5000)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(37, len(ds.variables))
+
+        # sensor specific
+        self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["timedelta"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
         self.assertIsNotNone(ds.variables["count"])
         self.assertIsNotNone(ds.variables["reflectance"])
         self.assertIsNotNone(ds.variables["srf"])
+        self.assertIsNotNone(ds.variables["a0"])
+        self.assertIsNotNone(ds.variables["a1"])
+        self.assertIsNotNone(ds.variables["sol_irr"])
+        self.assertIsNotNone(ds.variables["sol_eff_irr"])
+        self.assertIsNotNone(ds.variables["dSE"])
+        self.assertIsNotNone(ds.variables["K_space"])
 
-        # easy FCDR variables
-        self._verify_easy_fcdr_variables(ds)
+        # full FCDR uncertainties
+        self.assertIsNotNone(ds.variables["u_latitude"])
+        self.assertIsNotNone(ds.variables["u_longitude"])
+        self.assertIsNotNone(ds.variables["u_time"])
+        self.assertIsNotNone(ds.variables["u_tot_count"])
+        self.assertIsNotNone(ds.variables["u_srf"])
+        self.assertIsNotNone(ds.variables["u_a0"])
+        self.assertIsNotNone(ds.variables["u_a1"])
+        self.assertIsNotNone(ds.variables["u_sol_eff_irr"])
+        self.assertIsNotNone(ds.variables["u_dSE"])
+        self.assertIsNotNone(ds.variables["u_e-noise"])
+        self.assertIsNotNone(ds.variables["u_shot-noise"])
+        self.assertIsNotNone(ds.variables["u_digitization"])
+        self.assertIsNotNone(ds.variables["u_space"])
+        self.assertIsNotNone(ds.variables["u_solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["u_solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["u_satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["u_satellite_azimuth_angle"])
 
     def _verifyGlobalAttributes(self, attributes):
         self.assertIsNotNone(attributes)
@@ -181,12 +229,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(sol_azimuth)
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertIsNotNone(sol_zenith)
-
-    def _verify_easy_fcdr_variables(self, ds):
-        u_random = ds.variables["u_random"]
-        self.assertIsNotNone(u_random)
-        u_systematic = ds.variables["u_systematic"]
-        self.assertIsNotNone(u_systematic)
 
     def _verify_amsub_specific_variables(self, ds):
         btemps = ds.variables["btemps"]

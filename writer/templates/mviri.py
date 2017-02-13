@@ -3,6 +3,7 @@ from xarray import Variable
 
 from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil as tu
+from writer.correlation import Correlation as corr
 
 FULL_DIMENSION = 5000
 IR_DIMENSION = 2500
@@ -120,8 +121,11 @@ class MVIRI:
 
         dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude",
                                                                  unsigned=True)
+        MVIRI._add_geo_correlation_attributes(dataset["u_latitude"])
+
         dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude",
                                                                   unsigned=True)
+        MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32)
@@ -130,6 +134,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
         tu.set_unsigned(variable)
+        variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_time"] = variable
 
         dataset["u_satellite_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
@@ -153,6 +158,13 @@ class MVIRI:
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.EIFFEL
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-2, 2]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.EIFFEL
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-2, 2]
+        variable.attrs["pdf_shape"] = "digitised_gaussian"
         dataset["u_tot_count"] = variable
 
         # u_srf
@@ -162,6 +174,16 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty in SRF"
         variable.attrs["scale_factor"] = 1.52588E-05
         tu.set_unsigned(variable)
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
+        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_srf"] = variable
 
         # a0
@@ -208,6 +230,7 @@ class MVIRI:
         tu.add_units(variable, "Wm^-2sr^-1/count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 1.52588E-05
+        MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a0"] = variable
 
         # u_a1
@@ -218,6 +241,7 @@ class MVIRI:
         tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.000762939
+        MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a1"] = variable
 
         # u_sol_eff_irr
@@ -227,6 +251,16 @@ class MVIRI:
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 0.001525879
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
+        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_sol_eff_irr"] = variable
 
         # u_shot-noise
@@ -277,7 +311,37 @@ class MVIRI:
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
         variable.attrs["scale_factor"] = 7.62939E-05
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "digitised_gaussian"
         dataset["u_space"] = variable
+
+    @staticmethod
+    def _add_geo_correlation_attributes(geo_variable):
+        geo_variable.attrs[corr.SCAN_CORR_FORM] = corr.TRI
+        geo_variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        geo_variable.attrs[corr.SCAN_CORR_SCALE] = [-250, 250]
+        geo_variable.attrs[corr.TIME_CORR_FORM] = corr.TRI
+        geo_variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        geo_variable.attrs[corr.TIME_CORR_SCALE] = [-250, 250]
+        geo_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI
+        geo_variable.attrs[corr.IMG_CORR_UNIT] = corr.IMG
+        geo_variable.attrs[corr.IMG_CORR_SCALE] = [-12, 0]
+        geo_variable.attrs["pdf_shape"] = "gaussian"
+
+    @staticmethod
+    def _add_calibration_coeff_correlation_attributes(coeff_variable):
+        coeff_variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        coeff_variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        coeff_variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        coeff_variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        coeff_variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        coeff_variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        coeff_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI
+        coeff_variable.attrs[corr.IMG_CORR_UNIT] = corr.MONTHS
+        coeff_variable.attrs[corr.IMG_CORR_SCALE] = [-1.5, 1.5]
+        coeff_variable.attrs["pdf_shape"] = "gaussian"
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False):

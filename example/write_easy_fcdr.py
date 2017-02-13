@@ -6,7 +6,7 @@ def main():
 
     # get a template for sensor name in EASY format, supply product height
     # The scan-width is set automatically
-    dataset = writer.createTemplateEasy("AVHRR", 12835)
+    dataset = writer.createTemplateFull("MVIRI", 12835)
 
     # set some mandatory global attributes. Writing will fail if not all of them are filled
     dataset.attrs["institution"] = "Brockmann Consult GmbH"
@@ -18,11 +18,11 @@ def main():
 
     # write real data to the variables. All variables initially contain "_FillValue".
     # Not writing to the whole array is completely OK
-    dataset.variables["Ch1_Bt"].data[23, 44] = 0.456
+    #dataset.variables["Ch1_Bt"].data[23, 44] = 0.456
 
     # dump it to disk, netcdf4, medium compression
     # writing will fail when the target file already exists
-    writer.write(dataset, "D:\\Satellite\\DELETE\\avhrr_fcdr_easy.nc")
+    writer.write(dataset, "D:\\Satellite\\DELETE\\mviri_fcdr_full.nc")
 
 
 if __name__ == "__main__":

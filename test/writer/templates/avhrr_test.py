@@ -134,77 +134,77 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), u_latitude.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.data[0, 34])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.attrs["_FillValue"])
-        self.assertEqual("uncertainty of latitude", u_latitude.attrs["standard_name"])
+        self.assertEqual("uncertainty of latitude", u_latitude.attrs["long_name"])
         self.assertEqual("degree", u_latitude.attrs["units"])
 
         u_longitude = ds.variables["u_longitude"]
         self.assertEqual((5, 409), u_longitude.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.data[0, 34])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.attrs["_FillValue"])
-        self.assertEqual("uncertainty of longitude", u_longitude.attrs["standard_name"])
+        self.assertEqual("uncertainty of longitude", u_longitude.attrs["long_name"])
         self.assertEqual("degree", u_longitude.attrs["units"])
 
         u_time = ds.variables["u_time"]
         self.assertEqual((5, 409), u_time.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.data[1, 35])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.attrs["_FillValue"])
-        self.assertEqual("uncertainty of time", u_time.attrs["standard_name"])
+        self.assertEqual("uncertainty of time", u_time.attrs["long_name"])
         self.assertEqual("s", u_time.attrs["units"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
         self.assertEqual((5, 409), u_sat_azimuth.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.data[2, 36])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.attrs["_FillValue"])
-        self.assertEqual("uncertainty of satellite azimuth angle", u_sat_azimuth.attrs["standard_name"])
+        self.assertEqual("uncertainty of satellite azimuth angle", u_sat_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sat_azimuth.attrs["units"])
 
         u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
         self.assertEqual((5, 409), u_sat_zenith.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.data[2, 36])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.attrs["_FillValue"])
-        self.assertEqual("uncertainty of satellite zenith angle", u_sat_zenith.attrs["standard_name"])
+        self.assertEqual("uncertainty of satellite zenith angle", u_sat_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sat_zenith.attrs["units"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
         self.assertEqual((5, 409), u_sol_azimuth.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.data[2, 36])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.attrs["_FillValue"])
-        self.assertEqual("uncertainty of solar azimuth angle", u_sol_azimuth.attrs["standard_name"])
+        self.assertEqual("uncertainty of solar azimuth angle", u_sol_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sol_azimuth.attrs["units"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
         self.assertEqual((5, 409), u_sol_zenith.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.data[2, 36])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.attrs["_FillValue"])
-        self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["standard_name"])
+        self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])
 
         prt_c = ds.variables["PRT_C"]
         self.assertEqual((5, 3), prt_c.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), prt_c.data[3, 2])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), prt_c.attrs["_FillValue"])
-        self.assertEqual("Prt counts", prt_c.attrs["standard_name"])
+        self.assertEqual("Prt counts", prt_c.attrs["long_name"])
         self.assertEqual("count", prt_c.attrs["units"])
 
         u_prt = ds.variables["u_prt"]
         self.assertEqual((5, 3), u_prt.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_prt.data[4, 0])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_prt.attrs["_FillValue"])
-        self.assertEqual("Uncertainty on the PRT counts", u_prt.attrs["standard_name"])
+        self.assertEqual("Uncertainty on the PRT counts", u_prt.attrs["long_name"])
         self.assertEqual("count", u_prt.attrs["units"])
 
         r_ict = ds.variables["R_ICT"]
         self.assertEqual((5, 3), r_ict.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), r_ict.data[0, 1])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), r_ict.attrs["_FillValue"])
-        self.assertEqual("Radiance of the PRT", r_ict.attrs["standard_name"])
+        self.assertEqual("Radiance of the PRT", r_ict.attrs["long_name"])
         self.assertEqual("mW m^-2 sr^-1 cm", r_ict.attrs["units"])
 
         t_instr = ds.variables["T_instr"]
         self.assertEqual((5,), t_instr.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), t_instr.data[2])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), t_instr.attrs["_FillValue"])
-        self.assertEqual("Instrument temperature", t_instr.attrs["standard_name"])
+        self.assertEqual("Instrument temperature", t_instr.attrs["long_name"])
         self.assertEqual("K", t_instr.attrs["units"])
 
         self._assert_correct_counts_variable(ds, "Ch1_Csp", "Ch1 Space counts")
@@ -243,35 +243,35 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_counts_uncertainty_variable(ds, "Ch4_u_Ce", "Ch4 Uncertainty on earth counts")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Ce", "Ch5 Uncertainty on earth counts")
 
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", "Ch1 Total uncertainty on reflectance")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", "Ch2 Total uncertainty on reflectance")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", "Ch3a Total uncertainty on reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", long_name="Ch3a Total uncertainty on reflectance")
 
         self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt",
-                                                     "Ch3b Total uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_u_Bt", "Ch4 Total uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_u_Bt", "Ch5 Total uncertainty on brightness temperature")
+                                                     long_name="Ch3b Total uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_u_Bt", long_name="Ch4 Total uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_u_Bt", long_name="Ch5 Total uncertainty on brightness temperature")
 
         self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_ur_Bt",
-                                                     "Ch3b Random uncertainty on brightness temperature")
+                                                     long_name="Ch3b Random uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_ur_Bt",
-                                                     "Ch4 Random uncertainty on brightness temperature")
+                                                     long_name="Ch4 Random uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_ur_Bt",
-                                                     "Ch5 Random uncertainty on brightness temperature")
+                                                     long_name="Ch5 Random uncertainty on brightness temperature")
 
         self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_us_Bt",
-                                                     "Ch3b Systematic uncertainty on brightness temperature")
+                                                     long_name="Ch3b Systematic uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt",
-                                                     "Ch4 Systematic uncertainty on brightness temperature")
+                                                     long_name="Ch4 Systematic uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt",
-                                                     "Ch5 Systematic uncertainty on brightness temperature")
+                                                     long_name="Ch5 Systematic uncertainty on brightness temperature")
 
-    def _assert_correct_counts_variable(self, ds, name, standard_name):
+    def _assert_correct_counts_variable(self, ds, name, long_name):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int32), variable.data[3, 306])
         self.assertEqual(DefaultData.get_default_fill_value(np.int32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        self.assertEqual(long_name, variable.attrs["long_name"])
         self.assertEqual("count", variable.attrs["units"])
 
     def _assert_correct_counts_uncertainty_variable(self, ds, name, standard_name):
@@ -279,7 +279,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        self.assertEqual(standard_name, variable.attrs["long_name"])
         self.assertEqual("count", variable.attrs["units"])
 
     def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, long_name=None):

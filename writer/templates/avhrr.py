@@ -134,7 +134,7 @@ class AVHRR:
         dataset["u_longitude"] = variable
 
         # u_time
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of time")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of time")
         tu.add_units(variable, "s")
         dataset["u_time"] = variable
 
@@ -158,7 +158,7 @@ class AVHRR:
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.int16)
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "Prt counts"
+        variable.attrs["long_name"] = "Prt counts"
         tu.add_units(variable, "count")
         dataset["PRT_C"] = variable
 
@@ -166,7 +166,7 @@ class AVHRR:
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "Uncertainty on the PRT counts"
+        variable.attrs["long_name"] = "Uncertainty on the PRT counts"
         tu.add_units(variable, "count")
         dataset["u_prt"] = variable
 
@@ -174,7 +174,7 @@ class AVHRR:
         default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
         variable = Variable(["y", "n_prt"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "Radiance of the PRT"
+        variable.attrs["long_name"] = "Radiance of the PRT"
         tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["R_ICT"] = variable
 
@@ -182,7 +182,7 @@ class AVHRR:
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "Instrument temperature"
+        variable.attrs["long_name"] = "Instrument temperature"
         tu.add_units(variable, "K")
         dataset["T_instr"] = variable
 
@@ -224,10 +224,10 @@ class AVHRR:
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_u_Refl
-        standard_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance",
+        long_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance",
                           "Ch3a Total uncertainty on reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
-        AVHRR._add_refl_uncertainties_variables(dataset, height, names, standard_names)
+        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
         # Chx_u_Bt
         standard_names = ["Ch3b Total uncertainty on brightness temperature",
@@ -251,15 +251,15 @@ class AVHRR:
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
     @staticmethod
-    def _add_counts_uncertainties_variables(dataset, height, names, standard_names):
+    def _add_counts_uncertainties_variables(dataset, height, names, long_names):
         for i, name in enumerate(names):
-            variable = AVHRR._create_counts_uncertainty_variable(height, standard_names[i])
+            variable = AVHRR._create_counts_uncertainty_variable(height, long_names[i])
             dataset[name] = variable
 
     @staticmethod
-    def _add_bt_uncertainties_variables(dataset, height, names, standard_names):
+    def _add_bt_uncertainties_variables(dataset, height, names, long_names):
         for i, name in enumerate(names):
-            variable = AVHRR._create_bt_uncertainty_variable(height, standard_name=standard_names[i])
+            variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
 
     @staticmethod
@@ -281,29 +281,35 @@ class AVHRR:
             dataset[name] = variable
 
     @staticmethod
+    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names):
+        for i, name in enumerate(names):
+            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i])
+            dataset[name] = variable
+
+    @staticmethod
     def _add_counts_variables(dataset, height, names, standard_names):
         for i, name in enumerate(names):
             variable = AVHRR._create_counts_variable(height, standard_names[i])
             dataset[name] = variable
 
     @staticmethod
-    def _create_counts_uncertainty_variable(height, standard_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
+    def _create_counts_uncertainty_variable(height, long_name):
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name)
         tu.add_units(variable, "count")
         return variable
 
     @staticmethod
-    def _create_counts_variable(height, standard_name):
+    def _create_counts_variable(height, long_name):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int32)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
-        variable.attrs["standard_name"] = standard_name
+        variable.attrs["long_name"] = long_name
         tu.add_units(variable, "count")
         return variable
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name)
         tu.add_units(variable, "degree")
         return variable
 

@@ -2,6 +2,7 @@ import numpy as np
 from xarray import Variable
 
 from writer.default_data import DefaultData
+from writer.correlation import Correlation as corr
 from writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 409
@@ -115,13 +116,13 @@ class AVHRR:
         long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4",
                       "random uncertainty per pixel for channel 5"]
         names = ["u_random_Ch3b", "u_random_Ch4", "u_random_Ch5"]
-        AVHRR._add_bt_uncertainties_variables_long_name(dataset, height, names, long_names)
+        AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
         # u_non_random_Ch3b-5
         long_names = ["non-random uncertainty per pixel for channel 3b", "non-random uncertainty per pixel for channel 4",
                       "non-random uncertainty per pixel for channel 5"]
         names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
-        AVHRR._add_bt_uncertainties_variables_long_name(dataset, height, names, long_names)
+        AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
@@ -208,7 +209,10 @@ class AVHRR:
                           "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts",
                           "Ch4 Uncertainty on space counts", "Ch5 Uncertainty on space counts"]
         names = ["Ch1_u_Csp", "Ch2_u_Csp", "Ch3a_u_Csp", "Ch3b_u_Csp", "Ch4_u_Csp", "Ch5_u_Csp"]
-        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
+        attributes = {corr.SCAN_CORR_FORM : corr.RECT, corr.SCAN_CORR_UNIT : corr.PIXEL, corr.SCAN_CORR_SCALE : [-np.inf, np.inf],
+                      corr.TIME_CORR_FORM : corr.TRI, corr.TIME_CORR_UNIT : corr.LINE, corr.TIME_CORR_SCALE : [-25, 25],
+                      "pdf_shape" : "digitised_gaussian"}
+        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, attributes)
 
         # Chx_Cict
         standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts",
@@ -251,19 +255,16 @@ class AVHRR:
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
     @staticmethod
-    def _add_counts_uncertainties_variables(dataset, height, names, long_names):
+    def _add_counts_uncertainties_variables(dataset, height, names, long_names, attributes=None):
         for i, name in enumerate(names):
             variable = AVHRR._create_counts_uncertainty_variable(height, long_names[i])
+            if attributes is not None:
+                for key,value in attributes.items():
+                    variable.attrs[key] = value
             dataset[name] = variable
 
     @staticmethod
     def _add_bt_uncertainties_variables(dataset, height, names, long_names):
-        for i, name in enumerate(names):
-            variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
-            dataset[name] = variable
-
-    @staticmethod
-    def _add_bt_uncertainties_variables_long_name(dataset, height, names, long_names):
         for i, name in enumerate(names):
             variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
@@ -320,8 +321,8 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def _create_bt_uncertainty_variable(height, standard_name=None, long_name=None):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name)
+    def _create_bt_uncertainty_variable(height, long_name):
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name)
         tu.add_units(variable, "K")
         return variable
 

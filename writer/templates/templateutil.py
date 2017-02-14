@@ -22,14 +22,20 @@ class TemplateUtil:
         dataset["longitude"] = variable
 
     @staticmethod
-    def create_float_variable(width, height, standard_name, dim_names=None):
+    def create_float_variable(width, height, standard_name=None, long_name=None, dim_names=None):
         default_array = DefaultData.create_default_array(width, height, np.float32)
         if dim_names is None:
             variable = Variable(["y", "x"], default_array)
         else:
             variable = Variable(dim_names, default_array)
+
         variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
-        variable.attrs["standard_name"] = standard_name
+        if standard_name is not None:
+            variable.attrs["standard_name"] = standard_name
+
+        if long_name is not None:
+            variable.attrs["long_name"] = long_name
+
         return variable
 
     @staticmethod

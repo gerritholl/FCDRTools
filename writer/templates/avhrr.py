@@ -99,7 +99,29 @@ class AVHRR:
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        pass
+        # u_random_Ch1-3a
+        long_names = ["random uncertainty per pixel for channel 1", "random uncertainty per pixel for channel 2",
+                          "random uncertainty per pixel for channel 3a"]
+        names = ["u_random_Ch1", "u_random_Ch2", "u_random_Ch3a"]
+        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
+
+        # u_non_random_Ch1-3a
+        long_names = ["non-random uncertainty per pixel for channel 1", "non-random uncertainty per pixel for channel 2",
+                      "non-random uncertainty per pixel for channel 3a"]
+        names = ["u_non_random_Ch1", "u_non_random_Ch2", "u_non_random_Ch3a"]
+        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
+
+        # u_random_Ch3b-5
+        long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4",
+                      "random uncertainty per pixel for channel 5"]
+        names = ["u_random_Ch3b", "u_random_Ch4", "u_random_Ch5"]
+        AVHRR._add_bt_uncertainties_variables_long_name(dataset, height, names, long_names)
+
+        # u_non_random_Ch3b-5
+        long_names = ["non-random uncertainty per pixel for channel 3b", "non-random uncertainty per pixel for channel 4",
+                      "non-random uncertainty per pixel for channel 5"]
+        names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
+        AVHRR._add_bt_uncertainties_variables_long_name(dataset, height, names, long_names)
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
@@ -237,13 +259,25 @@ class AVHRR:
     @staticmethod
     def _add_bt_uncertainties_variables(dataset, height, names, standard_names):
         for i, name in enumerate(names):
-            variable = AVHRR._create_bt_uncertainty_variable(height, standard_names[i])
+            variable = AVHRR._create_bt_uncertainty_variable(height, standard_name=standard_names[i])
+            dataset[name] = variable
+
+    @staticmethod
+    def _add_bt_uncertainties_variables_long_name(dataset, height, names, long_names):
+        for i, name in enumerate(names):
+            variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
 
     @staticmethod
     def _add_refl_uncertainties_variables(dataset, height, names, standard_names):
         for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, standard_names[i])
+            variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i])
+            dataset[name] = variable
+
+    @staticmethod
+    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names):
+        for i, name in enumerate(names):
+            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
 
     @staticmethod
@@ -274,14 +308,14 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def _create_refl_uncertainty_variable(height, standard_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
+    def _create_refl_uncertainty_variable(height, standard_name=None, long_name=None):
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name)
         tu.add_units(variable, "percent")
         return variable
 
     @staticmethod
-    def _create_bt_uncertainty_variable(height, standard_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
+    def _create_bt_uncertainty_variable(height, standard_name=None, long_name=None):
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name)
         tu.add_units(variable, "K")
         return variable
 

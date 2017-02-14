@@ -63,7 +63,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(17, len(ds.variables))
+        self.assertEqual(29, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -215,20 +215,14 @@ class FCDRWriterTest(unittest.TestCase):
             "Observations\". Grant Agreement: 638822.", attributes["licence"])
 
     def _verify_geolocation_variables(self, ds):
-        latitude = ds.variables["latitude"]
-        self.assertIsNotNone(latitude)
-        longitude = ds.variables["longitude"]
-        self.assertIsNotNone(longitude)
+        self.assertIsNotNone(ds.variables["latitude"])
+        self.assertIsNotNone(ds.variables["longitude"])
 
     def _verify_geometry_variables(self, ds):
-        sat_azimuth = ds.variables["satellite_azimuth_angle"]
-        self.assertIsNotNone(sat_azimuth)
-        sat_zenith = ds.variables["satellite_zenith_angle"]
-        self.assertIsNotNone(sat_zenith)
-        sol_azimuth = ds.variables["solar_azimuth_angle"]
-        self.assertIsNotNone(sol_azimuth)
-        sol_zenith = ds.variables["solar_zenith_angle"]
-        self.assertIsNotNone(sol_zenith)
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
 
     def _verify_amsub_specific_variables(self, ds):
         btemps = ds.variables["btemps"]

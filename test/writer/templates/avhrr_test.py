@@ -108,7 +108,25 @@ class AVHRRTest(unittest.TestCase):
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())
 
-    def test_add_uncertainty_variables(self):
+    def test_add_easy_fcdr_variables(self):
+        ds = xr.Dataset()
+        AVHRR.add_easy_fcdr_variables(ds, 5)
+
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch1", long_name="random uncertainty per pixel for channel 1")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch1", long_name="non-random uncertainty per pixel for channel 1")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch2", long_name="random uncertainty per pixel for channel 2")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch2", long_name="non-random uncertainty per pixel for channel 2")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch3a", long_name="random uncertainty per pixel for channel 3a")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch3a", long_name="non-random uncertainty per pixel for channel 3a")
+
+        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch3b", long_name="random uncertainty per pixel for channel 3b")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch3b", long_name="non-random uncertainty per pixel for channel 3b")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch4", long_name="random uncertainty per pixel for channel 4")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch4", long_name="non-random uncertainty per pixel for channel 4")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch5", long_name="random uncertainty per pixel for channel 5")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch5", long_name="non-random uncertainty per pixel for channel 5")
+
+    def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         AVHRR.add_full_fcdr_variables(ds, 5)
 
@@ -264,20 +282,30 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(standard_name, variable.attrs["standard_name"])
         self.assertEqual("count", variable.attrs["units"])
 
-    def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name):
+    def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, long_name=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        if standard_name is not None:
+            self.assertEqual(standard_name, variable.attrs["standard_name"])
+
+        if long_name is not None:
+            self.assertEqual(long_name, variable.attrs["long_name"])
+
         self.assertEqual("percent", variable.attrs["units"])
 
-    def _assert_correct_bt_uncertainty_variable(self, ds, name, standard_name):
+    def _assert_correct_bt_uncertainty_variable(self, ds, name, standard_name=None, long_name=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        if standard_name is not None:
+            self.assertEqual(standard_name, variable.attrs["standard_name"])
+
+        if long_name is not None:
+            self.assertEqual(long_name, variable.attrs["long_name"])
+
         self.assertEqual("K", variable.attrs["units"])
 
     def _assert_correct_refl_variable(self, variable, long_name):

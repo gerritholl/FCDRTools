@@ -192,6 +192,14 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_prt.attrs["_FillValue"])
         self.assertEqual("Uncertainty on the PRT counts", u_prt.attrs["long_name"])
         self.assertEqual("count", u_prt.attrs["units"])
+        self.assertEqual("rectangle", u_prt.attrs["scan_correlation_form"])
+        self.assertEqual("pixel", u_prt.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_prt.attrs["scan_correlation_scales"])
+        self.assertEqual("rectangle", u_prt.attrs["time_correlation_form"])
+        self.assertEqual("line", u_prt.attrs["time_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_prt.attrs["time_correlation_scales"])
+        self.assertEqual("rectangle", u_prt.attrs["pdf_shape"])
+        self.assertEqual(0.1, u_prt.attrs["pdf_parameter"])
 
         r_ict = ds.variables["R_ICT"]
         self.assertEqual((5, 3), r_ict.shape)
@@ -226,28 +234,37 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_counts_variable(ds, "Ch5_Ce", "Ch5 Earth counts")
 
         self._assert_correct_counts_uncertainty_variable(ds, "Ch1_u_Csp", "Ch1 Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch1_u_Csp")
+        self._assert_counts_correlation(ds, "Ch1_u_Csp")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch2_u_Csp", "Ch2 Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch2_u_Csp")
+        self._assert_counts_correlation(ds, "Ch2_u_Csp")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch3a_u_Csp", "Ch3a Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch3a_u_Csp")
+        self._assert_counts_correlation(ds, "Ch3a_u_Csp")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch3b_u_Csp", "Ch3b Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch3b_u_Csp")
+        self._assert_counts_correlation(ds, "Ch3b_u_Csp")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch4_u_Csp", "Ch4 Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch4_u_Csp")
+        self._assert_counts_correlation(ds, "Ch4_u_Csp")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Csp", "Ch5 Uncertainty on space counts")
-        self._assert_space_counts_correlation(ds, "Ch4_u_Csp")
+        self._assert_counts_correlation(ds, "Ch4_u_Csp")
 
         self._assert_correct_counts_uncertainty_variable(ds, "Ch3b_u_Cict", "Ch3b Uncertainty on ICT counts")
+        self._assert_counts_correlation(ds, "Ch3b_u_Cict")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch4_u_Cict", "Ch4 Uncertainty on ICT counts")
+        self._assert_counts_correlation(ds, "Ch4_u_Cict")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Cict", "Ch5 Uncertainty on ICT counts")
+        self._assert_counts_correlation(ds, "Ch5_u_Cict")
 
         self._assert_correct_counts_uncertainty_variable(ds, "Ch1_u_Ce", "Ch1 Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch1_u_Ce")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch2_u_Ce", "Ch2 Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch2_u_Ce")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch3a_u_Ce", "Ch3a Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch3a_u_Ce")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch3b_u_Ce", "Ch3b Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch3b_u_Ce")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch4_u_Ce", "Ch4 Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch4_u_Ce")
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Ce", "Ch5 Uncertainty on earth counts")
+        self._assert_earth_counts_pdf(ds, "Ch5_u_Ce")
 
         self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on reflectance")
         self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on reflectance")
@@ -272,7 +289,11 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt",
                                                      long_name="Ch5 Systematic uncertainty on brightness temperature")
 
-    def _assert_space_counts_correlation(self, ds, name):
+    def _assert_earth_counts_pdf(self,  ds, name):
+        variable = ds.variables[name]
+        self.assertEqual("digitised_gaussian", variable.attrs["pdf_shape"])
+
+    def _assert_counts_correlation(self, ds, name):
         variable = ds.variables[name]
         self.assertEqual("rectangle", variable.attrs["scan_correlation_form"])
         self.assertEqual("pixel", variable.attrs["scan_correlation_units"])

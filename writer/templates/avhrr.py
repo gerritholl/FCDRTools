@@ -1,12 +1,18 @@
 import numpy as np
 from xarray import Variable
 
-from writer.default_data import DefaultData
 from writer.correlation import Correlation as corr
+from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
+
+COUNT_CORRELATION_ATTRIBUTES = {corr.SCAN_CORR_FORM: corr.RECT, corr.SCAN_CORR_UNIT: corr.PIXEL,
+                                corr.SCAN_CORR_SCALE: [-np.inf, np.inf],
+                                corr.TIME_CORR_FORM: corr.TRI, corr.TIME_CORR_UNIT: corr.LINE,
+                                corr.TIME_CORR_SCALE: [-25, 25],
+                                "pdf_shape": "digitised_gaussian"}
 
 
 class AVHRR:
@@ -102,12 +108,13 @@ class AVHRR:
     def add_easy_fcdr_variables(dataset, height):
         # u_random_Ch1-3a
         long_names = ["random uncertainty per pixel for channel 1", "random uncertainty per pixel for channel 2",
-                          "random uncertainty per pixel for channel 3a"]
+                      "random uncertainty per pixel for channel 3a"]
         names = ["u_random_Ch1", "u_random_Ch2", "u_random_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
         # u_non_random_Ch1-3a
-        long_names = ["non-random uncertainty per pixel for channel 1", "non-random uncertainty per pixel for channel 2",
+        long_names = ["non-random uncertainty per pixel for channel 1",
+                      "non-random uncertainty per pixel for channel 2",
                       "non-random uncertainty per pixel for channel 3a"]
         names = ["u_non_random_Ch1", "u_non_random_Ch2", "u_non_random_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
@@ -119,7 +126,8 @@ class AVHRR:
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
         # u_non_random_Ch3b-5
-        long_names = ["non-random uncertainty per pixel for channel 3b", "non-random uncertainty per pixel for channel 4",
+        long_names = ["non-random uncertainty per pixel for channel 3b",
+                      "non-random uncertainty per pixel for channel 4",
                       "non-random uncertainty per pixel for channel 5"]
         names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
@@ -169,6 +177,14 @@ class AVHRR:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty on the PRT counts"
         tu.add_units(variable, "count")
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "rectangle"
+        variable.attrs["pdf_parameter"] = 0.1
         dataset["u_prt"] = variable
 
         # R_ICT
@@ -209,27 +225,25 @@ class AVHRR:
                           "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts",
                           "Ch4 Uncertainty on space counts", "Ch5 Uncertainty on space counts"]
         names = ["Ch1_u_Csp", "Ch2_u_Csp", "Ch3a_u_Csp", "Ch3b_u_Csp", "Ch4_u_Csp", "Ch5_u_Csp"]
-        attributes = {corr.SCAN_CORR_FORM : corr.RECT, corr.SCAN_CORR_UNIT : corr.PIXEL, corr.SCAN_CORR_SCALE : [-np.inf, np.inf],
-                      corr.TIME_CORR_FORM : corr.TRI, corr.TIME_CORR_UNIT : corr.LINE, corr.TIME_CORR_SCALE : [-25, 25],
-                      "pdf_shape" : "digitised_gaussian"}
-        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, attributes)
+        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, COUNT_CORRELATION_ATTRIBUTES)
 
         # Chx_Cict
         standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts",
                           "Ch5 Uncertainty on ICT counts"]
         names = ["Ch3b_u_Cict", "Ch4_u_Cict", "Ch5_u_Cict"]
-        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
+        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, COUNT_CORRELATION_ATTRIBUTES)
 
         # Chx_u_Ce
         standard_names = ["Ch1 Uncertainty on earth counts", "Ch2 Uncertainty on earth counts",
                           "Ch3a Uncertainty on earth counts", "Ch3b Uncertainty on earth counts",
                           "Ch4 Uncertainty on earth counts", "Ch5 Uncertainty on earth counts"]
         names = ["Ch1_u_Ce", "Ch2_u_Ce", "Ch3a_u_Ce", "Ch3b_u_Ce", "Ch4_u_Ce", "Ch5_u_Ce"]
-        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names)
+        attributes = {"pdf_shape" : "digitised_gaussian"}
+        AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, attributes)
 
         # Chx_u_Refl
         long_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance",
-                          "Ch3a Total uncertainty on reflectance"]
+                      "Ch3a Total uncertainty on reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
@@ -259,7 +273,7 @@ class AVHRR:
         for i, name in enumerate(names):
             variable = AVHRR._create_counts_uncertainty_variable(height, long_names[i])
             if attributes is not None:
-                for key,value in attributes.items():
+                for key, value in attributes.items():
                     variable.attrs[key] = value
             dataset[name] = variable
 

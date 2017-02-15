@@ -120,7 +120,50 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["Ch4_Csp"])
         self.assertIsNotNone(ds.variables["Ch5_Csp"])
 
-        # @todo 2 tb/tb continue here 2017-01-27
+        self.assertIsNotNone(ds.variables["Ch3b_Cict"])
+        self.assertIsNotNone(ds.variables["Ch4_Cict"])
+        self.assertIsNotNone(ds.variables["Ch5_Cict"])
+
+        self.assertIsNotNone(ds.variables["Ch1_Ce"])
+        self.assertIsNotNone(ds.variables["Ch2_Ce"])
+        self.assertIsNotNone(ds.variables["Ch3a_Ce"])
+        self.assertIsNotNone(ds.variables["Ch3b_Ce"])
+        self.assertIsNotNone(ds.variables["Ch4_Ce"])
+        self.assertIsNotNone(ds.variables["Ch5_Ce"])
+
+        self.assertIsNotNone(ds.variables["Ch1_u_Csp"])
+        self.assertIsNotNone(ds.variables["Ch2_u_Csp"])
+        self.assertIsNotNone(ds.variables["Ch3a_u_Csp"])
+        self.assertIsNotNone(ds.variables["Ch3b_u_Csp"])
+        self.assertIsNotNone(ds.variables["Ch4_u_Csp"])
+        self.assertIsNotNone(ds.variables["Ch5_u_Csp"])
+
+        self.assertIsNotNone(ds.variables["Ch3b_u_Cict"])
+        self.assertIsNotNone(ds.variables["Ch4_u_Cict"])
+        self.assertIsNotNone(ds.variables["Ch5_u_Cict"])
+
+        self.assertIsNotNone(ds.variables["Ch1_u_Ce"])
+        self.assertIsNotNone(ds.variables["Ch2_u_Ce"])
+        self.assertIsNotNone(ds.variables["Ch3a_u_Ce"])
+        self.assertIsNotNone(ds.variables["Ch3b_u_Ce"])
+        self.assertIsNotNone(ds.variables["Ch4_u_Ce"])
+        self.assertIsNotNone(ds.variables["Ch5_u_Ce"])
+
+        self.assertIsNotNone(ds.variables["Ch1_u_Refl"])
+        self.assertIsNotNone(ds.variables["Ch2_u_Refl"])
+        self.assertIsNotNone(ds.variables["Ch3a_u_Refl"])
+
+        self.assertIsNotNone(ds.variables["Ch3b_u_Bt"])
+        self.assertIsNotNone(ds.variables["Ch4_u_Bt"])
+        self.assertIsNotNone(ds.variables["Ch5_u_Bt"])
+
+        self.assertIsNotNone(ds.variables["Ch3b_ur_Bt"])
+        self.assertIsNotNone(ds.variables["Ch4_ur_Bt"])
+        self.assertIsNotNone(ds.variables["Ch5_ur_Bt"])
+
+        self.assertIsNotNone(ds.variables["Ch3b_us_Bt"])
+        self.assertIsNotNone(ds.variables["Ch4_us_Bt"])
+        self.assertIsNotNone(ds.variables["Ch5_us_Bt"])
 
     def testCreateTemplateEasy_HIRS(self):
         ds = FCDRWriter.createTemplateEasy('HIRS', 211)

@@ -13,22 +13,13 @@ class MVIRITest(unittest.TestCase):
         MVIRI.add_original_variables(ds, 5)
 
         time = ds.variables["time"]
-        self.assertEqual((2500,), time.shape)
-        self.assertEqual(-2147483647, time.data[4])
+        self.assertEqual((2500, 2500), time.shape)
+        self.assertEqual(-2147483647, time.data[4, 117])
         self.assertEqual(-2147483647, time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
-        self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
+        self.assertEqual("Acquisition time of pixel", time.attrs["long_name"])
         self.assertEqual("true", time.attrs["_Unsigned"])
-        self.assertEqual("s", time.attrs["units"])
-
-        timedelta = ds.variables["timedelta"]
-        self.assertEqual((2500, 2500), timedelta.shape)
-        self.assertEqual(-32767, timedelta.data[2, 108])
-        self.assertEqual(-32767, timedelta.attrs["_FillValue"])
-        self.assertEqual("time", timedelta.attrs["standard_name"])
-        self.assertEqual("Delta time at pixel acquisition against central pixel", timedelta.attrs["long_name"])
-        self.assertEqual("s", timedelta.attrs["units"])
-        self.assertEqual(0.001831083, timedelta.attrs["scale_factor"])
+        self.assertEqual("seconds since 1970-01-01 00:00:00", time.attrs["units"])
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((5000, 5000), sat_azimuth.shape)
@@ -68,12 +59,12 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual((5000, 5000), reflectance.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.data[3, 115])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.attrs["_FillValue"])
-        self.assertEqual("toa_reflectance", reflectance.attrs["standard_name"])
+        self.assertEqual("toa_bidirectional_reflectance", reflectance.attrs["standard_name"])
         self.assertEqual("percent", reflectance.attrs["units"])
         self.assertEqual(1.52588E-05, reflectance.attrs["scale_factor"])
         self.assertEqual("true", reflectance.attrs["_Unsigned"])
 
-        srf = ds.variables["srf"]
+        srf = ds.variables["spectral_response_function_vis"]
         self.assertEqual((1000,), srf.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.data[116])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.attrs["_FillValue"])
@@ -108,7 +99,7 @@ class MVIRITest(unittest.TestCase):
         ds = xr.Dataset()
         MVIRI.add_full_fcdr_variables(ds, 7)
 
-        count = ds.variables["count"]
+        count = ds.variables["count_vis"]
         self.assertEqual((5000, 5000), count.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[0, 113])
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])

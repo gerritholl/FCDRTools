@@ -1,9 +1,9 @@
 import numpy as np
 from xarray import Variable
 
+from writer.correlation import Correlation as corr
 from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil as tu
-from writer.correlation import Correlation as corr
 
 FULL_DIMENSION = 5000
 IR_DIMENSION = 2500
@@ -16,24 +16,14 @@ class MVIRI:
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
         # time
-        default_array = DefaultData.create_default_vector(IR_DIMENSION, np.int32)
-        variable = Variable(["y_ir"], default_array)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int32)
+        variable = Variable(["y_ir", "x_ir"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["standard_name"] = "time"
-        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        tu.add_units(variable, "s")
+        variable.attrs["long_name"] = "Acquisition time of pixel"
+        tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
         tu.set_unsigned(variable)
         dataset["time"] = variable
-
-        # timedelta
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int16)
-        variable = Variable(["y_ir", "x_ir"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "time"
-        variable.attrs["long_name"] = "Delta time at pixel acquisition against central pixel"
-        tu.add_units(variable, "s")
-        tu.add_scale_factor(variable, 0.001831083)
-        dataset["timedelta"] = variable
 
         dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
                                                                               standard_name="sensor_azimuth_angle")
@@ -50,7 +40,7 @@ class MVIRI:
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "toa_reflectance"
+        variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
         tu.add_units(variable, "percent")
         tu.set_unsigned(variable)
         tu.add_scale_factor(variable, 1.52588E-05)
@@ -61,7 +51,7 @@ class MVIRI:
         variable = Variable(["srf_size"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Spectral Response Function"
-        dataset["srf"] = variable
+        dataset["spectral_response_function_vis"] = variable
 
     @staticmethod
     def get_swath_width():
@@ -94,14 +84,14 @@ class MVIRI:
     def add_full_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
-        # count
+        # count_vis
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
         variable.attrs["long_name"] = "Image counts"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        dataset["count"] = variable
+        dataset["count_vis"] = variable
 
         # sol_irr
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)

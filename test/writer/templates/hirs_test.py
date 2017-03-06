@@ -128,7 +128,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("channel_quality_flags_bitfield", chqualflags.attrs["long_name"])
 
         mnfrqualflags = ds.variables["mnfrqualflags"]
-        self.assertEqual((6, 23), mnfrqualflags.shape)
+        self.assertEqual((6, 64), mnfrqualflags.shape)
         self.assertEqual(0, mnfrqualflags.data[2, 5])
         self.assertEqual("status_flag", mnfrqualflags.attrs["standard_name"])
         self.assertEqual("minor_frame_quality_flags_bitfield", mnfrqualflags.attrs["long_name"])

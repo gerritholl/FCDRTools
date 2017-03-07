@@ -313,6 +313,27 @@ class HIRS:
         dataset["u_sat_za"] = HIRS._create_geo_angle_variable("uncertainty_satellite_zenith_angle", height)
         dataset["u_sat_aa"] = HIRS._create_geo_angle_variable("uncertainty_local_azimuth_angle", height)
 
+        # emissivity
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "emissivity"
+        tu.add_units(variable, "1")
+        dataset["emissivity"] = variable
+
+        # temp_corr_slope
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "Slope for effective temperature correction"
+        tu.add_units(variable, "1")
+        dataset["temp_corr_slope"] = variable
+
+        # temp_corr_offset
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "Offset for effective temperature correction"
+        tu.add_units(variable, "1")
+        dataset["temp_corr_offset"] = variable
+
     @staticmethod
     def _create_temperature_vector(height, standard_name):
         default_array = DefaultData.create_default_vector(height, np.float32)

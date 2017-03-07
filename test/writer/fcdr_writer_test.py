@@ -194,6 +194,16 @@ class FCDRWriterTest(unittest.TestCase):
         # easy FCDR variables
         # TODO 1 tb/tb 2017-02-13
 
+    def testCreateTemplateFull_HIRS(self):
+        ds = FCDRWriter.createTemplateFull('HIRS', 209)
+        self.assertIsNotNone(ds)
+
+        self.assertEqual(105, len(ds.variables))
+
+        self.assertIsNotNone(ds.variables["temp_corr_slope"])
+        self.assertIsNotNone(ds.variables["temp_corr_offset"])
+        self.assertIsNotNone(ds.variables["emissivity"])
+
     def testCreateTemplateEasy_MVIRI(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI', 5000)
         self.assertIsNotNone(ds)

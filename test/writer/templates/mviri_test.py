@@ -107,17 +107,11 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", count.attrs["units"])
         self.assertEqual("true", count.attrs["_Unsigned"])
 
-        sol_irr = ds.variables["sol_irr"]
-        self.assertEqual((1000,), sol_irr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_irr.attrs["_FillValue"])
-        self.assertEqual("solar_irradiance_per_unit_wavelength", sol_irr.attrs["standard_name"])
-        self.assertEqual("W*m-2*nm-1", sol_irr.attrs["units"])
-
         sol_eff_irr = ds.variables["sol_eff_irr"]
         self.assertEqual((), sol_eff_irr.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.attrs["_FillValue"])
+        self.assertEqual("solar_irradiance_vis", sol_eff_irr.attrs["standard_name"])
         self.assertEqual("Solar effective Irradiance", sol_eff_irr.attrs["long_name"])
         self.assertEqual("W*m-2", sol_eff_irr.attrs["units"])
 
@@ -204,7 +198,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(7.62939E-05, u_sol_azimuth.attrs["scale_factor"])
         self.assertEqual("true", u_sol_azimuth.attrs["_Unsigned"])
 
-        u_tot_count = ds.variables["u_tot_count"]
+        u_tot_count = ds.variables["u_combined_counts_vis"]
         self.assertEqual((5000, 5000), u_tot_count.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_tot_count.data[2, 113])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_tot_count.attrs["_FillValue"])
@@ -238,21 +232,21 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_srf.attrs["image_correlation_scales"])
         self.assertEqual("rectangle", u_srf.attrs["pdf_shape"])
 
-        a0 = ds.variables["a0"]
+        a0 = ds.variables["a0_vis"]
         self.assertEqual((), a0.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.attrs["_FillValue"])
         self.assertEqual("Calibration Coefficient at Launch", a0.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count", a0.attrs["units"])
 
-        a1 = ds.variables["a1"]
+        a1 = ds.variables["a1_vis"]
         self.assertEqual((), a1.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.attrs["_FillValue"])
         self.assertEqual("Time variation of a0", a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
 
-        dse = ds.variables["dSE"]
+        dse = ds.variables["distance_sun_earth"]
         self.assertEqual((), dse.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), dse.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), dse.attrs["_FillValue"])
@@ -261,7 +255,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(0.00390625, dse.attrs["scale_factor"])
         self.assertEqual("true", dse.attrs["_Unsigned"])
 
-        k_space = ds.variables["K_space"]
+        k_space = ds.variables["mean_counts_space_vis"]
         self.assertEqual((), k_space.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), k_space.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), k_space.attrs["_FillValue"])
@@ -289,7 +283,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-1.5, 1.5], u_a0.attrs["image_correlation_scales"])
         self.assertEqual("gaussian", u_a0.attrs["pdf_shape"])
 
-        u_a1 = ds.variables["u_a1"]
+        u_a1 = ds.variables["covariance_a0_a1_vis"]
         self.assertEqual((), u_a1.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_a1.attrs["_FillValue"])
@@ -326,7 +320,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["image_correlation_scales"])
         self.assertEqual("rectangle", u_sol_eff_irr.attrs["pdf_shape"])
 
-        u_e_noise = ds.variables["u_e-noise"]
+        u_e_noise = ds.variables["u_electronics_counts_vis"]
         self.assertEqual((), u_e_noise.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_e_noise.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_e_noise.attrs["_FillValue"])
@@ -335,25 +329,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", u_e_noise.attrs["units"])
         self.assertEqual("true", u_e_noise.attrs["_Unsigned"])
 
-        u_shot = ds.variables["u_shot-noise"]
-        self.assertEqual((5000, 5000), u_shot.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_shot.data[7, 119])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_shot.attrs["_FillValue"])
-        self.assertEqual("Uncertainty due to shot noise", u_shot.attrs["long_name"])
-        self.assertEqual("count", u_shot.attrs["units"])
-        self.assertEqual("true", u_shot.attrs["_Unsigned"])
-        self.assertEqual(7.62939E-05, u_shot.attrs["scale_factor"])
-
-        u_dSE = ds.variables["u_dSE"]
-        self.assertEqual((), u_dSE.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_dSE.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_dSE.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in Sun-Earth distance", u_dSE.attrs["long_name"])
-        self.assertEqual("au", u_dSE.attrs["units"])
-        self.assertEqual("true", u_dSE.attrs["_Unsigned"])
-        self.assertEqual(7.62939E-05, u_dSE.attrs["scale_factor"])
-
-        u_digitization = ds.variables["u_digitization"]
+        u_digitization = ds.variables["u_digitization_counts_vis"]
         self.assertEqual((), u_digitization.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_digitization.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_digitization.attrs["_FillValue"])
@@ -362,7 +338,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", u_digitization.attrs["units"])
         self.assertEqual("true", u_digitization.attrs["_Unsigned"])
 
-        u_space = ds.variables["u_space"]
+        u_space = ds.variables["allan_deviation_counts_space_vis"]
         self.assertEqual((), u_space.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_space.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_space.attrs["_FillValue"])

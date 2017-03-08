@@ -227,11 +227,12 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(14, len(ds.variables))
+        self.assertEqual(15, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["reflectance"])
+        self.assertIsNotNone(ds.variables["count_vis"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
@@ -248,9 +249,10 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(33, len(ds.variables))
+        self.assertEqual(34, len(ds.variables))
 
         # sensor specific
+        self.assertIsNotNone(ds.variables["u_toa_bidirectional_reflectance_vis"])
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
@@ -271,7 +273,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_time"])
         self.assertIsNotNone(ds.variables["u_combined_counts_vis"])
         self.assertIsNotNone(ds.variables["u_srf"])
-        self.assertIsNotNone(ds.variables["u_a0"])
+        self.assertIsNotNone(ds.variables["u_a0_vis"])
         self.assertIsNotNone(ds.variables["covariance_a0_a1_vis"])
         self.assertIsNotNone(ds.variables["u_sol_eff_irr"])
         self.assertIsNotNone(ds.variables["u_electronics_counts_vis"])

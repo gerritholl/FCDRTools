@@ -3,6 +3,7 @@ class Correlation:
     EIFFEL = "eiffel"
     RECT = "rectangle"
     TRI = "triangle"
+    TRUNC_GAUSS = "truncated_gaussian"
 
     PIXEL = "pixel"
     LINE = "line"

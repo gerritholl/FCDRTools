@@ -46,6 +46,15 @@ class MVIRI:
         tu.add_scale_factor(variable, 1.52588E-05)
         dataset["reflectance"] = variable
 
+        # count_vis
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        variable.attrs["long_name"] = "Image counts"
+        tu.add_units(variable, "count")
+        tu.set_unsigned(variable)
+        dataset["count_vis"] = variable
+
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
         variable = Variable(["srf_size"], default_array)
@@ -84,14 +93,23 @@ class MVIRI:
     def add_full_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
-        # count_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16, fill_value=65535)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
-        variable.attrs["long_name"] = "Image counts"
-        tu.add_units(variable, "count")
+        tu.add_fill_value(variable, 65535)
+        tu.add_units(variable, "percent")
+        tu.add_scale_factor(variable, 1e-03)
         tu.set_unsigned(variable)
-        dataset["count_vis"] = variable
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.TRUNC_GAUSS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-2, 2]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.TRUNC_GAUSS
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-2, 2]
+        variable.attrs[corr.IMG_CORR_FORM] = corr.TRI
+        variable.attrs[corr.IMG_CORR_UNIT] = corr.MONTHS
+        variable.attrs[corr.IMG_CORR_SCALE] = [-3, 3]
+        variable.attrs["pdf_shape"] = "gaussian"
+        dataset["u_toa_bidirectional_reflectance_vis"] = variable
 
         # sol_eff_irr
         default_array = DefaultData.get_default_fill_value(np.float32)
@@ -103,11 +121,11 @@ class MVIRI:
         dataset["sol_eff_irr"] = variable
 
         dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude",
-                                                                 unsigned=True)
+                                                                 unsigned=True, fill_value=65535)
         MVIRI._add_geo_correlation_attributes(dataset["u_latitude"])
 
         dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude",
-                                                                  unsigned=True)
+                                                                  unsigned=True, fill_value=65535)
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
@@ -186,54 +204,45 @@ class MVIRI:
         dataset["a1_vis"] = variable
 
         # distance_sun_earth
-        default_array = DefaultData.get_default_fill_value(np.int8)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Sun-Earth distance"
         tu.add_units(variable, "au")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 0.00390625)
         dataset["distance_sun_earth"] = variable
 
         # mean_counts_space_vis
-        default_array = DefaultData.get_default_fill_value(np.int8)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Space count"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 0.00390625)
         dataset["mean_counts_space_vis"] = variable
 
-        # u_a0
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        # u_a0_vis
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty in a0"
         tu.add_units(variable, "Wm^-2sr^-1/count")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 1.52588E-05)
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
-        dataset["u_a0"] = variable
+        dataset["u_a0_vis"] = variable
 
         # covariance_a0_a1_vis
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty in a1"
         tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 0.000762939)
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["covariance_a0_a1_vis"] = variable
 
         # u_sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 0.001525879)
+        tu.add_units(variable, "Wm^-2")
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
@@ -247,33 +256,27 @@ class MVIRI:
         dataset["u_sol_eff_irr"] = variable
 
         # u_electronics_counts_vis
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_electronics_counts_vis"] = variable
 
         # u_digitization
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty due to digitization"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 7.62939E-05)
         dataset["u_digitization_counts_vis"] = variable
 
-        # u_space
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        # allan_deviation_counts_space_vis
+        default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty of space count"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 7.62939E-05)
         variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
         variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
         variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
@@ -307,10 +310,14 @@ class MVIRI:
         coeff_variable.attrs["pdf_shape"] = "gaussian"
 
     @staticmethod
-    def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False):
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+    def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16, fill_value=fill_value)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        if fill_value is not None:
+            tu.add_fill_value(variable, fill_value)
+        else:
+            tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+
         if standard_name is not None:
             variable.attrs["standard_name"] = standard_name
 

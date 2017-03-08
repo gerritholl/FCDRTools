@@ -361,6 +361,41 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
         self.assertEqual("degree", u_sat_aa.attrs["units"])
 
+        u_Rself = ds.variables["u_Rself"]
+        self.assertEqual((), u_Rself.shape)
+        self.assertTrue(np.isnan(u_Rself.data))
+        self.assertTrue(np.isnan(u_Rself.attrs["_FillValue"]))
+
+        u_Rselfparams = ds.variables["u_Rselfparams"]
+        self.assertEqual((), u_Rselfparams.shape)
+        self.assertTrue(np.isnan(u_Rselfparams.data))
+        self.assertTrue(np.isnan(u_Rselfparams.attrs["_FillValue"]))
+
+        u_srf_calib = ds.variables["u_SRF_calib"]
+        self.assertEqual((), u_srf_calib.shape)
+        self.assertTrue(np.isnan(u_srf_calib.data))
+        self.assertTrue(np.isnan(u_srf_calib.attrs["_FillValue"]))
+
+        u_d_prt = ds.variables["u_d_PRT"]
+        self.assertEqual((), u_d_prt.shape)
+        self.assertTrue(np.isnan(u_d_prt.data))
+        self.assertTrue(np.isnan(u_d_prt.attrs["_FillValue"]))
+
+        u_electronics = ds.variables["u_electronics"]
+        self.assertEqual((), u_electronics.shape)
+        self.assertTrue(np.isnan(u_electronics.data))
+        self.assertTrue(np.isnan(u_electronics.attrs["_FillValue"]))
+
+        u_exp_periodic = ds.variables["u_extraneous_periodic"]
+        self.assertEqual((), u_exp_periodic.shape)
+        self.assertTrue(np.isnan(u_exp_periodic.data))
+        self.assertTrue(np.isnan(u_exp_periodic.attrs["_FillValue"]))
+
+        u_non_lin = ds.variables["u_nonlinearity"]
+        self.assertEqual((), u_non_lin.shape)
+        self.assertTrue(np.isnan(u_non_lin.data))
+        self.assertTrue(np.isnan(u_non_lin.attrs["_FillValue"]))
+
         emissivity = ds.variables["emissivity"]
         self.assertEqual((), emissivity.shape)
         self.assertTrue(np.isnan(emissivity.data))

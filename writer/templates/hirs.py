@@ -313,6 +313,41 @@ class HIRS:
         dataset["u_sat_za"] = HIRS._create_geo_angle_variable("uncertainty_satellite_zenith_angle", height)
         dataset["u_sat_aa"] = HIRS._create_geo_angle_variable("uncertainty_local_azimuth_angle", height)
 
+        # u_Rself
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_Rself"] = variable
+
+        # u_Rselfparams
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_Rselfparams"] = variable
+
+        # u_SRF_calib
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_SRF_calib"] = variable
+
+        # u_d_PRT
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_d_PRT"] = variable
+
+        # u_electronics
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_electronics"] = variable
+
+        # u_extraneous_periodic
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_extraneous_periodic"] = variable
+
+        # u_nonlinearity
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_nonlinearity"] = variable
+
         # emissivity
         variable = Variable([], np.NaN)
         tu.add_fill_value(variable,  np.NaN)

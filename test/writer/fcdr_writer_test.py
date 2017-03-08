@@ -109,7 +109,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_solar_zenith_angle"])
 
         self.assertIsNotNone(ds.variables["PRT_C"])
-        self.assertIsNotNone(ds.variables["u_prt"])
+        self.assertIsNotNone(ds.variables["u_prt"])                             # geolocation
+        self._verify_geolocation_variables(ds)
         self.assertIsNotNone(ds.variables["R_ICT"])
         self.assertIsNotNone(ds.variables["T_instr"])
 
@@ -198,7 +199,23 @@ class FCDRWriterTest(unittest.TestCase):
         ds = FCDRWriter.createTemplateFull('HIRS', 209)
         self.assertIsNotNone(ds)
 
-        self.assertEqual(105, len(ds.variables))
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(112, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
+        self.assertIsNotNone(ds.variables["bt"])
+
+        self.assertIsNotNone(ds.variables["u_Rself"])
+        self.assertIsNotNone(ds.variables["u_Rselfparams"])
+        self.assertIsNotNone(ds.variables["u_SRF_calib"])
+        self.assertIsNotNone(ds.variables["u_d_PRT"])
+        self.assertIsNotNone(ds.variables["u_electronics"])
+        self.assertIsNotNone(ds.variables["u_extraneous_periodic"])
+        self.assertIsNotNone(ds.variables["u_nonlinearity"])
 
         self.assertIsNotNone(ds.variables["temp_corr_slope"])
         self.assertIsNotNone(ds.variables["temp_corr_offset"])

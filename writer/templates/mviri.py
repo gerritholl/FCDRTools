@@ -228,13 +228,20 @@ class MVIRI:
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a0_vis"] = variable
 
-        # covariance_a0_a1_vis
+        # u_a1_vis
         default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Uncertainty in a1"
         tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
+        dataset["u_a1_vis"] = variable
+
+        # covariance_a0_a1_vis
+        default_array = DefaultData.create_default_array(2, 2, np.float32)
+        variable = Variable(["calib_coeff_cov_size", "calib_coeff_cov_size"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable.attrs["long_name"] = "Covariance matrix of calibration coefficients"
         dataset["covariance_a0_a1_vis"] = variable
 
         # u_sol_eff_irr

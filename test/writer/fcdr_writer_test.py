@@ -249,7 +249,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(34, len(ds.variables))
+        self.assertEqual(36, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["u_toa_bidirectional_reflectance_vis"])
@@ -274,6 +274,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_combined_counts_vis"])
         self.assertIsNotNone(ds.variables["u_srf"])
         self.assertIsNotNone(ds.variables["u_a0_vis"])
+        self.assertIsNotNone(ds.variables["u_a1_vis"])
         self.assertIsNotNone(ds.variables["covariance_a0_a1_vis"])
         self.assertIsNotNone(ds.variables["u_sol_eff_irr"])
         self.assertIsNotNone(ds.variables["u_electronics_counts_vis"])

@@ -1,6 +1,7 @@
 import numpy as np
 from xarray import Variable
 
+from writer.correlation import Correlation as corr
 from writer.default_data import DefaultData
 from writer.templates.templateutil import TemplateUtil as tu
 
@@ -312,6 +313,57 @@ class HIRS:
         dataset["u_sol_aa"] = HIRS._create_geo_angle_variable("uncertainty_solar_azimuth_angle", height)
         dataset["u_sat_za"] = HIRS._create_geo_angle_variable("uncertainty_satellite_zenith_angle", height)
         dataset["u_sat_aa"] = HIRS._create_geo_angle_variable("uncertainty_local_azimuth_angle", height)
+
+        # u_c_space_chan_corr
+        data_array = DefaultData.create_default_array(NUM_CHANNELS, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "channel"], data_array)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "u_c_space channel correlations"
+        dataset["u_c_space_chan_corr"] = variable
+
+        # u_Earthshine
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_Earthshine"] = variable
+        
+        # u_O_Re
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_O_Re"] = variable
+
+        # u_O_TIWCT
+        variable = Variable([], np.NaN)
+        tu.add_fill_value(variable,  np.NaN)
+        dataset["u_O_TIWCT"] = variable
+
+        # u_O_TPRT
+        variable = Variable([], np.int16(65535))
+        tu.add_fill_value(variable, 65535)
+        tu.set_unsigned(variable)
+        tu.add_scale_factor(variable, 0.01)
+        tu.add_units(variable, "K")
+        variable.attrs["channels_affected"] = "all"
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_UNIT] = corr.IMG
+        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["parameter"] = "O_TPRT"
+        variable.attrs["pdf_shape"] = "gaussian"
+        variable.attrs["short_name"] = "O_TPRT"
+        variable.attrs["ancilliary_variables"] = "u_O_TPRT_chan_corr"
+        dataset["u_O_TPRT"] = variable
+
+        # u_O_TPRT_chan_corr
+        data_array = DefaultData.create_default_array(NUM_CHANNELS, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "channel"], data_array)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "u_O_TPRT channel correlations"
+        dataset["u_O_TPRT_chan_corr"] = variable
 
         # u_Rself
         variable = Variable([], np.NaN)

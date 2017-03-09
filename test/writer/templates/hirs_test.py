@@ -361,6 +361,55 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
         self.assertEqual("degree", u_sat_aa.attrs["units"])
 
+        u_c_space_chan_corr = ds.variables["u_c_space_chan_corr"]
+        self.assertEqual((19, 19), u_c_space_chan_corr.shape)
+        self.assertTrue(np.isnan(u_c_space_chan_corr.data[11, 14]))
+        self.assertTrue(np.isnan(u_c_space_chan_corr.attrs["_FillValue"]))
+        self.assertEqual("u_c_space channel correlations", u_c_space_chan_corr.attrs["long_name"])
+
+        u_earthshine = ds.variables["u_Earthshine"]
+        self.assertEqual((), u_earthshine.shape)
+        self.assertTrue(np.isnan(u_earthshine.data))
+        self.assertTrue(np.isnan(u_earthshine.attrs["_FillValue"]))
+        
+        u_o_Re = ds.variables["u_O_Re"]
+        self.assertEqual((), u_o_Re.shape)
+        self.assertTrue(np.isnan(u_o_Re.data))
+        self.assertTrue(np.isnan(u_o_Re.attrs["_FillValue"]))
+        
+        u_o_TIWCT = ds.variables["u_O_TIWCT"]
+        self.assertEqual((), u_o_TIWCT.shape)
+        self.assertTrue(np.isnan(u_o_TIWCT.data))
+        self.assertTrue(np.isnan(u_o_TIWCT.attrs["_FillValue"]))
+
+        u_o_TPRT = ds.variables["u_O_TPRT"]
+        self.assertEqual((), u_o_TPRT.shape)
+        self.assertEqual(np.int16(65535), u_o_TPRT.data[()])
+        self.assertEqual(65535, u_o_TPRT.attrs["_FillValue"])
+        self.assertEqual("true", u_o_TPRT.attrs["_Unsigned"])
+        self.assertEqual("all", u_o_TPRT.attrs["channels_affected"])
+        self.assertEqual("rectangle", u_o_TPRT.attrs["scan_correlation_form"])
+        self.assertEqual("pixel", u_o_TPRT.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_o_TPRT.attrs["scan_correlation_scales"])
+        self.assertEqual("rectangle", u_o_TPRT.attrs["time_correlation_form"])
+        self.assertEqual("line", u_o_TPRT.attrs["time_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_o_TPRT.attrs["time_correlation_scales"])
+        self.assertEqual("rectangle", u_o_TPRT.attrs["image_correlation_form"])
+        self.assertEqual("images", u_o_TPRT.attrs["image_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_o_TPRT.attrs["image_correlation_scales"])
+        self.assertEqual("O_TPRT", u_o_TPRT.attrs["parameter"])
+        self.assertEqual("gaussian", u_o_TPRT.attrs["pdf_shape"])
+        self.assertEqual(0.01, u_o_TPRT.attrs["scale_factor"])
+        self.assertEqual("O_TPRT", u_o_TPRT.attrs["short_name"])
+        self.assertEqual("K", u_o_TPRT.attrs["units"])
+        self.assertEqual("u_O_TPRT_chan_corr", u_o_TPRT.attrs["ancilliary_variables"])
+
+        u_o_TPRT_chan_corr = ds.variables["u_O_TPRT_chan_corr"]
+        self.assertEqual((19, 19), u_o_TPRT_chan_corr.shape)
+        self.assertTrue(np.isnan(u_o_TPRT_chan_corr.data[11, 14]))
+        self.assertTrue(np.isnan(u_o_TPRT_chan_corr.attrs["_FillValue"]))
+        self.assertEqual("u_O_TPRT channel correlations", u_o_TPRT_chan_corr.attrs["long_name"])
+
         u_Rself = ds.variables["u_Rself"]
         self.assertEqual((), u_Rself.shape)
         self.assertTrue(np.isnan(u_Rself.data))

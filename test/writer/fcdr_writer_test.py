@@ -201,7 +201,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(112, len(ds.variables))
+        self.assertEqual(118, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -209,6 +209,12 @@ class FCDRWriterTest(unittest.TestCase):
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
 
+        self.assertIsNotNone(ds.variables["u_c_space_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_Earthshine"])
+        self.assertIsNotNone(ds.variables["u_O_Re"])
+        self.assertIsNotNone(ds.variables["u_O_TIWCT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT_chan_corr"])
         self.assertIsNotNone(ds.variables["u_Rself"])
         self.assertIsNotNone(ds.variables["u_Rselfparams"])
         self.assertIsNotNone(ds.variables["u_SRF_calib"])
@@ -292,6 +298,7 @@ class FCDRWriterTest(unittest.TestCase):
             "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
             "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
             "Observations\". Grant Agreement: 638822.", attributes["licence"])
+        self.assertEqual("1.0.4", attributes["writer_version"])
 
     def _verify_geolocation_variables(self, ds):
         self.assertIsNotNone(ds.variables["latitude"])

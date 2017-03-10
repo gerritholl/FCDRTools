@@ -135,19 +135,19 @@ class AMSUB_MHS:
     def add_full_fcdr_variables(dataset, height):
         # u_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
-        variable.attrs["standard_name"] = "total uncertainty of brightness temperature"
+        variable.attrs["long_name"] = "total uncertainty of brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_btemps"] = variable
 
         # u_syst_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
-        variable.attrs["standard_name"] = "systematic uncertainty of brightness temperature"
+        variable.attrs["long_name"] = "systematic uncertainty of brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_syst_btemps"] = variable
 
         # u_random_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
-        variable.attrs["standard_name"] = "noise on brightness temperature"
+        variable.attrs["long_name"] = "noise on brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_random_btemps"] = variable
 
@@ -155,7 +155,7 @@ class AMSUB_MHS:
         default_array = DefaultData.create_default_vector(height, np.float32)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "uncertainty of instrument temperature"
+        variable.attrs["long_name"] = "uncertainty of instrument temperature"
         tu.add_units(variable, "K")
         dataset["u_instrtemp"] = variable
 
@@ -185,7 +185,7 @@ class AMSUB_MHS:
 
     @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name)
         tu.add_units(variable, "degree")
         return variable
 

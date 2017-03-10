@@ -10,7 +10,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(19, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -19,7 +19,8 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_amsub_specific_variables(ds)
 
         # easy FCDR variables
-        # TODO 1 tb/tb 2017-02-13
+        self.assertIsNotNone(ds.variables["u_random_btemps"])
+        self.assertIsNotNone(ds.variables["u_non_random_btemps"])
 
     def testCreateTemplateFull_AMSUB(self):
         ds = FCDRWriter.createTemplateFull('AMSUB', 2562)
@@ -36,8 +37,7 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_amsub_specific_variables(ds)
 
         # full FCDR variables
-        u_btemps = ds.variables["u_btemps"]
-        self.assertIsNotNone(u_btemps)
+        self.assertIsNotNone(ds.variables["u_btemps"])
         u_syst_btemps = ds.variables["u_syst_btemps"]
         self.assertIsNotNone(u_syst_btemps)
         u_random_btemps = ds.variables["u_random_btemps"]

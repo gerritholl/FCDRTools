@@ -133,7 +133,25 @@ class AMSUB_MHSTest(unittest.TestCase):
     def test_get_swath_width(self):
         self.assertEqual(90, AMSUB_MHS.get_swath_width())
 
-    def test_add_uncertainty_variables(self):
+    def test_add_easy_fcdr_variables(self):
+        ds = xr.Dataset()
+        AMSUB_MHS.add_easy_fcdr_variables(ds, 4)
+
+        u_rand_btemps = ds.variables["u_random_btemps"]
+        self.assertEqual((5, 4, 90), u_rand_btemps.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_rand_btemps.data[4, 2, 35])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_rand_btemps.attrs["_FillValue"])
+        self.assertEqual("random uncertainty per pixel", u_rand_btemps.attrs["long_name"])
+        self.assertEqual("K", u_rand_btemps.attrs["units"])
+
+        u_non_rand_btemps = ds.variables["u_non_random_btemps"]
+        self.assertEqual((5, 4, 90), u_non_rand_btemps.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_non_rand_btemps.data[0, 3, 36])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_non_rand_btemps.attrs["_FillValue"])
+        self.assertEqual("non-random uncertainty per pixel", u_non_rand_btemps.attrs["long_name"])
+        self.assertEqual("K", u_non_rand_btemps.attrs["units"])
+
+    def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         AMSUB_MHS.add_full_fcdr_variables(ds, 4)
 

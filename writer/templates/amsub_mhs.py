@@ -119,30 +119,34 @@ class AMSUB_MHS:
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        pass
+        # u_random_btemps
+        variable = AMSUB_MHS._create_3d_float_variable(height)
+        tu.add_units(variable, "K")
+        variable.attrs["long_name"] = "random uncertainty per pixel"
+        dataset["u_random_btemps"] = variable
+
+        # u_non_random_btemps
+        variable = AMSUB_MHS._create_3d_float_variable(height)
+        tu.add_units(variable, "K")
+        variable.attrs["long_name"] = "non-random uncertainty per pixel"
+        dataset["u_non_random_btemps"] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
         # u_btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
-        variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable = AMSUB_MHS._create_3d_float_variable(height)
         variable.attrs["standard_name"] = "total uncertainty of brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_btemps"] = variable
 
         # u_syst_btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
-        variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable = AMSUB_MHS._create_3d_float_variable(height)
         variable.attrs["standard_name"] = "systematic uncertainty of brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_syst_btemps"] = variable
 
         # u_random_btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
-        variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable = AMSUB_MHS._create_3d_float_variable(height)
         variable.attrs["standard_name"] = "noise on brightness temperature"
         tu.add_units(variable, "K")
         dataset["u_random_btemps"] = variable
@@ -193,4 +197,11 @@ class AMSUB_MHS:
         variable.attrs["standard_name"] = standard_name
         tu.add_units(variable, "degree")
         tu.add_scale_factor(variable, 0.01)
+        return variable
+
+    @staticmethod
+    def _create_3d_float_variable(height):
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         return variable

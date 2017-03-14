@@ -31,6 +31,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(-999.0, bt.data[0, 2, 1])
         self.assertEqual(-999.0, bt.attrs["_FillValue"])
         self.assertEqual("toa_brightness_temperature", bt.attrs["standard_name"])
+        self.assertEqual("Brightness temperature, NOAA/EUMETSAT calibrated", bt.attrs["long_name"])
         self.assertEqual("K", bt.attrs["units"])
         self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
 
@@ -46,10 +47,12 @@ class HIRSTest(unittest.TestCase):
 
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 6, 56), l_earth.shape)
-        self.assertEqual(-999.0, l_earth.data[0, 2, 4])
-        self.assertEqual(-999.0, l_earth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(l_earth.data[0, 2, 4]))
+        self.assertTrue(np.isnan(l_earth.attrs["_FillValue"]))
         self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
-        self.assertEqual("mW m^-2 sr^-1 cm", l_earth.attrs["units"])
+        self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
+        self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
+        self.assertEqual("radiance", l_earth.attrs["orig_name"])
         self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags",
                          l_earth.attrs["ancilliary_variables"])
 
@@ -170,11 +173,17 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("s", u_time.attrs["units"])
 
         u_c_earth = ds.variables["u_c_earth"]
-        self.assertEqual((20, 7, 56), u_c_earth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_c_earth.data[6, 6, 6])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_c_earth.attrs["_FillValue"])
-        self.assertEqual("uncertainty_counts_Earth", u_c_earth.attrs["standard_name"])
+        self.assertEqual((19, 337), u_c_earth.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_earth.data[6, 6])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_earth.attrs["_FillValue"])
+        self.assertEqual("uncertainty counts for Earth views", u_c_earth.attrs["long_name"])
         self.assertEqual("count", u_c_earth.attrs["units"])
+        self.assertEqual("u_c_earth_chan_corr", u_c_earth.attrs["ancilliary_variables"])
+        self.assertEqual("all", u_c_earth.attrs["channels_affected"])
+        self.assertEqual("C_E", u_c_earth.attrs["parameter"])
+        self.assertEqual("gaussian", u_c_earth.attrs["pdf_shape"])
+        self.assertEqual(0.005, u_c_earth.attrs["scale_factor"])
+        self.assertEqual("true", u_c_earth.attrs["_Unsigned"])
 
         u_L_earth_random = ds.variables["u_L_earth_random"]
         self.assertEqual((20, 7, 56), u_L_earth_random.shape)
@@ -360,6 +369,22 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(-999.0, u_sat_aa.attrs["_FillValue"])
         self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
         self.assertEqual("degree", u_sat_aa.attrs["units"])
+
+        u_c_earth_chan_corr = ds.variables["u_c_earth_chan_corr"]
+        self.assertEqual((19, 19), u_c_earth_chan_corr.shape)
+        self.assertTrue(np.isnan(u_c_earth_chan_corr.data[11, 14]))
+        self.assertTrue(np.isnan(u_c_earth_chan_corr.attrs["_FillValue"]))
+        self.assertEqual("u_c_earth channel correlations", u_c_earth_chan_corr.attrs["long_name"])
+
+        u_c_space = ds.variables["u_c_space"]
+        self.assertEqual((19, 337), u_c_space.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_space.data[(12, 15)])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_space.attrs["_FillValue"])
+        self.assertEqual("C_s", u_c_space.attrs["parameter"])
+        self.assertEqual("gaussian", u_c_space.attrs["pdf_shape"])
+        self.assertEqual(0.005, u_c_space.attrs["scale_factor"])
+        self.assertEqual("count", u_c_space.attrs["units"])
+        self.assertEqual("u_c_space_chan_corr", u_c_space.attrs["ancilliary_variables"])
 
         u_c_space_chan_corr = ds.variables["u_c_space_chan_corr"]
         self.assertEqual((19, 19), u_c_space_chan_corr.shape)

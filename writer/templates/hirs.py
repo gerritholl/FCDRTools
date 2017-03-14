@@ -11,6 +11,7 @@ NUM_CHANNELS = 19
 NUM_RAD_CHANNELS = 20
 NUM_COEFFS = 3
 NUM_MINOR_FRAME = 64
+NUM_CALIBRATION_CYCLE = 337
 SWATH_WIDTH = 56
 
 
@@ -24,6 +25,7 @@ class HIRS:
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
+        variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
@@ -41,11 +43,13 @@ class HIRS:
 
         # L_earth
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32,
-                                                            FILL_VALUE, ["rad_channel", "y", "x"])
+                                                            np.NaN, ["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, FILL_VALUE)
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
-        tu.add_units(variable, "mW m^-2 sr^-1 cm")
+        tu.add_units(variable, "W/Hz/m ** 2/sr")
+        variable.attrs["long_name"] = "Channel radiance, NOAA/EUMETSAT calibrated"
+        variable.attrs["orig_name"] = "radiance"
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["L_earth"] = variable
 
@@ -153,8 +157,18 @@ class HIRS:
         dataset["u_time"] = variable
 
         # u_c_earth
-        variable = HIRS._create_3d_rad_uncertainty_variable(height, "uncertainty_counts_Earth")
+        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.int16,
+                                                            dims_names=["channel", "calibration_cycle"])
+        variable = Variable(["channel", "calibration_cycle"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         tu.add_units(variable, "count")
+        tu.add_scale_factor(variable, 0.005)
+        tu.set_unsigned(variable)
+        variable.attrs["long_name"] = "uncertainty counts for Earth views"
+        variable.attrs["ancilliary_variables"] = "u_c_earth_chan_corr"
+        variable.attrs["channels_affected"] = "all"
+        variable.attrs["parameter"] = "C_E"
+        variable.attrs["pdf_shape"] = "gaussian"
         dataset["u_c_earth"] = variable
 
         # u_L_earth_random
@@ -314,12 +328,26 @@ class HIRS:
         dataset["u_sat_za"] = HIRS._create_geo_angle_variable("uncertainty_satellite_zenith_angle", height)
         dataset["u_sat_aa"] = HIRS._create_geo_angle_variable("uncertainty_local_azimuth_angle", height)
 
+        # u_c_earth_chan_corr
+        dataset["u_c_earth_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_earth channel correlations")
+
+        # u_c_space
+        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.int16,
+                                                         dims_names=["channel", "calibration_cycle"])
+        variable = Variable(["channel", "calibration_cycle"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_units(variable, "count")
+        tu.add_scale_factor(variable, 0.005)
+        tu.set_unsigned(variable)
+        variable.attrs["long_name"] = "uncertainty counts for space views"
+        variable.attrs["ancilliary_variables"] = "u_c_space_chan_corr"
+        variable.attrs["channels_affected"] = "all"
+        variable.attrs["parameter"] = "C_s"
+        variable.attrs["pdf_shape"] = "gaussian"
+        dataset["u_c_space"] = variable
+
         # u_c_space_chan_corr
-        data_array = DefaultData.create_default_array(NUM_CHANNELS, NUM_CHANNELS, np.float32, fill_value=np.NaN)
-        variable = Variable(["channel", "channel"], data_array)
-        tu.add_fill_value(variable,  np.NaN)
-        variable.attrs["long_name"] = "u_c_space channel correlations"
-        dataset["u_c_space_chan_corr"] = variable
+        dataset["u_c_space_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_space channel correlations")
 
         # u_Earthshine
         variable = Variable([], np.NaN)
@@ -359,11 +387,7 @@ class HIRS:
         dataset["u_O_TPRT"] = variable
 
         # u_O_TPRT_chan_corr
-        data_array = DefaultData.create_default_array(NUM_CHANNELS, NUM_CHANNELS, np.float32, fill_value=np.NaN)
-        variable = Variable(["channel", "channel"], data_array)
-        tu.add_fill_value(variable,  np.NaN)
-        variable.attrs["long_name"] = "u_O_TPRT channel correlations"
-        dataset["u_O_TPRT_chan_corr"] = variable
+        dataset["u_O_TPRT_chan_corr"] = HIRS._create_channel_correlation_variable("u_O_TPRT channel correlations")
 
         # u_Rself
         variable = Variable([], np.NaN)
@@ -420,6 +444,14 @@ class HIRS:
         variable.attrs["long_name"] = "Offset for effective temperature correction"
         tu.add_units(variable, "1")
         dataset["temp_corr_offset"] = variable
+
+    @staticmethod
+    def _create_channel_correlation_variable(long_name):
+        data_array = DefaultData.create_default_array(NUM_CHANNELS, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "channel"], data_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = long_name
+        return variable
 
     @staticmethod
     def _create_temperature_vector(height, standard_name):

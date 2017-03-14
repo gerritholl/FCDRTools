@@ -287,18 +287,21 @@ class HIRS:
         dataset["TK_baseplate"] = HIRS._create_temperature_vector(height, "temperature_baseplate_K")
         dataset["TK_ch"] = HIRS._create_temperature_vector(height, "temperature_coolerhousing_K")
         dataset["TK_elec"] = HIRS._create_temperature_vector(height, "temperature_electronics_K")
+        dataset["TK_radiator_analog"] = HIRS._create_temperature_vector(height, "temperature_radiator_analog_K", "temp_an_rd", np.NaN)
         dataset["TK_fsr"] = HIRS._create_temperature_vector(height, "temperature_first_stage_radiator_K")
         dataset["TK_fwh"] = HIRS._create_temperature_vector(height, "temperature_filter_wheel_housing_K")
         dataset["TK_fwm"] = HIRS._create_temperature_vector(height, "temperature_filter_wheel_monitor_K")
         dataset["TK_icct"] = HIRS._create_temperature_vector(height, "temperature_internal_cold_calibration_target_K")
         dataset["TK_iwct"] = HIRS._create_temperature_vector(height, "temperature_internal_warm_calibration_target_K")
-        dataset["TK_patch_exp"] = HIRS._create_temperature_vector(height, "temperature_patch_expanded_scale_K")
-        dataset["TK_patch_full"] = HIRS._create_temperature_vector(height, "temperature_patch_full_range_K")
-        dataset["TK_tlscp_prim"] = HIRS._create_temperature_vector(height, "temperature_telescope_primary_K")
-        dataset["TK_tlscp_sec"] = HIRS._create_temperature_vector(height, "temperature_telescope_secondary_K")
+        dataset["TK_patch_analog"] = HIRS._create_temperature_vector(height, "temperature_patch_analog_K", "temp_an_pch", np.NaN)
+        dataset["TK_patch_exp"] = HIRS._create_temperature_vector(height, "temperature_patch_expanded_scale_K", "temp_patch_exp", np.NaN)
+        dataset["TK_patch_full"] = HIRS._create_temperature_vector(height, "temperature_patch_full_range_K", "temp_patch_full", np.NaN)
+        dataset["TK_tlscp_prim"] = HIRS._create_temperature_vector(height, "temperature_telescope_primary_K", "temp_primtlscp", np.NaN)
+        dataset["TK_tlscp_sec"] = HIRS._create_temperature_vector(height, "temperature_telescope_secondary_K", "temp_sectlscp", np.NaN)
         dataset["TK_tlscp_tert"] = HIRS._create_temperature_vector(height, "temperature_telescope_tertiary_K")
-        dataset["TK_scanmirror"] = HIRS._create_temperature_vector(height, "temperature_scanmirror_K")
-        dataset["TK_scanmotor"] = HIRS._create_temperature_vector(height, "temperature_scanmotor_K")
+        dataset["TK_scanmirror"] = HIRS._create_temperature_vector(height, "temperature_scanmirror_K", "temp_scanmirror", np.NaN)
+        dataset["TK_scanmirror_analog"] = HIRS._create_temperature_vector(height, "temperature_scanmirror_analog_K", "temp_an_scnm", np.NaN)
+        dataset["TK_scanmotor"] = HIRS._create_temperature_vector(height, "temperature_scanmotor_K", "temp_scanmotor", np.NaN)
 
         dataset["u_TK_baseplate"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_baseplate_K")
         dataset["u_TK_ch"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_coolerhousing_K")
@@ -454,11 +457,17 @@ class HIRS:
         return variable
 
     @staticmethod
-    def _create_temperature_vector(height, standard_name):
-        default_array = DefaultData.create_default_vector(height, np.float32)
+    def _create_temperature_vector(height, long_name, orig_name=None, fill_value=None):
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = standard_name
+        if fill_value is None:
+            tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        else:
+            tu.add_fill_value(variable, fill_value)
+
+        variable.attrs["long_name"] = long_name
+        if not orig_name is None:
+            variable.attrs["orig_name"] = orig_name
         tu.add_units(variable, "K")
         return variable
 

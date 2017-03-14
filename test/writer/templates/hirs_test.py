@@ -311,18 +311,21 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_temperature_variable(ds, "TK_baseplate", "temperature_baseplate_K")
         self._assert_line_temperature_variable(ds, "TK_ch", "temperature_coolerhousing_K")
         self._assert_line_temperature_variable(ds, "TK_elec", "temperature_electronics_K")
+        self._assert_line_temperature_variable(ds, "TK_radiator_analog", "temperature_radiator_analog_K", "temp_an_rd", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_fsr", "temperature_first_stage_radiator_K")
         self._assert_line_temperature_variable(ds, "TK_fwh", "temperature_filter_wheel_housing_K")
         self._assert_line_temperature_variable(ds, "TK_fwm", "temperature_filter_wheel_monitor_K")
         self._assert_line_temperature_variable(ds, "TK_icct", "temperature_internal_cold_calibration_target_K")
         self._assert_line_temperature_variable(ds, "TK_iwct", "temperature_internal_warm_calibration_target_K")
-        self._assert_line_temperature_variable(ds, "TK_patch_exp", "temperature_patch_expanded_scale_K")
-        self._assert_line_temperature_variable(ds, "TK_patch_full", "temperature_patch_full_range_K")
-        self._assert_line_temperature_variable(ds, "TK_tlscp_prim", "temperature_telescope_primary_K")
-        self._assert_line_temperature_variable(ds, "TK_tlscp_sec", "temperature_telescope_secondary_K")
+        self._assert_line_temperature_variable(ds, "TK_patch_analog", "temperature_patch_analog_K", "temp_an_pch", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_patch_exp", "temperature_patch_expanded_scale_K", "temp_patch_exp", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_patch_full", "temperature_patch_full_range_K", "temp_patch_full", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_tlscp_prim", "temperature_telescope_primary_K", "temp_primtlscp", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_tlscp_sec", "temperature_telescope_secondary_K", "temp_sectlscp", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_tlscp_tert", "temperature_telescope_tertiary_K")
-        self._assert_line_temperature_variable(ds, "TK_scanmirror", "temperature_scanmirror_K")
-        self._assert_line_temperature_variable(ds, "TK_scanmotor", "temperature_scanmotor_K")
+        self._assert_line_temperature_variable(ds, "TK_scanmirror", "temperature_scanmirror_K", "temp_scanmirror", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_scanmirror_analog", "temperature_scanmirror_analog_K", "temp_an_scnm", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_scanmotor", "temperature_scanmotor_K", "temp_scanmotor", np.NaN)
 
         self._assert_line_temperature_variable(ds, "u_TK_baseplate", "uncertainty_temperature_baseplate_K")
         self._assert_line_temperature_variable(ds, "u_TK_ch", "uncertainty_temperature_coolerhousing_K")
@@ -499,12 +502,22 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(standard_name, variable.attrs["standard_name"])
         self.assertEqual("count", variable.attrs["units"])
 
-    def _assert_line_temperature_variable(self, ds, name, standard_name):
+    def _assert_line_temperature_variable(self, ds, name, standard_name, orig_name=None, fill_value=None):
         variable = ds.variables[name]
         self.assertEqual((7,), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        if fill_value is None:
+            self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4])
+            self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
+        elif np.isnan(fill_value):
+            self.assertTrue(np.isnan(variable.data[4]))
+            self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        else:
+            self.assertEqual(fill_value, variable.data[4])
+            self.assertEqual(fill_value, variable.attrs["_FillValue"])
+
+        self.assertEqual(standard_name, variable.attrs["long_name"])
+        if not orig_name is None:
+            self.assertEqual(orig_name, variable.attrs["orig_name"])
         self.assertEqual("K", variable.attrs["units"])
 
     def _assert_line_counts_uncertainty_variable(self, ds, name, standard_name):

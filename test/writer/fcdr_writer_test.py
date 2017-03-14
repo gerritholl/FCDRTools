@@ -201,7 +201,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(121, len(ds.variables))
+        self.assertEqual(124, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -209,6 +209,14 @@ class FCDRWriterTest(unittest.TestCase):
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
 
+        self.assertIsNotNone(ds.variables["TK_patch_analog"])
+        self.assertIsNotNone(ds.variables["TK_patch_exp"])
+        self.assertIsNotNone(ds.variables["TK_patch_full"])
+        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
+        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
+        self.assertIsNotNone(ds.variables["TK_scanmotor"])
         self.assertIsNotNone(ds.variables["u_c_earth"])
         self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
         self.assertIsNotNone(ds.variables["u_c_space"])

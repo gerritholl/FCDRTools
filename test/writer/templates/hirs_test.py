@@ -42,8 +42,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("counts_earth", c_earth.attrs["long_name"])
         self.assertEqual("true", c_earth.attrs["_Unsigned"])
         self.assertEqual("count", c_earth.attrs["units"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags",
-                         c_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
 
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 6, 56), l_earth.shape)
@@ -53,8 +52,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
         self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
         self.assertEqual("radiance", l_earth.attrs["orig_name"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags",
-                         l_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
 
         sat_za = ds.variables["sat_za"]
         self.assertEqual((6, 56), sat_za.shape)
@@ -71,11 +69,12 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("local_azimuth_angle", sat_aa.attrs["long_name"])
         self.assertEqual("degree", sat_aa.attrs["units"])
 
-        sol_za = ds.variables["sol_za"]
+        sol_za = ds.variables["solar_zenith_angle"]
         self.assertEqual((6, 56), sol_za.shape)
-        self.assertEqual(-999.0, sol_za.data[3, 3])
-        self.assertEqual(-999.0, sol_za.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sol_za.data[3, 3]))
+        self.assertTrue(np.isnan(sol_za.attrs["_FillValue"]))
         self.assertEqual("solar_zenith_angle", sol_za.attrs["standard_name"])
+        self.assertEqual("sol_za", sol_za.attrs["orig_name"])
         self.assertEqual("degree", sol_za.attrs["units"])
 
         sol_aa = ds.variables["sol_aa"]
@@ -101,6 +100,15 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("true", time.attrs["_Unsigned"])
         self.assertEqual("s", time.attrs["units"])
 
+        scnlintime = ds.variables["scnlintime"]
+        self.assertEqual((6,), scnlintime.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.attrs["_FillValue"])
+        self.assertEqual("time", scnlintime.attrs["standard_name"])
+        self.assertEqual("Scan line time of day", scnlintime.attrs["long_name"])
+        self.assertEqual("hrs_scnlintime", scnlintime.attrs["orig_name"])
+        self.assertEqual("ms", scnlintime.attrs["units"])
+
         scnlinf = ds.variables["scnlinf"]
         self.assertEqual((6,), scnlinf.shape)
         self.assertEqual(9, scnlinf.data[4])
@@ -114,17 +122,14 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual((6,), qualind.shape)
         self.assertEqual(0, qualind.data[5])
         self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", qualind.attrs["flag_masks"])
-        self.assertEqual(
-            "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete",
-            qualind.attrs["flag_meanings"])
+        self.assertEqual("do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete", qualind.attrs["flag_meanings"])
         self.assertEqual("status_flag", qualind.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qualind.attrs["long_name"])
 
         linqualflags = ds.variables["linqualflags"]
         self.assertEqual((6,), linqualflags.shape)
         self.assertEqual(0, linqualflags.data[0])
-        self.assertEqual(
-            "256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
+        self.assertEqual("256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
             linqualflags.attrs["flag_masks"])
         self.assertEqual(
             "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant",
@@ -284,41 +289,36 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_baseplate", "uncertainty_temperature_baseplate_counts")
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_ch", "uncertainty_temperature_coolerhousing_counts")
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_elec", "uncertainty_temperature_electronics_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fsr",
-                                                      "uncertainty_temperature_first_stage_radiator_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fwh",
-                                                      "uncertainty_temperature_filter_wheel_housing_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fwm",
-                                                      "uncertainty_temperature_filter_wheel_monitor_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_icct",
-                                                      "uncertainty_temperature_internal_cold_calibration_target_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_iwct",
-                                                      "uncertainty_temperature_internal_warm_calibration_target_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_patch_exp",
-                                                      "uncertainty_temperature_patch_expanded_scale_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_patch_full",
-                                                      "uncertainty_temperature_patch_full_range_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_prim",
-                                                      "uncertainty_temperature_telescope_primary_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_sec",
-                                                      "uncertainty_temperature_telescope_secondary_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_tert",
-                                                      "uncertainty_temperature_telescope_tertiary_counts")
-        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_scanmirror",
-                                                      "uncertainty_temperature_scanmirror_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fsr", "uncertainty_temperature_first_stage_radiator_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fwh", "uncertainty_temperature_filter_wheel_housing_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_fwm", "uncertainty_temperature_filter_wheel_monitor_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_icct", "uncertainty_temperature_internal_cold_calibration_target_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_iwct", "uncertainty_temperature_internal_warm_calibration_target_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_patch_exp", "uncertainty_temperature_patch_expanded_scale_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_patch_full", "uncertainty_temperature_patch_full_range_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_prim", "uncertainty_temperature_telescope_primary_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_sec", "uncertainty_temperature_telescope_secondary_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_tlscp_tert", "uncertainty_temperature_telescope_tertiary_counts")
+        self._assert_line_counts_uncertainty_variable(ds, "u_Tc_scanmirror", "uncertainty_temperature_scanmirror_counts")
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_scanmotor", "uncertainty_temperature_scanmotor_counts")
 
-        self._assert_line_temperature_variable(ds, "TK_baseplate", "temperature_baseplate_K")
-        self._assert_line_temperature_variable(ds, "TK_ch", "temperature_coolerhousing_K")
-        self._assert_line_temperature_variable(ds, "TK_elec", "temperature_electronics_K")
+        self._assert_line_temperature_variable(ds, "TK_baseplate", "Temperature baseplate", "temp_baseplate", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_baseplate_analog", "Temperature baseplate (analog)", "temp_an_baseplate", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_ch", "Temperature cooler housing", "temp_ch", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_elec", "Temperature electronics", "temp_elec", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_elec_analog", "Temperature electronics (analog)", "temp_an_el", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_radiator_analog", "temperature_radiator_analog_K", "temp_an_rd", np.NaN)
-        self._assert_line_temperature_variable(ds, "TK_fsr", "temperature_first_stage_radiator_K")
-        self._assert_line_temperature_variable(ds, "TK_fwh", "temperature_filter_wheel_housing_K")
-        self._assert_line_temperature_variable(ds, "TK_fwm", "temperature_filter_wheel_monitor_K")
+
+        self._assert_2d_temperature_variable(ds, "TK_fsr", "Temperature first stage radiator", "temp_fsr")
+
+        self._assert_line_temperature_variable(ds, "TK_fwm", "Temperature filter wheel motor", "temp_fwm", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_fwm_analog", "Temperature filter wheel motor (analogue)", "temp_an_fwm", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_icct", "temperature_internal_cold_calibration_target_K")
-        self._assert_line_temperature_variable(ds, "TK_iwct", "temperature_internal_warm_calibration_target_K")
+
+        self._assert_3d_temperature_variable(ds, "TK_fwh", "Temperature filter wheel housing", "temp_fwh")
+        self._assert_3d_temperature_variable(ds, "TK_iwct", "Temperature internal warm calibration target (IWCT)", "temp_iwt")
         self._assert_line_temperature_variable(ds, "TK_patch_analog", "temperature_patch_analog_K", "temp_an_pch", np.NaN)
-        self._assert_line_temperature_variable(ds, "TK_patch_exp", "temperature_patch_expanded_scale_K", "temp_patch_exp", np.NaN)
+        self._assert_2d_temperature_variable(ds, "TK_patch_exp", "Temperature patch (expanded)", "temp_patch_exp")
         self._assert_line_temperature_variable(ds, "TK_patch_full", "temperature_patch_full_range_K", "temp_patch_full", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_tlscp_prim", "temperature_telescope_primary_K", "temp_primtlscp", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_tlscp_sec", "temperature_telescope_secondary_K", "temp_sectlscp", np.NaN)
@@ -333,10 +333,8 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_temperature_variable(ds, "u_TK_fsr", "uncertainty_temperature_first_stage_radiator_K")
         self._assert_line_temperature_variable(ds, "u_TK_fwh", "uncertainty_temperature_filter_wheel_housing_K")
         self._assert_line_temperature_variable(ds, "u_TK_fwm", "uncertainty_temperature_filter_wheel_monitor_K")
-        self._assert_line_temperature_variable(ds, "u_TK_icct",
-                                               "uncertainty_temperature_internal_cold_calibration_target_K")
-        self._assert_line_temperature_variable(ds, "u_TK_iwct",
-                                               "uncertainty_temperature_internal_warm_calibration_target_K")
+        self._assert_line_temperature_variable(ds, "u_TK_icct", "uncertainty_temperature_internal_cold_calibration_target_K")
+        self._assert_line_temperature_variable(ds, "u_TK_iwct", "uncertainty_temperature_internal_warm_calibration_target_K")
         self._assert_line_temperature_variable(ds, "u_TK_patch_exp", "uncertainty_temperature_patch_expanded_scale_K")
         self._assert_line_temperature_variable(ds, "u_TK_patch_full", "uncertainty_temperature_patch_full_range_K")
         self._assert_line_temperature_variable(ds, "u_TK_tlscp_prim", "uncertainty_temperature_telescope_primary_K")
@@ -399,12 +397,12 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual((), u_earthshine.shape)
         self.assertTrue(np.isnan(u_earthshine.data))
         self.assertTrue(np.isnan(u_earthshine.attrs["_FillValue"]))
-        
+
         u_o_Re = ds.variables["u_O_Re"]
         self.assertEqual((), u_o_Re.shape)
         self.assertTrue(np.isnan(u_o_Re.data))
         self.assertTrue(np.isnan(u_o_Re.attrs["_FillValue"]))
-        
+
         u_o_TIWCT = ds.variables["u_O_TIWCT"]
         self.assertEqual((), u_o_TIWCT.shape)
         self.assertTrue(np.isnan(u_o_TIWCT.data))
@@ -493,6 +491,24 @@ class HIRSTest(unittest.TestCase):
         self.assertTrue(np.isnan(temp_corr_offset.attrs["_FillValue"]))
         self.assertEqual("Offset for effective temperature correction", temp_corr_offset.attrs["long_name"])
         self.assertEqual("1", temp_corr_offset.attrs["units"])
+
+    def _assert_2d_temperature_variable(self, ds, name, long_name, orig_name):
+        variable = ds.variables[name]
+        self.assertEqual((7, 5), variable.shape)
+        self.assertTrue(np.isnan(variable.data[6, 4]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertEqual(long_name, variable.attrs["long_name"])
+        self.assertEqual(orig_name, variable.attrs["orig_name"])
+        self.assertEqual("K", variable.attrs["units"])
+
+    def _assert_3d_temperature_variable(self, ds, name, long_name, orig_name):
+        variable = ds.variables[name]
+        self.assertEqual((4, 7, 5), variable.shape)
+        self.assertTrue(np.isnan(variable.data[2, 5, 3]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertEqual(long_name, variable.attrs["long_name"])
+        self.assertEqual(orig_name, variable.attrs["orig_name"])
+        self.assertEqual("K", variable.attrs["units"])
 
     def _assert_line_counts_variable(self, ds, name, standard_name):
         variable = ds.variables[name]

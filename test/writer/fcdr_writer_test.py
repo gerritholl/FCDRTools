@@ -172,7 +172,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(22, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -183,10 +183,11 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["L_earth"])
         self.assertIsNotNone(ds.variables["sat_za"])
         self.assertIsNotNone(ds.variables["sat_aa"])
-        self.assertIsNotNone(ds.variables["sol_za"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["sol_aa"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["linqualflags"])
         self.assertIsNotNone(ds.variables["chqualflags"])
@@ -201,14 +202,24 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(124, len(ds.variables))
+        self.assertEqual(130, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
 
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
 
+        self.assertIsNotNone(ds.variables["TK_baseplate"])
+        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
+        self.assertIsNotNone(ds.variables["TK_ch"])
+        self.assertIsNotNone(ds.variables["TK_elec_analog"])
+        self.assertIsNotNone(ds.variables["TK_elec"])
+        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
+        self.assertIsNotNone(ds.variables["TK_fwh"])
+        self.assertIsNotNone(ds.variables["TK_iwct"])
         self.assertIsNotNone(ds.variables["TK_patch_analog"])
         self.assertIsNotNone(ds.variables["TK_patch_exp"])
         self.assertIsNotNone(ds.variables["TK_patch_full"])

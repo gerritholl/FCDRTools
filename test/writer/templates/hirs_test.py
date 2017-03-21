@@ -152,6 +152,13 @@ class HIRSTest(unittest.TestCase):
     def test_get_swath_width(self):
         self.assertEqual(56, HIRS.get_swath_width())
 
+    def test_add_easy_fcdr_variables(self):
+        ds = xr.Dataset()
+        HIRS.add_easy_fcdr_variables(ds, 7)
+
+        self._assert_3d_channel_variable(ds, "u_random", "random uncertainty per pixel")
+        self._assert_3d_channel_variable(ds, "u_non_random", "non-random uncertainty per pixel")
+
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         HIRS.add_full_fcdr_variables(ds, 7)
@@ -509,6 +516,14 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(long_name, variable.attrs["long_name"])
         self.assertEqual(orig_name, variable.attrs["orig_name"])
         self.assertEqual("K", variable.attrs["units"])
+
+    def _assert_3d_channel_variable(self, ds, name, long_name):
+        variable = ds.variables[name]
+        self.assertEqual((19, 7, 56), variable.shape)
+        self.assertTrue(np.isnan(variable.data[2, 5, 3]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertEqual(long_name, variable.attrs["long_name"])
+        return variable
 
     def _assert_line_counts_variable(self, ds, name, standard_name):
         variable = ds.variables[name]

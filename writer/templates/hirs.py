@@ -132,22 +132,24 @@ class HIRS:
         dataset["mnfrqualflags"] = variable
 
     @staticmethod
-    def _create_geo_angle_variable(standard_name, orig_name, height, fill_value):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=fill_value)
-        variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, fill_value)
-        variable.attrs["standard_name"] = standard_name
-        variable.attrs["orig_name"] = orig_name
-        tu.add_units(variable, "degree")
-        return variable
-
-    @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        pass
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "random uncertainty per pixel"
+        tu.add_units(variable, "percent")
+        dataset["u_random"] = variable
+
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable,  np.NaN)
+        variable.attrs["long_name"] = "non-random uncertainty per pixel"
+        tu.add_units(variable, "percent")
+        dataset["u_non_random"] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
@@ -517,5 +519,15 @@ class HIRS:
     @staticmethod
     def _create_angle_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
+        tu.add_units(variable, "degree")
+        return variable
+
+    @staticmethod
+    def _create_geo_angle_variable(standard_name, orig_name, height, fill_value):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=fill_value)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, fill_value)
+        variable.attrs["standard_name"] = standard_name
+        variable.attrs["orig_name"] = orig_name
         tu.add_units(variable, "degree")
         return variable

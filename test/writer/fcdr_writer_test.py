@@ -172,7 +172,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(22, len(ds.variables))
+        self.assertEqual(24, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -194,7 +194,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
-        # TODO 1 tb/tb 2017-02-13
+        self.assertIsNotNone(ds.variables["u_random"])
+        self.assertIsNotNone(ds.variables["u_non_random"])
 
     def testCreateTemplateFull_HIRS(self):
         ds = FCDRWriter.createTemplateFull('HIRS', 209)

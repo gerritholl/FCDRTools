@@ -12,10 +12,12 @@ NUM_RAD_CHANNELS = 20
 NUM_COEFFS = 3
 NUM_MINOR_FRAME = 64
 NUM_CALIBRATION_CYCLE = 337
+NUM_SCAN_ANGLES = 168
 PRT_NUMBER = 4
 PRT_NUMBER_IWT = 4
 PRT_READING = 5
 SWATH_WIDTH = 56
+WIDTH_TODO = 60
 
 
 class HIRS:
@@ -79,10 +81,7 @@ class HIRS:
         dataset["time"] = variable
 
         # scnlintime
-        default_array = DefaultData.create_default_vector(height, np.int32)
-        variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
-        variable.attrs["standard_name"] = "time"
+        variable = HIRS._create_int32_vector(height, "time")
         variable.attrs["long_name"] = "Scan line time of day"
         variable.attrs["orig_name"] = "hrs_scnlintime"
         tu.add_units(variable, "ms")
@@ -139,14 +138,14 @@ class HIRS:
     def add_easy_fcdr_variables(dataset, height):
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable,  np.NaN)
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "random uncertainty per pixel"
         tu.add_units(variable, "percent")
         dataset["u_random"] = variable
 
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable,  np.NaN)
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "non-random uncertainty per pixel"
         tu.add_units(variable, "percent")
         dataset["u_non_random"] = variable
@@ -241,6 +240,35 @@ class HIRS:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["standard_name"] = "uncertainty_calibration_coefficients"
         dataset["u_calcof"] = variable
+
+        # quality_flags
+        variable = HIRS._create_int32_vector(height, long_name="Quality indicator bit field", orig_name="hrs_qualind")
+        variable.attrs["standard_name"] = "status_flag"
+        dataset["quality_flags"] = variable
+
+        variable = HIRS._create_float32_vector(np.NaN, height, "Platform yaw angle", "hrs_yawang")
+        tu.add_units(variable, "degree")
+        dataset["platform_yaw_angle"] = variable
+
+        # scan_angles
+        default_array = DefaultData.create_default_array(NUM_SCAN_ANGLES, height, np.float32, dims_names=["y", "num_scan_angles"], fill_value=np.NaN)
+        variable = Variable(["y", "num_scan_angles"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        tu.add_units(variable, "degree")
+        variable.attrs["long_name"] = "Scan angles"
+        variable.attrs["orig_name"] = "hrs_ang"
+        dataset["scan_angles"] = variable
+
+        dataset["scanline_number"] = HIRS._create_int32_vector(height, long_name="scanline number", orig_name="hrs_scnlin")
+        dataset["scanline_position"] = HIRS._create_int32_vector(height, long_name="Scanline position number in 32 second cycle", orig_name="hrs_scnpos")
+
+        # second_original_calibration_coefficients
+        default_array = DefaultData.create_default_array(WIDTH_TODO, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "width_todo"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "Second original calibration coefficients (unsorted)"
+        variable.attrs["orig_name"] = "hrs_scalcof"
+        dataset["second_original_calibration_coefficients"] = variable
 
         dataset["Tc_baseplate"] = HIRS._create_counts_vector(height, "temperature_baseplate_counts")
         dataset["Tc_ch"] = HIRS._create_counts_vector(height, "temperature_coolerhousing_counts")
@@ -469,26 +497,41 @@ class HIRS:
 
     @staticmethod
     def _create_temperature_vector(height, long_name, orig_name=None, fill_value=None):
-        default_array = DefaultData.create_default_vector(height, np.float32, fill_value)
+        variable = HIRS._create_float32_vector(fill_value, height, long_name, orig_name)
+        tu.add_units(variable, "K")
+        return variable
+
+    @staticmethod
+    def _create_float32_vector(fill_value, height, long_name, orig_name):
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=fill_value)
         variable = Variable(["y"], default_array)
         if fill_value is None:
             tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         else:
             tu.add_fill_value(variable, fill_value)
-
         variable.attrs["long_name"] = long_name
         if not orig_name is None:
             variable.attrs["orig_name"] = orig_name
-        tu.add_units(variable, "K")
         return variable
 
     @staticmethod
     def _create_counts_vector(height, standard_name):
+        variable = HIRS._create_int32_vector(height, standard_name)
+        tu.add_units(variable, "count")
+        return variable
+
+    @staticmethod
+    def _create_int32_vector(height, standard_name=None, long_name=None, orig_name=None):
         default_array = DefaultData.create_default_vector(height, np.int32)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
-        variable.attrs["standard_name"] = standard_name
-        tu.add_units(variable, "count")
+        if standard_name is not None:
+            variable.attrs["standard_name"] = standard_name
+        if long_name is not None:
+            variable.attrs["long_name"] = long_name
+        if orig_name is not None:
+            variable.attrs["orig_name"] = orig_name
+
         return variable
 
     @staticmethod

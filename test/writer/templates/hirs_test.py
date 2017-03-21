@@ -277,6 +277,28 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_calcof.attrs["_FillValue"])
         self.assertEqual("uncertainty_calibration_coefficients", u_calcof.attrs["standard_name"])
 
+        self._assert_line_angle_variable(ds, "platform_yaw_angle", orig_name="hrs_yawang", fill_value=np.NaN)
+
+        self._assert_line_int32_variable(ds, "quality_flags", standard_name="status_flag", long_name="Quality indicator bit field", orig_name="hrs_qualind")
+
+        scan_angles = ds.variables["scan_angles"]
+        self.assertEqual((7, 168), scan_angles.shape)
+        self.assertTrue(np.isnan(scan_angles.data[4, 18]))
+        self.assertTrue(np.isnan(scan_angles.attrs["_FillValue"]))
+        self.assertEqual("Scan angles", scan_angles.attrs["long_name"])
+        self.assertEqual("hrs_ang", scan_angles.attrs["orig_name"])
+        self.assertEqual("degree", scan_angles.attrs["units"])
+
+        self._assert_line_int32_variable(ds, "scanline_number", long_name="scanline number", orig_name="hrs_scnlin")
+        self._assert_line_int32_variable(ds, "scanline_position", long_name="Scanline position number in 32 second cycle", orig_name="hrs_scnpos")
+
+        sec_o_cal_coeff = ds.variables["second_original_calibration_coefficients"]
+        self.assertEqual((7, 60), sec_o_cal_coeff.shape)
+        self.assertTrue(np.isnan(sec_o_cal_coeff.data[4, 18]))
+        self.assertTrue(np.isnan(sec_o_cal_coeff.attrs["_FillValue"]))
+        self.assertEqual("Second original calibration coefficients (unsorted)", sec_o_cal_coeff.attrs["long_name"])
+        self.assertEqual("hrs_scalcof", sec_o_cal_coeff.attrs["orig_name"])
+
         self._assert_line_counts_variable(ds, "Tc_baseplate", "temperature_baseplate_counts")
         self._assert_line_counts_variable(ds, "Tc_ch", "temperature_coolerhousing_counts")
         self._assert_line_counts_variable(ds, "Tc_elec", "temperature_electronics_counts")
@@ -309,7 +331,7 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_scanmirror", "uncertainty_temperature_scanmirror_counts")
         self._assert_line_counts_uncertainty_variable(ds, "u_Tc_scanmotor", "uncertainty_temperature_scanmotor_counts")
 
-        self._assert_line_temperature_variable(ds, "TK_baseplate", "Temperature baseplate", "temp_baseplate", np.NaN)
+        self._assert_line_temperature_variable(ds, "TK_baseplate", "Temperature baseplate", orig_name="temp_baseplate", fill_value=np.NaN)
         self._assert_line_temperature_variable(ds, "TK_baseplate_analog", "Temperature baseplate (analog)", "temp_an_baseplate", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_ch", "Temperature cooler housing", "temp_ch", np.NaN)
         self._assert_line_temperature_variable(ds, "TK_elec", "Temperature electronics", "temp_elec", np.NaN)
@@ -526,14 +548,38 @@ class HIRSTest(unittest.TestCase):
         return variable
 
     def _assert_line_counts_variable(self, ds, name, standard_name):
+        variable = self._assert_line_int32_variable(ds, name, standard_name)
+        self.assertEqual("count", variable.attrs["units"])
+
+    def _assert_line_int32_variable(self, ds, name, standard_name=None, long_name=None, orig_name=None):
         variable = ds.variables[name]
         self.assertEqual((7,), variable.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int32), variable.data[4])
         self.assertEqual(DefaultData.get_default_fill_value(np.int32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
+        if standard_name is not None:
+            self.assertEqual(standard_name, variable.attrs["standard_name"])
+
+        if long_name is not None:
+            self.assertEqual(long_name, variable.attrs["long_name"])
+
+        if orig_name is not None:
+            self.assertEqual(orig_name, variable.attrs["orig_name"])
+
+        return variable
+
+    def _assert_line_temperature_variable(self, ds, name, long_name, orig_name=None, fill_value=None):
+        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name, fill_value=fill_value)
+        self.assertEqual("K", variable.attrs["units"])
+
+    def _assert_line_counts_uncertainty_variable(self, ds, name, standard_name):
+        variable = self._assert_line_float_variable(ds, name, standard_name=standard_name)
         self.assertEqual("count", variable.attrs["units"])
 
-    def _assert_line_temperature_variable(self, ds, name, standard_name, orig_name=None, fill_value=None):
+    def _assert_line_angle_variable(self, ds, name, long_name=None, orig_name=None, fill_value=None):
+        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name, fill_value=fill_value)
+        self.assertEqual("degree", variable.attrs["units"])
+
+    def _assert_line_float_variable(self, ds, name, standard_name=None, long_name=None, orig_name=None, fill_value=None):
         variable = ds.variables[name]
         self.assertEqual((7,), variable.shape)
         if fill_value is None:
@@ -546,15 +592,12 @@ class HIRSTest(unittest.TestCase):
             self.assertEqual(fill_value, variable.data[4])
             self.assertEqual(fill_value, variable.attrs["_FillValue"])
 
-        self.assertEqual(standard_name, variable.attrs["long_name"])
-        if not orig_name is None:
-            self.assertEqual(orig_name, variable.attrs["orig_name"])
-        self.assertEqual("K", variable.attrs["units"])
+        if standard_name is not None:
+            self.assertEqual(standard_name, variable.attrs["standard_name"])
 
-    def _assert_line_counts_uncertainty_variable(self, ds, name, standard_name):
-        variable = ds.variables[name]
-        self.assertEqual((7,), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
-        self.assertEqual(standard_name, variable.attrs["standard_name"])
-        self.assertEqual("count", variable.attrs["units"])
+        if long_name is not None:
+            self.assertEqual(long_name, variable.attrs["long_name"])
+
+        if orig_name is not None:
+            self.assertEqual(orig_name, variable.attrs["orig_name"])
+        return variable

@@ -6,7 +6,6 @@ from writer.templates.template_factory import TemplateFactory
 
 
 class FCDRWriter:
-
     _version = "1.0.4"
 
     @classmethod
@@ -66,10 +65,9 @@ class FCDRWriter:
     @classmethod
     def _add_standard_global_attributes(cls, dataset):
         dataset.attrs["Conventions"] = "CF-1.6"
-        dataset.attrs[
-            "licence"] = "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC " \
-                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
-                         "Observations\". Grant Agreement: 638822."
+        dataset.attrs["licence"] = "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC " \
+                                   "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
+                                   "Observations\". Grant Agreement: 638822."
         dataset.attrs["writer_version"] = FCDRWriter._version
         # @todo tb/tb 2 the following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None

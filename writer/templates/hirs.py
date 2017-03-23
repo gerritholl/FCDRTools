@@ -241,14 +241,23 @@ class HIRS:
         variable.attrs["standard_name"] = "uncertainty_calibration_coefficients"
         dataset["u_calcof"] = variable
 
+        # navigation_status
+        variable = HIRS._create_int32_vector(height, long_name="Navigation status bit field", orig_name="hrs_navstat")
+        variable.attrs["standard_name"] = "status_flag"
+        dataset["navigation_status"] = variable
+
         # quality_flags
         variable = HIRS._create_int32_vector(height, long_name="Quality indicator bit field", orig_name="hrs_qualind")
         variable.attrs["standard_name"] = "status_flag"
         dataset["quality_flags"] = variable
 
-        variable = HIRS._create_float32_vector(np.NaN, height, "Platform yaw angle", "hrs_yawang")
-        tu.add_units(variable, "degree")
-        dataset["platform_yaw_angle"] = variable
+        variable = HIRS._create_float32_vector(np.NaN, height, "Platform altitude", "hrs_scalti")
+        tu.add_units(variable, "km")
+        dataset["platform_altitude"] = variable
+
+        dataset["platform_pitch_angle"] = HIRS._create_float32_angle_vector(np.NaN, height, "Platform pitch angle", "hrs_pitchang")
+        dataset["platform_roll_angle"] = HIRS._create_float32_angle_vector(np.NaN, height, "Platform roll angle", "hrs_rollang")
+        dataset["platform_yaw_angle"] = HIRS._create_float32_angle_vector(np.NaN, height, "Platform yaw angle", "hrs_yawang")
 
         # scan_angles
         default_array = DefaultData.create_default_array(NUM_SCAN_ANGLES, height, np.float32, dims_names=["y", "num_scan_angles"], fill_value=np.NaN)
@@ -512,6 +521,12 @@ class HIRS:
         variable.attrs["long_name"] = long_name
         if not orig_name is None:
             variable.attrs["orig_name"] = orig_name
+        return variable
+
+    @staticmethod
+    def _create_float32_angle_vector(fill_value, height, long_name, orig_name):
+        variable = HIRS._create_float32_vector(fill_value, height, long_name, orig_name)
+        tu.add_units(variable, "degree")
         return variable
 
     @staticmethod

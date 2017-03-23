@@ -277,7 +277,14 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_calcof.attrs["_FillValue"])
         self.assertEqual("uncertainty_calibration_coefficients", u_calcof.attrs["standard_name"])
 
-        self._assert_line_angle_variable(ds, "platform_yaw_angle", orig_name="hrs_yawang", fill_value=np.NaN)
+        self._assert_line_int32_variable(ds, "navigation_status", standard_name="status_flag", long_name="Navigation status bit field", orig_name="hrs_navstat")
+
+        platform_altitude = self._assert_line_float_variable(ds, "platform_altitude", long_name="Platform altitude", orig_name="hrs_scalti", fill_value=np.NaN)
+        self.assertEqual("km", platform_altitude.attrs["units"])
+
+        self._assert_line_angle_variable(ds, "platform_pitch_angle", long_name="Platform pitch angle", orig_name="hrs_pitchang", fill_value=np.NaN)
+        self._assert_line_angle_variable(ds, "platform_roll_angle", long_name="Platform roll angle", orig_name="hrs_rollang", fill_value=np.NaN)
+        self._assert_line_angle_variable(ds, "platform_yaw_angle", long_name="Platform yaw angle", orig_name="hrs_yawang", fill_value=np.NaN)
 
         self._assert_line_int32_variable(ds, "quality_flags", standard_name="status_flag", long_name="Quality indicator bit field", orig_name="hrs_qualind")
 

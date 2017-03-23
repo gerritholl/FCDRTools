@@ -203,7 +203,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(138, len(ds.variables))
+        self.assertEqual(142, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -213,6 +213,10 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["scnlintime"])
 
+        self.assertIsNotNone(ds.variables["navigation_status"])
+        self.assertIsNotNone(ds.variables["platform_altitude"])
+        self.assertIsNotNone(ds.variables["platform_pitch_angle"])
+        self.assertIsNotNone(ds.variables["platform_roll_angle"])
         self.assertIsNotNone(ds.variables["platform_yaw_angle"])
         self.assertIsNotNone(ds.variables["quality_flags"])
         self.assertIsNotNone(ds.variables["scan_angles"])

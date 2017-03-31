@@ -15,7 +15,7 @@ class ReadWriteTests(unittest.TestCase):
         os.mkdir(self.testDir)
 
     def tearDown(self):
-        if (os.path.isdir(self.testDir)):
+        if os.path.isdir(self.testDir):
             for i in os.listdir(self.testDir):
                 os.remove(os.path.join(self.testDir, i))
             os.rmdir(self.testDir)

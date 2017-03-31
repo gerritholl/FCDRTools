@@ -5,7 +5,8 @@ import xarray as xr
 
 class FCDRReader:
 
-    def read(file: str, drop_variables: str = None, decode_cf: bool = True, decode_times: bool = True,
+    @classmethod
+    def read(cls, file: str, drop_variables: str = None, decode_cf: bool = True, decode_times: bool = True,
              engine: str = None) -> xr.Dataset:
         """
         Read a dataset from a netCDF 3/4 or HDF file.

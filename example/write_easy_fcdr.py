@@ -18,7 +18,7 @@ def main():
 
     # write real data to the variables. All variables initially contain "_FillValue".
     # Not writing to the whole array is completely OK
-    #dataset.variables["Ch1_Bt"].data[23, 44] = 0.456
+    # dataset.variables["Ch1_Bt"].data[23, 44] = 0.456
 
     # dump it to disk, netcdf4, medium compression
     # writing will fail when the target file already exists

@@ -5,7 +5,6 @@ from writer.templates.mviri import MVIRI
 
 
 class TemplateFactory:
-
     def __init__(self):
         self.templates = dict([("AMSUB", AMSUB_MHS), ("MHS", AMSUB_MHS), ("AVHRR", AVHRR), ("HIRS", HIRS), ("MVIRI", MVIRI)])
 

@@ -1,5 +1,4 @@
 import os
-
 import xarray as xr
 
 from writer.templates.template_factory import TemplateFactory
@@ -9,18 +8,22 @@ class FCDRWriter:
     _version = "1.0.4"
 
     @classmethod
-    def write(cls, ds, file):
+    def write(cls, ds, file, compression_level=None):
         """
         Save a dataset to NetCDF file.
         :param ds: The dataset
         :param file: File path
+        :param compression_level the file compression level, 0 - 9, default is 5
          """
         if os.path.isfile(file):
             raise Exception("The file already exists: " + file)
 
         # set up compression parameter for ALL variables. Unfortunately, xarray does not allow
         # one set of compression params per file, only per variable. tb 2017-01-25
-        comp = dict(zlib=True, complevel=5)
+        if compression_level is None:
+            compression_level = 5
+
+        comp = dict(zlib=True, complevel=compression_level)
         encoding = {var: comp for var in ds.data_vars}
 
         ds.to_netcdf(file, format='netCDF4', engine='netcdf4', encoding=encoding)
@@ -30,6 +33,7 @@ class FCDRWriter:
         """
         Create a template dataset in EASY FCDR format for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
+        :param height the hheight in pixels of the data product
         :return the template dataset
          """
         dataset = xr.Dataset()
@@ -48,6 +52,7 @@ class FCDRWriter:
         """
         Create a template dataset in FULL FCDR format for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
+        :param height the hheight in pixels of the data product
         :return the template dataset
          """
         dataset = xr.Dataset()

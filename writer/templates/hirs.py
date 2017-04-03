@@ -487,6 +487,18 @@ class HIRS:
         dataset["temp_corr_offset"] = variable
 
     @staticmethod
+    def _add_HIRS2_flag_variables(dataset, height):
+        pass
+
+    @staticmethod
+    def _add_HIRS3_flag_variables(dataset, height):
+        pass
+
+    @staticmethod
+    def _add_HIRS4_flag_variables(dataset, height):
+        pass
+
+    @staticmethod
     def _create_temperature_array_3d(height, long_name, orig_name, dim_names):
         default_array = DefaultData.create_default_array_3d(PRT_READING, height, PRT_NUMBER, np.float32, fill_value=np.NaN, dims_names=dim_names)
         variable = Variable(["prt_number", "y", "prt_reading"], default_array)

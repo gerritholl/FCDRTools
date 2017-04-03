@@ -528,6 +528,18 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("Offset for effective temperature correction", temp_corr_offset.attrs["long_name"])
         self.assertEqual("1", temp_corr_offset.attrs["units"])
 
+    def test_add_HIRS2_flag_variables(self):
+        ds = xr.Dataset()
+        HIRS._add_HIRS2_flag_variables(ds, 7)
+
+    def test_add_HIRS3_flag_variables(self):
+        ds = xr.Dataset()
+        HIRS._add_HIRS3_flag_variables(ds, 7)
+
+    def test_add_HIRS4_flag_variables(self):
+        ds = xr.Dataset()
+        HIRS._add_HIRS4_flag_variables(ds, 7)
+
     def _assert_2d_temperature_variable(self, ds, name, long_name, orig_name):
         variable = ds.variables[name]
         self.assertEqual((7, 5), variable.shape)

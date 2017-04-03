@@ -58,7 +58,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual((6, 56), sat_za.shape)
         self.assertEqual(-999.0, sat_za.data[2, 2])
         self.assertEqual(-999.0, sat_za.attrs["_FillValue"])
-        self.assertEqual("sensor_zenith_angle", sat_za.attrs["standard_name"])
+        self.assertEqual("platform_zenith_angle", sat_za.attrs["standard_name"])
         self.assertEqual("degree", sat_za.attrs["units"])
 
         sat_aa = ds.variables["sat_aa"]

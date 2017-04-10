@@ -53,3 +53,7 @@ class TemplateUtil:
     @staticmethod
     def add_scale_factor(variable, scale_factor):
         variable.attrs["scale_factor"] = scale_factor
+
+    @staticmethod
+    def add_offset(variable, offset):
+        variable.attrs["add_offset"] = offset

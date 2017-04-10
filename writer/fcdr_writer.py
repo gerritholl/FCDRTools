@@ -5,7 +5,7 @@ from writer.templates.template_factory import TemplateFactory
 
 
 class FCDRWriter:
-    _version = "1.0.4"
+    _version = "1.0.5"
 
     @classmethod
     def write(cls, ds, file, compression_level=None):

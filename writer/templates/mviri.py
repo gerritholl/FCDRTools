@@ -7,8 +7,10 @@ from writer.templates.templateutil import TemplateUtil as tu
 
 FULL_DIMENSION = 5000
 IR_DIMENSION = 2500
-SRF_SIZE = 1000
+SRF_SIZE = 1011
 SOL_IRR_SIZE = 24
+
+TIME_FILL_VALUE = -32768
 
 
 class MVIRI:
@@ -16,44 +18,57 @@ class MVIRI:
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
         # time
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int32)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int16, fill_value=TIME_FILL_VALUE)
         variable = Variable(["y_ir", "x_ir"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
+        tu.add_fill_value(variable, TIME_FILL_VALUE)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time of pixel"
         tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
         tu.set_unsigned(variable)
+        tu.add_offset(variable, TIME_FILL_VALUE)
         dataset["time"] = variable
 
-        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
-                                                                              standard_name="sensor_azimuth_angle")
+        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="sensor_azimuth_angle")
         tu.set_unsigned(dataset["satellite_azimuth_angle"])
-        dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248,
-                                                                             standard_name="sensor_zenith_angle")
-        dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164,
-                                                                          standard_name="solar_azimuth_angle")
+        dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="sensor_zenith_angle")
+        dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="solar_azimuth_angle")
         tu.set_unsigned(dataset["solar_azimuth_angle"])
-        dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248,
-                                                                         standard_name="solar_zenith_angle")
+        dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="solar_zenith_angle")
 
-        # reflectance
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
-        variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
-        tu.add_units(variable, "percent")
-        tu.set_unsigned(variable)
-        tu.add_scale_factor(variable, 1.52588E-05)
-        dataset["reflectance"] = variable
-
-        # count_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
-        variable = Variable(["y", "x"], default_array)
+        # count_ir
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int8)
+        variable = Variable(["y_ir", "x_ir"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
-        variable.attrs["long_name"] = "Image counts"
+        variable.attrs["long_name"] = "Infrared Image Counts"
         tu.add_units(variable, "count")
         tu.set_unsigned(variable)
-        dataset["count_vis"] = variable
+        dataset["count_ir"] = variable
+
+        # count_wv
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int8)
+        variable = Variable(["y_ir", "x_ir"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        variable.attrs["long_name"] = "WV Image Counts"
+        tu.add_units(variable, "count")
+        tu.set_unsigned(variable)
+        dataset["count_wv"] = variable
+
+        # distance_sun_earth
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable.attrs["long_name"] = "Sun-Earth distance"
+        tu.add_units(variable, "au")
+        dataset["distance_sun_earth"] = variable
+
+        # sol_eff_irr
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable.attrs["standard_name"] = "solar_irradiance_vis"
+        variable.attrs["long_name"] = "Solar effective Irradiance"
+        tu.add_units(variable, "W*m-2")
+        dataset["sol_eff_irr"] = variable
 
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
@@ -69,6 +84,17 @@ class MVIRI:
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
+
+        # reflectance
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
+        tu.add_units(variable, "percent")
+        tu.set_unsigned(variable)
+        tu.add_scale_factor(variable, 1.52588E-05)
+        dataset["reflectance"] = variable
+
         # u_random
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
         variable = Variable(["y", "x"], default_array)
@@ -111,21 +137,19 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "gaussian"
         dataset["u_toa_bidirectional_reflectance_vis"] = variable
 
-        # sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "solar_irradiance_vis"
-        variable.attrs["long_name"] = "Solar effective Irradiance"
-        tu.add_units(variable, "W*m-2")
-        dataset["sol_eff_irr"] = variable
+        # count_vis
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        variable.attrs["long_name"] = "Image counts"
+        tu.add_units(variable, "count")
+        tu.set_unsigned(variable)
+        dataset["count_vis"] = variable
 
-        dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude",
-                                                                 unsigned=True, fill_value=65535)
+        dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude", unsigned=True, fill_value=65535)
         MVIRI._add_geo_correlation_attributes(dataset["u_latitude"])
 
-        dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude",
-                                                                  unsigned=True, fill_value=65535)
+        dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude", unsigned=True, fill_value=65535)
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
@@ -138,18 +162,10 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_time"] = variable
 
-        dataset["u_satellite_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
-                                                                               long_name="Uncertainty in Satellite Zenith Angle",
-                                                                               unsigned=True)
-        dataset["u_satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
-                                                                                long_name="Uncertainty in Satellite Azimuth Angle",
-                                                                                unsigned=True)
-        dataset["u_solar_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
-                                                                           long_name="Uncertainty in Solar Zenith Angle",
-                                                                           unsigned=True)
-        dataset["u_solar_azimuth_angle"] = MVIRI._create_angle_variable_int(7.62939E-05,
-                                                                            long_name="Uncertainty in Solar Azimuth Angle",
-                                                                            unsigned=True)
+        dataset["u_satellite_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Satellite Zenith Angle", unsigned=True)
+        dataset["u_satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Satellite Azimuth Angle", unsigned=True)
+        dataset["u_solar_zenith_angle"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Solar Zenith Angle", unsigned=True)
+        dataset["u_solar_azimuth_angle"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Solar Azimuth Angle", unsigned=True)
 
         # u_combined_counts_vis
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
@@ -202,14 +218,6 @@ class MVIRI:
         variable.attrs["long_name"] = "Time variation of a0"
         tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
         dataset["a1_vis"] = variable
-
-        # distance_sun_earth
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Sun-Earth distance"
-        tu.add_units(variable, "au")
-        dataset["distance_sun_earth"] = variable
 
         # mean_counts_space_vis
         default_array = DefaultData.get_default_fill_value(np.float32)

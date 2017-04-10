@@ -266,17 +266,20 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(15, len(ds.variables))
+        self.assertEqual(18, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["reflectance"])
-        self.assertIsNotNone(ds.variables["count_vis"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["count_ir"])
+        self.assertIsNotNone(ds.variables["count_wv"])
+        self.assertIsNotNone(ds.variables["distance_sun_earth"])
+        self.assertIsNotNone(ds.variables["sol_eff_irr"])
 
         # easy FCDR uncertainties
         self.assertIsNotNone(ds.variables["u_random"])
@@ -288,17 +291,19 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(36, len(ds.variables))
+        self.assertEqual(37, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["u_toa_bidirectional_reflectance_vis"])
+        self.assertIsNotNone(ds.variables["count_vis"])
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["count_ir"])
+        self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["count_vis"])
-        self.assertIsNotNone(ds.variables["reflectance"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["a0_vis"])
         self.assertIsNotNone(ds.variables["a1_vis"])
@@ -331,7 +336,7 @@ class FCDRWriterTest(unittest.TestCase):
             "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
             "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
             "Observations\". Grant Agreement: 638822.", attributes["licence"])
-        self.assertEqual("1.0.4", attributes["writer_version"])
+        self.assertEqual("1.0.5", attributes["writer_version"])
 
     def _verify_geolocation_variables(self, ds):
         self.assertIsNotNone(ds.variables["latitude"])

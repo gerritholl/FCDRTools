@@ -14,12 +14,13 @@ class MVIRITest(unittest.TestCase):
 
         time = ds.variables["time"]
         self.assertEqual((2500, 2500), time.shape)
-        self.assertEqual(-2147483647, time.data[4, 117])
-        self.assertEqual(-2147483647, time.attrs["_FillValue"])
+        self.assertEqual(-32768, time.data[4, 117])
+        self.assertEqual(-32768, time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time of pixel", time.attrs["long_name"])
         self.assertEqual("true", time.attrs["_Unsigned"])
         self.assertEqual("seconds since 1970-01-01 00:00:00", time.attrs["units"])
+        self.assertEqual(-32768, time.attrs["add_offset"])
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((5000, 5000), sat_azimuth.shape)
@@ -55,25 +56,39 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("degree", sol_zenith.attrs["units"])
         self.assertEqual(0.005493248, sol_zenith.attrs["scale_factor"])
 
-        reflectance = ds.variables["reflectance"]
-        self.assertEqual((5000, 5000), reflectance.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.data[3, 115])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.attrs["_FillValue"])
-        self.assertEqual("toa_bidirectional_reflectance", reflectance.attrs["standard_name"])
-        self.assertEqual("percent", reflectance.attrs["units"])
-        self.assertEqual(1.52588E-05, reflectance.attrs["scale_factor"])
-        self.assertEqual("true", reflectance.attrs["_Unsigned"])
-
-        count = ds.variables["count_vis"]
-        self.assertEqual((5000, 5000), count.shape)
+        count = ds.variables["count_ir"]
+        self.assertEqual((2500, 2500), count.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[0, 113])
         self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])
-        self.assertEqual("Image counts", count.attrs["long_name"])
+        self.assertEqual("Infrared Image Counts", count.attrs["long_name"])
         self.assertEqual("count", count.attrs["units"])
         self.assertEqual("true", count.attrs["_Unsigned"])
 
+        count = ds.variables["count_wv"]
+        self.assertEqual((2500, 2500), count.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[1, 114])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])
+        self.assertEqual("WV Image Counts", count.attrs["long_name"])
+        self.assertEqual("count", count.attrs["units"])
+        self.assertEqual("true", count.attrs["_Unsigned"])
+
+        dse = ds.variables["distance_sun_earth"]
+        self.assertEqual((), dse.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.attrs["_FillValue"])
+        self.assertEqual("Sun-Earth distance", dse.attrs["long_name"])
+        self.assertEqual("au", dse.attrs["units"])
+
+        sol_eff_irr = ds.variables["sol_eff_irr"]
+        self.assertEqual((), sol_eff_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.attrs["_FillValue"])
+        self.assertEqual("solar_irradiance_vis", sol_eff_irr.attrs["standard_name"])
+        self.assertEqual("Solar effective Irradiance", sol_eff_irr.attrs["long_name"])
+        self.assertEqual("W*m-2", sol_eff_irr.attrs["units"])
+
         srf = ds.variables["spectral_response_function_vis"]
-        self.assertEqual((1000,), srf.shape)
+        self.assertEqual((1011,), srf.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.data[116])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.attrs["_FillValue"])
         self.assertEqual("Spectral Response Function", srf.attrs["long_name"])
@@ -84,6 +99,15 @@ class MVIRITest(unittest.TestCase):
     def test_add_easy_fcdr_variables(self):
         ds = xr.Dataset()
         MVIRI.add_easy_fcdr_variables(ds, 8)
+
+        reflectance = ds.variables["reflectance"]
+        self.assertEqual((5000, 5000), reflectance.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.data[3, 115])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), reflectance.attrs["_FillValue"])
+        self.assertEqual("toa_bidirectional_reflectance", reflectance.attrs["standard_name"])
+        self.assertEqual("percent", reflectance.attrs["units"])
+        self.assertEqual(1.52588E-05, reflectance.attrs["scale_factor"])
+        self.assertEqual("true", reflectance.attrs["_Unsigned"])
 
         u_random = ds.variables["u_random"]
         self.assertEqual((5000, 5000), u_random.shape)
@@ -125,13 +149,13 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-3, 3], u_toa_refl_vis.attrs["image_correlation_scales"])
         self.assertEqual("gaussian", u_toa_refl_vis.attrs["pdf_shape"])
 
-        sol_eff_irr = ds.variables["sol_eff_irr"]
-        self.assertEqual((), sol_eff_irr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_eff_irr.attrs["_FillValue"])
-        self.assertEqual("solar_irradiance_vis", sol_eff_irr.attrs["standard_name"])
-        self.assertEqual("Solar effective Irradiance", sol_eff_irr.attrs["long_name"])
-        self.assertEqual("W*m-2", sol_eff_irr.attrs["units"])
+        count = ds.variables["count_vis"]
+        self.assertEqual((5000, 5000), count.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.data[0, 113])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int8), count.attrs["_FillValue"])
+        self.assertEqual("Image counts", count.attrs["long_name"])
+        self.assertEqual("count", count.attrs["units"])
+        self.assertEqual("true", count.attrs["_Unsigned"])
 
         u_lat = ds.variables["u_latitude"]
         self.assertEqual((5000, 5000), u_lat.shape)
@@ -233,7 +257,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("digitised_gaussian", u_tot_count.attrs["pdf_shape"])
 
         u_srf = ds.variables["u_srf"]
-        self.assertEqual((1000, 1000), u_srf.shape)
+        self.assertEqual((1011, 1011), u_srf.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_srf.data[3, 119])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_srf.attrs["_FillValue"])
         self.assertEqual("Uncertainty in SRF", u_srf.attrs["long_name"])
@@ -263,13 +287,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.attrs["_FillValue"])
         self.assertEqual("Time variation of a0", a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
-
-        dse = ds.variables["distance_sun_earth"]
-        self.assertEqual((), dse.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.attrs["_FillValue"])
-        self.assertEqual("Sun-Earth distance", dse.attrs["long_name"])
-        self.assertEqual("au", dse.attrs["units"])
 
         k_space = ds.variables["mean_counts_space_vis"]
         self.assertEqual((), k_space.shape)

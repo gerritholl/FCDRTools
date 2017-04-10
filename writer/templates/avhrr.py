@@ -21,9 +21,12 @@ class AVHRR:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # Time
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "time")
-        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
+        default_array = DefaultData.create_default_vector(height,  np.float64)
+        variable = Variable(["y"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float64))
         tu.add_units(variable, "s")
+        variable.attrs["standard_name"] = "time"
+        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         dataset["Time"] = variable
 
         # scanline
@@ -143,8 +146,11 @@ class AVHRR:
         dataset["u_longitude"] = variable
 
         # u_time
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of time")
+        default_array = DefaultData.create_default_vector(height,  np.float64)
+        variable = Variable(["y"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float64))
         tu.add_units(variable, "s")
+        variable.attrs["long_name"] = "uncertainty of acquisition time"
         dataset["u_time"] = variable
 
         # u_satellite_azimuth_angle

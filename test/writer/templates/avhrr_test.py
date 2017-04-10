@@ -27,9 +27,9 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("degrees_east", longitude.attrs["units"])
 
         time = ds.variables["Time"]
-        self.assertEqual((5, 409), time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), time.data[0, 2])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), time.attrs["_FillValue"])
+        self.assertEqual((5,), time.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float64), time.data[2])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float64), time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
         self.assertEqual("s", time.attrs["units"])
@@ -145,10 +145,10 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("degree", u_longitude.attrs["units"])
 
         u_time = ds.variables["u_time"]
-        self.assertEqual((5, 409), u_time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.data[1, 35])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_time.attrs["_FillValue"])
-        self.assertEqual("uncertainty of time", u_time.attrs["long_name"])
+        self.assertEqual((5,), u_time.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float64), u_time.data[1])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float64), u_time.attrs["_FillValue"])
+        self.assertEqual("uncertainty of acquisition time", u_time.attrs["long_name"])
         self.assertEqual("s", u_time.attrs["units"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]

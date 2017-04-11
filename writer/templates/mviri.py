@@ -260,24 +260,6 @@ class MVIRI:
         variable.attrs["long_name"] = "Covariance matrix of calibration coefficients"
         dataset["covariance_a0_a1_vis"] = variable
 
-        # u_sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
-        tu.add_units(variable, "Wm^-2")
-        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
-        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
-        variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
-        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs["pdf_shape"] = "rectangle"
-        dataset["u_sol_eff_irr"] = variable
-
         # u_electronics_counts_vis
         default_array = DefaultData.get_default_fill_value(np.float32)
         variable = Variable([], default_array)

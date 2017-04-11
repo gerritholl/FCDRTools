@@ -210,8 +210,8 @@ class AVHRRTest(unittest.TestCase):
 
         t_instr = ds.variables["T_instr"]
         self.assertEqual((), t_instr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), t_instr.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), t_instr.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), t_instr.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), t_instr.attrs["_FillValue"])
         self.assertEqual("Instrument temperature", t_instr.attrs["long_name"])
         self.assertEqual("K", t_instr.attrs["units"])
 

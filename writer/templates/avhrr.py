@@ -202,9 +202,9 @@ class AVHRR:
         dataset["R_ICT"] = variable
 
         # T_instr
-        default_array = DefaultData.get_default_fill_value(np.float32)
+        default_array = DefaultData.get_default_fill_value(np.int16)
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["long_name"] = "Instrument temperature"
         tu.add_units(variable, "K")
         dataset["T_instr"] = variable

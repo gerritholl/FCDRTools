@@ -93,6 +93,90 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.attrs["_FillValue"])
         self.assertEqual("Spectral Response Function", srf.attrs["long_name"])
 
+        cov_srf = ds.variables["covariance_spectral_response_function_vis"]
+        self.assertEqual((1011, 1011), cov_srf.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), cov_srf.data[116, 22])
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), cov_srf.attrs["_FillValue"])
+        self.assertEqual("Covariance of the Visible Band Spectral Response Function", cov_srf.attrs["long_name"])
+
+        a_ir = ds.variables["a_ir"]
+        self.assertEqual((), a_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a_ir.attrs["_FillValue"])
+        self.assertEqual("Calibration parameter a for IR Band", a_ir.attrs["long_name"])
+        self.assertEqual("mWm^-2sr^-1cm^-1", a_ir.attrs["units"])
+
+        b_ir = ds.variables["b_ir"]
+        self.assertEqual((), b_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), b_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), b_ir.attrs["_FillValue"])
+        self.assertEqual("Calibration parameter b for IR Band", b_ir.attrs["long_name"])
+        self.assertEqual("mWm^-2sr^-1cm^-1/DC", b_ir.attrs["units"])
+
+        u_a_ir = ds.variables["u_a_ir"]
+        self.assertEqual((), u_a_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a_ir.attrs["_FillValue"])
+        self.assertEqual("Uncertainty of calibration parameter a for IR Band", u_a_ir.attrs["long_name"])
+        self.assertEqual("mWm^-2sr^-1cm^-1", u_a_ir.attrs["units"])
+
+        u_b_ir = ds.variables["u_b_ir"]
+        self.assertEqual((), u_b_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_b_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_b_ir.attrs["_FillValue"])
+        self.assertEqual("Uncertainty of calibration parameter b for IR Band", u_b_ir.attrs["long_name"])
+        self.assertEqual("mWm^-2sr^-1cm^-1/DC", u_b_ir.attrs["units"])
+
+        q_wv = ds.variables["q_wv"]
+        self.assertEqual((), q_wv.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), q_wv.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), q_wv.attrs["_FillValue"])
+        self.assertEqual("WV Band Calibration quality flag", q_wv.attrs["long_name"])
+        self.assertEqual("1", q_wv.attrs["units"])
+
+        unit_conversion_ir = ds.variables["unit_conversion_ir"]
+        self.assertEqual((), unit_conversion_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), unit_conversion_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), unit_conversion_ir.attrs["_FillValue"])
+        self.assertEqual("IR Unit conversion factor", unit_conversion_ir.attrs["long_name"])
+        self.assertEqual("1", unit_conversion_ir.attrs["units"])
+
+        unit_conversion_wv = ds.variables["unit_conversion_wv"]
+        self.assertEqual((), unit_conversion_wv.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), unit_conversion_wv.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), unit_conversion_wv.attrs["_FillValue"])
+        self.assertEqual("WV Unit conversion factor", unit_conversion_wv.attrs["long_name"])
+        self.assertEqual("1", unit_conversion_wv.attrs["units"])
+
+        bt_a_ir = ds.variables["bt_a_ir"]
+        self.assertEqual((), bt_a_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_a_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_a_ir.attrs["_FillValue"])
+        self.assertEqual("IR Band BT conversion parameter A", bt_a_ir.attrs["long_name"])
+        self.assertEqual("1", bt_a_ir.attrs["units"])
+
+        bt_b_ir = ds.variables["bt_b_ir"]
+        self.assertEqual((), bt_b_ir.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_b_ir.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_b_ir.attrs["_FillValue"])
+        self.assertEqual("IR Band BT conversion parameter B", bt_b_ir.attrs["long_name"])
+        self.assertEqual("1", bt_b_ir.attrs["units"])
+
+        bt_a_wv = ds.variables["bt_a_wv"]
+        self.assertEqual((), bt_a_wv.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_a_wv.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_a_wv.attrs["_FillValue"])
+        self.assertEqual("WV Band BT conversion parameter A", bt_a_wv.attrs["long_name"])
+        self.assertEqual("1", bt_a_wv.attrs["units"])
+
+        bt_b_wv = ds.variables["bt_b_wv"]
+        self.assertEqual((), bt_b_wv.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_b_wv.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), bt_b_wv.attrs["_FillValue"])
+        self.assertEqual("WV Band BT conversion parameter B", bt_b_wv.attrs["long_name"])
+        self.assertEqual("1", bt_b_wv.attrs["units"])
+
+
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI.get_swath_width())
 

@@ -266,12 +266,13 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(18, len(ds.variables))
+        self.assertEqual(30, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["reflectance"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
+        self.assertIsNotNone(ds.variables["covariance_spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
@@ -280,6 +281,17 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["distance_sun_earth"])
         self.assertIsNotNone(ds.variables["sol_eff_irr"])
+        self.assertIsNotNone(ds.variables["a_ir"])
+        self.assertIsNotNone(ds.variables["b_ir"])
+        self.assertIsNotNone(ds.variables["u_a_ir"])
+        self.assertIsNotNone(ds.variables["u_b_ir"])
+        self.assertIsNotNone(ds.variables["q_wv"])
+        self.assertIsNotNone(ds.variables["unit_conversion_ir"])
+        self.assertIsNotNone(ds.variables["unit_conversion_wv"])
+        self.assertIsNotNone(ds.variables["bt_a_ir"])
+        self.assertIsNotNone(ds.variables["bt_b_ir"])
+        self.assertIsNotNone(ds.variables["bt_a_wv"])
+        self.assertIsNotNone(ds.variables["bt_b_wv"])
 
         # easy FCDR uncertainties
         self.assertIsNotNone(ds.variables["u_random"])
@@ -291,7 +303,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(37, len(ds.variables))
+        self.assertEqual(49, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["u_toa_bidirectional_reflectance_vis"])
@@ -305,11 +317,23 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["count_vis"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
+        self.assertIsNotNone(ds.variables["covariance_spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["a0_vis"])
         self.assertIsNotNone(ds.variables["a1_vis"])
         self.assertIsNotNone(ds.variables["sol_eff_irr"])
         self.assertIsNotNone(ds.variables["distance_sun_earth"])
         self.assertIsNotNone(ds.variables["mean_counts_space_vis"])
+        self.assertIsNotNone(ds.variables["a_ir"])
+        self.assertIsNotNone(ds.variables["b_ir"])
+        self.assertIsNotNone(ds.variables["u_a_ir"])
+        self.assertIsNotNone(ds.variables["u_b_ir"])
+        self.assertIsNotNone(ds.variables["q_wv"])
+        self.assertIsNotNone(ds.variables["unit_conversion_ir"])
+        self.assertIsNotNone(ds.variables["unit_conversion_wv"])
+        self.assertIsNotNone(ds.variables["bt_a_ir"])
+        self.assertIsNotNone(ds.variables["bt_b_ir"])
+        self.assertIsNotNone(ds.variables["bt_a_wv"])
+        self.assertIsNotNone(ds.variables["bt_b_wv"])
 
         # full FCDR uncertainties
         self.assertIsNotNone(ds.variables["u_latitude"])

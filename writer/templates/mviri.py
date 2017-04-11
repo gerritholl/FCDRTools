@@ -54,21 +54,10 @@ class MVIRI:
         dataset["count_wv"] = variable
 
         # distance_sun_earth
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Sun-Earth distance"
-        tu.add_units(variable, "au")
-        dataset["distance_sun_earth"] = variable
+        dataset["distance_sun_earth"] = MVIRI._create_scalar_float_variable(long_name="Sun-Earth distance", units="au")
 
         # sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["standard_name"] = "solar_irradiance_vis"
-        variable.attrs["long_name"] = "Solar effective Irradiance"
-        tu.add_units(variable, "W*m-2")
-        dataset["sol_eff_irr"] = variable
+        dataset["sol_eff_irr"] = MVIRI._create_scalar_float_variable(standard_name="solar_irradiance_vis", long_name="Solar effective Irradiance", units="W*m-2")
 
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
@@ -76,6 +65,25 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Spectral Response Function"
         dataset["spectral_response_function_vis"] = variable
+
+        # srf covariance_
+        default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.float32)
+        variable = Variable(["srf_size", "srf_size"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable.attrs["long_name"] = "Covariance of the Visible Band Spectral Response Function"
+        dataset["covariance_spectral_response_function_vis"] = variable
+
+        dataset["a_ir"] = MVIRI._create_scalar_float_variable(long_name="Calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
+        dataset["b_ir"] = MVIRI._create_scalar_float_variable(long_name="Calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
+        dataset["u_a_ir"] = MVIRI._create_scalar_float_variable(long_name="Uncertainty of calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
+        dataset["u_b_ir"] = MVIRI._create_scalar_float_variable(long_name="Uncertainty of calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
+        dataset["q_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band Calibration quality flag", units="1")
+        dataset["unit_conversion_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Unit conversion factor", units="1")
+        dataset["unit_conversion_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Unit conversion factor", units="1")
+        dataset["bt_a_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Band BT conversion parameter A", units="1")
+        dataset["bt_b_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Band BT conversion parameter B", units="1")
+        dataset["bt_a_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band BT conversion parameter A", units="1")
+        dataset["bt_b_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
 
     @staticmethod
     def get_swath_width():
@@ -344,4 +352,20 @@ class MVIRI:
 
         tu.add_units(variable, "degree")
         tu.add_scale_factor(variable, scale_factor)
+        return variable
+
+    @staticmethod
+    def _create_scalar_float_variable(long_name=None, standard_name=None, units=None):
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+
+        if long_name is not None:
+            variable.attrs["long_name"] = long_name
+
+        if standard_name is not None:
+            variable.attrs["standard_name"] = standard_name
+
+        if units is not None:
+            tu.add_units(variable, units)
         return variable

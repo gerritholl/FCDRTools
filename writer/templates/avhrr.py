@@ -202,8 +202,8 @@ class AVHRR:
         dataset["R_ICT"] = variable
 
         # T_instr
-        default_array = DefaultData.create_default_vector(height, np.float32)
-        variable = Variable(["y"], default_array)
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Instrument temperature"
         tu.add_units(variable, "K")

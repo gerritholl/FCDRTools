@@ -22,6 +22,26 @@ class TemplateUtil:
         dataset["longitude"] = variable
 
     @staticmethod
+    def create_scalar_float_variable(long_name=None, standard_name=None, units=None, fill_value=None):
+        if fill_value is not None:
+            default_array = fill_value
+        else:
+            default_array = DefaultData.get_default_fill_value(np.float32)
+
+        variable = Variable([], default_array)
+        TemplateUtil.add_fill_value(variable, default_array)
+
+        if long_name is not None:
+            variable.attrs["long_name"] = long_name
+
+        if standard_name is not None:
+            variable.attrs["standard_name"] = standard_name
+
+        if units is not None:
+            TemplateUtil.add_units(variable, units)
+        return variable
+
+    @staticmethod
     def create_float_variable(width, height, standard_name=None, long_name=None, dim_names=None):
         default_array = DefaultData.create_default_array(width, height, np.float32)
         if dim_names is None:

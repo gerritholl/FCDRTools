@@ -54,10 +54,10 @@ class MVIRI:
         dataset["count_wv"] = variable
 
         # distance_sun_earth
-        dataset["distance_sun_earth"] = MVIRI._create_scalar_float_variable(long_name="Sun-Earth distance", units="au")
+        dataset["distance_sun_earth"] = tu.create_scalar_float_variable(long_name="Sun-Earth distance", units="au")
 
         # sol_eff_irr
-        dataset["sol_eff_irr"] = MVIRI._create_scalar_float_variable(standard_name="solar_irradiance_vis", long_name="Solar effective Irradiance", units="W*m-2")
+        dataset["sol_eff_irr"] = tu.create_scalar_float_variable(standard_name="solar_irradiance_vis", long_name="Solar effective Irradiance", units="W*m-2")
 
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
@@ -73,17 +73,17 @@ class MVIRI:
         variable.attrs["long_name"] = "Covariance of the Visible Band Spectral Response Function"
         dataset["covariance_spectral_response_function_vis"] = variable
 
-        dataset["a_ir"] = MVIRI._create_scalar_float_variable(long_name="Calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
-        dataset["b_ir"] = MVIRI._create_scalar_float_variable(long_name="Calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
-        dataset["u_a_ir"] = MVIRI._create_scalar_float_variable(long_name="Uncertainty of calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
-        dataset["u_b_ir"] = MVIRI._create_scalar_float_variable(long_name="Uncertainty of calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
-        dataset["q_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band Calibration quality flag", units="1")
-        dataset["unit_conversion_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Unit conversion factor", units="1")
-        dataset["unit_conversion_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Unit conversion factor", units="1")
-        dataset["bt_a_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Band BT conversion parameter A", units="1")
-        dataset["bt_b_ir"] = MVIRI._create_scalar_float_variable(long_name="IR Band BT conversion parameter B", units="1")
-        dataset["bt_a_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band BT conversion parameter A", units="1")
-        dataset["bt_b_wv"] = MVIRI._create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
+        dataset["a_ir"] = tu.create_scalar_float_variable(long_name="Calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
+        dataset["b_ir"] = tu.create_scalar_float_variable(long_name="Calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
+        dataset["u_a_ir"] = tu.create_scalar_float_variable(long_name="Uncertainty of calibration parameter a for IR Band", units="mWm^-2sr^-1cm^-1")
+        dataset["u_b_ir"] = tu.create_scalar_float_variable(long_name="Uncertainty of calibration parameter b for IR Band", units="mWm^-2sr^-1cm^-1/DC")
+        dataset["q_wv"] = tu.create_scalar_float_variable(long_name="WV Band Calibration quality flag", units="1")
+        dataset["unit_conversion_ir"] = tu.create_scalar_float_variable(long_name="IR Unit conversion factor", units="1")
+        dataset["unit_conversion_wv"] = tu.create_scalar_float_variable(long_name="WV Unit conversion factor", units="1")
+        dataset["bt_a_ir"] = tu.create_scalar_float_variable(long_name="IR Band BT conversion parameter A", units="1")
+        dataset["bt_b_ir"] = tu.create_scalar_float_variable(long_name="IR Band BT conversion parameter B", units="1")
+        dataset["bt_a_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter A", units="1")
+        dataset["bt_b_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
 
     @staticmethod
     def get_swath_width():
@@ -211,45 +211,17 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_srf"] = variable
 
-        # a0_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Calibration Coefficient at Launch"
-        tu.add_units(variable, "Wm^-2sr^-1/count")
-        dataset["a0_vis"] = variable
-
-        # a1_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Time variation of a0"
-        tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
-        dataset["a1_vis"] = variable
-
-        # mean_counts_space_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Space count"
-        tu.add_units(variable, "count")
-        dataset["mean_counts_space_vis"] = variable
+        dataset["a0_vis"] = tu.create_scalar_float_variable("Calibration Coefficient at Launch", units="Wm^-2sr^-1/count")
+        dataset["a1_vis"] = tu.create_scalar_float_variable("Time variation of a0", units="Wm^-2sr^-1/count day^-1 10^5")
+        dataset["mean_counts_space_vis"] = tu.create_scalar_float_variable("Space count", units="count")
 
         # u_a0_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty in a0"
-        tu.add_units(variable, "Wm^-2sr^-1/count")
+        variable = tu.create_scalar_float_variable("Uncertainty in a0", units="Wm^-2sr^-1/count")
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a0_vis"] = variable
 
         # u_a1_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty in a1"
-        tu.add_units(variable, "Wm^-2sr^-1/count day^-1 10^5")
+        variable = tu.create_scalar_float_variable("Uncertainty in a1", units="Wm^-2sr^-1/count day^-1 10^5")
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a1_vis"] = variable
 
@@ -260,28 +232,11 @@ class MVIRI:
         variable.attrs["long_name"] = "Covariance matrix of calibration coefficients"
         dataset["covariance_a0_a1_vis"] = variable
 
-        # u_electronics_counts_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty due to Electronics noise"
-        tu.add_units(variable, "count")
-        dataset["u_electronics_counts_vis"] = variable
-
-        # u_digitization
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty due to digitization"
-        tu.add_units(variable, "count")
-        dataset["u_digitization_counts_vis"] = variable
+        dataset["u_electronics_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to Electronics noise", units="count")
+        dataset["u_digitization_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to digitization", units="count")
 
         # allan_deviation_counts_space_vis
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty of space count"
-        tu.add_units(variable, "count")
+        variable = tu.create_scalar_float_variable("Uncertainty of space count", units="count")
         variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
         variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
         variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
@@ -334,20 +289,4 @@ class MVIRI:
 
         tu.add_units(variable, "degree")
         tu.add_scale_factor(variable, scale_factor)
-        return variable
-
-    @staticmethod
-    def _create_scalar_float_variable(long_name=None, standard_name=None, units=None):
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-
-        if long_name is not None:
-            variable.attrs["long_name"] = long_name
-
-        if standard_name is not None:
-            variable.attrs["standard_name"] = standard_name
-
-        if units is not None:
-            tu.add_units(variable, units)
         return variable

@@ -1,4 +1,3 @@
-
 class Correlation:
     EIFFEL = "eiffel"
     RECT = "rectangle"

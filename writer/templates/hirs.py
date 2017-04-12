@@ -393,19 +393,9 @@ class HIRS:
         dataset["u_c_space_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_space channel correlations")
 
         # u_Earthshine
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_Earthshine"] = variable
-
-        # u_O_Re
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_O_Re"] = variable
-
-        # u_O_TIWCT
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_O_TIWCT"] = variable
+        dataset["u_Earthshine"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_O_Re"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_O_TIWCT"] = tu.create_scalar_float_variable(fill_value=np.NaN)
 
         # u_O_TPRT
         variable = Variable([], np.int16(65535))
@@ -432,61 +422,16 @@ class HIRS:
         # u_O_TPRT_chan_corr
         dataset["u_O_TPRT_chan_corr"] = HIRS._create_channel_correlation_variable("u_O_TPRT channel correlations")
 
-        # u_Rself
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_Rself"] = variable
-
-        # u_Rselfparams
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_Rselfparams"] = variable
-
-        # u_SRF_calib
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_SRF_calib"] = variable
-
-        # u_d_PRT
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_d_PRT"] = variable
-
-        # u_electronics
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_electronics"] = variable
-
-        # u_extraneous_periodic
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_extraneous_periodic"] = variable
-
-        # u_nonlinearity
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        dataset["u_nonlinearity"] = variable
-
-        # emissivity
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "emissivity"
-        tu.add_units(variable, "1")
-        dataset["emissivity"] = variable
-
-        # temp_corr_slope
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "Slope for effective temperature correction"
-        tu.add_units(variable, "1")
-        dataset["temp_corr_slope"] = variable
-
-        # temp_corr_offset
-        variable = Variable([], np.NaN)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "Offset for effective temperature correction"
-        tu.add_units(variable, "1")
-        dataset["temp_corr_offset"] = variable
+        dataset["u_Rself"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_Rselfparams"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_SRF_calib"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_d_PRT"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_electronics"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_extraneous_periodic"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_nonlinearity"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["emissivity"] = tu.create_scalar_float_variable("emissivity", units="1", fill_value=np.NaN)
+        dataset["temp_corr_slope"] = tu.create_scalar_float_variable("Slope for effective temperature correction", units="1", fill_value=np.NaN)
+        dataset["temp_corr_offset"] = tu.create_scalar_float_variable("Offset for effective temperature correction", units="1", fill_value=np.NaN)
 
     @staticmethod
     def _add_HIRS2_flag_variables(dataset, height):
@@ -533,7 +478,7 @@ class HIRS:
         else:
             tu.add_fill_value(variable, fill_value)
         variable.attrs["long_name"] = long_name
-        if not orig_name is None:
+        if orig_name is not None:
             variable.attrs["orig_name"] = orig_name
         return variable
 

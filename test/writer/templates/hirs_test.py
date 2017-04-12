@@ -78,7 +78,7 @@ class HIRSTest(unittest.TestCase):
         sol_za = ds.variables["solar_zenith_angle"]
         self.assertEqual((6, 56), sol_za.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_za.data[3, 3])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16),sol_za.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_za.attrs["_FillValue"])
         self.assertEqual(0.01, sol_za.attrs["scale_factor"])
         self.assertEqual(-180.0, sol_za.attrs["add_offset"])
         self.assertEqual("solar_zenith_angle", sol_za.attrs["standard_name"])
@@ -140,7 +140,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual((6,), linqualflags.shape)
         self.assertEqual(0, linqualflags.data[0])
         self.assertEqual("256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
-            linqualflags.attrs["flag_masks"])
+                         linqualflags.attrs["flag_masks"])
         self.assertEqual(
             "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant",
             linqualflags.attrs["flag_meanings"])
@@ -541,14 +541,17 @@ class HIRSTest(unittest.TestCase):
     def test_add_HIRS2_flag_variables(self):
         ds = xr.Dataset()
         HIRS._add_HIRS2_flag_variables(ds, 7)
+        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
 
     def test_add_HIRS3_flag_variables(self):
         ds = xr.Dataset()
         HIRS._add_HIRS3_flag_variables(ds, 7)
+        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
 
     def test_add_HIRS4_flag_variables(self):
         ds = xr.Dataset()
         HIRS._add_HIRS4_flag_variables(ds, 7)
+        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
 
     def _assert_2d_temperature_variable(self, ds, name, long_name, orig_name):
         variable = ds.variables[name]

@@ -1,14 +1,13 @@
-import os
 import tempfile
 import unittest
 
+import os
 import xarray as xr
 
 from writer.fcdr_writer import FCDRWriter
 
 
 class ReadWriteTests(unittest.TestCase):
-
     def setUp(self):
         tempDir = tempfile.gettempdir()
         self.testDir = os.path.join(tempDir, 'fcdr')

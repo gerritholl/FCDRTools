@@ -13,13 +13,14 @@ class FCDRWriter:
         Save a dataset to NetCDF file.
         :param ds: The dataset
         :param file: File path
-        :param compression_level the file compression level, 0 - 9, default is 5
+        :param compression_level: the file compression level, 0 - 9, default is 5
+        :param overwrite: set true to overwrite existing files
          """
         if os.path.isfile(file):
             if overwrite is True:
                 os.remove(file)
             else:
-                raise Exception("The file already exists: " + file)
+                raise IOError("The file already exists: " + file)
 
         # set up compression parameter for ALL variables. Unfortunately, xarray does not allow
         # one set of compression params per file, only per variable. tb 2017-01-25

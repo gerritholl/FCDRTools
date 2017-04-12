@@ -46,7 +46,7 @@ class ReadWriteTests(unittest.TestCase):
 
         try:
             FCDRWriter.write(emptyDataset, testFile, overwrite=False)
-            self.fail("Exception expected")
-        except Exception:
+            self.fail("IOError expected")
+        except IOError:
             pass
 

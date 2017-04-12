@@ -7,18 +7,20 @@ from writer.default_data import DefaultData
 class TemplateUtil:
     @staticmethod
     def add_geolocation_variables(dataset, width, height):
-        default_array = DefaultData.create_default_array(width, height, float, fill_value=-32768.0)
+        default_array = DefaultData.create_default_array(width, height, np.int16, fill_value=-32768)
 
         variable = Variable(["y", "x"], default_array)
         TemplateUtil.add_fill_value(variable, -32768)
         variable.attrs["standard_name"] = "latitude"
-        variable.attrs["units"] = "degrees_north"
+        TemplateUtil.add_units(variable, "degrees_north")
+        TemplateUtil.add_scale_factor(variable, 0.0027466658)
         dataset["latitude"] = variable
 
         variable = Variable(["y", "x"], default_array)
         TemplateUtil.add_fill_value(variable, -32768)
         variable.attrs["standard_name"] = "longitude"
-        variable.attrs["units"] = "degrees_east"
+        TemplateUtil.add_units(variable, "degrees_east")
+        TemplateUtil.add_scale_factor(variable, 0.0054933317)
         dataset["longitude"] = variable
 
     @staticmethod

@@ -26,3 +26,27 @@ class ReadWriteTests(unittest.TestCase):
         FCDRWriter.write(emptyDataset, testFile)
 
         self.assertTrue(os.path.isfile(testFile))
+
+    def test_write_overwrite_true(self):
+        testFile = os.path.join(self.testDir, 'delete_me.nc')
+        emptyDataset = xr.Dataset()
+
+        FCDRWriter.write(emptyDataset, testFile, overwrite=True)
+        self.assertTrue(os.path.isfile(testFile))
+
+        FCDRWriter.write(emptyDataset, testFile, overwrite=True)
+        self.assertTrue(os.path.isfile(testFile))
+
+    def test_write_overwrite_false(self):
+        testFile = os.path.join(self.testDir, 'delete_me.nc')
+        emptyDataset = xr.Dataset()
+
+        FCDRWriter.write(emptyDataset, testFile)
+        self.assertTrue(os.path.isfile(testFile))
+
+        try:
+            FCDRWriter.write(emptyDataset, testFile, overwrite=False)
+            self.fail("Exception expected")
+        except Exception:
+            pass
+

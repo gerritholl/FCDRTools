@@ -8,7 +8,7 @@ class FCDRWriter:
     _version = "1.0.5"
 
     @classmethod
-    def write(cls, ds, file, compression_level=None):
+    def write(cls, ds, file, compression_level=None, overwrite=False):
         """
         Save a dataset to NetCDF file.
         :param ds: The dataset
@@ -16,7 +16,10 @@ class FCDRWriter:
         :param compression_level the file compression level, 0 - 9, default is 5
          """
         if os.path.isfile(file):
-            raise Exception("The file already exists: " + file)
+            if overwrite is True:
+                os.remove(file)
+            else:
+                raise Exception("The file already exists: " + file)
 
         # set up compression parameter for ALL variables. Unfortunately, xarray does not allow
         # one set of compression params per file, only per variable. tb 2017-01-25

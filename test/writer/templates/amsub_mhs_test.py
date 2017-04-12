@@ -62,7 +62,9 @@ class AMSUB_MHSTest(unittest.TestCase):
         self.assertEqual(0, scanqual.data[1])
         self.assertEqual("status_flag", scanqual.attrs["standard_name"])
         self.assertEqual("8, 16, 32, 64, 128, 1024, 2048, 4096, 8192, 16384, 32768, 1048576, 2097152, 4194304, 8388608", scanqual.attrs["flag_masks"])
-        self.assertEqual("earth_loc_quest_ant_pos earth_loc_quest_reas earth_loc_quest_margin earth_loc_quest_time no_earth_loc_time uncalib_instr_mode uncalib_channels calib_marg_prt uncalib_bad_prt calib_few_scans uncalib_bad_time repeat_scan_times inconsistent_time time_field_bad time_field_inferred", scanqual.attrs["flag_meanings"])
+        self.assertEqual(
+            "earth_loc_quest_ant_pos earth_loc_quest_reas earth_loc_quest_margin earth_loc_quest_time no_earth_loc_time uncalib_instr_mode uncalib_channels calib_marg_prt uncalib_bad_prt calib_few_scans uncalib_bad_time repeat_scan_times inconsistent_time time_field_bad time_field_inferred",
+            scanqual.attrs["flag_meanings"])
 
         scnlin = ds.variables["scnlin"]
         self.assertEqual((4,), scnlin.shape)
@@ -80,8 +82,7 @@ class AMSUB_MHSTest(unittest.TestCase):
         self.assertEqual((4,), scnlintime.shape)
         self.assertEqual(-2147483647, scnlintime.data[0])
         self.assertEqual(-2147483647, scnlintime.attrs["_FillValue"])
-        self.assertEqual("Acquisition time of scan in milliseconds since beginning of the day",
-                         scnlintime.attrs["long_name"])
+        self.assertEqual("Acquisition time of scan in milliseconds since beginning of the day", scnlintime.attrs["long_name"])
         self.assertEqual("ms", scnlintime.attrs["units"])
 
         scnlinyr = ds.variables["scnlinyr"]

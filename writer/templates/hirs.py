@@ -38,12 +38,11 @@ class HIRS:
         dataset["bt"] = variable
 
         # c_earth
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.int16, dims_names=["rad_channel", "y", "x"])
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.uint16, dims_names=["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["long_name"] = "counts_earth"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["c_earth"] = variable
 
@@ -73,10 +72,9 @@ class HIRS:
         dataset["scanline"] = variable
 
         # time
-        default_array = DefaultData.create_default_vector(height, np.int32)
+        default_array = DefaultData.create_default_vector(height, np.uint32)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
-        tu.set_unsigned(variable)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         tu.add_units(variable, "s")
@@ -168,12 +166,11 @@ class HIRS:
         dataset["u_time"] = variable
 
         # u_c_earth
-        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.int16, dims_names=["channel", "calibration_cycle"])
+        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.uint16, dims_names=["channel", "calibration_cycle"])
         variable = Variable(["channel", "calibration_cycle"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "count")
         tu.add_scale_factor(variable, 0.005)
-        tu.set_unsigned(variable)
         variable.attrs["long_name"] = "uncertainty counts for Earth views"
         variable.attrs["ancilliary_variables"] = "u_c_earth_chan_corr"
         variable.attrs["channels_affected"] = "all"
@@ -376,12 +373,11 @@ class HIRS:
         dataset["u_c_earth_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_earth channel correlations")
 
         # u_c_space
-        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.int16, dims_names=["channel", "calibration_cycle"])
+        default_array = DefaultData.create_default_array(NUM_CALIBRATION_CYCLE, NUM_CHANNELS, np.uint16, dims_names=["channel", "calibration_cycle"])
         variable = Variable(["channel", "calibration_cycle"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "count")
         tu.add_scale_factor(variable, 0.005)
-        tu.set_unsigned(variable)
         variable.attrs["long_name"] = "uncertainty counts for space views"
         variable.attrs["ancilliary_variables"] = "u_c_space_chan_corr"
         variable.attrs["channels_affected"] = "all"
@@ -398,9 +394,8 @@ class HIRS:
         dataset["u_O_TIWCT"] = tu.create_scalar_float_variable(fill_value=np.NaN)
 
         # u_O_TPRT
-        variable = Variable([], np.int16(65535))
+        variable = Variable([], np.uint16(65535))
         tu.add_fill_value(variable, 65535)
-        tu.set_unsigned(variable)
         tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "K")
         variable.attrs["channels_affected"] = "all"

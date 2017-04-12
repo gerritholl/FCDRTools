@@ -39,10 +39,9 @@ class HIRSTest(unittest.TestCase):
 
         c_earth = ds.variables["c_earth"]
         self.assertEqual((20, 6, 56), c_earth.shape)
-        self.assertEqual(-32767, c_earth.data[0, 2, 3])
-        self.assertEqual(-32767, c_earth.attrs["_FillValue"])
+        self.assertEqual(65535, c_earth.data[0, 2, 3])
+        self.assertEqual(65535, c_earth.attrs["_FillValue"])
         self.assertEqual("counts_earth", c_earth.attrs["long_name"])
-        self.assertEqual("true", c_earth.attrs["_Unsigned"])
         self.assertEqual("count", c_earth.attrs["units"])
         self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
 
@@ -103,11 +102,10 @@ class HIRSTest(unittest.TestCase):
 
         time = ds.variables["time"]
         self.assertEqual((6,), time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), time.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), time.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
-        self.assertEqual("true", time.attrs["_Unsigned"])
         self.assertEqual("s", time.attrs["units"])
 
         scnlintime = ds.variables["scnlintime"]
@@ -196,8 +194,8 @@ class HIRSTest(unittest.TestCase):
 
         u_c_earth = ds.variables["u_c_earth"]
         self.assertEqual((19, 337), u_c_earth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_earth.data[6, 6])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_earth.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_c_earth.data[6, 6])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_c_earth.attrs["_FillValue"])
         self.assertEqual("uncertainty counts for Earth views", u_c_earth.attrs["long_name"])
         self.assertEqual("count", u_c_earth.attrs["units"])
         self.assertEqual("u_c_earth_chan_corr", u_c_earth.attrs["ancilliary_variables"])
@@ -205,7 +203,6 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("C_E", u_c_earth.attrs["parameter"])
         self.assertEqual("gaussian", u_c_earth.attrs["pdf_shape"])
         self.assertEqual(0.005, u_c_earth.attrs["scale_factor"])
-        self.assertEqual("true", u_c_earth.attrs["_Unsigned"])
 
         u_L_earth_random = ds.variables["u_L_earth_random"]
         self.assertEqual((20, 7, 56), u_L_earth_random.shape)
@@ -425,8 +422,8 @@ class HIRSTest(unittest.TestCase):
 
         u_c_space = ds.variables["u_c_space"]
         self.assertEqual((19, 337), u_c_space.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_space.data[(12, 15)])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_space.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_c_space.data[(12, 15)])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_c_space.attrs["_FillValue"])
         self.assertEqual("C_s", u_c_space.attrs["parameter"])
         self.assertEqual("gaussian", u_c_space.attrs["pdf_shape"])
         self.assertEqual(0.005, u_c_space.attrs["scale_factor"])
@@ -456,9 +453,8 @@ class HIRSTest(unittest.TestCase):
 
         u_o_TPRT = ds.variables["u_O_TPRT"]
         self.assertEqual((), u_o_TPRT.shape)
-        self.assertEqual(np.int16(65535), u_o_TPRT.data[()])
+        self.assertEqual(65535, u_o_TPRT.data[()])
         self.assertEqual(65535, u_o_TPRT.attrs["_FillValue"])
-        self.assertEqual("true", u_o_TPRT.attrs["_Unsigned"])
         self.assertEqual("all", u_o_TPRT.attrs["channels_affected"])
         self.assertEqual("rectangle", u_o_TPRT.attrs["scan_correlation_form"])
         self.assertEqual("pixel", u_o_TPRT.attrs["scan_correlation_units"])

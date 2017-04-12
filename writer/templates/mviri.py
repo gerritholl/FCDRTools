@@ -18,39 +18,34 @@ class MVIRI:
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
         # time
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int16, fill_value=TIME_FILL_VALUE)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint16)
         variable = Variable(["y_ir", "x_ir"], default_array)
-        tu.add_fill_value(variable, TIME_FILL_VALUE)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time of pixel"
         tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
-        tu.set_unsigned(variable)
         tu.add_offset(variable, TIME_FILL_VALUE)
         dataset["time"] = variable
 
-        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="sensor_azimuth_angle")
-        tu.set_unsigned(dataset["satellite_azimuth_angle"])
+        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="sensor_azimuth_angle", unsigned=True)
         dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="sensor_zenith_angle")
-        dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="solar_azimuth_angle")
-        tu.set_unsigned(dataset["solar_azimuth_angle"])
+        dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="solar_azimuth_angle", unsigned=True)
         dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="solar_zenith_angle")
 
         # count_ir
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int8)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
         variable = Variable(["y_ir", "x_ir"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Infrared Image Counts"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
         dataset["count_ir"] = variable
 
         # count_wv
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.int8)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
         variable = Variable(["y_ir", "x_ir"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "WV Image Counts"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
         dataset["count_wv"] = variable
 
         # distance_sun_earth
@@ -94,31 +89,28 @@ class MVIRI:
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # reflectance
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
         tu.add_units(variable, "percent")
-        tu.set_unsigned(variable)
         tu.add_scale_factor(variable, 1.52588E-05)
         dataset["reflectance"] = variable
 
         # u_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "random uncertainty per pixel"
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        tu.set_unsigned(variable)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "percent")
         tu.add_scale_factor(variable, 1.52588E-05)
         dataset["u_random"] = variable
 
         # u_non_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "non-random uncertainty per pixel"
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        tu.set_unsigned(variable)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "percent")
         tu.add_scale_factor(variable, 1.52588E-05)
         dataset["u_non_random"] = variable
@@ -127,12 +119,11 @@ class MVIRI:
     def add_full_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16, fill_value=65535)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, 65535)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "percent")
         tu.add_scale_factor(variable, 1e-03)
-        tu.set_unsigned(variable)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.TRUNC_GAUSS
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
         variable.attrs[corr.SCAN_CORR_SCALE] = [-2, 2]
@@ -146,27 +137,26 @@ class MVIRI:
         dataset["u_toa_bidirectional_reflectance_vis"] = variable
 
         # count_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int8)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int8))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Image counts"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
         dataset["count_vis"] = variable
 
-        dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude", unsigned=True, fill_value=65535)
+        dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude", unsigned=True)
         MVIRI._add_geo_correlation_attributes(dataset["u_latitude"])
 
-        dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude", unsigned=True, fill_value=65535)
+        dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude", unsigned=True)
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
-        tu.set_unsigned(variable)
+        tu.add_scale_factor(variable, 0.009155273)
         variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_time"] = variable
 
@@ -176,12 +166,11 @@ class MVIRI:
         dataset["u_solar_azimuth_angle"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Solar Azimuth Angle", unsigned=True)
 
         # u_combined_counts_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["long_name"] = "Total Uncertainty in counts"
         tu.add_units(variable, "count")
-        tu.set_unsigned(variable)
         tu.add_scale_factor(variable, 7.62939E-05)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.EIFFEL
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
@@ -193,12 +182,11 @@ class MVIRI:
         dataset["u_combined_counts_vis"] = variable
 
         # u_srf
-        default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.int16)
+        default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.uint16)
         variable = Variable(["srf_size", "srf_size"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["long_name"] = "Uncertainty in SRF"
         tu.add_scale_factor(variable, 1.52588E-05)
-        tu.set_unsigned(variable)
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
         variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
@@ -271,21 +259,24 @@ class MVIRI:
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.int16, fill_value=fill_value)
+        if unsigned is True:
+            data_type = np.uint16
+        else:
+            data_type=np.int16
+
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, data_type, fill_value=fill_value)
         variable = Variable(["y", "x"], default_array)
+
         if fill_value is not None:
             tu.add_fill_value(variable, fill_value)
         else:
-            tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+            tu.add_fill_value(variable, DefaultData.get_default_fill_value(data_type))
 
         if standard_name is not None:
             variable.attrs["standard_name"] = standard_name
 
         if long_name is not None:
             variable.attrs["long_name"] = long_name
-
-        if unsigned is True:
-            tu.set_unsigned(variable)
 
         tu.add_units(variable, "degree")
         tu.add_scale_factor(variable, scale_factor)

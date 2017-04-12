@@ -28,17 +28,19 @@ class HIRSTest(unittest.TestCase):
 
         bt = ds.variables["bt"]
         self.assertEqual((19, 6, 56), bt.shape)
-        self.assertEqual(-999.0, bt.data[0, 2, 1])
-        self.assertEqual(-999.0, bt.attrs["_FillValue"])
+        self.assertEqual(-999, bt.data[0, 2, 1])
+        self.assertEqual(-999, bt.attrs["_FillValue"])
         self.assertEqual("toa_brightness_temperature", bt.attrs["standard_name"])
         self.assertEqual("Brightness temperature, NOAA/EUMETSAT calibrated", bt.attrs["long_name"])
         self.assertEqual("K", bt.attrs["units"])
+        self.assertEqual(0.01, bt.attrs["scale_factor"])
+        self.assertEqual(150, bt.attrs["add_offset"])
         self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
 
         c_earth = ds.variables["c_earth"]
         self.assertEqual((20, 6, 56), c_earth.shape)
-        self.assertEqual(99999, c_earth.data[0, 2, 3])
-        self.assertEqual(99999, c_earth.attrs["_FillValue"])
+        self.assertEqual(-32767, c_earth.data[0, 2, 3])
+        self.assertEqual(-32767, c_earth.attrs["_FillValue"])
         self.assertEqual("counts_earth", c_earth.attrs["long_name"])
         self.assertEqual("true", c_earth.attrs["_Unsigned"])
         self.assertEqual("count", c_earth.attrs["units"])
@@ -56,31 +58,39 @@ class HIRSTest(unittest.TestCase):
 
         sat_za = ds.variables["sat_za"]
         self.assertEqual((6, 56), sat_za.shape)
-        self.assertEqual(-999.0, sat_za.data[2, 2])
-        self.assertEqual(-999.0, sat_za.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_za.data[2, 2])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_za.attrs["_FillValue"])
+        self.assertEqual(0.01, sat_za.attrs["scale_factor"])
+        self.assertEqual(-180.0, sat_za.attrs["add_offset"])
         self.assertEqual("platform_zenith_angle", sat_za.attrs["standard_name"])
         self.assertEqual("degree", sat_za.attrs["units"])
 
         sat_aa = ds.variables["sat_aa"]
         self.assertEqual((6, 56), sat_aa.shape)
-        self.assertEqual(-999.0, sat_aa.data[5, 5])
-        self.assertEqual(-999.0, sat_aa.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_aa.data[5, 5])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_aa.attrs["_FillValue"])
+        self.assertEqual(0.01, sat_aa.attrs["scale_factor"])
+        self.assertEqual(-180.0, sat_aa.attrs["add_offset"])
         self.assertEqual("sensor_azimuth_angle", sat_aa.attrs["standard_name"])
         self.assertEqual("local_azimuth_angle", sat_aa.attrs["long_name"])
         self.assertEqual("degree", sat_aa.attrs["units"])
 
         sol_za = ds.variables["solar_zenith_angle"]
         self.assertEqual((6, 56), sol_za.shape)
-        self.assertTrue(np.isnan(sol_za.data[3, 3]))
-        self.assertTrue(np.isnan(sol_za.attrs["_FillValue"]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_za.data[3, 3])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16),sol_za.attrs["_FillValue"])
+        self.assertEqual(0.01, sol_za.attrs["scale_factor"])
+        self.assertEqual(-180.0, sol_za.attrs["add_offset"])
         self.assertEqual("solar_zenith_angle", sol_za.attrs["standard_name"])
         self.assertEqual("sol_za", sol_za.attrs["orig_name"])
         self.assertEqual("degree", sol_za.attrs["units"])
 
         sol_aa = ds.variables["sol_aa"]
         self.assertEqual((6, 56), sol_aa.shape)
-        self.assertEqual(-999.0, sol_aa.data[4, 4])
-        self.assertEqual(-999.0, sol_aa.attrs["_FillValue"])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_aa.data[4, 4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_aa.attrs["_FillValue"])
+        self.assertEqual(0.01, sol_aa.attrs["scale_factor"])
+        self.assertEqual(-180.0, sol_aa.attrs["add_offset"])
         self.assertEqual("solar_azimuth_angle", sol_aa.attrs["standard_name"])
         self.assertEqual("degree", sol_aa.attrs["units"])
 

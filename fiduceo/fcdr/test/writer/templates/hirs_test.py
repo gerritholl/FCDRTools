@@ -2,9 +2,8 @@ import unittest
 
 import numpy as np
 import xarray as xr
-
-from writer.default_data import DefaultData
-from writer.templates.hirs import HIRS
+from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.fcdr.writer.templates.hirs import HIRS
 
 
 class HIRSTest(unittest.TestCase):

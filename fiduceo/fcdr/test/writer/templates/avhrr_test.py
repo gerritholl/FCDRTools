@@ -2,9 +2,9 @@ import unittest
 
 import numpy as np
 import xarray as xr
+from fiduceo.fcdr.writer.default_data import DefaultData
 
-from writer.default_data import DefaultData
-from writer.templates.avhrr import AVHRR
+from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
 
 class AVHRRTest(unittest.TestCase):

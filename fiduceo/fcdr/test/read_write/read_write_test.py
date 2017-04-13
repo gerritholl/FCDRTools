@@ -4,7 +4,7 @@ import unittest
 import os
 import xarray as xr
 
-from writer.fcdr_writer import FCDRWriter
+from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 
 class ReadWriteTests(unittest.TestCase):
@@ -49,4 +49,3 @@ class ReadWriteTests(unittest.TestCase):
             self.fail("IOError expected")
         except IOError:
             pass
-

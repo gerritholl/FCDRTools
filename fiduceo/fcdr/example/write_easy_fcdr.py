@@ -1,4 +1,4 @@
-from writer.fcdr_writer import FCDRWriter
+from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 
 def main():

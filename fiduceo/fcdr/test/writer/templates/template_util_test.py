@@ -2,7 +2,7 @@ import unittest
 
 import xarray as xr
 
-from writer.templates.templateutil import TemplateUtil
+from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil
 
 
 class TemplateUtilTest(unittest.TestCase):

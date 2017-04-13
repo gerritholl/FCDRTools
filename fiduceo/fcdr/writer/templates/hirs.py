@@ -1,9 +1,9 @@
 import numpy as np
+from fiduceo.fcdr.writer.correlation import Correlation as corr
+from fiduceo.fcdr.writer.default_data import DefaultData
 from xarray import Variable
 
-from writer.correlation import Correlation as corr
-from writer.default_data import DefaultData
-from writer.templates.templateutil import TemplateUtil as tu
+from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 FILL_VALUE = -999.0
 COUNTS_FILL_VALUE = 99999

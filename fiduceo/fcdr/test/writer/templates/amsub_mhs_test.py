@@ -2,9 +2,9 @@ import unittest
 
 import numpy as np
 import xarray as xr
+from fiduceo.fcdr.writer.default_data import DefaultData
 
-from writer.default_data import DefaultData
-from writer.templates.amsub_mhs import AMSUB_MHS
+from fiduceo.fcdr.writer.templates.amsub_mhs import AMSUB_MHS
 
 
 class AMSUB_MHSTest(unittest.TestCase):

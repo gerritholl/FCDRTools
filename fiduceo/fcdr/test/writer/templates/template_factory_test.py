@@ -1,6 +1,6 @@
 import unittest
 
-from writer.templates.template_factory import TemplateFactory
+from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
 
 
 class TemplateFactoryTest(unittest.TestCase):

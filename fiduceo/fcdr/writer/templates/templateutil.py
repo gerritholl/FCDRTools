@@ -1,7 +1,7 @@
 import numpy as np
 from xarray import Variable
 
-from writer.default_data import DefaultData
+from fiduceo.fcdr.writer.default_data import DefaultData
 
 
 class TemplateUtil:

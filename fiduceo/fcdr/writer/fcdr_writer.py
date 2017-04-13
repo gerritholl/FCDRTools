@@ -1,7 +1,7 @@
 import os
 import xarray as xr
 
-from writer.templates.template_factory import TemplateFactory
+from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
 
 
 class FCDRWriter:

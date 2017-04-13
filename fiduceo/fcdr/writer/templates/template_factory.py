@@ -1,7 +1,7 @@
-from writer.templates.amsub_mhs import AMSUB_MHS
-from writer.templates.avhrr import AVHRR
-from writer.templates.hirs import HIRS
-from writer.templates.mviri import MVIRI
+from fiduceo.fcdr.writer.templates.avhrr import AVHRR
+from fiduceo.fcdr.writer.templates.hirs import HIRS
+from fiduceo.fcdr.writer.templates.mviri import MVIRI
+from fiduceo.fcdr.writer.templates.amsub_mhs import AMSUB_MHS
 
 
 class TemplateFactory:

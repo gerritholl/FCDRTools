@@ -2,3 +2,5 @@
 *.ipr
 *.iws
 .idea
+dist
+fcdr_tools.egg-info

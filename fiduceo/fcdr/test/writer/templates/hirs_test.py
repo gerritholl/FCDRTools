@@ -34,25 +34,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("K", bt.attrs["units"])
         self.assertEqual(0.01, bt.attrs["scale_factor"])
         self.assertEqual(150, bt.attrs["add_offset"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
-
-        c_earth = ds.variables["c_earth"]
-        self.assertEqual((20, 6, 56), c_earth.shape)
-        self.assertEqual(65535, c_earth.data[0, 2, 3])
-        self.assertEqual(65535, c_earth.attrs["_FillValue"])
-        self.assertEqual("counts_earth", c_earth.attrs["long_name"])
-        self.assertEqual("count", c_earth.attrs["units"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
-
-        l_earth = ds.variables["L_earth"]
-        self.assertEqual((20, 6, 56), l_earth.shape)
-        self.assertTrue(np.isnan(l_earth.data[0, 2, 4]))
-        self.assertTrue(np.isnan(l_earth.attrs["_FillValue"]))
-        self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
-        self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
-        self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
-        self.assertEqual("radiance", l_earth.attrs["orig_name"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf scantype qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
 
         sat_za = ds.variables["sat_za"]
         self.assertEqual((6, 56), sat_za.shape)
@@ -118,12 +100,19 @@ class HIRSTest(unittest.TestCase):
 
         scnlinf = ds.variables["scnlinf"]
         self.assertEqual((6,), scnlinf.shape)
-        self.assertEqual(9, scnlinf.data[4])
-        self.assertEqual(9, scnlinf.attrs["_FillValue"])
-        self.assertEqual("0, 1, 2, 3", scnlinf.attrs["flag_values"])
-        self.assertEqual("earth_view space_view icct_view iwct_view", scnlinf.attrs["flag_meanings"])
+        self.assertEqual(0, scnlinf.data[4])
+        self.assertEqual("16384, 32768", scnlinf.attrs["flag_masks"])
+        self.assertEqual("clock_drift_correction southbound_data", scnlinf.attrs["flag_meanings"])
         self.assertEqual("status_flag", scnlinf.attrs["standard_name"])
         self.assertEqual("scanline_bitfield", scnlinf.attrs["long_name"])
+
+        scantype = ds.variables["scantype"]
+        self.assertEqual((6,), scantype.shape)
+        self.assertEqual(0, scantype.data[5])
+        self.assertEqual("0, 1, 2, 3", scantype.attrs["flag_values"])
+        self.assertEqual("earth_view space_view cold_bb_view main_bb_view", scantype.attrs["flag_meanings"])
+        self.assertEqual("status_flag", scantype.attrs["standard_name"])
+        self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
 
         qualind = ds.variables["qualind"]
         self.assertEqual((6,), qualind.shape)
@@ -169,6 +158,24 @@ class HIRSTest(unittest.TestCase):
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         HIRS.add_full_fcdr_variables(ds, 7)
+
+        c_earth = ds.variables["c_earth"]
+        self.assertEqual((20, 7, 56), c_earth.shape)
+        self.assertEqual(65535, c_earth.data[0, 2, 3])
+        self.assertEqual(65535, c_earth.attrs["_FillValue"])
+        self.assertEqual("counts_earth", c_earth.attrs["long_name"])
+        self.assertEqual("count", c_earth.attrs["units"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
+
+        l_earth = ds.variables["L_earth"]
+        self.assertEqual((20, 7, 56), l_earth.shape)
+        self.assertTrue(np.isnan(l_earth.data[0, 2, 4]))
+        self.assertTrue(np.isnan(l_earth.attrs["_FillValue"]))
+        self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
+        self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
+        self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
+        self.assertEqual("radiance", l_earth.attrs["orig_name"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
 
         u_lat = ds.variables["u_lat"]
         self.assertEqual((7, 56), u_lat.shape)

@@ -34,28 +34,8 @@ class HIRS:
         tu.add_units(variable, "K")
         tu.add_scale_factor(variable, 0.01)
         tu.add_offset(variable, 150)
-        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
+        variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
-
-        # c_earth
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.uint16, dims_names=["rad_channel", "y", "x"])
-        variable = Variable(["rad_channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
-        variable.attrs["long_name"] = "counts_earth"
-        tu.add_units(variable, "count")
-        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
-        dataset["c_earth"] = variable
-
-        # L_earth
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32, np.NaN, ["rad_channel", "y", "x"])
-        variable = Variable(["rad_channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
-        tu.add_units(variable, "W/Hz/m ** 2/sr")
-        variable.attrs["long_name"] = "Channel radiance, NOAA/EUMETSAT calibrated"
-        variable.attrs["orig_name"] = "radiance"
-        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
-        dataset["L_earth"] = variable
 
         dataset["sat_za"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
         dataset["sat_aa"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
@@ -88,14 +68,22 @@ class HIRS:
         dataset["scnlintime"] = variable
 
         # scnlinf
-        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=9)
+        default_array = DefaultData.create_default_vector(height, np.int16, fill_value=0)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, 9)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "scanline_bitfield"
-        variable.attrs["flag_values"] = "0, 1, 2, 3"
-        variable.attrs["flag_meanings"] = "earth_view space_view icct_view iwct_view"
+        variable.attrs["flag_masks"] = "16384, 32768"
+        variable.attrs["flag_meanings"] = "clock_drift_correction southbound_data"
         dataset["scnlinf"] = variable
+
+        # scantype
+        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scantype_bitfield"
+        variable.attrs["flag_values"] = "0, 1, 2, 3"
+        variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
+        dataset["scantype"] = variable
 
         # qualind
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
@@ -152,6 +140,26 @@ class HIRS:
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
+        # c_earth
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.uint16, dims_names=["rad_channel", "y", "x"])
+        variable = Variable(["rad_channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
+        variable.attrs["long_name"] = "counts_earth"
+        tu.add_units(variable, "count")
+        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
+        dataset["c_earth"] = variable
+
+        # L_earth
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32, np.NaN, ["rad_channel", "y", "x"])
+        variable = Variable(["rad_channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
+        tu.add_units(variable, "W/Hz/m ** 2/sr")
+        variable.attrs["long_name"] = "Channel radiance, NOAA/EUMETSAT calibrated"
+        variable.attrs["orig_name"] = "radiance"
+        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
+        dataset["L_earth"] = variable
+
         # u_lat
         variable = HIRS._create_angle_variable(height, "uncertainty_latitude")
         dataset["u_lat"] = variable

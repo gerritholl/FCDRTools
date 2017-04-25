@@ -269,7 +269,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(31, len(ds.variables))
+        self.assertEqual(36, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -289,6 +289,11 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["b_ir"])
         self.assertIsNotNone(ds.variables["u_a_ir"])
         self.assertIsNotNone(ds.variables["u_b_ir"])
+        self.assertIsNotNone(ds.variables["a_wv"])
+        self.assertIsNotNone(ds.variables["b_wv"])
+        self.assertIsNotNone(ds.variables["u_a_wv"])
+        self.assertIsNotNone(ds.variables["u_b_wv"])
+        self.assertIsNotNone(ds.variables["q_ir"])
         self.assertIsNotNone(ds.variables["q_wv"])
         self.assertIsNotNone(ds.variables["unit_conversion_ir"])
         self.assertIsNotNone(ds.variables["unit_conversion_wv"])
@@ -307,7 +312,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(49, len(ds.variables))
+        self.assertEqual(54, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["u_toa_bidirectional_reflectance_vis"])
@@ -331,6 +336,11 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["b_ir"])
         self.assertIsNotNone(ds.variables["u_a_ir"])
         self.assertIsNotNone(ds.variables["u_b_ir"])
+        self.assertIsNotNone(ds.variables["a_wv"])
+        self.assertIsNotNone(ds.variables["b_wv"])
+        self.assertIsNotNone(ds.variables["u_a_wv"])
+        self.assertIsNotNone(ds.variables["u_b_wv"])
+        self.assertIsNotNone(ds.variables["q_ir"])
         self.assertIsNotNone(ds.variables["q_wv"])
         self.assertIsNotNone(ds.variables["unit_conversion_ir"])
         self.assertIsNotNone(ds.variables["unit_conversion_wv"])

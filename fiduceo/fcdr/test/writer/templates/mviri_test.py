@@ -70,6 +70,23 @@ class MVIRITest(unittest.TestCase):
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
         self._assert_scalar_float_variable(ds, "sol_eff_irr", "Solar effective Irradiance", "W*m-2", standard_name="solar_irradiance_vis")
 
+        u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
+        self.assertEqual((), u_sol_eff_irr.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.data)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.attrs["_FillValue"])
+        self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_eff_irr.attrs["long_name"])
+        self.assertEqual("Wm^-2", u_sol_eff_irr.attrs["units"])
+        self.assertEqual("rectangle", u_sol_eff_irr.attrs["scan_correlation_form"])
+        self.assertEqual("pixel", u_sol_eff_irr.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["scan_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_eff_irr.attrs["time_correlation_form"])
+        self.assertEqual("line", u_sol_eff_irr.attrs["time_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["time_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_eff_irr.attrs["image_correlation_form"])
+        self.assertEqual("days", u_sol_eff_irr.attrs["image_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["image_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_eff_irr.attrs["pdf_shape"])
+
         srf = ds.variables["spectral_response_function_vis"]
         self.assertEqual((1011,), srf.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.data[116])
@@ -322,23 +339,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_a1_cov.data[1, 0])
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_a1_cov.attrs["_FillValue"])
         self.assertEqual("Covariance matrix of calibration coefficients", u_a0_a1_cov.attrs["long_name"])
-
-        u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
-        self.assertEqual((), u_sol_eff_irr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_eff_irr.attrs["long_name"])
-        self.assertEqual("Wm^-2", u_sol_eff_irr.attrs["units"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_sol_eff_irr.attrs["scan_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["scan_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["time_correlation_form"])
-        self.assertEqual("line", u_sol_eff_irr.attrs["time_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["time_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["image_correlation_form"])
-        self.assertEqual("days", u_sol_eff_irr.attrs["image_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["image_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["pdf_shape"])
 
         u_e_noise = ds.variables["u_electronics_counts_vis"]
         self.assertEqual((), u_e_noise.shape)

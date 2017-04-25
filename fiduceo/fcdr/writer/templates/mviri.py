@@ -54,6 +54,24 @@ class MVIRI:
         # sol_eff_irr
         dataset["sol_eff_irr"] = tu.create_scalar_float_variable(standard_name="solar_irradiance_vis", long_name="Solar effective Irradiance", units="W*m-2")
 
+        # u_sol_eff_irr
+        default_array = DefaultData.get_default_fill_value(np.float32)
+        variable = Variable([], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
+        tu.add_units(variable, "Wm^-2")
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
+        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
+        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "rectangle"
+        dataset["u_sol_eff_irr"] = variable
+
         # srf
         default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
         variable = Variable(["srf_size"], default_array)
@@ -219,24 +237,6 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
         variable.attrs["long_name"] = "Covariance matrix of calibration coefficients"
         dataset["covariance_a0_a1_vis"] = variable
-
-        # u_sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.float32)
-        variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
-        variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
-        tu.add_units(variable, "Wm^-2")
-        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
-        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
-        variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
-        variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs["pdf_shape"] = "rectangle"
-        dataset["u_sol_eff_irr"] = variable
 
         dataset["u_electronics_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to Electronics noise", units="count")
         dataset["u_digitization_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to digitization", units="count")

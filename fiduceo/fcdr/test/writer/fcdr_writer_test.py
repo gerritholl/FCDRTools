@@ -269,7 +269,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(30, len(ds.variables))
+        self.assertEqual(31, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -284,6 +284,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["distance_sun_earth"])
         self.assertIsNotNone(ds.variables["sol_eff_irr"])
+        self.assertIsNotNone(ds.variables["u_sol_eff_irr"])
         self.assertIsNotNone(ds.variables["a_ir"])
         self.assertIsNotNone(ds.variables["b_ir"])
         self.assertIsNotNone(ds.variables["u_a_ir"])

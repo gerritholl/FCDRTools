@@ -3,7 +3,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 setup(name='fcdr_tools',
-      version='1.0.5',
+      version='1.0.6',
       description='FIDUCEO CDR/FCDR read and write utilities',
       author='Tom Block',
       author_email='tom.block@brockmann-consult.de',

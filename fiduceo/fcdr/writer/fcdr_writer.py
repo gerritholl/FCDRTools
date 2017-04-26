@@ -5,7 +5,7 @@ from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
 
 
 class FCDRWriter:
-    _version = "1.0.5"
+    _version = "1.0.6"
 
     @classmethod
     def write(cls, ds, file, compression_level=None, overwrite=False):

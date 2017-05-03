@@ -37,11 +37,11 @@ class HIRS:
         variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
 
-        dataset["sat_za"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
-        dataset["sat_aa"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
-        dataset["sat_aa"].variable.attrs["long_name"] = "local_azimuth_angle"
-        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="sol_za")
-        dataset["sol_aa"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
+        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
+        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
+        dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
+        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle")
+        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
 
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
@@ -372,10 +372,10 @@ class HIRS:
         dataset["u_TK_scanmirror"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmirror_K")
         dataset["u_TK_scanmotor"] = HIRS._create_temperature_vector(height, "uncertainty_temperature_scanmotor_K")
 
-        dataset["u_sol_za"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_solar_zenith_angle", height, FILL_VALUE)
-        dataset["u_sol_aa"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_solar_azimuth_angle", height, FILL_VALUE)
-        dataset["u_sat_za"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_satellite_zenith_angle", height, FILL_VALUE)
-        dataset["u_sat_aa"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_local_azimuth_angle", height, FILL_VALUE)
+        dataset["u_solar_zenith_angle"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_solar_zenith_angle", height, FILL_VALUE)
+        dataset["u_solar_azimuth_angle"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_solar_azimuth_angle", height, FILL_VALUE)
+        dataset["u_satellite_zenith_angle"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_satellite_zenith_angle", height, FILL_VALUE)
+        dataset["u_satellite_azimuth_angle"] = HIRS._create_geo_angle_uncertainty_variable("uncertainty_local_azimuth_angle", height, FILL_VALUE)
 
         # u_c_earth_chan_corr
         dataset["u_c_earth_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_earth channel correlations")

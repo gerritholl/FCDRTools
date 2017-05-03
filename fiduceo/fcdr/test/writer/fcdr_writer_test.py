@@ -179,10 +179,10 @@ class FCDRWriterTest(unittest.TestCase):
 
         # sensor specific
         self.assertIsNotNone(ds.variables["bt"])
-        self.assertIsNotNone(ds.variables["sat_za"])
-        self.assertIsNotNone(ds.variables["sat_aa"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
-        self.assertIsNotNone(ds.variables["sol_aa"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["scnlintime"])

@@ -36,43 +36,43 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(150, bt.attrs["add_offset"])
         self.assertEqual("scnlinf scantype qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
 
-        sat_za = ds.variables["sat_za"]
-        self.assertEqual((6, 56), sat_za.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_za.data[2, 2])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_za.attrs["_FillValue"])
-        self.assertEqual(0.01, sat_za.attrs["scale_factor"])
-        self.assertEqual(-180.0, sat_za.attrs["add_offset"])
-        self.assertEqual("platform_zenith_angle", sat_za.attrs["standard_name"])
-        self.assertEqual("degree", sat_za.attrs["units"])
+        satellite_zenith_angle = ds.variables["satellite_zenith_angle"]
+        self.assertEqual((6, 56), satellite_zenith_angle.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.data[2, 2])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.attrs["_FillValue"])
+        self.assertEqual(0.01, satellite_zenith_angle.attrs["scale_factor"])
+        self.assertEqual(-180.0, satellite_zenith_angle.attrs["add_offset"])
+        self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
+        self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
 
-        sat_aa = ds.variables["sat_aa"]
-        self.assertEqual((6, 56), sat_aa.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_aa.data[5, 5])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_aa.attrs["_FillValue"])
-        self.assertEqual(0.01, sat_aa.attrs["scale_factor"])
-        self.assertEqual(-180.0, sat_aa.attrs["add_offset"])
-        self.assertEqual("sensor_azimuth_angle", sat_aa.attrs["standard_name"])
-        self.assertEqual("local_azimuth_angle", sat_aa.attrs["long_name"])
-        self.assertEqual("degree", sat_aa.attrs["units"])
+        satellite_azimuth_angle = ds.variables["satellite_azimuth_angle"]
+        self.assertEqual((6, 56), satellite_azimuth_angle.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_azimuth_angle.data[5, 5])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_azimuth_angle.attrs["_FillValue"])
+        self.assertEqual(0.01, satellite_azimuth_angle.attrs["scale_factor"])
+        self.assertEqual(-180.0, satellite_azimuth_angle.attrs["add_offset"])
+        self.assertEqual("sensor_azimuth_angle", satellite_azimuth_angle.attrs["standard_name"])
+        self.assertEqual("local_azimuth_angle", satellite_azimuth_angle.attrs["long_name"])
+        self.assertEqual("degree", satellite_azimuth_angle.attrs["units"])
 
-        sol_za = ds.variables["solar_zenith_angle"]
-        self.assertEqual((6, 56), sol_za.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_za.data[3, 3])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_za.attrs["_FillValue"])
-        self.assertEqual(0.01, sol_za.attrs["scale_factor"])
-        self.assertEqual(-180.0, sol_za.attrs["add_offset"])
-        self.assertEqual("solar_zenith_angle", sol_za.attrs["standard_name"])
-        self.assertEqual("sol_za", sol_za.attrs["orig_name"])
-        self.assertEqual("degree", sol_za.attrs["units"])
+        solar_zenith_angle = ds.variables["solar_zenith_angle"]
+        self.assertEqual((6, 56), solar_zenith_angle.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_zenith_angle.data[3, 3])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_zenith_angle.attrs["_FillValue"])
+        self.assertEqual(0.01, solar_zenith_angle.attrs["scale_factor"])
+        self.assertEqual(-180.0, solar_zenith_angle.attrs["add_offset"])
+        self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["standard_name"])
+        self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["orig_name"])
+        self.assertEqual("degree", solar_zenith_angle.attrs["units"])
 
-        sol_aa = ds.variables["sol_aa"]
-        self.assertEqual((6, 56), sol_aa.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_aa.data[4, 4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_aa.attrs["_FillValue"])
-        self.assertEqual(0.01, sol_aa.attrs["scale_factor"])
-        self.assertEqual(-180.0, sol_aa.attrs["add_offset"])
-        self.assertEqual("solar_azimuth_angle", sol_aa.attrs["standard_name"])
-        self.assertEqual("degree", sol_aa.attrs["units"])
+        solar_azimuth_angle = ds.variables["solar_azimuth_angle"]
+        self.assertEqual((6, 56), solar_azimuth_angle.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.data[4, 4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.attrs["_FillValue"])
+        self.assertEqual(0.01, solar_azimuth_angle.attrs["scale_factor"])
+        self.assertEqual(-180.0, solar_azimuth_angle.attrs["add_offset"])
+        self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
+        self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
 
         scanline = ds.variables["scanline"]
         self.assertEqual((6,), scanline.shape)
@@ -392,33 +392,33 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_temperature_variable(ds, "u_TK_scanmirror", "uncertainty_temperature_scanmirror_K")
         self._assert_line_temperature_variable(ds, "u_TK_scanmotor", "uncertainty_temperature_scanmotor_K")
 
-        u_sol_za = ds.variables["u_sol_za"]
-        self.assertEqual((7, 56), u_sol_za.shape)
-        self.assertEqual(-999.0, u_sol_za.data[4, 4])
-        self.assertEqual(-999.0, u_sol_za.attrs["_FillValue"])
-        self.assertEqual("uncertainty_solar_zenith_angle", u_sol_za.attrs["standard_name"])
-        self.assertEqual("degree", u_sol_za.attrs["units"])
+        u_solar_zenith_angle = ds.variables["u_solar_zenith_angle"]
+        self.assertEqual((7, 56), u_solar_zenith_angle.shape)
+        self.assertEqual(-999.0, u_solar_zenith_angle.data[4, 4])
+        self.assertEqual(-999.0, u_solar_zenith_angle.attrs["_FillValue"])
+        self.assertEqual("uncertainty_solar_zenith_angle", u_solar_zenith_angle.attrs["standard_name"])
+        self.assertEqual("degree", u_solar_zenith_angle.attrs["units"])
 
-        u_sol_aa = ds.variables["u_sol_aa"]
-        self.assertEqual((7, 56), u_sol_aa.shape)
-        self.assertEqual(-999.0, u_sol_aa.data[5, 5])
-        self.assertEqual(-999.0, u_sol_aa.attrs["_FillValue"])
-        self.assertEqual("uncertainty_solar_azimuth_angle", u_sol_aa.attrs["standard_name"])
-        self.assertEqual("degree", u_sol_aa.attrs["units"])
+        u_solar_azimuth_angle = ds.variables["u_solar_azimuth_angle"]
+        self.assertEqual((7, 56), u_solar_azimuth_angle.shape)
+        self.assertEqual(-999.0, u_solar_azimuth_angle.data[5, 5])
+        self.assertEqual(-999.0, u_solar_azimuth_angle.attrs["_FillValue"])
+        self.assertEqual("uncertainty_solar_azimuth_angle", u_solar_azimuth_angle.attrs["standard_name"])
+        self.assertEqual("degree", u_solar_azimuth_angle.attrs["units"])
 
-        u_sat_za = ds.variables["u_sat_za"]
-        self.assertEqual((7, 56), u_sat_za.shape)
-        self.assertEqual(-999.0, u_sat_za.data[5, 5])
-        self.assertEqual(-999.0, u_sat_za.attrs["_FillValue"])
-        self.assertEqual("uncertainty_satellite_zenith_angle", u_sat_za.attrs["standard_name"])
-        self.assertEqual("degree", u_sat_za.attrs["units"])
+        u_satellite_zenith_angle = ds.variables["u_satellite_zenith_angle"]
+        self.assertEqual((7, 56), u_satellite_zenith_angle.shape)
+        self.assertEqual(-999.0, u_satellite_zenith_angle.data[5, 5])
+        self.assertEqual(-999.0, u_satellite_zenith_angle.attrs["_FillValue"])
+        self.assertEqual("uncertainty_satellite_zenith_angle", u_satellite_zenith_angle.attrs["standard_name"])
+        self.assertEqual("degree", u_satellite_zenith_angle.attrs["units"])
 
-        u_sat_aa = ds.variables["u_sat_aa"]
-        self.assertEqual((7, 56), u_sat_aa.shape)
-        self.assertEqual(-999.0, u_sat_aa.data[6, 6])
-        self.assertEqual(-999.0, u_sat_aa.attrs["_FillValue"])
-        self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
-        self.assertEqual("degree", u_sat_aa.attrs["units"])
+        u_satellite_azimuth_angle = ds.variables["u_satellite_azimuth_angle"]
+        self.assertEqual((7, 56), u_satellite_azimuth_angle.shape)
+        self.assertEqual(-999.0, u_satellite_azimuth_angle.data[6, 6])
+        self.assertEqual(-999.0, u_satellite_azimuth_angle.attrs["_FillValue"])
+        self.assertEqual("uncertainty_local_azimuth_angle", u_satellite_azimuth_angle.attrs["standard_name"])
+        self.assertEqual("degree", u_satellite_azimuth_angle.attrs["units"])
 
         u_c_earth_chan_corr = ds.variables["u_c_earth_chan_corr"]
         self.assertEqual((19, 19), u_c_earth_chan_corr.shape)

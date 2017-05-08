@@ -16,8 +16,14 @@ class TemplateFactoryTest(unittest.TestCase):
         avhrr = template_factory.get_sensor_template("AVHRR")
         self.assertIsNotNone(avhrr)
 
-        hirs = template_factory.get_sensor_template("HIRS")
-        self.assertIsNotNone(hirs)
+        hirs_2 = template_factory.get_sensor_template("HIRS2")
+        self.assertIsNotNone(hirs_2)
+
+        hirs_3 = template_factory.get_sensor_template("HIRS3")
+        self.assertIsNotNone(hirs_3)
+
+        hirs_4 = template_factory.get_sensor_template("HIRS4")
+        self.assertIsNotNone(hirs_4)
 
         mviri = template_factory.get_sensor_template("MVIRI")
         self.assertIsNotNone(mviri)

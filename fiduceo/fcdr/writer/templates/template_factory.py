@@ -1,12 +1,14 @@
-from fiduceo.fcdr.writer.templates.avhrr import AVHRR
-from fiduceo.fcdr.writer.templates.hirs import HIRS
-from fiduceo.fcdr.writer.templates.mviri import MVIRI
 from fiduceo.fcdr.writer.templates.amsub_mhs import AMSUB_MHS
+from fiduceo.fcdr.writer.templates.avhrr import AVHRR
+from fiduceo.fcdr.writer.templates.mviri import MVIRI
+from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
+from fiduceo.fcdr.writer.templates.hirs_3 import HIRS3
+from fiduceo.fcdr.writer.templates.hirs_4 import HIRS4
 
 
 class TemplateFactory:
     def __init__(self):
-        self.templates = dict([("AMSUB", AMSUB_MHS), ("MHS", AMSUB_MHS), ("AVHRR", AVHRR), ("HIRS", HIRS), ("MVIRI", MVIRI)])
+        self.templates = dict([("AMSUB", AMSUB_MHS), ("MHS", AMSUB_MHS), ("AVHRR", AVHRR), ("HIRS2", HIRS2), ("HIRS3", HIRS3), ("HIRS4", HIRS4), ("MVIRI", MVIRI)])
 
     def get_sensor_template(self, name):
         return self.templates[name]

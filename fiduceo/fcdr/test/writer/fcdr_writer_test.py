@@ -166,8 +166,104 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["Ch4_us_Bt"])
         self.assertIsNotNone(ds.variables["Ch5_us_Bt"])
 
-    def testCreateTemplateEasy_HIRS(self):
-        ds = FCDRWriter.createTemplateEasy('HIRS', 211)
+    def testCreateTemplateEasy_HIRS2(self):
+        ds = FCDRWriter.createTemplateEasy('HIRS2', 211)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(20, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # sensor specific
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["scanline"])
+        self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scnlinf"])
+        self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["linqualflags"])
+        self.assertIsNotNone(ds.variables["chqualflags"])
+        self.assertIsNotNone(ds.variables["mnfrqualflags"])
+
+        # easy FCDR variables
+        self.assertIsNotNone(ds.variables["u_random"])
+        self.assertIsNotNone(ds.variables["u_non_random"])
+
+    def testCreateTemplateFull_HIRS2(self):
+        ds = FCDRWriter.createTemplateFull('HIRS2', 209)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(141, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scantype"])
+
+        self.assertIsNotNone(ds.variables["c_earth"])
+        self.assertIsNotNone(ds.variables["L_earth"])
+
+        self.assertIsNotNone(ds.variables["navigation_status"])
+        self.assertIsNotNone(ds.variables["platform_altitude"])
+        self.assertIsNotNone(ds.variables["platform_pitch_angle"])
+        self.assertIsNotNone(ds.variables["platform_roll_angle"])
+        self.assertIsNotNone(ds.variables["platform_yaw_angle"])
+        self.assertIsNotNone(ds.variables["quality_flags"])
+        self.assertIsNotNone(ds.variables["scan_angles"])
+        self.assertIsNotNone(ds.variables["scanline_number"])
+        self.assertIsNotNone(ds.variables["scanline_position"])
+        self.assertIsNotNone(ds.variables["second_original_calibration_coefficients"])
+        self.assertIsNotNone(ds.variables["TK_baseplate"])
+        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
+        self.assertIsNotNone(ds.variables["TK_ch"])
+        self.assertIsNotNone(ds.variables["TK_elec_analog"])
+        self.assertIsNotNone(ds.variables["TK_elec"])
+        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
+        self.assertIsNotNone(ds.variables["TK_fwh"])
+        self.assertIsNotNone(ds.variables["TK_iwct"])
+        self.assertIsNotNone(ds.variables["TK_patch_analog"])
+        self.assertIsNotNone(ds.variables["TK_patch_exp"])
+        self.assertIsNotNone(ds.variables["TK_patch_full"])
+        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
+        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
+        self.assertIsNotNone(ds.variables["TK_scanmotor"])
+        self.assertIsNotNone(ds.variables["u_c_earth"])
+        self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_c_space"])
+        self.assertIsNotNone(ds.variables["u_c_space_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_Earthshine"])
+        self.assertIsNotNone(ds.variables["u_O_Re"])
+        self.assertIsNotNone(ds.variables["u_O_TIWCT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_Rself"])
+        self.assertIsNotNone(ds.variables["u_Rselfparams"])
+        self.assertIsNotNone(ds.variables["u_SRF_calib"])
+        self.assertIsNotNone(ds.variables["u_d_PRT"])
+        self.assertIsNotNone(ds.variables["u_electronics"])
+        self.assertIsNotNone(ds.variables["u_extraneous_periodic"])
+        self.assertIsNotNone(ds.variables["u_nonlinearity"])
+
+        self.assertIsNotNone(ds.variables["temp_corr_slope"])
+        self.assertIsNotNone(ds.variables["temp_corr_offset"])
+        self.assertIsNotNone(ds.variables["emissivity"])
+
+    def testCreateTemplateEasy_HIRS3(self):
+        ds = FCDRWriter.createTemplateEasy('HIRS3', 211)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)
@@ -196,8 +292,105 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_random"])
         self.assertIsNotNone(ds.variables["u_non_random"])
 
-    def testCreateTemplateFull_HIRS(self):
-        ds = FCDRWriter.createTemplateFull('HIRS', 209)
+    def testCreateTemplateFull_HIRS3(self):
+        ds = FCDRWriter.createTemplateFull('HIRS3', 209)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(143, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scantype"])
+
+        self.assertIsNotNone(ds.variables["c_earth"])
+        self.assertIsNotNone(ds.variables["L_earth"])
+
+        self.assertIsNotNone(ds.variables["navigation_status"])
+        self.assertIsNotNone(ds.variables["platform_altitude"])
+        self.assertIsNotNone(ds.variables["platform_pitch_angle"])
+        self.assertIsNotNone(ds.variables["platform_roll_angle"])
+        self.assertIsNotNone(ds.variables["platform_yaw_angle"])
+        self.assertIsNotNone(ds.variables["quality_flags"])
+        self.assertIsNotNone(ds.variables["scan_angles"])
+        self.assertIsNotNone(ds.variables["scanline_number"])
+        self.assertIsNotNone(ds.variables["scanline_position"])
+        self.assertIsNotNone(ds.variables["second_original_calibration_coefficients"])
+        self.assertIsNotNone(ds.variables["TK_baseplate"])
+        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
+        self.assertIsNotNone(ds.variables["TK_ch"])
+        self.assertIsNotNone(ds.variables["TK_elec_analog"])
+        self.assertIsNotNone(ds.variables["TK_elec"])
+        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
+        self.assertIsNotNone(ds.variables["TK_fwh"])
+        self.assertIsNotNone(ds.variables["TK_iwct"])
+        self.assertIsNotNone(ds.variables["TK_patch_analog"])
+        self.assertIsNotNone(ds.variables["TK_patch_exp"])
+        self.assertIsNotNone(ds.variables["TK_patch_full"])
+        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror"])
+        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
+        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
+        self.assertIsNotNone(ds.variables["TK_scanmotor"])
+        self.assertIsNotNone(ds.variables["u_c_earth"])
+        self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_c_space"])
+        self.assertIsNotNone(ds.variables["u_c_space_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_Earthshine"])
+        self.assertIsNotNone(ds.variables["u_O_Re"])
+        self.assertIsNotNone(ds.variables["u_O_TIWCT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT"])
+        self.assertIsNotNone(ds.variables["u_O_TPRT_chan_corr"])
+        self.assertIsNotNone(ds.variables["u_Rself"])
+        self.assertIsNotNone(ds.variables["u_Rselfparams"])
+        self.assertIsNotNone(ds.variables["u_SRF_calib"])
+        self.assertIsNotNone(ds.variables["u_d_PRT"])
+        self.assertIsNotNone(ds.variables["u_electronics"])
+        self.assertIsNotNone(ds.variables["u_extraneous_periodic"])
+        self.assertIsNotNone(ds.variables["u_nonlinearity"])
+
+        self.assertIsNotNone(ds.variables["temp_corr_slope"])
+        self.assertIsNotNone(ds.variables["temp_corr_offset"])
+        self.assertIsNotNone(ds.variables["emissivity"])
+
+    def testCreateTemplateEasy_HIRS4(self):
+        ds = FCDRWriter.createTemplateEasy('HIRS4', 211)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(22, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # sensor specific
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["scanline"])
+        self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scnlinf"])
+        self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["linqualflags"])
+        self.assertIsNotNone(ds.variables["chqualflags"])
+        self.assertIsNotNone(ds.variables["mnfrqualflags"])
+
+        # easy FCDR variables
+        self.assertIsNotNone(ds.variables["u_random"])
+        self.assertIsNotNone(ds.variables["u_non_random"])
+
+    def testCreateTemplateFull_HIRS4(self):
+        ds = FCDRWriter.createTemplateFull('HIRS4', 209)
         self.assertIsNotNone(ds)
 
         self._verifyGlobalAttributes(ds.attrs)

@@ -1,8 +1,8 @@
 import numpy as np
-from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.fcdr.writer.default_data import DefaultData
 from xarray import Variable
 
+from fiduceo.fcdr.writer.correlation import Correlation as corr
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 FILL_VALUE = -999.0
@@ -22,27 +22,11 @@ WIDTH_TODO = 60
 
 class HIRS:
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_geolocation_variables(dataset, height):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
-        # bt
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int16, FILL_VALUE)
-        variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, FILL_VALUE)
-        variable.attrs["standard_name"] = "toa_brightness_temperature"
-        variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
-        tu.add_units(variable, "K")
-        tu.add_scale_factor(variable, 0.01)
-        tu.add_offset(variable, 150)
-        variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
-        dataset["bt"] = variable
-
-        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
-        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
-        dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
-        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle")
-        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
-
+    @staticmethod
+    def add_original_variables(dataset, height):
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
@@ -117,6 +101,29 @@ class HIRS:
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
         dataset["mnfrqualflags"] = variable
+
+    @staticmethod
+    def add_common_angles(dataset, height):
+        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
+        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
+        dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
+
+        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle")
+        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
+
+    @staticmethod
+    def add_bt_variable(dataset, height):
+        # bt
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int16, FILL_VALUE)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, FILL_VALUE)
+        variable.attrs["standard_name"] = "toa_brightness_temperature"
+        variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
+        tu.add_units(variable, "K")
+        tu.add_scale_factor(variable, 0.01)
+        tu.add_offset(variable, 150)
+        variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
+        dataset["bt"] = variable
 
     @staticmethod
     def get_swath_width():

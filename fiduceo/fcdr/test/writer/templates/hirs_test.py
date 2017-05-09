@@ -2,89 +2,12 @@ import unittest
 
 import numpy as np
 import xarray as xr
+
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs import HIRS
 
 
 class HIRSTest(unittest.TestCase):
-    def test_add_original_variables(self):
-        ds = xr.Dataset()
-        HIRS.add_original_variables(ds, 6)
-
-        scanline = ds.variables["scanline"]
-        self.assertEqual((6,), scanline.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.data[3])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.attrs["_FillValue"])
-        self.assertEqual("scanline_number", scanline.attrs["long_name"])
-        self.assertEqual("count", scanline.attrs["units"])
-
-        time = ds.variables["time"]
-        self.assertEqual((6,), time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.attrs["_FillValue"])
-        self.assertEqual("time", time.attrs["standard_name"])
-        self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
-        self.assertEqual("s", time.attrs["units"])
-
-        scnlintime = ds.variables["scnlintime"]
-        self.assertEqual((6,), scnlintime.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.attrs["_FillValue"])
-        self.assertEqual("time", scnlintime.attrs["standard_name"])
-        self.assertEqual("Scan line time of day", scnlintime.attrs["long_name"])
-        self.assertEqual("hrs_scnlintime", scnlintime.attrs["orig_name"])
-        self.assertEqual("ms", scnlintime.attrs["units"])
-
-        scnlinf = ds.variables["scnlinf"]
-        self.assertEqual((6,), scnlinf.shape)
-        self.assertEqual(0, scnlinf.data[4])
-        self.assertEqual("16384, 32768", scnlinf.attrs["flag_masks"])
-        self.assertEqual("clock_drift_correction southbound_data", scnlinf.attrs["flag_meanings"])
-        self.assertEqual("status_flag", scnlinf.attrs["standard_name"])
-        self.assertEqual("scanline_bitfield", scnlinf.attrs["long_name"])
-
-        scantype = ds.variables["scantype"]
-        self.assertEqual((6,), scantype.shape)
-        self.assertEqual(0, scantype.data[5])
-        self.assertEqual("0, 1, 2, 3", scantype.attrs["flag_values"])
-        self.assertEqual("earth_view space_view cold_bb_view main_bb_view", scantype.attrs["flag_meanings"])
-        self.assertEqual("status_flag", scantype.attrs["standard_name"])
-        self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
-
-        qualind = ds.variables["qualind"]
-        self.assertEqual((6,), qualind.shape)
-        self.assertEqual(0, qualind.data[5])
-        self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", qualind.attrs["flag_masks"])
-        self.assertEqual("do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete", qualind.attrs["flag_meanings"])
-        self.assertEqual("status_flag", qualind.attrs["standard_name"])
-        self.assertEqual("quality_indicator_bitfield", qualind.attrs["long_name"])
-
-        linqualflags = ds.variables["linqualflags"]
-        self.assertEqual((6,), linqualflags.shape)
-        self.assertEqual(0, linqualflags.data[0])
-        self.assertEqual("256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
-                         linqualflags.attrs["flag_masks"])
-        self.assertEqual(
-            "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant",
-            linqualflags.attrs["flag_meanings"])
-        self.assertEqual("status_flag", linqualflags.attrs["standard_name"])
-        self.assertEqual("scanline_quality_flags_bitfield", linqualflags.attrs["long_name"])
-
-        chqualflags = ds.variables["chqualflags"]
-        self.assertEqual((6, 19), chqualflags.shape)
-        self.assertEqual(0, chqualflags.data[1, 2])
-        self.assertEqual("status_flag", chqualflags.attrs["standard_name"])
-        self.assertEqual("channel_quality_flags_bitfield", chqualflags.attrs["long_name"])
-
-        mnfrqualflags = ds.variables["mnfrqualflags"]
-        self.assertEqual((6, 64), mnfrqualflags.shape)
-        self.assertEqual(0, mnfrqualflags.data[2, 5])
-        self.assertEqual("status_flag", mnfrqualflags.attrs["standard_name"])
-        self.assertEqual("minor_frame_quality_flags_bitfield", mnfrqualflags.attrs["long_name"])
-
-    def test_get_swath_width(self):
-        self.assertEqual(56, HIRS.get_swath_width())
-
     def test_add_easy_fcdr_variables(self):
         ds = xr.Dataset()
         HIRS.add_easy_fcdr_variables(ds, 7)

@@ -15,9 +15,11 @@ class HIRS3Test(unittest.TestCase):
         ha.assert_geolocation(ds)
         ha.assert_bt_variable(ds)
         ha.assert_common_angles(ds)
+        ha.assert_common_sensor_variables(ds)
+        ha.assert_extended_quality_flags(ds)
 
     def test_get_swath_width(self):
-        pass
+        self.assertEqual(56, HIRS3.get_swath_width())
 
     def test_add_easy_fcdr_variables(self):
         pass

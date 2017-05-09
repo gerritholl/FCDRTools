@@ -172,7 +172,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(20, len(ds.variables))
+        self.assertEqual(16, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -186,9 +186,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["linqualflags"])
-        self.assertIsNotNone(ds.variables["chqualflags"])
-        self.assertIsNotNone(ds.variables["mnfrqualflags"])
+        self.assertIsNotNone(ds.variables["qualind"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_random"])
@@ -200,7 +198,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(141, len(ds.variables))
+        self.assertEqual(137, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -209,8 +207,10 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["bt"])
         self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["qualind"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -307,6 +307,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["bt"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scantype"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
@@ -403,6 +404,7 @@ class FCDRWriterTest(unittest.TestCase):
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
+        self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
 

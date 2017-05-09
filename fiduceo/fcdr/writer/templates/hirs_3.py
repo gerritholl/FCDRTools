@@ -9,7 +9,8 @@ class HIRS3:
         HIRS.add_bt_variable(dataset, height)
         HIRS.add_common_angles(dataset, height)
 
-        HIRS.add_original_variables(dataset, height)
+        HIRS.add_common_sensor_variables(dataset, height)
+        HIRS.add_extended_flag_variables(dataset, height)
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):

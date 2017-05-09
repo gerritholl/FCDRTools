@@ -26,58 +26,7 @@ class HIRS:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
     @staticmethod
-    def add_original_variables(dataset, height):
-        # scanline
-        default_array = DefaultData.create_default_vector(height, np.int16)
-        variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["long_name"] = "scanline_number"
-        tu.add_units(variable, "count")
-        dataset["scanline"] = variable
-
-        # time
-        default_array = DefaultData.create_default_vector(height, np.uint32)
-        variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
-        variable.attrs["standard_name"] = "time"
-        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        tu.add_units(variable, "s")
-        dataset["time"] = variable
-
-        # scnlintime
-        variable = HIRS._create_int32_vector(height, "time")
-        variable.attrs["long_name"] = "Scan line time of day"
-        variable.attrs["orig_name"] = "hrs_scnlintime"
-        tu.add_units(variable, "ms")
-        dataset["scnlintime"] = variable
-
-        # scnlinf
-        default_array = DefaultData.create_default_vector(height, np.int16, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "scanline_bitfield"
-        variable.attrs["flag_masks"] = "16384, 32768"
-        variable.attrs["flag_meanings"] = "clock_drift_correction southbound_data"
-        dataset["scnlinf"] = variable
-
-        # scantype
-        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "scantype_bitfield"
-        variable.attrs["flag_values"] = "0, 1, 2, 3"
-        variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
-        dataset["scantype"] = variable
-
-        # qualind
-        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "quality_indicator_bitfield"
-        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128"
-        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete"
-        dataset["qualind"] = variable
-
+    def add_extended_flag_variables(dataset, height):
         # linqualflags
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
         variable = Variable(["y"], default_array)
@@ -87,20 +36,66 @@ class HIRS:
         variable.attrs[
             "flag_meanings"] = "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
         dataset["linqualflags"] = variable
-
         # chqualflags
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.int32, dims_names=["y", "channel"], fill_value=0)
         variable = Variable(["y", "channel"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "channel_quality_flags_bitfield"
         dataset["chqualflags"] = variable
-
         # mnfrqualflags
         default_array = DefaultData.create_default_array(NUM_MINOR_FRAME, height, np.int32, dims_names=["y", "minor_frame"], fill_value=0)
         variable = Variable(["y", "minor_frame"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
         dataset["mnfrqualflags"] = variable
+
+    @staticmethod
+    def add_common_sensor_variables(dataset, height):
+        # scanline
+        default_array = DefaultData.create_default_vector(height, np.int16)
+        variable = Variable(["y"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        variable.attrs["long_name"] = "scanline_number"
+        tu.add_units(variable, "count")
+        dataset["scanline"] = variable
+        # time
+        default_array = DefaultData.create_default_vector(height, np.uint32)
+        variable = Variable(["y"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
+        variable.attrs["standard_name"] = "time"
+        variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
+        tu.add_units(variable, "s")
+        dataset["time"] = variable
+        # scnlintime
+        variable = HIRS._create_int32_vector(height, "time")
+        variable.attrs["long_name"] = "Scan line time of day"
+        variable.attrs["orig_name"] = "hrs_scnlintime"
+        tu.add_units(variable, "ms")
+        dataset["scnlintime"] = variable
+        # scnlinf
+        default_array = DefaultData.create_default_vector(height, np.int16, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scanline_bitfield"
+        variable.attrs["flag_masks"] = "16384, 32768"
+        variable.attrs["flag_meanings"] = "clock_drift_correction southbound_data"
+        dataset["scnlinf"] = variable
+        # scantype
+        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scantype_bitfield"
+        variable.attrs["flag_values"] = "0, 1, 2, 3"
+        variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
+        dataset["scantype"] = variable
+        # qualind
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "quality_indicator_bitfield"
+        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128"
+        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete"
+        dataset["qualind"] = variable
 
     @staticmethod
     def add_common_angles(dataset, height):

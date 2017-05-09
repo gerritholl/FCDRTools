@@ -23,7 +23,11 @@ class HIRS2Test(unittest.TestCase):
         self.assertEqual(56, HIRS2.get_swath_width())
 
     def test_add_easy_fcdr_variables(self):
-        pass
+        ha = HIRSAssert()
+        ds = xr.Dataset()
+        HIRS2.add_easy_fcdr_variables(ds, 7)
+
+        ha.assert_easy_fcdr_uncertainties(ds)
 
     def test_add_full_fcdr_variables(self):
         pass

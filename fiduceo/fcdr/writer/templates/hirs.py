@@ -141,6 +141,11 @@ class HIRS:
         dataset["u_non_random"] = variable
 
     @staticmethod
+    def add_common_full_fcdr_variables(dataset, height):
+        # @todo 1 tb/tb continue here 2017-05-09
+        pass
+
+    @staticmethod
     def add_full_fcdr_variables(dataset, height):
         # c_earth
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.uint16, dims_names=["rad_channel", "y", "x"])

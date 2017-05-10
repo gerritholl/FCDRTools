@@ -13,17 +13,23 @@ class HIRSAssert(unittest.TestCase):
     def assert_geolocation(self, ds):
         latitude = ds.variables["latitude"]
         self.assertEqual((6, 56), latitude.shape)
-        self.assertEqual(-32768.0, latitude.attrs["_FillValue"])
-        self.assertEqual(-32768.0, latitude.data[0, 0])
+        self.assertTrue(np.isnan(latitude.data[0, 0]))
         self.assertEqual("latitude", latitude.attrs["standard_name"])
         self.assertEqual("degrees_north", latitude.attrs["units"])
+        self.assertEqual(np.int16, latitude.encoding['dtype'])
+        self.assertEqual(-32768, latitude.encoding['_FillValue'])
+        self.assertEqual(0.0027466658, latitude.encoding['scale_factor'])
+        self.assertEqual(0.0, latitude.encoding['add_offset'])
 
         longitude = ds.variables["longitude"]
         self.assertEqual((6, 56), latitude.shape)
-        self.assertEqual(-32768.0, longitude.attrs["_FillValue"])
-        self.assertEqual(-32768.0, longitude.data[0, 0])
+        self.assertTrue(np.isnan(longitude.data[0, 0]))
         self.assertEqual("longitude", longitude.attrs["standard_name"])
         self.assertEqual("degrees_east", longitude.attrs["units"])
+        self.assertEqual(np.int16, latitude.encoding['dtype'])
+        self.assertEqual(-32768, latitude.encoding['_FillValue'])
+        self.assertEqual(0.0027466658, latitude.encoding['scale_factor'])
+        self.assertEqual(0.0, latitude.encoding['add_offset'])
 
     def assert_bt_variable(self, ds):
         bt = ds.variables["bt"]

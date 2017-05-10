@@ -14,26 +14,34 @@ class AMSUB_MHSTest(unittest.TestCase):
 
         latitude = ds.variables["latitude"]
         self.assertEqual((4, 90), latitude.shape)
-        self.assertEqual(-32768.0, latitude.data[0, 0])
-        self.assertEqual(-32768.0, latitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(latitude.data[0, 0]))
         self.assertEqual("latitude", latitude.attrs["standard_name"])
         self.assertEqual("degrees_north", latitude.attrs["units"])
+        self.assertEqual(np.int16, latitude.encoding['dtype'])
+        self.assertEqual(-32768, latitude.encoding['_FillValue'])
+        self.assertEqual(0.0027466658, latitude.encoding['scale_factor'])
+        self.assertEqual(0.0, latitude.encoding['add_offset'])
 
         longitude = ds.variables["longitude"]
         self.assertEqual((4, 90), longitude.shape)
-        self.assertEqual(-32768.0, longitude.data[1, 0])
-        self.assertEqual(-32768.0, longitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(longitude.data[1, 0]))
         self.assertEqual("longitude", longitude.attrs["standard_name"])
         self.assertEqual("degrees_east", longitude.attrs["units"])
+        self.assertEqual(np.int16, longitude.encoding['dtype'])
+        self.assertEqual(-32768, longitude.encoding['_FillValue'])
+        self.assertEqual(0.0054933317, longitude.encoding['scale_factor'])
+        self.assertEqual(0.0, longitude.encoding['add_offset'])
 
         btemps = ds.variables["btemps"]
         self.assertEqual((5, 4, 90), btemps.shape)
-        self.assertEqual(-999999, btemps.data[0, 2, 0])
-        self.assertEqual(-999999, btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(btemps.data[0, 2, 0]))
         self.assertEqual("toa_brightness_temperature", btemps.attrs["standard_name"])
         self.assertEqual("K", btemps.attrs["units"])
-        self.assertEqual(0.01, btemps.attrs["scale_factor"])
         self.assertEqual("chanqual qualind scanqual", btemps.attrs["ancillary_variables"])
+        self.assertEqual(np.int32, btemps.encoding['dtype'])
+        self.assertEqual(-999999, btemps.encoding['_FillValue'])
+        self.assertEqual(0.01, btemps.encoding['scale_factor'])
+        self.assertEqual(0.0, btemps.encoding['add_offset'])
 
         chanqual = ds.variables["chanqual"]
         self.assertEqual((5, 4), chanqual.shape)
@@ -44,11 +52,13 @@ class AMSUB_MHSTest(unittest.TestCase):
 
         instrtemp = ds.variables["instrtemp"]
         self.assertEqual((4,), instrtemp.shape)
-        self.assertEqual(-2147483647, instrtemp.data[0])
-        self.assertEqual(-2147483647, instrtemp.attrs["_FillValue"])
+        self.assertTrue(np.isnan(instrtemp.data[0]))
         self.assertEqual("K", instrtemp.attrs["units"])
         self.assertEqual("instrument_temperature", instrtemp.attrs["long_name"])
-        self.assertEqual(0.01, instrtemp.attrs["scale_factor"])
+        self.assertEqual(np.int32, instrtemp.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), instrtemp.encoding['_FillValue'])
+        self.assertEqual(0.01, instrtemp.encoding['scale_factor'])
+        self.assertEqual(0.0, instrtemp.encoding['add_offset'])
 
         qualind = ds.variables["qualind"]
         self.assertEqual((4,), qualind.shape)
@@ -93,35 +103,43 @@ class AMSUB_MHSTest(unittest.TestCase):
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((4, 90), sat_azimuth.shape)
-        self.assertEqual(-999999, sat_azimuth.data[2, 1])
-        self.assertEqual(-999999, sat_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sat_azimuth.data[2, 1]))
         self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["standard_name"])
-        self.assertEqual(0.01, sat_azimuth.attrs["scale_factor"])
         self.assertEqual("degree", sat_azimuth.attrs["units"])
+        self.assertEqual(np.int32, sat_azimuth.encoding['dtype'])
+        self.assertEqual(-999999, sat_azimuth.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_azimuth.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_azimuth.encoding['add_offset'])
 
         sat_zenith = ds.variables["satellite_zenith_angle"]
         self.assertEqual((4, 90), sat_zenith.shape)
-        self.assertEqual(-999999, sat_zenith.data[2, 1])
-        self.assertEqual(-999999, sat_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sat_zenith.data[2, 1]))
         self.assertEqual("sensor_zenith_angle", sat_zenith.attrs["standard_name"])
-        self.assertEqual(0.01, sat_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sat_zenith.attrs["units"])
+        self.assertEqual(np.int32, sat_zenith.encoding['dtype'])
+        self.assertEqual(-999999, sat_zenith.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
         self.assertEqual((4, 90), sol_azimuth.shape)
-        self.assertEqual(-999999, sol_azimuth.data[3, 0])
-        self.assertEqual(-999999, sol_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sol_azimuth.data[3, 0]))
         self.assertEqual("solar_azimuth_angle", sol_azimuth.attrs["standard_name"])
-        self.assertEqual(0.01, sol_azimuth.attrs["scale_factor"])
         self.assertEqual("degree", sol_azimuth.attrs["units"])
+        self.assertEqual(np.int32, sol_azimuth.encoding['dtype'])
+        self.assertEqual(-999999, sol_azimuth.encoding['_FillValue'])
+        self.assertEqual(0.01, sol_azimuth.encoding['scale_factor'])
+        self.assertEqual(0.0, sol_azimuth.encoding['add_offset'])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertEqual((4, 90), sol_zenith.shape)
-        self.assertEqual(-999999, sol_zenith.data[3, 0])
-        self.assertEqual(-999999, sol_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sol_zenith.data[3, 0]))
         self.assertEqual("solar_zenith_angle", sol_zenith.attrs["standard_name"])
-        self.assertEqual(0.01, sol_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sol_zenith.attrs["units"])
+        self.assertEqual(np.int32, sol_zenith.encoding['dtype'])
+        self.assertEqual(-999999, sol_zenith.encoding['_FillValue'])
+        self.assertEqual(0.01, sol_zenith.encoding['scale_factor'])
+        self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
 
         acquisition_time = ds.variables["acquisition_time"]
         self.assertEqual((4,), acquisition_time.shape)

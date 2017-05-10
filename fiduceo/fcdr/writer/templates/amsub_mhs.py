@@ -15,13 +15,12 @@ class AMSUB_MHS:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int32,
-                                                            BTEMPS_FILL_VALUE)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,
+                                                            np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, BTEMPS_FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
+        tu.add_encoding(variable, np.int32, -999999, scale_factor=0.01)
         tu.add_units(variable, "K")
-        tu.add_scale_factor(variable, 0.01)
         variable.attrs["ancillary_variables"] = "chanqual qualind scanqual"
         dataset["btemps"] = variable
 
@@ -35,11 +34,10 @@ class AMSUB_MHS:
         dataset["chanqual"] = variable
 
         # instrtemp
-        default_array = DefaultData.create_default_vector(height, np.int32)
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         tu.add_units(variable, "K")
-        tu.add_scale_factor(variable, 0.01)
+        tu.add_encoding(variable, np.int32, DefaultData.get_default_fill_value(np.int32), scale_factor=0.01)
         variable.attrs["long_name"] = "instrument_temperature"
         dataset["instrtemp"] = variable
 
@@ -191,12 +189,11 @@ class AMSUB_MHS:
 
     @staticmethod
     def create_angle_variable(height, standard_name):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int32, fill_value=-999999)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, -999999)
         variable.attrs["standard_name"] = standard_name
         tu.add_units(variable, "degree")
-        tu.add_scale_factor(variable, 0.01)
+        tu.add_encoding(variable, np.int32, -999999, scale_factor=0.01)
         return variable
 
     @staticmethod

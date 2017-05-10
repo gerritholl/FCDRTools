@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 import xarray as xr
-from fiduceo.fcdr.writer.default_data import DefaultData
 
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
 
 
@@ -68,7 +68,8 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", count.attrs["units"])
 
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
-        self._assert_scalar_float_variable(ds, "sol_eff_irr", "Solar effective Irradiance", "W*m-2", standard_name="solar_irradiance_vis")
+        self._assert_scalar_float_variable(ds, "sol_eff_irr", "Solar effective Irradiance", "W*m-2",
+                                           standard_name="solar_irradiance_vis")
 
         u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
         self.assertEqual((), u_sol_eff_irr.shape)
@@ -101,12 +102,16 @@ class MVIRITest(unittest.TestCase):
 
         self._assert_scalar_float_variable(ds, "a_ir", "Calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
         self._assert_scalar_float_variable(ds, "b_ir", "Calibration parameter b for IR Band", "mWm^-2sr^-1cm^-1/DC")
-        self._assert_scalar_float_variable(ds, "u_a_ir", "Uncertainty of calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
-        self._assert_scalar_float_variable(ds, "u_b_ir", "Uncertainty of calibration parameter b for IR Band", "mWm^-2sr^-1cm^-1/DC")
+        self._assert_scalar_float_variable(ds, "u_a_ir", "Uncertainty of calibration parameter a for IR Band",
+                                           "mWm^-2sr^-1cm^-1")
+        self._assert_scalar_float_variable(ds, "u_b_ir", "Uncertainty of calibration parameter b for IR Band",
+                                           "mWm^-2sr^-1cm^-1/DC")
         self._assert_scalar_float_variable(ds, "a_wv", "Calibration parameter a for WV Band", "mWm^-2sr^-1cm^-1")
         self._assert_scalar_float_variable(ds, "b_wv", "Calibration parameter b for WV Band", "mWm^-2sr^-1cm^-1/DC")
-        self._assert_scalar_float_variable(ds, "u_a_wv", "Uncertainty of calibration parameter a for WV Band", "mWm^-2sr^-1cm^-1")
-        self._assert_scalar_float_variable(ds, "u_b_wv", "Uncertainty of calibration parameter b for WV Band", "mWm^-2sr^-1cm^-1/DC")
+        self._assert_scalar_float_variable(ds, "u_a_wv", "Uncertainty of calibration parameter a for WV Band",
+                                           "mWm^-2sr^-1cm^-1")
+        self._assert_scalar_float_variable(ds, "u_b_wv", "Uncertainty of calibration parameter b for WV Band",
+                                           "mWm^-2sr^-1cm^-1/DC")
         self._assert_scalar_float_variable(ds, "q_ir", "IR Band Calibration quality flag", "1")
         self._assert_scalar_float_variable(ds, "q_wv", "WV Band Calibration quality flag", "1")
         self._assert_scalar_float_variable(ds, "unit_conversion_ir", "IR Unit conversion factor", "1")
@@ -123,7 +128,7 @@ class MVIRITest(unittest.TestCase):
         ds = xr.Dataset()
         MVIRI.add_easy_fcdr_variables(ds, 8)
 
-        reflectance = ds.variables["reflectance"]
+        reflectance = ds.variables["toa_bidirectional_reflectance"]
         self.assertEqual((5000, 5000), reflectance.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), reflectance.data[3, 115])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), reflectance.attrs["_FillValue"])
@@ -150,23 +155,6 @@ class MVIRITest(unittest.TestCase):
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         MVIRI.add_full_fcdr_variables(ds, 7)
-
-        u_toa_refl_vis = ds.variables["u_toa_bidirectional_reflectance_vis"]
-        self.assertEqual((5000, 5000), u_toa_refl_vis.shape)
-        self.assertEqual(65535, u_toa_refl_vis.data[6, 110])
-        self.assertEqual(65535, u_toa_refl_vis.attrs["_FillValue"])
-        self.assertEqual("percent", u_toa_refl_vis.attrs["units"])
-        self.assertEqual(1E-03, u_toa_refl_vis.attrs["scale_factor"])
-        self.assertEqual("truncated_gaussian", u_toa_refl_vis.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_toa_refl_vis.attrs["scan_correlation_units"])
-        self.assertEqual([-2, 2], u_toa_refl_vis.attrs["scan_correlation_scales"])
-        self.assertEqual("truncated_gaussian", u_toa_refl_vis.attrs["time_correlation_form"])
-        self.assertEqual("line", u_toa_refl_vis.attrs["time_correlation_units"])
-        self.assertEqual([-2, 2], u_toa_refl_vis.attrs["time_correlation_scales"])
-        self.assertEqual("triangle", u_toa_refl_vis.attrs["image_correlation_form"])
-        self.assertEqual("months", u_toa_refl_vis.attrs["image_correlation_units"])
-        self.assertEqual([-3, 3], u_toa_refl_vis.attrs["image_correlation_scales"])
-        self.assertEqual("gaussian", u_toa_refl_vis.attrs["pdf_shape"])
 
         count = ds.variables["count_vis"]
         self.assertEqual((5000, 5000), count.shape)
@@ -253,8 +241,8 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(7.62939E-05, u_sol_azimuth.attrs["scale_factor"])
 
         u_tot_count = ds.variables["u_combined_counts_vis"]
-        self.assertEqual((5000, 5000), u_tot_count.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_tot_count.data[2, 113])
+        self.assertEqual((), u_tot_count.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_tot_count.data)
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_tot_count.attrs["_FillValue"])
         self.assertEqual("Total Uncertainty in counts", u_tot_count.attrs["long_name"])
         self.assertEqual("count", u_tot_count.attrs["units"])
@@ -266,23 +254,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("line", u_tot_count.attrs["time_correlation_units"])
         self.assertEqual([-2, 2], u_tot_count.attrs["time_correlation_scales"])
         self.assertEqual("digitised_gaussian", u_tot_count.attrs["pdf_shape"])
-
-        u_srf = ds.variables["u_srf"]
-        self.assertEqual((1011, 1011), u_srf.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_srf.data[3, 119])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_srf.attrs["_FillValue"])
-        self.assertEqual("Uncertainty in SRF", u_srf.attrs["long_name"])
-        self.assertEqual(1.52588E-05, u_srf.attrs["scale_factor"])
-        self.assertEqual("rectangle", u_srf.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_srf.attrs["scan_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_srf.attrs["scan_correlation_scales"])
-        self.assertEqual("rectangle", u_srf.attrs["time_correlation_form"])
-        self.assertEqual("line", u_srf.attrs["time_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_srf.attrs["time_correlation_scales"])
-        self.assertEqual("rectangle", u_srf.attrs["image_correlation_form"])
-        self.assertEqual("days", u_srf.attrs["image_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_srf.attrs["image_correlation_scales"])
-        self.assertEqual("rectangle", u_srf.attrs["pdf_shape"])
 
         a0 = ds.variables["a0_vis"]
         self.assertEqual((), a0.shape)

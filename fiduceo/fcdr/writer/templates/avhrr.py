@@ -40,13 +40,11 @@ class AVHRR:
         dataset["satellite_azimuth_angle"] = variable
 
         # satellite_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "sensor_zenith_angle"
-        variable.attrs["add_offset"] = 0.0
-        tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "degree")
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
         dataset["satellite_zenith_angle"] = variable
@@ -57,13 +55,11 @@ class AVHRR:
         dataset["solar_azimuth_angle"] = variable
 
         # solar_zenith_angle
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "solar_zenith_angle"
-        variable.attrs["add_offset"] = 0.0
-        tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "degree")
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = 0
         dataset["solar_zenith_angle"] = variable
@@ -335,24 +331,24 @@ class AVHRR:
 
     @staticmethod
     def _create_channel_refl_variable(height, long_name):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
-        variable.attrs["add_offset"] = 0.0
-        tu.add_scale_factor(variable, 1e-4)
         tu.add_units(variable, "percent")
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 1e-4)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
         return variable
 
     @staticmethod
     def _create_channel_bt_variable(height, long_name):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.int16)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = long_name
-        AVHRR._add_temperature_attributes(variable)
+        tu.add_units(variable, "K")
+        variable.attrs["valid_max"] = 10000
+        variable.attrs["valid_min"] = -20000
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, 273.15)
         return variable

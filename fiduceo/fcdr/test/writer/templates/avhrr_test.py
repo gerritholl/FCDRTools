@@ -56,14 +56,15 @@ class AVHRRTest(unittest.TestCase):
 
         sat_zenith = ds.variables["satellite_zenith_angle"]
         self.assertEqual((5, 409), sat_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.data[0, 5])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sat_zenith.data[0, 5]))
         self.assertEqual("sensor_zenith_angle", sat_zenith.attrs["standard_name"])
-        self.assertEqual(0.0, sat_zenith.attrs["add_offset"])
-        self.assertEqual(0.01, sat_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sat_zenith.attrs["units"])
         self.assertEqual(9000, sat_zenith.attrs["valid_max"])
         self.assertEqual(0, sat_zenith.attrs["valid_min"])
+        self.assertEqual(np.int16, sat_zenith.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_azimuth.data[0, 6])
@@ -73,14 +74,15 @@ class AVHRRTest(unittest.TestCase):
 
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertEqual((5, 409), sol_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.data[0, 7])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sol_zenith.data[0, 7]))
         self.assertEqual("solar_zenith_angle", sol_zenith.attrs["standard_name"])
-        self.assertEqual(0.0, sol_zenith.attrs["add_offset"])
-        self.assertEqual(0.01, sol_zenith.attrs["scale_factor"])
         self.assertEqual("degree", sol_zenith.attrs["units"])
         self.assertEqual(18000, sol_zenith.attrs["valid_max"])
         self.assertEqual(0, sol_zenith.attrs["valid_min"])
+        self.assertEqual(np.int16, sol_zenith.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
+        self.assertEqual(0.01, sol_zenith.encoding['scale_factor'])
+        self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
 
         ch1_ref = ds.variables["Ch1_Ref"]
         self._assert_correct_refl_variable(ch1_ref, "Channel 1 Reflectance")
@@ -353,24 +355,26 @@ class AVHRRTest(unittest.TestCase):
 
     def _assert_correct_refl_variable(self, variable, long_name):
         self.assertEqual((5, 409), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.data[0, 8])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.attrs["_FillValue"])
+        self.assertTrue(np.isnan(variable.data[0, 8]))
         self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
         self.assertEqual(long_name, variable.attrs["long_name"])
-        self.assertEqual(0.0, variable.attrs["add_offset"])
-        self.assertEqual(1e-4, variable.attrs["scale_factor"])
         self.assertEqual("percent", variable.attrs["units"])
+        self.assertEqual(np.int16, variable.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
+        self.assertEqual(1e-4, variable.encoding['scale_factor'])
+        self.assertEqual(0.0, variable.encoding['add_offset'])
         self.assertEqual(15000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
 
     def _assert_correct_bt_variable(self, variable, long_name):
         self.assertEqual((5, 409), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.data[0, 8])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.attrs["_FillValue"])
+        self.assertTrue(np.isnan(variable.data[0, 8]))
         self.assertEqual("toa_brightness_temperature", variable.attrs["standard_name"])
         self.assertEqual(long_name, variable.attrs["long_name"])
-        self.assertEqual(273.15, variable.attrs["add_offset"])
-        self.assertEqual(0.01, variable.attrs["scale_factor"])
+        self.assertEqual(np.int16, variable.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
+        self.assertEqual(0.01, variable.encoding['scale_factor'])
+        self.assertEqual(273.15, variable.encoding['add_offset'])
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(-20000, variable.attrs["valid_min"])

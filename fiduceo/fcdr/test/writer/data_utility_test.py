@@ -188,7 +188,55 @@ class DataUtilityTest(unittest.TestCase):
 
         DataUtility.check_scaling_ranges(variable)
 
-    # add test with valid_min and valid_max (and only one of them) tb 2017-05-10
+    def test_check_scaling_ranges_int16_valid_min_max_underflow(self):
+        default_array = DefaultData.create_default_array(2, 2, np.float32)
+        default_array[0][0] = 60  # 25000
+        default_array[0][1] = 9   # underflow
+        default_array[1][0] = np.NaN
+        default_array[1][1] = 14.06
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["valid_max"] = 25000
+        variable.attrs["valid_min"] = 0
+        variable.encoding = dict(
+            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+
+        try:
+            DataUtility.check_scaling_ranges(variable)
+            self.fail("ValueError expected")
+        except ValueError:
+            pass
+
+    def test_check_scaling_ranges_int16_valid_min_max_overflow(self):
+        default_array = DefaultData.create_default_array(2, 2, np.float32)
+        default_array[0][0] = 61  # overflow
+        default_array[0][1] = 10  # 0
+        default_array[1][0] = np.NaN
+        default_array[1][1] = 14.06
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["valid_max"] = 25000
+        variable.attrs["valid_min"] = 0
+        variable.encoding = dict(
+            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+
+        try:
+            DataUtility.check_scaling_ranges(variable)
+            self.fail("ValueError expected")
+        except ValueError:
+            pass
+
+    def test_check_scaling_ranges_int16_valid_min_max_ok(self):
+        default_array = DefaultData.create_default_array(2, 2, np.float32)
+        default_array[0][0] = 60  # 25000
+        default_array[0][1] = 10  # 0
+        default_array[1][0] = np.NaN
+        default_array[1][1] = 14.06
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["valid_max"] = 25000
+        variable.attrs["valid_min"] = 0
+        variable.encoding = dict(
+            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+
+        DataUtility.check_scaling_ranges(variable)
 
     def test__get_scale_factor(self):
         default_array = DefaultData.create_default_vector(2, np.float32)

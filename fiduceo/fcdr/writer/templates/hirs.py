@@ -109,14 +109,12 @@ class HIRS:
     @staticmethod
     def add_bt_variable(dataset, height):
         # bt
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.int16, FILL_VALUE)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, FILL_VALUE)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
-        tu.add_scale_factor(variable, 0.01)
-        tu.add_offset(variable, 150)
+        tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0)
         variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
         dataset["bt"] = variable
 
@@ -551,16 +549,14 @@ class HIRS:
 
     @staticmethod
     def _create_geo_angle_variable(standard_name, height, orig_name=None):
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16)
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = standard_name
         if orig_name is not None:
             variable.attrs["orig_name"] = orig_name
 
         tu.add_units(variable, "degree")
-        tu.add_scale_factor(variable, 0.01)
-        tu.add_offset(variable, -180.0)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
         return variable
 
     @staticmethod

@@ -30,13 +30,11 @@ class HIRS2(HIRS):
 
     @staticmethod
     def _add_angle_variables(dataset, height):
-        default_array = DefaultData.create_default_vector(height, np.uint16)
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "platform_zenith_angle"
         tu.add_units(variable, "degree")
-        tu.add_scale_factor(variable, 0.01)
-        tu.add_offset(variable, -180.0)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
         dataset["satellite_zenith_angle"] = variable
 
         dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)

@@ -35,18 +35,20 @@ class HIRS2Test(unittest.TestCase):
     def _assert_angle_variables(self, ds):
         satellite_zenith_angle = ds.variables["satellite_zenith_angle"]
         self.assertEqual((6,), satellite_zenith_angle.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.data[3])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.attrs["_FillValue"])
-        self.assertEqual(0.01, satellite_zenith_angle.attrs["scale_factor"])
-        self.assertEqual(-180.0, satellite_zenith_angle.attrs["add_offset"])
+        self.assertTrue(np.isnan(satellite_zenith_angle.data[3]))
+        self.assertEqual(np.uint16, satellite_zenith_angle.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.encoding['_FillValue'])
+        self.assertEqual(0.01, satellite_zenith_angle.encoding['scale_factor'])
+        self.assertEqual(-180.0, satellite_zenith_angle.encoding['add_offset'])
         self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
         self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
 
         solar_azimuth_angle = ds.variables["solar_azimuth_angle"]
         self.assertEqual((6, 56), solar_azimuth_angle.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.data[4, 4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.attrs["_FillValue"])
-        self.assertEqual(0.01, solar_azimuth_angle.attrs["scale_factor"])
-        self.assertEqual(-180.0, solar_azimuth_angle.attrs["add_offset"])
+        self.assertTrue(np.isnan(solar_azimuth_angle.data[4, 4]))
+        self.assertEqual(np.uint16, solar_azimuth_angle.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.encoding['_FillValue'])
+        self.assertEqual(0.01, solar_azimuth_angle.encoding['scale_factor'])
+        self.assertEqual(-180.0, solar_azimuth_angle.encoding['add_offset'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])

@@ -85,9 +85,20 @@ class FCDRWriter:
         :param version: the processor version string, format "xx.x"
         :return a valid file name
          """
-        start_string = start.strftime(DATE_PATTERN)
-        end_string = end.strftime(DATE_PATTERN)
-        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_EASY_v" + version + "_fv" + FCDRWriter._version + ".nc"
+        return FCDRWriter._create_file_name(end, platform, sensor, start, "EASY", version)
+
+    @staticmethod
+    def create_file_name_FCDR_full(sensor, platform, start, end, version):
+        """
+        Create a file name for FULL FCDR format .
+        :param sensor: the sensor name
+        :param platform: the name of the satellite platform
+        :param start: the acquisition start date and time, type datetime
+        :param end: the acquisition end date and time, type datetime
+        :param version: the processor version string, format "xx.x"
+        :return a valid file name
+         """
+        return FCDRWriter._create_file_name(end, platform, sensor, start, "FULL", version)
 
     @classmethod
     def _add_standard_global_attributes(cls, dataset):
@@ -104,3 +115,9 @@ class FCDRWriter:
         dataset.attrs["history"] = None
         dataset.attrs["references"] = None
         dataset.attrs["comment"] = None
+
+    @staticmethod
+    def _create_file_name(end, platform, sensor, start, type, version):
+        start_string = start.strftime(DATE_PATTERN)
+        end_string = end.strftime(DATE_PATTERN)
+        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + FCDRWriter._version + ".nc"

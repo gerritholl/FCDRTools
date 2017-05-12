@@ -129,30 +129,27 @@ class MVIRI:
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # reflectance
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
         tu.add_units(variable, "percent")
-        tu.add_scale_factor(variable, 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
         dataset["toa_bidirectional_reflectance"] = variable
 
         # u_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "random uncertainty per pixel"
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "percent")
-        tu.add_scale_factor(variable, 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
         dataset["u_random"] = variable
 
         # u_non_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "non-random uncertainty per pixel"
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         tu.add_units(variable, "percent")
-        tu.add_scale_factor(variable, 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
         dataset["u_non_random"] = variable
 
     @staticmethod
@@ -176,12 +173,11 @@ class MVIRI:
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
-        tu.add_scale_factor(variable, 0.009155273)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.009155273)
         variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_time"] = variable
 
@@ -278,19 +274,16 @@ class MVIRI:
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
+
         if unsigned is True:
             data_type = np.uint16
         else:
             data_type = np.int16
 
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, data_type,
-                                                         fill_value=fill_value)
-        variable = Variable(["y", "x"], default_array)
-
-        if fill_value is not None:
-            tu.add_fill_value(variable, fill_value)
-        else:
-            tu.add_fill_value(variable, DefaultData.get_default_fill_value(data_type))
+        if fill_value is None:
+            fill_value = DefaultData.get_default_fill_value(data_type)
 
         if standard_name is not None:
             variable.attrs["standard_name"] = standard_name
@@ -299,5 +292,5 @@ class MVIRI:
             variable.attrs["long_name"] = long_name
 
         tu.add_units(variable, "degree")
-        tu.add_scale_factor(variable, scale_factor)
+        tu.add_encoding(variable, data_type, fill_value, scale_factor)
         return variable

@@ -1,3 +1,4 @@
+import datetime
 import unittest
 
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
@@ -109,7 +110,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_solar_zenith_angle"])
 
         self.assertIsNotNone(ds.variables["PRT_C"])
-        self.assertIsNotNone(ds.variables["u_prt"])                             # geolocation
+        self.assertIsNotNone(ds.variables["u_prt"])  # geolocation
         self._verify_geolocation_variables(ds)
         self.assertIsNotNone(ds.variables["R_ICT"])
         self.assertIsNotNone(ds.variables["T_instr"])
@@ -559,6 +560,27 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["u_satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["u_satellite_azimuth_angle"])
+
+    def test_create_file_name_FCDR_easy(self):
+        start = datetime.datetime(2015, 8, 23, 14, 24, 52)
+        end = datetime.datetime(2015, 8, 23, 15, 25, 53)
+        self.assertEqual("FIDUCEO_FCDR_L1C_MVIRI_MET7-0.00_20150823142452_20150823152553_EASY_v02.3_fv1.0.7.nc",
+                         FCDRWriter.create_file_name_FCDR_easy("MVIRI", "MET7-0.00", start, end, "02.3"))
+
+        start = datetime.datetime(2014, 7, 22, 13, 23, 51)
+        end = datetime.datetime(2014, 7, 22, 14, 24, 52)
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140722132351_20140722142452_EASY_v03.4_fv1.0.7.nc",
+                         FCDRWriter.create_file_name_FCDR_easy("HIRS3", "NOAA15", start, end, "03.4"))
+
+        start = datetime.datetime(2013, 6, 21, 12, 23, 50)
+        end = datetime.datetime(2013, 6, 21, 13, 23, 51)
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS4_METOPA_20130621122350_20130621132351_EASY_v04.5_fv1.0.7.nc",
+                         FCDRWriter.create_file_name_FCDR_easy("HIRS4", "METOPA", start, end, "04.5"))
+
+        start = datetime.datetime(2012, 5, 20, 11, 22, 49)
+        end = datetime.datetime(2012, 5, 20, 12, 22, 50)
+        self.assertEqual("FIDUCEO_FCDR_L1C_AMSUB_NOAA17_20120520112249_20120520122250_EASY_v05.6_fv1.0.7.nc",
+                         FCDRWriter.create_file_name_FCDR_easy("AMSUB", "NOAA17", start, end, "05.6"))
 
     def _verifyGlobalAttributes(self, attributes):
         self.assertIsNotNone(attributes)

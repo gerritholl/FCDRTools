@@ -1,7 +1,10 @@
 import os
+
 import xarray as xr
 
 from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
+
+DATE_PATTERN = "%Y%m%d%H%M%S"
 
 
 class FCDRWriter:
@@ -71,12 +74,28 @@ class FCDRWriter:
 
         return dataset
 
+    @staticmethod
+    def create_file_name_FCDR_easy(sensor, platform, start, end, version):
+        """
+        Create a file name for EASY FCDR format .
+        :param sensor: the sensor name
+        :param platform: the name of the satellite platform
+        :param start: the acquisition start date and time, type datetime
+        :param end: the acquisition end date and time, type datetime
+        :param version: the processor version string, format "xx.x"
+        :return a valid file name
+         """
+        start_string = start.strftime(DATE_PATTERN)
+        end_string = end.strftime(DATE_PATTERN)
+        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_EASY_v" + version + "_fv" + FCDRWriter._version + ".nc"
+
     @classmethod
     def _add_standard_global_attributes(cls, dataset):
         dataset.attrs["Conventions"] = "CF-1.6"
-        dataset.attrs["licence"] = "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC " \
-                                   "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
-                                   "Observations\". Grant Agreement: 638822."
+        dataset.attrs[
+            "licence"] = "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC " \
+                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
+                         "Observations\". Grant Agreement: 638822."
         dataset.attrs["writer_version"] = FCDRWriter._version
         # @todo tb/tb 2 the following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None

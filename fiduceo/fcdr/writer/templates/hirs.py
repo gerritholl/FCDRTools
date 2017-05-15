@@ -402,9 +402,9 @@ class HIRS:
         dataset["u_c_space_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_space channel correlations")
 
         # u_Earthshine
-        dataset["u_Earthshine"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_O_Re"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_O_TIWCT"] = tu.create_scalar_float_variable(fill_value=np.NaN)
+        dataset["u_Earthshine"] = tu.create_scalar_float_variable()
+        dataset["u_O_Re"] = tu.create_scalar_float_variable()
+        dataset["u_O_TIWCT"] = tu.create_scalar_float_variable()
 
         # u_O_TPRT
         variable = Variable([], np.uint16(65535))
@@ -430,16 +430,16 @@ class HIRS:
         # u_O_TPRT_chan_corr
         dataset["u_O_TPRT_chan_corr"] = HIRS._create_channel_correlation_variable("u_O_TPRT channel correlations")
 
-        dataset["u_Rself"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_Rselfparams"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_SRF_calib"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_d_PRT"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_electronics"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_extraneous_periodic"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["u_nonlinearity"] = tu.create_scalar_float_variable(fill_value=np.NaN)
-        dataset["emissivity"] = tu.create_scalar_float_variable("emissivity", units="1", fill_value=np.NaN)
-        dataset["temp_corr_slope"] = tu.create_scalar_float_variable("Slope for effective temperature correction", units="1", fill_value=np.NaN)
-        dataset["temp_corr_offset"] = tu.create_scalar_float_variable("Offset for effective temperature correction", units="1", fill_value=np.NaN)
+        dataset["u_Rself"] = tu.create_scalar_float_variable()
+        dataset["u_Rselfparams"] = tu.create_scalar_float_variable()
+        dataset["u_SRF_calib"] = tu.create_scalar_float_variable()
+        dataset["u_d_PRT"] = tu.create_scalar_float_variable()
+        dataset["u_electronics"] = tu.create_scalar_float_variable()
+        dataset["u_extraneous_periodic"] = tu.create_scalar_float_variable()
+        dataset["u_nonlinearity"] = tu.create_scalar_float_variable()
+        dataset["emissivity"] = tu.create_scalar_float_variable("emissivity", units="1")
+        dataset["temp_corr_slope"] = tu.create_scalar_float_variable("Slope for effective temperature correction", units="1")
+        dataset["temp_corr_offset"] = tu.create_scalar_float_variable("Offset for effective temperature correction", units="1")
 
     @staticmethod
     def _add_HIRS2_flag_variables(dataset, height):

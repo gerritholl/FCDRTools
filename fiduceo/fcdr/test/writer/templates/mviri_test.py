@@ -81,8 +81,8 @@ class MVIRITest(unittest.TestCase):
 
         u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
         self.assertEqual((), u_sol_eff_irr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_eff_irr.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sol_eff_irr.data))
+        self.assertTrue(np.isnan(u_sol_eff_irr.attrs["_FillValue"]))
         self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_eff_irr.attrs["long_name"])
         self.assertEqual("Wm^-2", u_sol_eff_irr.attrs["units"])
         self.assertEqual("rectangle", u_sol_eff_irr.attrs["scan_correlation_form"])
@@ -98,14 +98,14 @@ class MVIRITest(unittest.TestCase):
 
         srf = ds.variables["spectral_response_function_vis"]
         self.assertEqual((1011,), srf.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.data[116])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), srf.attrs["_FillValue"])
+        self.assertTrue(np.isnan(srf.data[116]))
+        self.assertTrue(np.isnan(srf.attrs["_FillValue"]))
         self.assertEqual("Spectral Response Function", srf.attrs["long_name"])
 
         cov_srf = ds.variables["covariance_spectral_response_function_vis"]
         self.assertEqual((1011, 1011), cov_srf.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), cov_srf.data[116, 22])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), cov_srf.attrs["_FillValue"])
+        self.assertTrue(np.isnan(cov_srf.data[116, 22]))
+        self.assertTrue(np.isnan(cov_srf.attrs["_FillValue"]))
         self.assertEqual("Covariance of the Visible Band Spectral Response Function", cov_srf.attrs["long_name"])
 
         self._assert_scalar_float_variable(ds, "a_ir", "Calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
@@ -285,29 +285,29 @@ class MVIRITest(unittest.TestCase):
 
         a0 = ds.variables["a0_vis"]
         self.assertEqual((), a0.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a0.attrs["_FillValue"])
+        self.assertTrue(np.isnan(a0.data))
+        self.assertTrue(np.isnan(a0.attrs["_FillValue"]))
         self.assertEqual("Calibration Coefficient at Launch", a0.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count", a0.attrs["units"])
 
         a1 = ds.variables["a1_vis"]
         self.assertEqual((), a1.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), a1.attrs["_FillValue"])
+        self.assertTrue(np.isnan(a1.data))
+        self.assertTrue(np.isnan(a1.attrs["_FillValue"]))
         self.assertEqual("Time variation of a0", a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
 
         k_space = ds.variables["mean_counts_space_vis"]
         self.assertEqual((), k_space.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), k_space.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), k_space.attrs["_FillValue"])
+        self.assertTrue(np.isnan(k_space.data))
+        self.assertTrue(np.isnan(k_space.attrs["_FillValue"]))
         self.assertEqual("Space count", k_space.attrs["long_name"])
         self.assertEqual("count", k_space.attrs["units"])
 
         u_a0_vis = ds.variables["u_a0_vis"]
         self.assertEqual((), u_a0_vis.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_vis.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_vis.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_a0_vis.data))
+        self.assertTrue(np.isnan(u_a0_vis.attrs["_FillValue"]))
         self.assertEqual("Uncertainty in a0", u_a0_vis.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count", u_a0_vis.attrs["units"])
         self.assertEqual("rectangle", u_a0_vis.attrs["scan_correlation_form"])
@@ -323,8 +323,8 @@ class MVIRITest(unittest.TestCase):
 
         u_a1_vis = ds.variables["u_a1_vis"]
         self.assertEqual((), u_a0_vis.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1_vis.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a1_vis.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_a1_vis.data))
+        self.assertTrue(np.isnan(u_a1_vis.attrs["_FillValue"]))
         self.assertEqual("Uncertainty in a1", u_a1_vis.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", u_a1_vis.attrs["units"])
         self.assertEqual("rectangle", u_a1_vis.attrs["scan_correlation_form"])
@@ -340,28 +340,28 @@ class MVIRITest(unittest.TestCase):
 
         u_a0_a1_cov = ds.variables["covariance_a0_a1_vis"]
         self.assertEqual((2, 2), u_a0_a1_cov.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_a1_cov.data[1, 0])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_a0_a1_cov.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_a0_a1_cov.data[1, 0]))
+        self.assertTrue(np.isnan(u_a0_a1_cov.attrs["_FillValue"]))
         self.assertEqual("Covariance matrix of calibration coefficients", u_a0_a1_cov.attrs["long_name"])
 
         u_e_noise = ds.variables["u_electronics_counts_vis"]
         self.assertEqual((), u_e_noise.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_e_noise.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_e_noise.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_e_noise.data))
+        self.assertTrue(np.isnan(u_e_noise.attrs["_FillValue"]))
         self.assertEqual("Uncertainty due to Electronics noise", u_e_noise.attrs["long_name"])
         self.assertEqual("count", u_e_noise.attrs["units"])
 
         u_digitization = ds.variables["u_digitization_counts_vis"]
         self.assertEqual((), u_digitization.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_digitization.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_digitization.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_digitization.data))
+        self.assertTrue(np.isnan(u_digitization.attrs["_FillValue"]))
         self.assertEqual("Uncertainty due to digitization", u_digitization.attrs["long_name"])
         self.assertEqual("count", u_digitization.attrs["units"])
 
         u_space = ds.variables["allan_deviation_counts_space_vis"]
         self.assertEqual((), u_space.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_space.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_space.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_space.data))
+        self.assertTrue(np.isnan(u_space.attrs["_FillValue"]))
         self.assertEqual("Uncertainty of space count", u_space.attrs["long_name"])
         self.assertEqual("count", u_space.attrs["units"])
         self.assertEqual("rectangle", u_space.attrs["time_correlation_form"])
@@ -372,8 +372,8 @@ class MVIRITest(unittest.TestCase):
     def _assert_scalar_float_variable(self, ds, name, long_name, units, standard_name=None):
         dse = ds.variables[name]
         self.assertEqual((), dse.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), dse.attrs["_FillValue"])
+        self.assertTrue(np.isnan(dse.data))
+        self.assertTrue(np.isnan(dse.attrs["_FillValue"]))
 
         if standard_name is not None:
             self.assertEqual(standard_name, dse.attrs["standard_name"])

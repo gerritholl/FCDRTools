@@ -158,15 +158,15 @@ class AMSUB_MHSTest(unittest.TestCase):
 
         u_rand_btemps = ds.variables["u_random_btemps"]
         self.assertEqual((5, 4, 90), u_rand_btemps.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_rand_btemps.data[4, 2, 35])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_rand_btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_rand_btemps.data[4, 2, 35]))
+        self.assertTrue(np.isnan(u_rand_btemps.attrs["_FillValue"]))
         self.assertEqual("random uncertainty per pixel", u_rand_btemps.attrs["long_name"])
         self.assertEqual("K", u_rand_btemps.attrs["units"])
 
         u_non_rand_btemps = ds.variables["u_non_random_btemps"]
         self.assertEqual((5, 4, 90), u_non_rand_btemps.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_non_rand_btemps.data[0, 3, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_non_rand_btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_non_rand_btemps.data[0, 3, 36]))
+        self.assertTrue(np.isnan(u_non_rand_btemps.attrs["_FillValue"]))
         self.assertEqual("non-random uncertainty per pixel", u_non_rand_btemps.attrs["long_name"])
         self.assertEqual("K", u_non_rand_btemps.attrs["units"])
 
@@ -176,70 +176,70 @@ class AMSUB_MHSTest(unittest.TestCase):
 
         u_btemps = ds.variables["u_btemps"]
         self.assertEqual((5, 4, 90), u_btemps.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_btemps.data[3, 1, 34])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_btemps.data[3, 1, 34]))
+        self.assertTrue(np.isnan(u_btemps.attrs["_FillValue"]))
         self.assertEqual("total uncertainty of brightness temperature", u_btemps.attrs["long_name"])
         self.assertEqual("K", u_btemps.attrs["units"])
 
         u_syst_btemps = ds.variables["u_syst_btemps"]
         self.assertEqual((5, 4, 90), u_syst_btemps.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_syst_btemps.data[4, 2, 35])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_syst_btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_syst_btemps.data[4, 2, 35]))
+        self.assertTrue(np.isnan(u_syst_btemps.attrs["_FillValue"]))
         self.assertEqual("systematic uncertainty of brightness temperature", u_syst_btemps.attrs["long_name"])
         self.assertEqual("K", u_syst_btemps.attrs["units"])
 
         u_random_btemps = ds.variables["u_random_btemps"]
         self.assertEqual((5, 4, 90), u_random_btemps.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_random_btemps.data[0, 3, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_random_btemps.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_random_btemps.data[0, 3, 36]))
+        self.assertTrue(np.isnan(u_random_btemps.attrs["_FillValue"]))
         self.assertEqual("noise on brightness temperature", u_random_btemps.attrs["long_name"])
         self.assertEqual("K", u_random_btemps.attrs["units"])
 
         u_instrtemp = ds.variables["u_instrtemp"]
         self.assertEqual((4,), u_instrtemp.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_instrtemp.data[1])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_instrtemp.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_instrtemp.data[1]))
+        self.assertTrue(np.isnan(u_instrtemp.attrs["_FillValue"]))
         self.assertEqual("uncertainty of instrument temperature", u_instrtemp.attrs["long_name"])
         self.assertEqual("K", u_instrtemp.attrs["units"])
 
         u_latitude = ds.variables["u_latitude"]
         self.assertEqual((4, 90), u_latitude.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.data[2, 38])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_latitude.data[2, 38]))
+        self.assertTrue(np.isnan(u_latitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of latitude", u_latitude.attrs["long_name"])
         self.assertEqual("degree", u_latitude.attrs["units"])
 
         u_longitude = ds.variables["u_longitude"]
         self.assertEqual((4, 90), u_longitude.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.data[3, 39])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_longitude.data[3, 39]))
+        self.assertTrue(np.isnan(u_longitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of longitude", u_longitude.attrs["long_name"])
         self.assertEqual("degree", u_longitude.attrs["units"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
         self.assertEqual((4, 90), u_sat_azimuth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.data[0, 40])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sat_azimuth.data[0, 40]))
+        self.assertTrue(np.isnan(u_sat_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite azimuth angle", u_sat_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sat_azimuth.attrs["units"])
 
         u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
         self.assertEqual((4, 90), u_sat_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.data[1, 41])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sat_zenith.data[1, 41]))
+        self.assertTrue(np.isnan(u_sat_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite zenith angle", u_sat_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sat_zenith.attrs["units"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
         self.assertEqual((4, 90), u_sol_azimuth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.data[2, 42])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sol_azimuth.data[2, 42]))
+        self.assertTrue(np.isnan(u_sol_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar azimuth angle", u_sol_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sol_azimuth.attrs["units"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
         self.assertEqual((4, 90), u_sol_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.data[3, 43])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sol_zenith.data[3, 43]))
+        self.assertTrue(np.isnan(u_sol_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])

@@ -62,9 +62,9 @@ class MVIRI:
                                                                  long_name="Solar effective Irradiance", units="W*m-2")
 
         # u_sol_eff_irr
-        default_array = DefaultData.get_default_fill_value(np.float32)
+        default_array = np.NaN
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
         tu.add_units(variable, "Wm^-2")
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
@@ -80,16 +80,16 @@ class MVIRI:
         dataset["u_sol_eff_irr"] = variable
 
         # srf
-        default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32)
+        default_array = DefaultData.create_default_vector(SRF_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["srf_size"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Spectral Response Function"
         dataset["spectral_response_function_vis"] = variable
 
         # srf covariance_
-        default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.float32)
+        default_array = DefaultData.create_default_array(SRF_SIZE, SRF_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["srf_size", "srf_size"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Covariance of the Visible Band Spectral Response Function"
         dataset["covariance_spectral_response_function_vis"] = variable
 
@@ -227,9 +227,9 @@ class MVIRI:
         dataset["u_a1_vis"] = variable
 
         # covariance_a0_a1_vis
-        default_array = DefaultData.create_default_array(2, 2, np.float32)
+        default_array = DefaultData.create_default_array(2, 2, np.float32, fill_value=np.NaN)
         variable = Variable(["calib_coeff_cov_size", "calib_coeff_cov_size"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Covariance matrix of calibration coefficients"
         dataset["covariance_a0_a1_vis"] = variable
 

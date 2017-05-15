@@ -150,9 +150,9 @@ class AMSUB_MHS:
         dataset["u_random_btemps"] = variable
 
         # u_instrtemp
-        default_array = DefaultData.create_default_vector(height, np.float32)
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "uncertainty of instrument temperature"
         tu.add_units(variable, "K")
         dataset["u_instrtemp"] = variable
@@ -183,7 +183,7 @@ class AMSUB_MHS:
 
     @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name, fill_value=np.NaN)
         tu.add_units(variable, "degree")
         return variable
 
@@ -198,7 +198,7 @@ class AMSUB_MHS:
 
     @staticmethod
     def _create_3d_float_variable(height):
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, fill_value=np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         return variable

@@ -1,14 +1,16 @@
 import numpy as np
-from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.fcdr.writer.default_data import DefaultData
 from xarray import Variable
 
+from fiduceo.fcdr.writer.correlation import Correlation as corr
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 
-COUNT_CORRELATION_ATTRIBUTES = {corr.SCAN_CORR_FORM: corr.RECT, corr.SCAN_CORR_UNIT: corr.PIXEL, corr.SCAN_CORR_SCALE: [-np.inf, np.inf], corr.TIME_CORR_FORM: corr.TRI, corr.TIME_CORR_UNIT: corr.LINE,
+COUNT_CORRELATION_ATTRIBUTES = {corr.SCAN_CORR_FORM: corr.RECT, corr.SCAN_CORR_UNIT: corr.PIXEL,
+                                corr.SCAN_CORR_SCALE: [-np.inf, np.inf], corr.TIME_CORR_FORM: corr.TRI,
+                                corr.TIME_CORR_UNIT: corr.LINE,
                                 corr.TIME_CORR_SCALE: [-25, 25], "pdf_shape": "digitised_gaussian"}
 
 
@@ -18,9 +20,9 @@ class AVHRR:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
         # Time
-        default_array = DefaultData.create_default_vector(height, np.float64)
+        default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float64))
+        tu.add_fill_value(variable, np.NaN)
         tu.add_units(variable, "s")
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
@@ -35,7 +37,7 @@ class AVHRR:
         dataset["scanline"] = variable
 
         # satellite_azimuth_angle
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle", fill_value=np.NaN)
         tu.add_units(variable, "degree")
         dataset["satellite_azimuth_angle"] = variable
 
@@ -50,7 +52,7 @@ class AVHRR:
         dataset["satellite_zenith_angle"] = variable
 
         # solar_azimuth_angle
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle")
+        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle", fill_value=np.NaN)
         tu.add_units(variable, "degree")
         dataset["solar_azimuth_angle"] = variable
 
@@ -103,22 +105,28 @@ class AVHRR:
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         # u_random_Ch1-3a
-        long_names = ["random uncertainty per pixel for channel 1", "random uncertainty per pixel for channel 2", "random uncertainty per pixel for channel 3a"]
+        long_names = ["random uncertainty per pixel for channel 1", "random uncertainty per pixel for channel 2",
+                      "random uncertainty per pixel for channel 3a"]
         names = ["u_random_Ch1", "u_random_Ch2", "u_random_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
         # u_non_random_Ch1-3a
-        long_names = ["non-random uncertainty per pixel for channel 1", "non-random uncertainty per pixel for channel 2", "non-random uncertainty per pixel for channel 3a"]
+        long_names = ["non-random uncertainty per pixel for channel 1",
+                      "non-random uncertainty per pixel for channel 2",
+                      "non-random uncertainty per pixel for channel 3a"]
         names = ["u_non_random_Ch1", "u_non_random_Ch2", "u_non_random_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
         # u_random_Ch3b-5
-        long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4", "random uncertainty per pixel for channel 5"]
+        long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4",
+                      "random uncertainty per pixel for channel 5"]
         names = ["u_random_Ch3b", "u_random_Ch4", "u_random_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
         # u_non_random_Ch3b-5
-        long_names = ["non-random uncertainty per pixel for channel 3b", "non-random uncertainty per pixel for channel 4", "non-random uncertainty per pixel for channel 5"]
+        long_names = ["non-random uncertainty per pixel for channel 3b",
+                      "non-random uncertainty per pixel for channel 4",
+                      "non-random uncertainty per pixel for channel 5"]
         names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
@@ -133,9 +141,9 @@ class AVHRR:
         dataset["u_longitude"] = variable
 
         # u_time
-        default_array = DefaultData.create_default_vector(height, np.float64)
+        default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float64))
+        tu.add_fill_value(variable, np.NaN)
         tu.add_units(variable, "s")
         variable.attrs["long_name"] = "uncertainty of acquisition time"
         dataset["u_time"] = variable
@@ -165,9 +173,9 @@ class AVHRR:
         dataset["PRT_C"] = variable
 
         # u_prt
-        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
+        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "n_prt"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty on the PRT counts"
         tu.add_units(variable, "count")
         variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
@@ -181,23 +189,24 @@ class AVHRR:
         dataset["u_prt"] = variable
 
         # R_ICT
-        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32)
+        default_array = DefaultData.create_default_array(PRT_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "n_prt"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.float32))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Radiance of the PRT"
         tu.add_units(variable, "mW m^-2 sr^-1 cm")
         dataset["R_ICT"] = variable
 
         # T_instr
-        default_array = DefaultData.get_default_fill_value(np.int16)
+        default_array = np.NaN
         variable = Variable([], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Instrument temperature"
         tu.add_units(variable, "K")
         dataset["T_instr"] = variable
 
         # Chx_Csp
-        standard_names = ["Ch1 Space counts", "Ch2 Space counts", "Ch3a Space counts", "Ch3b Space counts", "Ch4 Space counts", "Ch5 Space counts"]
+        standard_names = ["Ch1 Space counts", "Ch2 Space counts", "Ch3a Space counts", "Ch3b Space counts",
+                          "Ch4 Space counts", "Ch5 Space counts"]
         names = ["Ch1_Csp", "Ch2_Csp", "Ch3a_Csp", "Ch3b_Csp", "Ch4_Csp", "Ch5_Csp"]
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
@@ -207,45 +216,56 @@ class AVHRR:
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
         # Chx_Ce
-        standard_names = ["Ch1 Earth counts", "Ch2 Earth counts", "Ch3a Earth counts", "Ch3b Earth counts", "Ch4 Earth counts", "Ch5 Earth counts"]
+        standard_names = ["Ch1 Earth counts", "Ch2 Earth counts", "Ch3a Earth counts", "Ch3b Earth counts",
+                          "Ch4 Earth counts", "Ch5 Earth counts"]
         names = ["Ch1_Ce", "Ch2_Ce", "Ch3a_Ce", "Ch3b_Ce", "Ch4_Ce", "Ch5_Ce"]
         AVHRR._add_counts_variables(dataset, height, names, standard_names)
 
         # Chx_u_Csp
-        standard_names = ["Ch1 Uncertainty on space counts", "Ch2 Uncertainty on space counts", "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts",
+        standard_names = ["Ch1 Uncertainty on space counts", "Ch2 Uncertainty on space counts",
+                          "Ch3a Uncertainty on space counts", "Ch3b Uncertainty on space counts",
                           "Ch4 Uncertainty on space counts", "Ch5 Uncertainty on space counts"]
         names = ["Ch1_u_Csp", "Ch2_u_Csp", "Ch3a_u_Csp", "Ch3b_u_Csp", "Ch4_u_Csp", "Ch5_u_Csp"]
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, COUNT_CORRELATION_ATTRIBUTES)
 
         # Chx_Cict
-        standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts", "Ch5 Uncertainty on ICT counts"]
+        standard_names = ["Ch3b Uncertainty on ICT counts", "Ch4 Uncertainty on ICT counts",
+                          "Ch5 Uncertainty on ICT counts"]
         names = ["Ch3b_u_Cict", "Ch4_u_Cict", "Ch5_u_Cict"]
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, COUNT_CORRELATION_ATTRIBUTES)
 
         # Chx_u_Ce
-        standard_names = ["Ch1 Uncertainty on earth counts", "Ch2 Uncertainty on earth counts", "Ch3a Uncertainty on earth counts", "Ch3b Uncertainty on earth counts",
+        standard_names = ["Ch1 Uncertainty on earth counts", "Ch2 Uncertainty on earth counts",
+                          "Ch3a Uncertainty on earth counts", "Ch3b Uncertainty on earth counts",
                           "Ch4 Uncertainty on earth counts", "Ch5 Uncertainty on earth counts"]
         names = ["Ch1_u_Ce", "Ch2_u_Ce", "Ch3a_u_Ce", "Ch3b_u_Ce", "Ch4_u_Ce", "Ch5_u_Ce"]
         attributes = {"pdf_shape": "digitised_gaussian"}
         AVHRR._add_counts_uncertainties_variables(dataset, height, names, standard_names, attributes)
 
         # Chx_u_Refl
-        long_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance", "Ch3a Total uncertainty on reflectance"]
+        long_names = ["Ch1 Total uncertainty on reflectance", "Ch2 Total uncertainty on reflectance",
+                      "Ch3a Total uncertainty on reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
         # Chx_u_Bt
-        standard_names = ["Ch3b Total uncertainty on brightness temperature", "Ch4 Total uncertainty on brightness temperature", "Ch5 Total uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Total uncertainty on brightness temperature",
+                          "Ch4 Total uncertainty on brightness temperature",
+                          "Ch5 Total uncertainty on brightness temperature"]
         names = ["Ch3b_u_Bt", "Ch4_u_Bt", "Ch5_u_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_ur_Bt
-        standard_names = ["Ch3b Random uncertainty on brightness temperature", "Ch4 Random uncertainty on brightness temperature", "Ch5 Random uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Random uncertainty on brightness temperature",
+                          "Ch4 Random uncertainty on brightness temperature",
+                          "Ch5 Random uncertainty on brightness temperature"]
         names = ["Ch3b_ur_Bt", "Ch4_ur_Bt", "Ch5_ur_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
         # Chx_us_Bt
-        standard_names = ["Ch3b Systematic uncertainty on brightness temperature", "Ch4 Systematic uncertainty on brightness temperature", "Ch5 Systematic uncertainty on brightness temperature"]
+        standard_names = ["Ch3b Systematic uncertainty on brightness temperature",
+                          "Ch4 Systematic uncertainty on brightness temperature",
+                          "Ch5 Systematic uncertainty on brightness temperature"]
         names = ["Ch3b_us_Bt", "Ch4_us_Bt", "Ch5_us_Bt"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
@@ -290,7 +310,7 @@ class AVHRR:
 
     @staticmethod
     def _create_counts_uncertainty_variable(height, long_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
         tu.add_units(variable, "count")
         return variable
 
@@ -305,19 +325,19 @@ class AVHRR:
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name, fill_value=np.NaN)
         tu.add_units(variable, "degree")
         return variable
 
     @staticmethod
     def _create_refl_uncertainty_variable(height, standard_name=None, long_name=None):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name, fill_value=np.NaN)
         tu.add_units(variable, "percent")
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, long_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name)
+        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
         tu.add_units(variable, "K")
         return variable
 

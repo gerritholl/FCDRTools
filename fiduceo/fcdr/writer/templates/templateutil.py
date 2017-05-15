@@ -22,14 +22,11 @@ class TemplateUtil:
         dataset["longitude"] = variable
 
     @staticmethod
-    def create_scalar_float_variable(long_name=None, standard_name=None, units=None, fill_value=None):
-        if fill_value is not None:
-            default_array = fill_value
-        else:
-            default_array = DefaultData.get_default_fill_value(np.float32)
+    def create_scalar_float_variable(long_name=None, standard_name=None, units=None, fill_value=np.NaN):
+        default_array = fill_value
 
         variable = Variable([], default_array)
-        TemplateUtil.add_fill_value(variable, default_array)
+        TemplateUtil.add_fill_value(variable, fill_value)
 
         if long_name is not None:
             variable.attrs["long_name"] = long_name
@@ -42,14 +39,22 @@ class TemplateUtil:
         return variable
 
     @staticmethod
-    def create_float_variable(width, height, standard_name=None, long_name=None, dim_names=None):
-        default_array = DefaultData.create_default_array(width, height, np.float32)
+    def create_float_variable(width, height, standard_name=None, long_name=None, dim_names=None, fill_value=None):
+        if fill_value is None:
+            default_array = DefaultData.create_default_array(width, height, np.float32)
+        else:
+            default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=fill_value)
+
         if dim_names is None:
             variable = Variable(["y", "x"], default_array)
         else:
             variable = Variable(dim_names, default_array)
 
-        variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        if fill_value is None:
+            variable.attrs["_FillValue"] = DefaultData.get_default_fill_value(np.float32)
+        else:
+            variable.attrs["_FillValue"] = fill_value
+
         if standard_name is not None:
             variable.attrs["standard_name"] = standard_name
 

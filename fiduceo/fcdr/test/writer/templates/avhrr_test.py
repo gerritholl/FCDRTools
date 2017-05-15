@@ -34,8 +34,8 @@ class AVHRRTest(unittest.TestCase):
 
         time = ds.variables["Time"]
         self.assertEqual((5,), time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float64), time.data[2])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float64), time.attrs["_FillValue"])
+        self.assertTrue(np.isnan(time.data[2]))
+        self.assertTrue(np.isnan(time.attrs["_FillValue"]))
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
         self.assertEqual("s", time.attrs["units"])
@@ -49,8 +49,8 @@ class AVHRRTest(unittest.TestCase):
 
         sat_azimuth = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((5, 409), sat_azimuth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sat_azimuth.data[0, 4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sat_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sat_azimuth.data[0, 4]))
+        self.assertTrue(np.isnan(sat_azimuth.attrs["_FillValue"]))
         self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["standard_name"])
         self.assertEqual("degree", sat_azimuth.attrs["units"])
 
@@ -67,8 +67,8 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_azimuth.data[0, 6])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), sol_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(sol_azimuth.data[0, 6]))
+        self.assertTrue(np.isnan(sol_azimuth.attrs["_FillValue"]))
         self.assertEqual("solar_azimuth_angle", sol_azimuth.attrs["standard_name"])
         self.assertEqual("degree", sol_azimuth.attrs["units"])
 
@@ -140,50 +140,50 @@ class AVHRRTest(unittest.TestCase):
 
         u_latitude = ds.variables["u_latitude"]
         self.assertEqual((5, 409), u_latitude.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.data[0, 34])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_latitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_latitude.data[0, 34]))
+        self.assertTrue(np.isnan(u_latitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of latitude", u_latitude.attrs["long_name"])
         self.assertEqual("degree", u_latitude.attrs["units"])
 
         u_longitude = ds.variables["u_longitude"]
         self.assertEqual((5, 409), u_longitude.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.data[0, 34])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_longitude.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_longitude.data[1, 35]))
+        self.assertTrue(np.isnan(u_longitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of longitude", u_longitude.attrs["long_name"])
         self.assertEqual("degree", u_longitude.attrs["units"])
 
         u_time = ds.variables["u_time"]
         self.assertEqual((5,), u_time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float64), u_time.data[1])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float64), u_time.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_time.data[1]))
+        self.assertTrue(np.isnan(u_time.attrs["_FillValue"]))
         self.assertEqual("uncertainty of acquisition time", u_time.attrs["long_name"])
         self.assertEqual("s", u_time.attrs["units"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
         self.assertEqual((5, 409), u_sat_azimuth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.data[2, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sat_azimuth.data[2, 36]))
+        self.assertTrue(np.isnan(u_sat_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite azimuth angle", u_sat_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sat_azimuth.attrs["units"])
 
         u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
         self.assertEqual((5, 409), u_sat_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.data[2, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sat_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sat_zenith.data[2, 36]))
+        self.assertTrue(np.isnan(u_sat_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite zenith angle", u_sat_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sat_zenith.attrs["units"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
         self.assertEqual((5, 409), u_sol_azimuth.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.data[2, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_azimuth.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sol_azimuth.data[2, 36]))
+        self.assertTrue(np.isnan(u_sol_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar azimuth angle", u_sol_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sol_azimuth.attrs["units"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
         self.assertEqual((5, 409), u_sol_zenith.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.data[2, 36])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_sol_zenith.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_sol_zenith.data[2, 36]))
+        self.assertTrue(np.isnan(u_sol_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])
 
@@ -196,8 +196,8 @@ class AVHRRTest(unittest.TestCase):
 
         u_prt = ds.variables["u_prt"]
         self.assertEqual((5, 3), u_prt.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_prt.data[4, 0])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_prt.attrs["_FillValue"])
+        self.assertTrue(np.isnan(u_prt.data[4, 0]))
+        self.assertTrue(np.isnan(u_prt.attrs["_FillValue"]))
         self.assertEqual("Uncertainty on the PRT counts", u_prt.attrs["long_name"])
         self.assertEqual("count", u_prt.attrs["units"])
         self.assertEqual("rectangle", u_prt.attrs["scan_correlation_form"])
@@ -211,15 +211,15 @@ class AVHRRTest(unittest.TestCase):
 
         r_ict = ds.variables["R_ICT"]
         self.assertEqual((5, 3), r_ict.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), r_ict.data[0, 1])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), r_ict.attrs["_FillValue"])
+        self.assertTrue(np.isnan(r_ict.data[0, 1]))
+        self.assertTrue(np.isnan(r_ict.attrs["_FillValue"]))
         self.assertEqual("Radiance of the PRT", r_ict.attrs["long_name"])
         self.assertEqual("mW m^-2 sr^-1 cm", r_ict.attrs["units"])
 
         t_instr = ds.variables["T_instr"]
         self.assertEqual((), t_instr.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), t_instr.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), t_instr.attrs["_FillValue"])
+        self.assertTrue(np.isnan(t_instr.data))
+        self.assertTrue(np.isnan(t_instr.attrs["_FillValue"]))
         self.assertEqual("Instrument temperature", t_instr.attrs["long_name"])
         self.assertEqual("K", t_instr.attrs["units"])
 
@@ -322,16 +322,16 @@ class AVHRRTest(unittest.TestCase):
     def _assert_correct_counts_uncertainty_variable(self, ds, name, standard_name):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
+        self.assertTrue(np.isnan(variable.data[4, 307]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         self.assertEqual(standard_name, variable.attrs["long_name"])
         self.assertEqual("count", variable.attrs["units"])
 
     def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, long_name=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
+        self.assertTrue(np.isnan(variable.data[4, 307]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 
@@ -343,8 +343,8 @@ class AVHRRTest(unittest.TestCase):
     def _assert_correct_bt_uncertainty_variable(self, ds, name, standard_name=None, long_name=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.data[4, 307])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), variable.attrs["_FillValue"])
+        self.assertTrue(np.isnan(variable.data[4, 307]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 

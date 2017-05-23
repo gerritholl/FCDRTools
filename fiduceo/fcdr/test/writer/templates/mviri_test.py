@@ -21,26 +21,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("seconds since 1970-01-01 00:00:00", time.attrs["units"])
         self.assertEqual(-32768, time.attrs["add_offset"])
 
-        sat_azimuth = ds.variables["satellite_azimuth_angle"]
-        self.assertEqual((5000, 5000), sat_azimuth.shape)
-        self.assertTrue(np.isnan(sat_azimuth.data[0, 109]))
-        self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["standard_name"])
-        self.assertEqual("degree", sat_azimuth.attrs["units"])
-        self.assertEqual(np.uint16, sat_azimuth.encoding['dtype'])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sat_azimuth.encoding['_FillValue'])
-        self.assertEqual(0.005493164, sat_azimuth.encoding['scale_factor'])
-        self.assertEqual(0.0, sat_azimuth.encoding['add_offset'])
-
-        sat_zenith = ds.variables["satellite_zenith_angle"]
-        self.assertEqual((5000, 5000), sat_zenith.shape)
-        self.assertTrue(np.isnan(sat_zenith.data[0, 110]))
-        self.assertEqual("sensor_zenith_angle", sat_zenith.attrs["standard_name"])
-        self.assertEqual("degree", sat_zenith.attrs["units"])
-        self.assertEqual(np.int16, sat_zenith.encoding['dtype'])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.encoding['_FillValue'])
-        self.assertEqual(0.005493248, sat_zenith.encoding['scale_factor'])
-        self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
-
         sol_azimuth = ds.variables["solar_azimuth_angle"]
         self.assertEqual((5000, 5000), sol_azimuth.shape)
         self.assertTrue(np.isnan(sol_azimuth.data[0, 111]))
@@ -76,37 +56,61 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", count.attrs["units"])
 
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
-        self._assert_scalar_float_variable(ds, "sol_eff_irr", "Solar effective Irradiance", "W*m-2",
+        self._assert_scalar_float_variable(ds, "solar_irradiance_vis", "Solar effective Irradiance", "W*m-2",
                                            standard_name="solar_irradiance_vis")
 
-        u_sol_eff_irr = ds.variables["u_sol_eff_irr"]
-        self.assertEqual((), u_sol_eff_irr.shape)
-        self.assertTrue(np.isnan(u_sol_eff_irr.data))
-        self.assertTrue(np.isnan(u_sol_eff_irr.attrs["_FillValue"]))
-        self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_eff_irr.attrs["long_name"])
-        self.assertEqual("Wm^-2", u_sol_eff_irr.attrs["units"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_sol_eff_irr.attrs["scan_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["scan_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["time_correlation_form"])
-        self.assertEqual("line", u_sol_eff_irr.attrs["time_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["time_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["image_correlation_form"])
-        self.assertEqual("days", u_sol_eff_irr.attrs["image_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_sol_eff_irr.attrs["image_correlation_scales"])
-        self.assertEqual("rectangle", u_sol_eff_irr.attrs["pdf_shape"])
+        u_sol_irr = ds.variables["u_solar_irradiance_vis"]
+        self.assertEqual((), u_sol_irr.shape)
+        self.assertTrue(np.isnan(u_sol_irr.data))
+        self.assertTrue(np.isnan(u_sol_irr.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty in Solar effective Irradiance", u_sol_irr.attrs["long_name"])
+        self.assertEqual("Wm^-2", u_sol_irr.attrs["units"])
+        self.assertEqual("rectangle", u_sol_irr.attrs["scan_correlation_form"])
+        self.assertEqual("pixel", u_sol_irr.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_irr.attrs["scan_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_irr.attrs["time_correlation_form"])
+        self.assertEqual("line", u_sol_irr.attrs["time_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_irr.attrs["time_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_irr.attrs["image_correlation_form"])
+        self.assertEqual("days", u_sol_irr.attrs["image_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_sol_irr.attrs["image_correlation_scales"])
+        self.assertEqual("rectangle", u_sol_irr.attrs["pdf_shape"])
 
         srf = ds.variables["spectral_response_function_vis"]
         self.assertEqual((1011,), srf.shape)
         self.assertTrue(np.isnan(srf.data[116]))
         self.assertTrue(np.isnan(srf.attrs["_FillValue"]))
-        self.assertEqual("Spectral Response Function", srf.attrs["long_name"])
+        self.assertEqual("Spectral Response Function for visible channel", srf.attrs["long_name"])
 
         cov_srf = ds.variables["covariance_spectral_response_function_vis"]
         self.assertEqual((1011, 1011), cov_srf.shape)
         self.assertTrue(np.isnan(cov_srf.data[116, 22]))
         self.assertTrue(np.isnan(cov_srf.attrs["_FillValue"]))
         self.assertEqual("Covariance of the Visible Band Spectral Response Function", cov_srf.attrs["long_name"])
+
+        srf_ir = ds.variables["spectral_response_function_ir"]
+        self.assertEqual((1011,), srf_ir.shape)
+        self.assertTrue(np.isnan(srf_ir.data[118]))
+        self.assertTrue(np.isnan(srf_ir.attrs["_FillValue"]))
+        self.assertEqual("Spectral Response Function for IR channel", srf_ir.attrs["long_name"])
+
+        u_srf_ir = ds.variables["u_spectral_response_function_ir"]
+        self.assertEqual((1011,), u_srf_ir.shape)
+        self.assertTrue(np.isnan(u_srf_ir.data[119]))
+        self.assertTrue(np.isnan(u_srf_ir.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty in Spectral Response Function for IR channel", u_srf_ir.attrs["long_name"])
+
+        srf_wv = ds.variables["spectral_response_function_wv"]
+        self.assertEqual((1011,), srf_wv.shape)
+        self.assertTrue(np.isnan(srf_wv.data[118]))
+        self.assertTrue(np.isnan(srf_wv.attrs["_FillValue"]))
+        self.assertEqual("Spectral Response Function for WV channel", srf_wv.attrs["long_name"])
+
+        u_srf_wv = ds.variables["u_spectral_response_function_wv"]
+        self.assertEqual((1011,), u_srf_wv.shape)
+        self.assertTrue(np.isnan(u_srf_wv.data[120]))
+        self.assertTrue(np.isnan(u_srf_wv.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty in Spectral Response Function for WV channel", u_srf_wv.attrs["long_name"])
 
         self._assert_scalar_float_variable(ds, "a_ir", "Calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
         self._assert_scalar_float_variable(ds, "b_ir", "Calibration parameter b for IR Band", "mWm^-2sr^-1cm^-1/DC")
@@ -140,13 +144,14 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual((5000, 5000), reflectance.shape)
         self.assertTrue(np.isnan(reflectance.data[3, 115]))
         self.assertEqual("toa_bidirectional_reflectance", reflectance.attrs["standard_name"])
+        self.assertEqual("top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7", reflectance.attrs["long_name"])
         self.assertEqual("percent", reflectance.attrs["units"])
         self.assertEqual(np.uint16, reflectance.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), reflectance.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, reflectance.encoding['scale_factor'])
         self.assertEqual(0.0, reflectance.encoding['add_offset'])
 
-        u_random = ds.variables["u_random"]
+        u_random = ds.variables["u_random_toa_bidirectional_reflectance"]
         self.assertEqual((5000, 5000), u_random.shape)
         self.assertTrue(np.isnan(u_random.data[118, 234]))
         self.assertEqual("random uncertainty per pixel", u_random.attrs["long_name"])
@@ -156,7 +161,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(1.52588E-05, u_random.encoding['scale_factor'])
         self.assertEqual(0.0, u_random.encoding['add_offset'])
 
-        u_non_random = ds.variables["u_non_random"]
+        u_non_random = ds.variables["u_non_random_toa_bidirectional_reflectance"]
         self.assertEqual((5000, 5000), u_non_random.shape)
         self.assertTrue(np.isnan(u_non_random.data[119, 235]))
         self.assertEqual("non-random uncertainty per pixel", u_non_random.attrs["long_name"])
@@ -218,7 +223,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("gaussian", u_lon.attrs["pdf_shape"])
 
         u_time = ds.variables["u_time"]
-        self.assertEqual((5000, 5000), u_time.shape)
+        self.assertEqual((2500, 2500), u_time.shape)
         self.assertTrue(np.isnan(u_time.data[0, 111]))
         self.assertEqual("Uncertainty in Time", u_time.attrs["standard_name"])
         self.assertEqual("s", u_time.attrs["units"])
@@ -268,21 +273,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(7.62939E-05, u_sol_azimuth.encoding['scale_factor'])
         self.assertEqual(0.0, u_sol_azimuth.encoding['add_offset'])
 
-        u_tot_count = ds.variables["u_combined_counts_vis"]
-        self.assertEqual((), u_tot_count.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_tot_count.data)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_tot_count.attrs["_FillValue"])
-        self.assertEqual("Total Uncertainty in counts", u_tot_count.attrs["long_name"])
-        self.assertEqual("count", u_tot_count.attrs["units"])
-        self.assertEqual(7.62939E-05, u_tot_count.attrs["scale_factor"])
-        self.assertEqual("eiffel", u_tot_count.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_tot_count.attrs["scan_correlation_units"])
-        self.assertEqual([-2, 2], u_tot_count.attrs["scan_correlation_scales"])
-        self.assertEqual("eiffel", u_tot_count.attrs["time_correlation_form"])
-        self.assertEqual("line", u_tot_count.attrs["time_correlation_units"])
-        self.assertEqual([-2, 2], u_tot_count.attrs["time_correlation_scales"])
-        self.assertEqual("digitised_gaussian", u_tot_count.attrs["pdf_shape"])
-
         a0 = ds.variables["a0_vis"]
         self.assertEqual((), a0.shape)
         self.assertTrue(np.isnan(a0.data))
@@ -297,7 +287,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("Time variation of a0", a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
 
-        k_space = ds.variables["mean_counts_space_vis"]
+        k_space = ds.variables["mean_count_space_vis"]
         self.assertEqual((), k_space.shape)
         self.assertTrue(np.isnan(k_space.data))
         self.assertTrue(np.isnan(k_space.attrs["_FillValue"]))
@@ -339,10 +329,10 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("gaussian", u_a1_vis.attrs["pdf_shape"])
 
         u_a0_a1_cov = ds.variables["covariance_a0_a1_vis"]
-        self.assertEqual((2, 2), u_a0_a1_cov.shape)
-        self.assertTrue(np.isnan(u_a0_a1_cov.data[1, 0]))
+        self.assertEqual((), u_a0_a1_cov.shape)
+        self.assertTrue(np.isnan(u_a0_a1_cov.data))
         self.assertTrue(np.isnan(u_a0_a1_cov.attrs["_FillValue"]))
-        self.assertEqual("Covariance matrix of calibration coefficients", u_a0_a1_cov.attrs["long_name"])
+        self.assertEqual("Covariance of calibration coefficients", u_a0_a1_cov.attrs["long_name"])
 
         u_e_noise = ds.variables["u_electronics_counts_vis"]
         self.assertEqual((), u_e_noise.shape)

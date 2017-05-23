@@ -566,42 +566,35 @@ class FCDRWriterTest(unittest.TestCase):
     def test_create_file_name_FCDR_easy(self):
         start = datetime.datetime(2015, 8, 23, 14, 24, 52)
         end = datetime.datetime(2015, 8, 23, 15, 25, 53)
-        self.assertEqual("FIDUCEO_FCDR_L1C_MVIRI_MET7-0.00_20150823142452_20150823152553_EASY_v02.3_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_easy("MVIRI", "MET7-0.00", start, end, "02.3"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_MVIRI_MET7-0.00_20150823142452_20150823152553_EASY_v02.3_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_easy("MVIRI", "MET7-0.00", start, end, "02.3"))
 
         start = datetime.datetime(2014, 7, 22, 13, 23, 51)
         end = datetime.datetime(2014, 7, 22, 14, 24, 52)
-        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140722132351_20140722142452_EASY_v03.4_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_easy("HIRS3", "NOAA15", start, end, "03.4"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140722132351_20140722142452_EASY_v03.4_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_easy("HIRS3", "NOAA15", start, end, "03.4"))
 
         start = datetime.datetime(2013, 6, 21, 12, 23, 50)
         end = datetime.datetime(2013, 6, 21, 13, 23, 51)
-        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS4_METOPA_20130621122350_20130621132351_EASY_v04.5_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_easy("HIRS4", "METOPA", start, end, "04.5"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS4_METOPA_20130621122350_20130621132351_EASY_v04.5_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_easy("HIRS4", "METOPA", start, end, "04.5"))
 
         start = datetime.datetime(2012, 5, 20, 11, 22, 49)
         end = datetime.datetime(2012, 5, 20, 12, 22, 50)
-        self.assertEqual("FIDUCEO_FCDR_L1C_AMSUB_NOAA17_20120520112249_20120520122250_EASY_v05.6_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_easy("AMSUB", "NOAA17", start, end, "05.6"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_AMSUB_NOAA17_20120520112249_20120520122250_EASY_v05.6_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_easy("AMSUB", "NOAA17", start, end, "05.6"))
 
     def test_create_file_name_FCDR_full(self):
         start = datetime.datetime(2015, 8, 7, 14, 24, 52)
         end = datetime.datetime(2015, 8, 7, 15, 25, 53)
-        self.assertEqual("FIDUCEO_FCDR_L1C_MVIRI_MET7-0.00_20150807142452_20150807152553_FULL_v02.3_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_full("MVIRI", "MET7-0.00", start, end, "02.3"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_MVIRI_MET7-0.00_20150807142452_20150807152553_FULL_v02.3_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_full("MVIRI", "MET7-0.00", start, end, "02.3"))
 
         start = datetime.datetime(2014, 7, 21, 13, 23, 51)
         end = datetime.datetime(2014, 7, 21, 14, 24, 52)
-        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140721132351_20140721142452_FULL_v03.4_fv1.0.7.nc",
-                         FCDRWriter.create_file_name_FCDR_full("HIRS3", "NOAA15", start, end, "03.4"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140721132351_20140721142452_FULL_v03.4_fv1.0.7.nc", FCDRWriter.create_file_name_FCDR_full("HIRS3", "NOAA15", start, end, "03.4"))
 
     def _verifyGlobalAttributes(self, attributes):
         self.assertIsNotNone(attributes)
         self.assertEqual("CF-1.6", attributes["Conventions"])
-        self.assertEqual(
-            "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
-            "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
-            "Observations\". Grant Agreement: 638822.", attributes["licence"])
+        self.assertEqual("This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
+                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
+                         "Observations\". Grant Agreement: 638822.", attributes["licence"])
         self.assertEqual("1.0.7", attributes["writer_version"])
 
     def _verify_geolocation_variables(self, ds):

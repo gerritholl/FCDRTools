@@ -56,8 +56,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("count", count.attrs["units"])
 
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
-        self._assert_scalar_float_variable(ds, "solar_irradiance_vis", "Solar effective Irradiance", "W*m-2",
-                                           standard_name="solar_irradiance_vis")
+        self._assert_scalar_float_variable(ds, "solar_irradiance_vis", "Solar effective Irradiance", "W*m-2", standard_name="solar_irradiance_vis")
 
         u_sol_irr = ds.variables["u_solar_irradiance_vis"]
         self.assertEqual((), u_sol_irr.shape)
@@ -114,16 +113,12 @@ class MVIRITest(unittest.TestCase):
 
         self._assert_scalar_float_variable(ds, "a_ir", "Calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
         self._assert_scalar_float_variable(ds, "b_ir", "Calibration parameter b for IR Band", "mWm^-2sr^-1cm^-1/DC")
-        self._assert_scalar_float_variable(ds, "u_a_ir", "Uncertainty of calibration parameter a for IR Band",
-                                           "mWm^-2sr^-1cm^-1")
-        self._assert_scalar_float_variable(ds, "u_b_ir", "Uncertainty of calibration parameter b for IR Band",
-                                           "mWm^-2sr^-1cm^-1/DC")
+        self._assert_scalar_float_variable(ds, "u_a_ir", "Uncertainty of calibration parameter a for IR Band", "mWm^-2sr^-1cm^-1")
+        self._assert_scalar_float_variable(ds, "u_b_ir", "Uncertainty of calibration parameter b for IR Band", "mWm^-2sr^-1cm^-1/DC")
         self._assert_scalar_float_variable(ds, "a_wv", "Calibration parameter a for WV Band", "mWm^-2sr^-1cm^-1")
         self._assert_scalar_float_variable(ds, "b_wv", "Calibration parameter b for WV Band", "mWm^-2sr^-1cm^-1/DC")
-        self._assert_scalar_float_variable(ds, "u_a_wv", "Uncertainty of calibration parameter a for WV Band",
-                                           "mWm^-2sr^-1cm^-1")
-        self._assert_scalar_float_variable(ds, "u_b_wv", "Uncertainty of calibration parameter b for WV Band",
-                                           "mWm^-2sr^-1cm^-1/DC")
+        self._assert_scalar_float_variable(ds, "u_a_wv", "Uncertainty of calibration parameter a for WV Band", "mWm^-2sr^-1cm^-1")
+        self._assert_scalar_float_variable(ds, "u_b_wv", "Uncertainty of calibration parameter b for WV Band", "mWm^-2sr^-1cm^-1/DC")
         self._assert_scalar_float_variable(ds, "q_ir", "IR Band Calibration quality flag", "1")
         self._assert_scalar_float_variable(ds, "q_wv", "WV Band Calibration quality flag", "1")
         self._assert_scalar_float_variable(ds, "unit_conversion_ir", "IR Unit conversion factor", "1")

@@ -30,7 +30,11 @@ class FCDRWriter:
             compression_level = 5
 
         comp = dict(zlib=True, complevel=compression_level)
-        encoding = dict((var, comp) for var in ds.data_vars)
+        encoding = dict()
+        for var in ds.data_vars:
+            var_comp = dict(comp)
+            var_comp.update(ds[var].encoding)
+            encoding.update({var : var_comp})
 
         ds.to_netcdf(file, format='netCDF4', engine='netcdf4', encoding=encoding)
 

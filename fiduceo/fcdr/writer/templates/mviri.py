@@ -134,6 +134,7 @@ class MVIRI:
         dataset["bt_b_ir"] = tu.create_scalar_float_variable(long_name="IR Band BT conversion parameter B", units="1")
         dataset["bt_a_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter A", units="1")
         dataset["bt_b_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
+        dataset["years_since_launch"] = tu.create_scalar_float_variable(long_name="Fractional year since launch of satellite", units="years")
 
     @staticmethod
     def get_swath_width():
@@ -146,11 +147,11 @@ class MVIRI:
         # reflectance
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["standard_name"] = "toa_bidirectional_reflectance"
+        variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
-        dataset["toa_bidirectional_reflectance"] = variable
+        dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_random
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
@@ -187,8 +188,8 @@ class MVIRI:
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.float32, fill_value=np.NaN)
-        variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
+        default_array = DefaultData.create_default_vector(IR_DIMENSION, np.float32, fill_value=np.NaN)
+        variable = Variable([IR_Y_DIMENSION], default_array)
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.009155273)

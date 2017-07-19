@@ -127,6 +127,7 @@ class MVIRITest(unittest.TestCase):
         self._assert_scalar_float_variable(ds, "bt_b_ir", "IR Band BT conversion parameter B", "1")
         self._assert_scalar_float_variable(ds, "bt_a_wv", "WV Band BT conversion parameter A", "1")
         self._assert_scalar_float_variable(ds, "bt_b_wv", "WV Band BT conversion parameter B", "1")
+        self._assert_scalar_float_variable(ds, "years_since_launch", "Fractional year since launch of satellite", "years")
 
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI.get_swath_width())
@@ -135,10 +136,10 @@ class MVIRITest(unittest.TestCase):
         ds = xr.Dataset()
         MVIRI.add_easy_fcdr_variables(ds, 8)
 
-        reflectance = ds.variables["toa_bidirectional_reflectance"]
+        reflectance = ds.variables["toa_bidirectional_reflectance_vis"]
         self.assertEqual((5000, 5000), reflectance.shape)
         self.assertTrue(np.isnan(reflectance.data[3, 115]))
-        self.assertEqual("toa_bidirectional_reflectance", reflectance.attrs["standard_name"])
+        self.assertEqual("toa_bidirectional_reflectance_vis", reflectance.attrs["standard_name"])
         self.assertEqual("top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7", reflectance.attrs["long_name"])
         self.assertEqual("percent", reflectance.attrs["units"])
         self.assertEqual(np.uint16, reflectance.encoding['dtype'])
@@ -218,8 +219,8 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("gaussian", u_lon.attrs["pdf_shape"])
 
         u_time = ds.variables["u_time"]
-        self.assertEqual((2500, 2500), u_time.shape)
-        self.assertTrue(np.isnan(u_time.data[0, 111]))
+        self.assertEqual((2500, ), u_time.shape)
+        self.assertTrue(np.isnan(u_time.data[111]))
         self.assertEqual("Uncertainty in Time", u_time.attrs["standard_name"])
         self.assertEqual("s", u_time.attrs["units"])
         self.assertEqual(np.uint16, u_time.encoding['dtype'])

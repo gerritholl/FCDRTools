@@ -10,8 +10,6 @@ SRF_IR_WV_DIMENSION = "srf_size_ir_wv"
 IR_X_DIMENSION = "x_ir_wv"
 IR_Y_DIMENSION = "y_ir_wv"
 
-FULL_DIMENSION = 5000
-IR_DIMENSION = 2500
 SRF_SIZE_VIS = 1011
 SRF_SIZE_IR_WV = 1011
 SOL_IRR_SIZE = 24
@@ -20,11 +18,17 @@ TIME_FILL_VALUE = -32768
 
 
 class MVIRI:
+    FULL_DIMENSION = 5000
+    IR_DIMENSION = 2500
+
+    IR_X_DIMENSION = "x_ir_wv"
+    IR_Y_DIMENSION = "y_ir_wv"
+
     @staticmethod
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
         # time
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint16)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["standard_name"] = "time"
@@ -37,7 +41,7 @@ class MVIRI:
         dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="solar_zenith_angle")
 
         # count_ir
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint8)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Infrared Image Counts"
@@ -45,7 +49,7 @@ class MVIRI:
         dataset["count_ir"] = variable
 
         # count_wv
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint8)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "WV Image Counts"
@@ -138,14 +142,14 @@ class MVIRI:
 
     @staticmethod
     def get_swath_width():
-        return FULL_DIMENSION
+        return MVIRI.FULL_DIMENSION
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # reflectance
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
@@ -154,7 +158,7 @@ class MVIRI:
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "random uncertainty per pixel"
         tu.add_units(variable, "percent")
@@ -162,7 +166,7 @@ class MVIRI:
         dataset["u_random_toa_bidirectional_reflectance"] = variable
 
         # u_non_random
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "non-random uncertainty per pixel"
         tu.add_units(variable, "percent")
@@ -174,7 +178,7 @@ class MVIRI:
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # count_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.uint8)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Image counts"
@@ -188,7 +192,7 @@ class MVIRI:
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
-        default_array = DefaultData.create_default_vector(IR_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_vector(MVIRI.IR_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable([IR_Y_DIMENSION], default_array)
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
@@ -259,7 +263,7 @@ class MVIRI:
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
 
         if unsigned is True:

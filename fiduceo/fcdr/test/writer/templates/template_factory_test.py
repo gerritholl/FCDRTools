@@ -27,3 +27,6 @@ class TemplateFactoryTest(unittest.TestCase):
 
         mviri = template_factory.get_sensor_template("MVIRI")
         self.assertIsNotNone(mviri)
+
+        mviri_static = template_factory.get_sensor_template("MVIRI_STATIC")
+        self.assertIsNotNone(mviri_static)

@@ -565,6 +565,11 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["u_satellite_azimuth_angle"])
 
+    def testCreate_MVIRI_STATIC(self):
+        ds = FCDRWriter.createTemplateEasy('MVIRI_STATIC', 5000)
+        self.assertIsNotNone(ds.variables["latitude_vis"])
+        self.assertIsNotNone(ds.variables["longitude_vis"])
+
     def test_create_file_name_FCDR_easy(self):
         start = datetime.datetime(2015, 8, 23, 14, 24, 52)
         end = datetime.datetime(2015, 8, 23, 15, 25, 53)

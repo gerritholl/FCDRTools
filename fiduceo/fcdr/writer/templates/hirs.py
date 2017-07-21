@@ -412,13 +412,13 @@ class HIRS:
         tu.add_scale_factor(variable, 0.01)
         tu.add_units(variable, "K")
         variable.attrs["channels_affected"] = "all"
-        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT_ABS
         variable.attrs[corr.IMG_CORR_UNIT] = corr.IMG
         variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
         variable.attrs["parameter"] = "O_TPRT"

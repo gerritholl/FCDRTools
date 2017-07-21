@@ -8,10 +8,10 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 
-COUNT_CORRELATION_ATTRIBUTES = {corr.SCAN_CORR_FORM: corr.RECT, corr.SCAN_CORR_UNIT: corr.PIXEL,
-                                corr.SCAN_CORR_SCALE: [-np.inf, np.inf], corr.TIME_CORR_FORM: corr.TRI,
-                                corr.TIME_CORR_UNIT: corr.LINE,
-                                corr.TIME_CORR_SCALE: [-25, 25], "pdf_shape": "digitised_gaussian"}
+COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL,
+                                corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
+                                corr.SCAN_CORR_UNIT: corr.LINE,
+                                corr.SCAN_CORR_SCALE: [-25, 25], "pdf_shape": "digitised_gaussian"}
 
 
 class AVHRR:
@@ -178,12 +178,12 @@ class AVHRR:
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty on the PRT counts"
         tu.add_units(variable, "count")
-        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
         variable.attrs["pdf_shape"] = "rectangle"
         variable.attrs["pdf_parameter"] = 0.1
         dataset["u_prt"] = variable

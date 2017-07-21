@@ -68,13 +68,13 @@ class MVIRI:
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty in Solar effective Irradiance"
         tu.add_units(variable, "Wm^-2")
-        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
         variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
-        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT
+        variable.attrs[corr.IMG_CORR_FORM] = corr.RECT_ABS
         variable.attrs[corr.IMG_CORR_UNIT] = corr.DAYS
         variable.attrs[corr.IMG_CORR_SCALE] = [-np.inf, np.inf]
         variable.attrs["pdf_shape"] = "rectangle"
@@ -229,34 +229,34 @@ class MVIRI:
 
         # allan_deviation_counts_space_vis
         variable = tu.create_scalar_float_variable("Uncertainty of space count", units="count")
-        variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
         variable.attrs["pdf_shape"] = "digitised_gaussian"
         dataset["allan_deviation_counts_space_vis"] = variable
 
     @staticmethod
     def _add_geo_correlation_attributes(geo_variable):
-        geo_variable.attrs[corr.SCAN_CORR_FORM] = corr.TRI
-        geo_variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        geo_variable.attrs[corr.PIX_CORR_FORM] = corr.TRI_REL
+        geo_variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        geo_variable.attrs[corr.PIX_CORR_SCALE] = [-250, 250]
+        geo_variable.attrs[corr.SCAN_CORR_FORM] = corr.TRI_REL
+        geo_variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
         geo_variable.attrs[corr.SCAN_CORR_SCALE] = [-250, 250]
-        geo_variable.attrs[corr.TIME_CORR_FORM] = corr.TRI
-        geo_variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        geo_variable.attrs[corr.TIME_CORR_SCALE] = [-250, 250]
-        geo_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI
+        geo_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI_REL
         geo_variable.attrs[corr.IMG_CORR_UNIT] = corr.IMG
         geo_variable.attrs[corr.IMG_CORR_SCALE] = [-12, 0]
         geo_variable.attrs["pdf_shape"] = "gaussian"
 
     @staticmethod
     def _add_calibration_coeff_correlation_attributes(coeff_variable):
-        coeff_variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT
-        coeff_variable.attrs[corr.SCAN_CORR_UNIT] = corr.PIXEL
+        coeff_variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
+        coeff_variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        coeff_variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
+        coeff_variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        coeff_variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
         coeff_variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
-        coeff_variable.attrs[corr.TIME_CORR_FORM] = corr.RECT
-        coeff_variable.attrs[corr.TIME_CORR_UNIT] = corr.LINE
-        coeff_variable.attrs[corr.TIME_CORR_SCALE] = [-np.inf, np.inf]
-        coeff_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI
+        coeff_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI_REL
         coeff_variable.attrs[corr.IMG_CORR_UNIT] = corr.MONTHS
         coeff_variable.attrs[corr.IMG_CORR_SCALE] = [-1.5, 1.5]
         coeff_variable.attrs["pdf_shape"] = "gaussian"

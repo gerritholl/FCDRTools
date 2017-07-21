@@ -200,12 +200,12 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_prt.attrs["_FillValue"]))
         self.assertEqual("Uncertainty on the PRT counts", u_prt.attrs["long_name"])
         self.assertEqual("count", u_prt.attrs["units"])
-        self.assertEqual("rectangle", u_prt.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", u_prt.attrs["scan_correlation_units"])
+        self.assertEqual("rectangle_absolute", u_prt.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", u_prt.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_prt.attrs["pixel_correlation_scales"])
+        self.assertEqual("rectangle_absolute", u_prt.attrs["scan_correlation_form"])
+        self.assertEqual("line", u_prt.attrs["scan_correlation_units"])
         self.assertEqual([-np.inf, np.inf], u_prt.attrs["scan_correlation_scales"])
-        self.assertEqual("rectangle", u_prt.attrs["time_correlation_form"])
-        self.assertEqual("line", u_prt.attrs["time_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], u_prt.attrs["time_correlation_scales"])
         self.assertEqual("rectangle", u_prt.attrs["pdf_shape"])
         self.assertEqual(0.1, u_prt.attrs["pdf_parameter"])
 
@@ -303,12 +303,12 @@ class AVHRRTest(unittest.TestCase):
 
     def _assert_counts_correlation(self, ds, name):
         variable = ds.variables[name]
-        self.assertEqual("rectangle", variable.attrs["scan_correlation_form"])
-        self.assertEqual("pixel", variable.attrs["scan_correlation_units"])
-        self.assertEqual([-np.inf, np.inf], variable.attrs["scan_correlation_scales"])
-        self.assertEqual("triangle", variable.attrs["time_correlation_form"])
-        self.assertEqual("line", variable.attrs["time_correlation_units"])
-        self.assertEqual([-25, 25], variable.attrs["time_correlation_scales"])
+        self.assertEqual("rectangle_absolute", variable.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", variable.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], variable.attrs["pixel_correlation_scales"])
+        self.assertEqual("triangle_relative", variable.attrs["scan_correlation_form"])
+        self.assertEqual("line", variable.attrs["scan_correlation_units"])
+        self.assertEqual([-25, 25], variable.attrs["scan_correlation_scales"])
         self.assertEqual("digitised_gaussian", variable.attrs["pdf_shape"])
 
     def _assert_correct_counts_variable(self, ds, name, long_name):

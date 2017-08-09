@@ -7,7 +7,7 @@ DATE_PATTERN = "%Y%m%d%H%M%S"
 
 
 class FCDRWriter:
-    _version = "1.0.7"
+    _version = "1.1.0"
 
     @classmethod
     def write(cls, ds, file, compression_level=None, overwrite=False):

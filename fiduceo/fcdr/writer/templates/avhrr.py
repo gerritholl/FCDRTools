@@ -28,18 +28,28 @@ class AVHRR:
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         dataset["Time"] = variable
 
-        # scanline
-        default_array = DefaultData.create_default_vector(height, np.int16)
-        variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["long_name"] = "Level 1b line number"
-        variable.attrs["valid_min"] = 0
-        dataset["scanline"] = variable
+#        # scanline
+#        default_array = DefaultData.create_default_vector(height, np.int16)
+#        variable = Variable(["y"], default_array)
+#        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+#        variable.attrs["long_name"] = "Level 1b line number"
+#        variable.attrs["valid_min"] = 0
+#        dataset["scanline"] = variable
 
-        # satellite_azimuth_angle
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle", fill_value=np.NaN)
+        # relative_azimuth_angle
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["standard_name"] = "relative_azimuth_angle"
         tu.add_units(variable, "degree")
-        dataset["satellite_azimuth_angle"] = variable
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+        variable.attrs["valid_max"] = 18000
+        variable.attrs["valid_min"] = -18000
+        dataset["relative_azimuth_angle"] = variable
+
+#        # satellite_azimuth_angle
+#        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle", fill_value=np.NaN)
+#        tu.add_units(variable, "degree")
+#        dataset["satellite_azimuth_angle"] = variable
 
         # satellite_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
@@ -51,10 +61,10 @@ class AVHRR:
         variable.attrs["valid_min"] = 0
         dataset["satellite_zenith_angle"] = variable
 
-        # solar_azimuth_angle
-        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle", fill_value=np.NaN)
-        tu.add_units(variable, "degree")
-        dataset["solar_azimuth_angle"] = variable
+#        # solar_azimuth_angle
+#        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle", fill_value=np.NaN)
+#        tu.add_units(variable, "degree")
+#        dataset["solar_azimuth_angle"] = variable
 
         # solar_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
@@ -90,13 +100,13 @@ class AVHRR:
         variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
 
-        # T_ICT
-        default_array = DefaultData.create_default_vector(height, np.int16)
-        variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-        variable.attrs["long_name"] = "Temperature of the internal calibration target"
-        AVHRR._add_temperature_attributes(variable)
-        dataset["T_ICT"] = variable
+#        # T_ICT
+#        default_array = DefaultData.create_default_vector(height, np.int16)
+#        variable = Variable(["y"], default_array)
+#        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+#        variable.attrs["long_name"] = "Temperature of the internal calibration target"
+#        AVHRR._add_temperature_attributes(variable)
+#        dataset["T_ICT"] = variable
 
     @staticmethod
     def get_swath_width():
@@ -115,7 +125,7 @@ class AVHRR:
                       "non-random uncertainty per pixel for channel 2",
                       "non-random uncertainty per pixel for channel 3a"]
         names = ["u_non_random_Ch1", "u_non_random_Ch2", "u_non_random_Ch3a"]
-        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
+        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names,systematic=True)
 
         # u_random_Ch3b-5
         long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4",
@@ -285,21 +295,15 @@ class AVHRR:
             dataset[name] = variable
 
     @staticmethod
-    def _add_refl_uncertainties_variables(dataset, height, names, standard_names):
+    def _add_refl_uncertainties_variables(dataset, height, names, standard_names,systematic=False):
         for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i])
+            variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i],systematic=systematic)
             dataset[name] = variable
 
     @staticmethod
-    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names):
+    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names,systematic=False):
         for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i])
-            dataset[name] = variable
-
-    @staticmethod
-    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names):
-        for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i])
+            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i],systematic=systematic)
             dataset[name] = variable
 
     @staticmethod
@@ -330,15 +334,34 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def _create_refl_uncertainty_variable(height, standard_name=None, long_name=None):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name, fill_value=np.NaN)
-        tu.add_units(variable, "percent")
+    def _create_refl_uncertainty_variable(height, standard_name=None, long_name=None,systematic=False):
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
+        if systematic:
+            tu.add_units(variable, "relative uncertainty ratio")
+        else:
+            tu.add_units(variable, "percent")
+        if systematic:
+            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+            variable.attrs["valid_max"] = 3
+            variable.attrs["valid_min"] = 5
+        else:
+            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001)
+            variable.attrs["valid_max"] = 10
+            variable.attrs["valid_min"] = 1000
+#        variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name=standard_name, long_name=long_name, fill_value=np.NaN)
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, long_name):
-        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
+#        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
+#        tu.add_units(variable, "K")
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
         tu.add_units(variable, "K")
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001)
+        variable.attrs["valid_max"] = 1
+        variable.attrs["valid_min"] = 15000
         return variable
 
     @staticmethod

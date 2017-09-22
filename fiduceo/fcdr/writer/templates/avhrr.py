@@ -7,6 +7,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
+N_CHANS = 6
 
 COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL,
                                 corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
@@ -139,6 +140,19 @@ class AVHRR:
                       "non-random uncertainty per pixel for channel 5"]
         names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
+        default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=None)
+        variable = Variable(["y"], default_array)
+        variable.attrs["long_name"] = 'Bitmask for quality per scanline'
+        variable.attrs["flag_masks"] = '1,2,4,8,16,32,64'
+        variable.attrs['flag_meanings'] = 'DO_NOT_USE, BAD_TIME, BAD_NAVIGATION, BAD_CALIBRATION, CHANNEL3A_PRESENT,SOLAR_CONTAMINATION_FAILURE,SOLAR_CONTAMINATION'
+        dataset['quality_scanline_bitmask'] = variable
+
+        default_array = DefaultData.create_default_array(N_CHANS, height, np.uint8, fill_value=None)
+        variable = Variable(["y","nchan"], default_array)
+        variable.attrs["long_name"] = 'Bitmask for quality per channel/scanline'
+        variable.attrs["flag_masks"] = '1,2'
+        variable.attrs['flag_meanings'] = 'BAD_CHANNEL, SOME_PIXELS_NOT_DETECTED_2SIGMA'
+        dataset['quality_channel_bitmask'] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
@@ -340,7 +354,7 @@ class AVHRR:
         if systematic:
             tu.add_units(variable, "relative uncertainty ratio")
         else:
-            tu.add_units(variable, "percent")
+            tu.add_units(variable, "albedo")
         if systematic:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
             variable.attrs["valid_max"] = 3
@@ -378,7 +392,7 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
-        tu.add_units(variable, "percent")
+        tu.add_units(variable, "albedo")
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 1e-4)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0

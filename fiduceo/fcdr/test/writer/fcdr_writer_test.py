@@ -92,7 +92,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(71, len(ds.variables))
+        self.assertEqual(68, len(ds.variables))
 
         # geolocation
         self._verify_geolocation_variables(ds)
@@ -638,9 +638,9 @@ class FCDRWriterTest(unittest.TestCase):
 
     def _verify_avhrr_specific_variables(self, ds):
         self.assertIsNotNone(ds.variables["Time"])
-        self.assertIsNotNone(ds.variables["scanline"])
         # geometry
-        self._verify_geometry_variables(ds)
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_zenith_angle"])
 
         self.assertIsNotNone(ds.variables["Ch1_Ref"])
         self.assertIsNotNone(ds.variables["Ch2_Ref"])
@@ -648,4 +648,3 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["Ch3b_Bt"])
         self.assertIsNotNone(ds.variables["Ch4_Bt"])
         self.assertIsNotNone(ds.variables["Ch5_Bt"])
-        self.assertIsNotNone(ds.variables["T_ICT"])

@@ -29,14 +29,6 @@ class AVHRR:
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         dataset["Time"] = variable
 
-#        # scanline
-#        default_array = DefaultData.create_default_vector(height, np.int16)
-#        variable = Variable(["y"], default_array)
-#        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-#        variable.attrs["long_name"] = "Level 1b line number"
-#        variable.attrs["valid_min"] = 0
-#        dataset["scanline"] = variable
-
         # relative_azimuth_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
@@ -47,11 +39,6 @@ class AVHRR:
         variable.attrs["valid_min"] = -18000
         dataset["relative_azimuth_angle"] = variable
 
-#        # satellite_azimuth_angle
-#        variable = tu.create_float_variable(SWATH_WIDTH, height, "sensor_azimuth_angle", fill_value=np.NaN)
-#        tu.add_units(variable, "degree")
-#        dataset["satellite_azimuth_angle"] = variable
-
         # satellite_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
@@ -61,11 +48,6 @@ class AVHRR:
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
         dataset["satellite_zenith_angle"] = variable
-
-#        # solar_azimuth_angle
-#        variable = tu.create_float_variable(SWATH_WIDTH, height, "solar_azimuth_angle", fill_value=np.NaN)
-#        tu.add_units(variable, "degree")
-#        dataset["solar_azimuth_angle"] = variable
 
         # solar_zenith_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
@@ -100,14 +82,6 @@ class AVHRR:
         # Ch5_Bt
         variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
-
-#        # T_ICT
-#        default_array = DefaultData.create_default_vector(height, np.int16)
-#        variable = Variable(["y"], default_array)
-#        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
-#        variable.attrs["long_name"] = "Temperature of the internal calibration target"
-#        AVHRR._add_temperature_attributes(variable)
-#        dataset["T_ICT"] = variable
 
     @staticmethod
     def get_swath_width():
@@ -308,11 +282,11 @@ class AVHRR:
             variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
 
-    @staticmethod
-    def _add_refl_uncertainties_variables(dataset, height, names, standard_names,systematic=False):
-        for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i],systematic=systematic)
-            dataset[name] = variable
+    # @staticmethod
+    # def _add_refl_uncertainties_variables(dataset, height, names, standard_names,systematic=False):
+    #     for i, name in enumerate(names):
+    #         variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i],systematic=systematic)
+    #         dataset[name] = variable
 
     @staticmethod
     def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names,systematic=False):

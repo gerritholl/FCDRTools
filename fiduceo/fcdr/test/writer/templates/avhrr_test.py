@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 import xarray as xr
-from fiduceo.fcdr.writer.default_data import DefaultData
 
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
 
@@ -89,12 +89,12 @@ class AVHRRTest(unittest.TestCase):
         ds = xr.Dataset()
         AVHRR.add_easy_fcdr_variables(ds, 5)
 
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch1", long_name="random uncertainty per pixel for channel 1", units="albedo")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch1", long_name="non-random uncertainty per pixel for channel 1", units="relative uncertainty ratio")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch2", long_name="random uncertainty per pixel for channel 2", units="albedo")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch2", long_name="non-random uncertainty per pixel for channel 2", units="relative uncertainty ratio")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch3a", long_name="random uncertainty per pixel for channel 3a", units="albedo")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch3a", long_name="non-random uncertainty per pixel for channel 3a", units="relative uncertainty ratio")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch1", long_name="random uncertainty per pixel for channel 1", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch1", long_name="non-random uncertainty per pixel for channel 1", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch2", long_name="random uncertainty per pixel for channel 2", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch2", long_name="non-random uncertainty per pixel for channel 2", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch3a", long_name="random uncertainty per pixel for channel 3a", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch3a", long_name="non-random uncertainty per pixel for channel 3a", units="percent")
 
         self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch3b", long_name="random uncertainty per pixel for channel 3b")
         self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch3b", long_name="non-random uncertainty per pixel for channel 3b")
@@ -243,30 +243,23 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Ce", "Ch5 Uncertainty on earth counts")
         self._assert_earth_counts_pdf(ds, "Ch5_u_Ce")
 
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on reflectance")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on reflectance")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", long_name="Ch3a Total uncertainty on reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on toa reflectance", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on toa reflectance", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", long_name="Ch3a Total uncertainty on toa reflectance", units="percent")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt",
-                                                     long_name="Ch3b Total uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt", long_name="Ch3b Total uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_u_Bt", long_name="Ch4 Total uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_u_Bt", long_name="Ch5 Total uncertainty on brightness temperature")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_ur_Bt",
-                                                     long_name="Ch3b Random uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_ur_Bt",
-                                                     long_name="Ch4 Random uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_ur_Bt",
-                                                     long_name="Ch5 Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_ur_Bt", long_name="Ch3b Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_ur_Bt", long_name="Ch4 Random uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_ur_Bt", long_name="Ch5 Random uncertainty on brightness temperature")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_us_Bt",
-                                                     long_name="Ch3b Systematic uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt",
-                                                     long_name="Ch4 Systematic uncertainty on brightness temperature")
-        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt",
-                                                     long_name="Ch5 Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_us_Bt", long_name="Ch3b Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt", long_name="Ch4 Systematic uncertainty on brightness temperature")
+        self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt", long_name="Ch5 Systematic uncertainty on brightness temperature")
 
-    def _assert_earth_counts_pdf(self,  ds, name):
+    def _assert_earth_counts_pdf(self, ds, name):
         variable = ds.variables[name]
         self.assertEqual("digitised_gaussian", variable.attrs["pdf_shape"])
 
@@ -300,12 +293,12 @@ class AVHRRTest(unittest.TestCase):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
-        #self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 
-        #if long_name is not None:
-         #   self.assertEqual(long_name, variable.attrs["long_name"])
+        if long_name is not None:
+            self.assertEqual(long_name, variable.attrs["long_name"])
 
         if units is not None:
             self.assertEqual(units, variable.attrs["units"])
@@ -314,11 +307,11 @@ class AVHRRTest(unittest.TestCase):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
-        #self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        # self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 
-        #if long_name is not None:
+        # if long_name is not None:
         #   self.assertEqual(long_name, variable.attrs["long_name"])
 
         self.assertEqual("K", variable.attrs["units"])
@@ -328,12 +321,12 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(variable.data[0, 8]))
         self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
         self.assertEqual(long_name, variable.attrs["long_name"])
-        self.assertEqual("albedo", variable.attrs["units"])
+        self.assertEqual("percent", variable.attrs["units"])
         self.assertEqual(np.int16, variable.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
-        self.assertEqual(1e-4, variable.encoding['scale_factor'])
+        self.assertEqual(0.01, variable.encoding['scale_factor'])
         self.assertEqual(0.0, variable.encoding['add_offset'])
-        self.assertEqual(15000, variable.attrs["valid_max"])
+        self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
 
     def _assert_correct_bt_variable(self, variable, long_name):

@@ -127,16 +127,16 @@ class HIRS:
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "random uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        dataset["u_random"] = variable
+        variable.attrs["long_name"] = "independent uncertainty per pixel"
+        tu.add_units(variable, "K")
+        dataset["u_independent"] = variable
 
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
         tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "non-random uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        dataset["u_non_random"] = variable
+        variable.attrs["long_name"] = "structured uncertainty per pixel"
+        tu.add_units(variable, "K")
+        dataset["u_structured"] = variable
 
     @staticmethod
     def add_common_full_fcdr_variables(dataset, height):

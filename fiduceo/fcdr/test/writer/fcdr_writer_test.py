@@ -190,8 +190,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["qualind"])
 
         # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_random"])
-        self.assertIsNotNone(ds.variables["u_non_random"])
+        self.assertIsNotNone(ds.variables["u_independent"])
+        self.assertIsNotNone(ds.variables["u_structured"])
 
     def testCreateTemplateFull_HIRS2(self):
         ds = FCDRWriter.createTemplateFull('HIRS2', 209)
@@ -290,8 +290,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_random"])
-        self.assertIsNotNone(ds.variables["u_non_random"])
+        self.assertIsNotNone(ds.variables["u_independent"])
+        self.assertIsNotNone(ds.variables["u_structured"])
 
     def testCreateTemplateFull_HIRS3(self):
         ds = FCDRWriter.createTemplateFull('HIRS3', 209)
@@ -388,8 +388,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_random"])
-        self.assertIsNotNone(ds.variables["u_non_random"])
+        self.assertIsNotNone(ds.variables["u_independent"])
+        self.assertIsNotNone(ds.variables["u_structured"])
 
     def testCreateTemplateFull_HIRS4(self):
         ds = FCDRWriter.createTemplateFull('HIRS4', 209)

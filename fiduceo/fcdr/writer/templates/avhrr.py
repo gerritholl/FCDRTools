@@ -348,7 +348,7 @@ class AVHRR:
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
-        variable.attrs["valid_max"] = 10000
+        variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
         return variable
 

@@ -326,7 +326,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
         self.assertEqual(0.01, variable.encoding['scale_factor'])
         self.assertEqual(0.0, variable.encoding['add_offset'])
-        self.assertEqual(10000, variable.attrs["valid_max"])
+        self.assertEqual(15000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
 
     def _assert_correct_bt_variable(self, variable, long_name):

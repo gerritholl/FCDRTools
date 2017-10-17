@@ -158,8 +158,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("minor_frame_quality_flags_bitfield", mnfrqualflags.attrs["long_name"])
 
     def assert_easy_fcdr_uncertainties(self, ds):
-        self._assert_3d_channel_variable(ds, "u_random", "random uncertainty per pixel")
-        self._assert_3d_channel_variable(ds, "u_non_random", "non-random uncertainty per pixel")
+        self._assert_3d_channel_variable(ds, "u_independent", "independent uncertainty per pixel")
+        self._assert_3d_channel_variable(ds, "u_structured", "structured uncertainty per pixel")
 
     def _assert_3d_channel_variable(self, ds, name, long_name):
         variable = ds.variables[name]
@@ -167,4 +167,5 @@ class HIRSAssert(unittest.TestCase):
         self.assertTrue(np.isnan(variable.data[2, 5, 3]))
         self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         self.assertEqual(long_name, variable.attrs["long_name"])
+        self.assertEqual("K", variable.attrs["units"])
         return variable

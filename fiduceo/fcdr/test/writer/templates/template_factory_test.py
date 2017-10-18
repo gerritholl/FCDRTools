@@ -13,6 +13,9 @@ class TemplateFactoryTest(unittest.TestCase):
         mhs = template_factory.get_sensor_template("MHS")
         self.assertIsNotNone(mhs)
 
+        ssmts = template_factory.get_sensor_template("SSMT2")
+        self.assertIsNotNone(ssmts)
+
         avhrr = template_factory.get_sensor_template("AVHRR")
         self.assertIsNotNone(avhrr)
 

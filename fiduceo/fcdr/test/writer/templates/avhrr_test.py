@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
+from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
@@ -12,25 +13,7 @@ class AVHRRTest(unittest.TestCase):
         ds = xr.Dataset()
         AVHRR.add_original_variables(ds, 5)
 
-        latitude = ds.variables["latitude"]
-        self.assertEqual((5, 409), latitude.shape)
-        self.assertTrue(np.isnan(latitude.data[0, 0]))
-        self.assertEqual("latitude", latitude.attrs["standard_name"])
-        self.assertEqual("degrees_north", latitude.attrs["units"])
-        self.assertEqual(np.int16, latitude.encoding['dtype'])
-        self.assertEqual(-32768, latitude.encoding['_FillValue'])
-        self.assertEqual(0.0027466658, latitude.encoding['scale_factor'])
-        self.assertEqual(0.0, latitude.encoding['add_offset'])
-
-        longitude = ds.variables["longitude"]
-        self.assertEqual((5, 409), longitude.shape)
-        self.assertTrue(np.isnan(longitude.data[0, 1]))
-        self.assertEqual("longitude", longitude.attrs["standard_name"])
-        self.assertEqual("degrees_east", longitude.attrs["units"])
-        self.assertEqual(np.int16, longitude.encoding['dtype'])
-        self.assertEqual(-32768, longitude.encoding['_FillValue'])
-        self.assertEqual(0.0054933317, longitude.encoding['scale_factor'])
-        self.assertEqual(0.0, longitude.encoding['add_offset'])
+        Assertions.assert_geolocation_variables(self, ds, 409, 5)
 
         time = ds.variables["Time"]
         self.assertEqual((5,), time.shape)

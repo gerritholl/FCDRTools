@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
+from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
@@ -14,7 +15,8 @@ class HIRS2Test(unittest.TestCase):
         ds = xr.Dataset()
         HIRS2.add_original_variables(ds, 6)
 
-        ha.assert_geolocation(ds)
+        Assertions.assert_geolocation_variables(self, ds, 56, 6)
+
         ha.assert_bt_variable(ds)
         self._assert_angle_variables(ds)
         ha.assert_common_sensor_variables(ds)

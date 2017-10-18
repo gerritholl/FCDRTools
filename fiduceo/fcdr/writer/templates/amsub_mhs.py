@@ -1,7 +1,7 @@
 import numpy as np
-from fiduceo.fcdr.writer.default_data import DefaultData
 from xarray import Variable
 
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 NUM_CHANNELS = 5

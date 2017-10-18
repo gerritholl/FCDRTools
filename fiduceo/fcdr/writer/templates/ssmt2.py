@@ -98,3 +98,23 @@ class SSMT2:
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["warm_counts"] = variable
+
+    @staticmethod
+    def get_swath_width():
+        return SWATH_WIDTH
+
+    @staticmethod
+    def add_easy_fcdr_variables(dataset, height):
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        tu.add_units(variable, "K")
+        variable.attrs["long_name"] = "independent uncertainty per pixel"
+        dataset["u_independent_tb"] = variable
+
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        tu.add_units(variable, "K")
+        variable.attrs["long_name"] = "structured uncertainty per pixel"
+        dataset["u_structured_tb"] = variable

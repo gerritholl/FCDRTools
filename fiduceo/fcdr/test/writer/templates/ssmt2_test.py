@@ -76,3 +76,24 @@ class SSMT2Test(unittest.TestCase):
         self.assertTrue(np.isnan(warm_counts.data[0, 1, 6]))
         self.assertTrue(np.isnan(warm_counts.attrs['_FillValue']))
         self.assertEqual("TODO", warm_counts.attrs["long_name"])
+
+    def test_get_swath_width(self):
+        self.assertEqual(28, SSMT2.get_swath_width())
+
+    def test_add_easy_fcdr_variables(self):
+        ds = xr.Dataset()
+        SSMT2.add_easy_fcdr_variables(ds, 4)
+
+        u_independent_tb = ds.variables["u_independent_tb"]
+        self.assertEqual((5, 4, 28), u_independent_tb.shape)
+        self.assertTrue(np.isnan(u_independent_tb.data[0, 3, 0]))
+        self.assertTrue(np.isnan(u_independent_tb.attrs["_FillValue"]))
+        self.assertEqual("independent uncertainty per pixel", u_independent_tb.attrs["long_name"])
+        self.assertEqual("K", u_independent_tb.attrs["units"])
+
+        u_structured_tb = ds.variables["u_structured_tb"]
+        self.assertEqual((5, 4, 28), u_structured_tb.shape)
+        self.assertTrue(np.isnan(u_structured_tb.data[1, 0, 1]))
+        self.assertTrue(np.isnan(u_structured_tb.attrs["_FillValue"]))
+        self.assertEqual("structured uncertainty per pixel", u_structured_tb.attrs["long_name"])
+        self.assertEqual("K", u_structured_tb.attrs["units"])

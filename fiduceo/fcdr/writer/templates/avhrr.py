@@ -87,25 +87,26 @@ class AVHRR:
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        # u_random_Ch1-3a
-        long_names = ["random uncertainty per pixel for channel 1", "random uncertainty per pixel for channel 2", "random uncertainty per pixel for channel 3a"]
-        names = ["u_random_Ch1", "u_random_Ch2", "u_random_Ch3a"]
+        # u_independent_Ch1-3a
+        long_names = ["independent uncertainty per pixel for channel 1", "independent uncertainty per pixel for channel 2", "independent uncertainty per pixel for channel 3a"]
+        names = ["u_independent_Ch1", "u_independent_Ch2", "u_independent_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
 
-        # u_non_random_Ch1-3a
-        long_names = ["non-random uncertainty per pixel for channel 1", "non-random uncertainty per pixel for channel 2", "non-random uncertainty per pixel for channel 3a"]
-        names = ["u_non_random_Ch1", "u_non_random_Ch2", "u_non_random_Ch3a"]
+        # u_structured_Ch1-3a
+        long_names = ["structured uncertainty per pixel for channel 1", "structured uncertainty per pixel for channel 2", "structured uncertainty per pixel for channel 3a"]
+        names = ["u_structured_Ch1", "u_structured_Ch2", "u_structured_Ch3a"]
         AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, systematic=True)
 
-        # u_random_Ch3b-5
-        long_names = ["random uncertainty per pixel for channel 3b", "random uncertainty per pixel for channel 4", "random uncertainty per pixel for channel 5"]
-        names = ["u_random_Ch3b", "u_random_Ch4", "u_random_Ch5"]
+        # u_independent_Ch3b-5
+        long_names = ["independent uncertainty per pixel for channel 3b", "independent uncertainty per pixel for channel 4", "independent uncertainty per pixel for channel 5"]
+        names = ["u_independent_Ch3b", "u_independent_Ch4", "u_independent_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
-        # u_non_random_Ch3b-5
-        long_names = ["non-random uncertainty per pixel for channel 3b", "non-random uncertainty per pixel for channel 4", "non-random uncertainty per pixel for channel 5"]
-        names = ["u_non_random_Ch3b", "u_non_random_Ch4", "u_non_random_Ch5"]
+        # u_structured_Ch3b-5
+        long_names = ["structured uncertainty per pixel for channel 3b", "structured uncertainty per pixel for channel 4", "structured uncertainty per pixel for channel 5"]
+        names = ["u_structured_Ch3b", "u_structured_Ch4", "u_structured_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
+
         default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=None)
         variable = Variable(["y"], default_array)
         variable.attrs["long_name"] = 'Bitmask for quality per scanline'
@@ -312,12 +313,12 @@ class AVHRR:
 
         if systematic:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
-            variable.attrs["valid_max"] = 3
-            variable.attrs["valid_min"] = 5
+            variable.attrs["valid_min"] = 3
+            variable.attrs["valid_max"] = 5
         else:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001)
-            variable.attrs["valid_max"] = 10
-            variable.attrs["valid_min"] = 1000
+            variable.attrs["valid_min"] = 10
+            variable.attrs["valid_max"] = 1000
         return variable
 
     @staticmethod

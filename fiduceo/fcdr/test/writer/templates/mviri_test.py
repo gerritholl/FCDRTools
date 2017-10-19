@@ -147,25 +147,25 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(1.52588E-05, reflectance.encoding['scale_factor'])
         self.assertEqual(0.0, reflectance.encoding['add_offset'])
 
-        u_random = ds.variables["u_random_toa_bidirectional_reflectance"]
-        self.assertEqual((5000, 5000), u_random.shape)
-        self.assertTrue(np.isnan(u_random.data[118, 234]))
-        self.assertEqual("random uncertainty per pixel", u_random.attrs["long_name"])
-        self.assertEqual("percent", u_random.attrs["units"])
-        self.assertEqual(np.uint16, u_random.encoding['dtype'])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_random.encoding['_FillValue'])
-        self.assertEqual(1.52588E-05, u_random.encoding['scale_factor'])
-        self.assertEqual(0.0, u_random.encoding['add_offset'])
+        u_indep = ds.variables["u_independent_toa_bidirectional_reflectance"]
+        self.assertEqual((5000, 5000), u_indep.shape)
+        self.assertTrue(np.isnan(u_indep.data[118, 234]))
+        self.assertEqual("independent uncertainty per pixel", u_indep.attrs["long_name"])
+        self.assertEqual("percent", u_indep.attrs["units"])
+        self.assertEqual(np.uint16, u_indep.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_indep.encoding['_FillValue'])
+        self.assertEqual(1.52588E-05, u_indep.encoding['scale_factor'])
+        self.assertEqual(0.0, u_indep.encoding['add_offset'])
 
-        u_non_random = ds.variables["u_non_random_toa_bidirectional_reflectance"]
-        self.assertEqual((5000, 5000), u_non_random.shape)
-        self.assertTrue(np.isnan(u_non_random.data[119, 235]))
-        self.assertEqual("non-random uncertainty per pixel", u_non_random.attrs["long_name"])
-        self.assertEqual("percent", u_non_random.attrs["units"])
-        self.assertEqual(np.uint16, u_non_random.encoding['dtype'])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_non_random.encoding['_FillValue'])
-        self.assertEqual(1.52588E-05, u_non_random.encoding['scale_factor'])
-        self.assertEqual(0.0, u_non_random.encoding['add_offset'])
+        u_struct = ds.variables["u_structured_toa_bidirectional_reflectance"]
+        self.assertEqual((5000, 5000), u_struct.shape)
+        self.assertTrue(np.isnan(u_struct.data[119, 235]))
+        self.assertEqual("structured uncertainty per pixel", u_struct.attrs["long_name"])
+        self.assertEqual("percent", u_struct.attrs["units"])
+        self.assertEqual(np.uint16, u_struct.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_struct.encoding['_FillValue'])
+        self.assertEqual(1.52588E-05, u_struct.encoding['scale_factor'])
+        self.assertEqual(0.0, u_struct.encoding['add_offset'])
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

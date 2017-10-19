@@ -117,17 +117,17 @@ class AMSUB_MHS:
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        # u_random_btemps
+        # u_independent_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
         tu.add_units(variable, "K")
-        variable.attrs["long_name"] = "random uncertainty per pixel"
-        dataset["u_random_btemps"] = variable
+        variable.attrs["long_name"] = "independent uncertainty per pixel"
+        dataset["u_independent_btemps"] = variable
 
-        # u_non_random_btemps
+        # u_structured_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
         tu.add_units(variable, "K")
-        variable.attrs["long_name"] = "non-random uncertainty per pixel"
-        dataset["u_non_random_btemps"] = variable
+        variable.attrs["long_name"] = "structured uncertainty per pixel"
+        dataset["u_structured_btemps"] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

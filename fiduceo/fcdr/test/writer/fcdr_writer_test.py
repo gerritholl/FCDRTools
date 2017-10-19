@@ -20,8 +20,8 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_amsub_specific_variables(ds)
 
         # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_random_btemps"])
-        self.assertIsNotNone(ds.variables["u_non_random_btemps"])
+        self.assertIsNotNone(ds.variables["u_independent_btemps"])
+        self.assertIsNotNone(ds.variables["u_structured_btemps"])
 
     def testCreateTemplateFull_AMSUB(self):
         ds = FCDRWriter.createTemplateFull('AMSUB', 2562)
@@ -91,18 +91,18 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_avhrr_specific_variables(ds)
 
         # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_random_Ch1"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch1"])
-        self.assertIsNotNone(ds.variables["u_random_Ch2"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch2"])
-        self.assertIsNotNone(ds.variables["u_random_Ch3a"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch3a"])
-        self.assertIsNotNone(ds.variables["u_random_Ch3b"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch3b"])
-        self.assertIsNotNone(ds.variables["u_random_Ch4"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch4"])
-        self.assertIsNotNone(ds.variables["u_random_Ch5"])
-        self.assertIsNotNone(ds.variables["u_non_random_Ch5"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch1"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch1"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch2"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch2"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch3a"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch3a"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch3b"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch3b"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch4"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch4"])
+        self.assertIsNotNone(ds.variables["u_independent_Ch5"])
+        self.assertIsNotNone(ds.variables["u_structured_Ch5"])
 
     def testCreateTemplateFull_AVHRR(self):
         ds = FCDRWriter.createTemplateFull('AVHRR', 13667)
@@ -520,8 +520,8 @@ class FCDRWriterTest(unittest.TestCase):
 
         # easy FCDR uncertainties
         self.assertIsNotNone(ds.variables["toa_bidirectional_reflectance_vis"])
-        self.assertIsNotNone(ds.variables["u_random_toa_bidirectional_reflectance"])
-        self.assertIsNotNone(ds.variables["u_non_random_toa_bidirectional_reflectance"])
+        self.assertIsNotNone(ds.variables["u_independent_toa_bidirectional_reflectance"])
+        self.assertIsNotNone(ds.variables["u_structured_toa_bidirectional_reflectance"])
 
     def testCreateTemplateFull_MVIRI(self):
         ds = FCDRWriter.createTemplateFull('MVIRI', 5000)

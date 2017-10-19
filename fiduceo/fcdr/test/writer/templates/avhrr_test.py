@@ -72,19 +72,19 @@ class AVHRRTest(unittest.TestCase):
         ds = xr.Dataset()
         AVHRR.add_easy_fcdr_variables(ds, 5)
 
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch1", long_name="random uncertainty per pixel for channel 1", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch1", long_name="non-random uncertainty per pixel for channel 1", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch2", long_name="random uncertainty per pixel for channel 2", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch2", long_name="non-random uncertainty per pixel for channel 2", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_random_Ch3a", long_name="random uncertainty per pixel for channel 3a", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_non_random_Ch3a", long_name="non-random uncertainty per pixel for channel 3a", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="percent")
 
-        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch3b", long_name="random uncertainty per pixel for channel 3b")
-        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch3b", long_name="non-random uncertainty per pixel for channel 3b")
-        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch4", long_name="random uncertainty per pixel for channel 4")
-        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch4", long_name="non-random uncertainty per pixel for channel 4")
-        self._assert_correct_bt_uncertainty_variable(ds, "u_random_Ch5", long_name="random uncertainty per pixel for channel 5")
-        self._assert_correct_bt_uncertainty_variable(ds, "u_non_random_Ch5", long_name="non-random uncertainty per pixel for channel 5")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch3b", long_name="independent uncertainty per pixel for channel 3b")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch3b", long_name="structured uncertainty per pixel for channel 3b")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch4", long_name="independent uncertainty per pixel for channel 4")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch4", long_name="structured uncertainty per pixel for channel 4")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch5", long_name="independent uncertainty per pixel for channel 5")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch5", long_name="structured uncertainty per pixel for channel 5")
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
@@ -277,6 +277,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        # @todo 2 tb/tb add checks for encoding, valid min and max 2017-10-19
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 

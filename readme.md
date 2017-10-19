@@ -16,3 +16,5 @@ The FCDR Tools depend on a number of modules, namely:
 
 * `xarray`
 * `netcdf4`
+* `numpy`
+* `numexpr`

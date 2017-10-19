@@ -157,21 +157,21 @@ class MVIRI:
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
-        # u_random
+        # u_independent
         default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["long_name"] = "random uncertainty per pixel"
+        variable.attrs["long_name"] = "independent uncertainty per pixel"
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
-        dataset["u_random_toa_bidirectional_reflectance"] = variable
+        dataset["u_independent_toa_bidirectional_reflectance"] = variable
 
-        # u_non_random
+        # u_structured
         default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["long_name"] = "non-random uncertainty per pixel"
+        variable.attrs["long_name"] = "structured uncertainty per pixel"
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
-        dataset["u_non_random_toa_bidirectional_reflectance"] = variable
+        dataset["u_structured_toa_bidirectional_reflectance"] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

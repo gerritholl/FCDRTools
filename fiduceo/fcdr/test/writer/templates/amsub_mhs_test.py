@@ -139,19 +139,19 @@ class AMSUB_MHSTest(unittest.TestCase):
         ds = xr.Dataset()
         AMSUB_MHS.add_easy_fcdr_variables(ds, 4)
 
-        u_rand_btemps = ds.variables["u_random_btemps"]
-        self.assertEqual((5, 4, 90), u_rand_btemps.shape)
-        self.assertTrue(np.isnan(u_rand_btemps.data[4, 2, 35]))
-        self.assertTrue(np.isnan(u_rand_btemps.attrs["_FillValue"]))
-        self.assertEqual("random uncertainty per pixel", u_rand_btemps.attrs["long_name"])
-        self.assertEqual("K", u_rand_btemps.attrs["units"])
+        u_ind_btemps = ds.variables["u_independent_btemps"]
+        self.assertEqual((5, 4, 90), u_ind_btemps.shape)
+        self.assertTrue(np.isnan(u_ind_btemps.data[4, 2, 35]))
+        self.assertTrue(np.isnan(u_ind_btemps.attrs["_FillValue"]))
+        self.assertEqual("independent uncertainty per pixel", u_ind_btemps.attrs["long_name"])
+        self.assertEqual("K", u_ind_btemps.attrs["units"])
 
-        u_non_rand_btemps = ds.variables["u_non_random_btemps"]
-        self.assertEqual((5, 4, 90), u_non_rand_btemps.shape)
-        self.assertTrue(np.isnan(u_non_rand_btemps.data[0, 3, 36]))
-        self.assertTrue(np.isnan(u_non_rand_btemps.attrs["_FillValue"]))
-        self.assertEqual("non-random uncertainty per pixel", u_non_rand_btemps.attrs["long_name"])
-        self.assertEqual("K", u_non_rand_btemps.attrs["units"])
+        u_struct_btemps = ds.variables["u_structured_btemps"]
+        self.assertEqual((5, 4, 90), u_struct_btemps.shape)
+        self.assertTrue(np.isnan(u_struct_btemps.data[0, 3, 36]))
+        self.assertTrue(np.isnan(u_struct_btemps.attrs["_FillValue"]))
+        self.assertEqual("structured uncertainty per pixel", u_struct_btemps.attrs["long_name"])
+        self.assertEqual("K", u_struct_btemps.attrs["units"])
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

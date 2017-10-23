@@ -61,20 +61,35 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geolocation_variables(ds)
 
         # sensor specific
-        self.assertIsNotNone(ds.variables["Temperature_misc_housekeeping"])
-        self.assertIsNotNone(ds.variables["ancil_data"])
-        self.assertIsNotNone(ds.variables["channel_quality_flag"])
-        self.assertIsNotNone(ds.variables["cold_counts"])
-        self.assertIsNotNone(ds.variables["counts_to_tb_gain"])
-        self.assertIsNotNone(ds.variables["counts_to_tb_offset"])
-        self.assertIsNotNone(ds.variables["gain_control"])
-        self.assertIsNotNone(ds.variables["tb"])
-        self.assertIsNotNone(ds.variables["thermal_reference"])
-        self.assertIsNotNone(ds.variables["warm_counts"])
+        self.verify_SSMT2_specific_variables(ds)
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent_tb"])
         self.assertIsNotNone(ds.variables["u_structured_tb"])
+
+    def testCreateTemplateFull_SSMT2(self):
+        ds = FCDRWriter.createTemplateFull('SSMT2', 722)
+        self.assertIsNotNone(ds)
+
+        self._verifyGlobalAttributes(ds.attrs)
+
+        self.assertEqual(26, len(ds.variables))
+
+        # geolocation
+        self._verify_geolocation_variables(ds)
+
+        # sensor specific
+        self.verify_SSMT2_specific_variables(ds)
+
+        # easy FCDR variables
+        self.assertIsNotNone(ds.variables["u_Temperature_misc_housekeeping"])
+        self.assertIsNotNone(ds.variables["u_cold_counts"])
+        self.assertIsNotNone(ds.variables["u_counts_to_tb_gain"])
+        self.assertIsNotNone(ds.variables["u_counts_to_tb_offset"])
+        self.assertIsNotNone(ds.variables["u_gain_control"])
+        self.assertIsNotNone(ds.variables["u_tb"])
+        self.assertIsNotNone(ds.variables["u_thermal_reference"])
+        self.assertIsNotNone(ds.variables["u_warm_counts"])
 
     def testCreateTemplateEasy_AVHRR(self):
         ds = FCDRWriter.createTemplateEasy('AVHRR', 12198)
@@ -644,6 +659,18 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlinyr"])
         # geometry
         self._verify_geometry_variables(ds)
+
+    def verify_SSMT2_specific_variables(self, ds):
+        self.assertIsNotNone(ds.variables["Temperature_misc_housekeeping"])
+        self.assertIsNotNone(ds.variables["ancil_data"])
+        self.assertIsNotNone(ds.variables["channel_quality_flag"])
+        self.assertIsNotNone(ds.variables["cold_counts"])
+        self.assertIsNotNone(ds.variables["counts_to_tb_gain"])
+        self.assertIsNotNone(ds.variables["counts_to_tb_offset"])
+        self.assertIsNotNone(ds.variables["gain_control"])
+        self.assertIsNotNone(ds.variables["tb"])
+        self.assertIsNotNone(ds.variables["thermal_reference"])
+        self.assertIsNotNone(ds.variables["warm_counts"])
 
     def _verify_avhrr_specific_variables(self, ds):
         self.assertIsNotNone(ds.variables["Time"])

@@ -19,6 +19,7 @@ class SSMT2Test(unittest.TestCase):
         self.assertTrue(np.isnan(temp_misc_hk.data[1, 3]))
         self.assertTrue(np.isnan(temp_misc_hk.attrs['_FillValue']))
         self.assertEqual("TODO", temp_misc_hk.attrs["long_name"])
+        self.assertEqual("TODO", temp_misc_hk.attrs["units"])
 
         ancil_data = ds.variables["ancil_data"]
         self.assertEqual((10, 4), ancil_data.shape)
@@ -97,3 +98,58 @@ class SSMT2Test(unittest.TestCase):
         self.assertTrue(np.isnan(u_structured_tb.attrs["_FillValue"]))
         self.assertEqual("structured uncertainty per pixel", u_structured_tb.attrs["long_name"])
         self.assertEqual("K", u_structured_tb.attrs["units"])
+
+    def test_add_full_fcdr_variables(self):
+        ds = xr.Dataset()
+        SSMT2.add_full_fcdr_variables(ds, 5)
+
+        u_temp_misc = ds.variables["u_Temperature_misc_housekeeping"]
+        self.assertEqual((18, 5), u_temp_misc.shape)
+        self.assertTrue(np.isnan(u_temp_misc.data[3, 2]))
+        self.assertTrue(np.isnan(u_temp_misc.attrs["_FillValue"]))
+        self.assertEqual("TODO", u_temp_misc.attrs["long_name"])
+        self.assertEqual("TODO", u_temp_misc.attrs["units"])
+
+        u_cold_counts = ds.variables["u_cold_counts"]
+        self.assertEqual((4, 5, 28), u_cold_counts.shape)
+        self.assertTrue(np.isnan(u_cold_counts.data[1, 1, 6]))
+        self.assertTrue(np.isnan(u_cold_counts.attrs['_FillValue']))
+        self.assertEqual("TODO", u_cold_counts.attrs["long_name"])
+
+        u_counts_to_tb_gain = ds.variables["u_counts_to_tb_gain"]
+        self.assertEqual((5, 5), u_counts_to_tb_gain.shape)
+        self.assertTrue(np.isnan(u_counts_to_tb_gain.data[2, 3]))
+        self.assertTrue(np.isnan(u_counts_to_tb_gain.attrs['_FillValue']))
+        self.assertEqual("TODO", u_counts_to_tb_gain.attrs["long_name"])
+
+        u_counts_to_tb_offset = ds.variables["u_counts_to_tb_offset"]
+        self.assertEqual((5, 5), u_counts_to_tb_offset.shape)
+        self.assertTrue(np.isnan(u_counts_to_tb_offset.data[3, 3]))
+        self.assertTrue(np.isnan(u_counts_to_tb_offset.attrs['_FillValue']))
+        self.assertEqual("TODO", u_counts_to_tb_offset.attrs["long_name"])
+
+        u_gain_control = ds.variables["u_gain_control"]
+        self.assertEqual((5, 5), u_gain_control.shape)
+        self.assertTrue(np.isnan(u_gain_control.data[4, 3]))
+        self.assertTrue(np.isnan(u_gain_control.attrs['_FillValue']))
+        self.assertEqual("TODO", u_gain_control.attrs["long_name"])
+
+        u_tb = ds.variables["u_tb"]
+        self.assertEqual((5, 5, 28), u_tb.shape)
+        self.assertTrue(np.isnan(u_tb.data[3, 4, 5]))
+        self.assertTrue(np.isnan(u_tb.attrs['_FillValue']))
+        self.assertEqual("TODO", u_tb.attrs["long_name"])
+        self.assertEqual("K", u_tb.attrs["units"])
+
+        u_thermal_reference = ds.variables["u_thermal_reference"]
+        self.assertEqual((5,), u_thermal_reference.shape)
+        self.assertTrue(np.isnan(u_thermal_reference.data[3]))
+        self.assertTrue(np.isnan(u_thermal_reference.attrs['_FillValue']))
+        self.assertEqual("TODO", u_thermal_reference.attrs["long_name"])
+        self.assertEqual("TODO", u_thermal_reference.attrs["units"])
+
+        u_warm_counts = ds.variables["u_warm_counts"]
+        self.assertEqual((4, 5, 28), u_warm_counts.shape)
+        self.assertTrue(np.isnan(u_warm_counts.data[2, 3, 7]))
+        self.assertTrue(np.isnan(u_warm_counts.attrs['_FillValue']))
+        self.assertEqual("TODO", u_warm_counts.attrs["long_name"])

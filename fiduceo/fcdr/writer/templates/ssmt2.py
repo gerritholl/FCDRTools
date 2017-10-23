@@ -23,6 +23,7 @@ class SSMT2:
         variable = Variable(["housekeeping", "y"], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
+        variable.attrs["units"] = "TODO"
         dataset["Temperature_misc_housekeeping"] = variable
 
         # ancil_data
@@ -118,3 +119,72 @@ class SSMT2:
         tu.add_units(variable, "K")
         variable.attrs["long_name"] = "structured uncertainty per pixel"
         dataset["u_structured_tb"] = variable
+
+    @staticmethod
+    def add_full_fcdr_variables(dataset, height):
+        # u_Temperature_misc_housekeeping
+        default_array = DefaultData.create_default_array(height, NUM_THERMISTORS, np.float32,
+                                                         dims_names=["housekeeping", "y"],
+                                                         fill_value=np.NaN)
+        variable = Variable(["housekeeping", "y"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        variable.attrs["units"] = "TODO"
+        dataset["u_Temperature_misc_housekeeping"] = variable
+
+        # u_cold_counts
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, CALIB_NUMBER, np.float32,
+                                                            np.NaN)
+        variable = Variable(["calib_number", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        dataset["u_cold_counts"] = variable
+
+        # u_counts_to_tb_gain
+        default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
+                                                         fill_value=np.NaN)
+        variable = Variable(["channel", "y",], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        dataset["u_counts_to_tb_gain"] = variable
+
+        # u_counts_to_tb_offset
+        default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
+                                                         fill_value=np.NaN)
+        variable = Variable(["channel", "y",], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        dataset["u_counts_to_tb_offset"] = variable
+
+        # u_gain_control
+        default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
+                                                         fill_value=np.NaN)
+        variable = Variable(["channel", "y",], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        dataset["u_gain_control"] = variable
+
+        # u_tb
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,
+                                                            np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        tu.add_units(variable, "K")
+        dataset["u_tb"] = variable
+
+        # u_thermal_reference
+        default_array = DefaultData.create_default_vector(height, np.float32, np.NaN)
+        variable = Variable(["y"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        tu.add_units(variable, "TODO")
+        dataset["u_thermal_reference"] = variable
+
+        # u_warm_counts
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, CALIB_NUMBER, np.float32,
+                                                            np.NaN)
+        variable = Variable(["calib_number", "y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "TODO"
+        dataset["u_warm_counts"] = variable

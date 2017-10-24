@@ -498,7 +498,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(40, len(ds.variables))
+        self.assertEqual(44, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -537,6 +537,10 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["toa_bidirectional_reflectance_vis"])
         self.assertIsNotNone(ds.variables["u_independent_toa_bidirectional_reflectance"])
         self.assertIsNotNone(ds.variables["u_structured_toa_bidirectional_reflectance"])
+        self.assertIsNotNone(ds.variables["sub_satellite_latitude_start"])
+        self.assertIsNotNone(ds.variables["sub_satellite_longitude_start"])
+        self.assertIsNotNone(ds.variables["sub_satellite_latitude_end"])
+        self.assertIsNotNone(ds.variables["sub_satellite_longitude_end"])
 
     def testCreateTemplateFull_MVIRI(self):
         ds = FCDRWriter.createTemplateFull('MVIRI', 5000)

@@ -28,9 +28,9 @@ class MVIRI:
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
         # time
-        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint32)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time of pixel"
         tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
@@ -85,6 +85,8 @@ class MVIRI:
         variable = Variable([SRF_VIS_DIMENSION], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Spectral Response Function for visible channel"
+        variable.attrs["source"] = "Filename of SRF"
+        variable.attrs["Valid(YYYYDDD)"] = "datestring"
         dataset["spectral_response_function_vis"] = variable
 
         # srf covariance_
@@ -172,6 +174,11 @@ class MVIRI:
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
         dataset["u_structured_toa_bidirectional_reflectance"] = variable
+
+        dataset["sub_satellite_latitude_start"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image start", units="degrees_north")
+        dataset["sub_satellite_longitude_start"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image start", units="degrees_east")
+        dataset["sub_satellite_latitude_end"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image end", units="degrees_north")
+        dataset["sub_satellite_longitude_end"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image end", units="degrees_east")
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

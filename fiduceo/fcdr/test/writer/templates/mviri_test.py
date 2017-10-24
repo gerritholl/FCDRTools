@@ -14,8 +14,8 @@ class MVIRITest(unittest.TestCase):
 
         time = ds.variables["time"]
         self.assertEqual((2500, 2500), time.shape)
-        self.assertEqual(65535, time.data[4, 117])
-        self.assertEqual(65535, time.attrs["_FillValue"])
+        self.assertEqual(4294967295, time.data[4, 117])
+        self.assertEqual(4294967295, time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time of pixel", time.attrs["long_name"])
         self.assertEqual("seconds since 1970-01-01 00:00:00", time.attrs["units"])
@@ -80,6 +80,8 @@ class MVIRITest(unittest.TestCase):
         self.assertTrue(np.isnan(srf.data[116]))
         self.assertTrue(np.isnan(srf.attrs["_FillValue"]))
         self.assertEqual("Spectral Response Function for visible channel", srf.attrs["long_name"])
+        self.assertEqual("Filename of SRF", srf.attrs["source"])
+        self.assertEqual("datestring", srf.attrs["Valid(YYYYDDD)"])
 
         cov_srf = ds.variables["covariance_spectral_response_function_vis"]
         self.assertEqual((1011, 1011), cov_srf.shape)
@@ -166,6 +168,11 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_struct.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, u_struct.encoding['scale_factor'])
         self.assertEqual(0.0, u_struct.encoding['add_offset'])
+
+        self._assert_scalar_float_variable(ds, "sub_satellite_latitude_start", "Latitude of the sub satellite point at image start", "degrees_north")
+        self._assert_scalar_float_variable(ds, "sub_satellite_longitude_start", "Longitude of the sub satellite point at image start", "degrees_east")
+        self._assert_scalar_float_variable(ds, "sub_satellite_latitude_end", "Latitude of the sub satellite point at image end", "degrees_north")
+        self._assert_scalar_float_variable(ds, "sub_satellite_longitude_end", "Longitude of the sub satellite point at image end", "degrees_east")
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

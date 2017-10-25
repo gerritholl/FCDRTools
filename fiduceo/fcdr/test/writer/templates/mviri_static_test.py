@@ -51,5 +51,26 @@ class MVIRI_STATICTest(unittest.TestCase):
         self.assertEqual(0.0054933317, lon_ir_wv.encoding['scale_factor'])
         self.assertEqual(0.0, lon_ir_wv.encoding['add_offset'])
 
+        sat_zenith_angle = ds.variables["satellite_zenith_angle"]
+        self.assertEqual((2, 2, 5000, 5000), sat_zenith_angle.shape)
+        self.assertTrue(np.isnan(sat_zenith_angle.data[1, 0, 7, 7]))
+        self.assertEqual("platform_zenith_angle", sat_zenith_angle.attrs["standard_name"])
+        self.assertEqual("degree", sat_zenith_angle.attrs["units"])
+        self.assertEqual(np.uint16, sat_zenith_angle.encoding['dtype'])
+        self.assertEqual(65535, sat_zenith_angle.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_zenith_angle.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_zenith_angle.encoding['add_offset'])
+
+        sat_azimuth_angle = ds.variables["satellite_azimuth_angle"]
+        self.assertEqual((2, 2, 5000, 5000), sat_azimuth_angle.shape)
+        self.assertTrue(np.isnan(sat_azimuth_angle.data[0, 1, 8, 8]))
+        self.assertEqual("sensor_azimuth_angle", sat_azimuth_angle.attrs["standard_name"])
+        self.assertEqual("sensor_azimuth_angle", sat_azimuth_angle.attrs["long_name"])
+        self.assertEqual("degree", sat_azimuth_angle.attrs["units"])
+        self.assertEqual(np.uint16, sat_azimuth_angle.encoding['dtype'])
+        self.assertEqual(65535, sat_azimuth_angle.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_azimuth_angle.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_azimuth_angle.encoding['add_offset'])
+
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI_STATIC.get_swath_width())

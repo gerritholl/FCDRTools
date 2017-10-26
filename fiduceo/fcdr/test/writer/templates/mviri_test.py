@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
+from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
 
@@ -11,6 +12,8 @@ class MVIRITest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
         MVIRI.add_original_variables(ds, 5)
+
+        Assertions.assert_quality_flags(self, ds, 5000, 5000)
 
         time = ds.variables["time"]
         self.assertEqual((2500, 2500), time.shape)

@@ -14,6 +14,7 @@ class AVHRRTest(unittest.TestCase):
         AVHRR.add_original_variables(ds, 5)
 
         Assertions.assert_geolocation_variables(self, ds, 409, 5)
+        Assertions.assert_quality_flags(self, ds, 409, 5)
 
         time = ds.variables["Time"]
         self.assertEqual((5,), time.shape)

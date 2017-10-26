@@ -22,6 +22,15 @@ class TemplateUtil:
         dataset["longitude"] = variable
 
     @staticmethod
+    def add_quality_flags(dataset, width, height):
+        default_array = DefaultData.create_default_array(width, height, np.uint8, fill_value=0)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["flag_masks"] = "1, 2, 4, 8"
+        variable.attrs["flag_meanings"] = "bad_geolocation timing_err bad_calibration radiometer_err"
+        dataset["quality_pixel_bitmask"] = variable
+
+    @staticmethod
     def create_scalar_float_variable(long_name=None, standard_name=None, units=None, fill_value=np.NaN):
         default_array = fill_value
 

@@ -13,6 +13,7 @@ class AMSUB_MHS:
     @staticmethod
     def add_original_variables(dataset, height):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
 
         # btemps
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,

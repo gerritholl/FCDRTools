@@ -5,6 +5,7 @@ class HIRS4:
     @staticmethod
     def add_original_variables(dataset, height):
         HIRS.add_geolocation_variables(dataset, height)
+        HIRS.add_quality_flags(dataset, height)
 
         HIRS.add_bt_variable(dataset, height)
         HIRS.add_common_angles(dataset, height)

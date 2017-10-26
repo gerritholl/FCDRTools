@@ -16,6 +16,7 @@ class HIRS2Test(unittest.TestCase):
         HIRS2.add_original_variables(ds, 6)
 
         Assertions.assert_geolocation_variables(self, ds, 56, 6)
+        Assertions.assert_quality_flags(self, ds, 56, 6)
 
         ha.assert_bt_variable(ds)
         self._assert_angle_variables(ds)

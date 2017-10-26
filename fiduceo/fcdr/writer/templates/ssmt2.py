@@ -15,6 +15,7 @@ class SSMT2:
     @staticmethod
     def add_original_variables(dataset, height):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
 
         # Temperature_misc_housekeeping
         default_array = DefaultData.create_default_array(height, NUM_THERMISTORS, np.float32,

@@ -23,3 +23,12 @@ class Assertions:
         test_case.assertEqual(-32768, longitude.encoding['_FillValue'])
         test_case.assertEqual(0.0054933317, longitude.encoding['scale_factor'])
         test_case.assertEqual(0.0, longitude.encoding['add_offset'])
+
+    @staticmethod
+    def assert_quality_flags(test_case, dataset, width, height):
+        quality = dataset.variables["quality_pixel_bitmask"]
+        test_case.assertEqual((height, width), quality.shape)
+        test_case.assertEqual(0, quality.data[1, 1])
+        test_case.assertEqual("status_flag", quality.attrs["standard_name"])
+        test_case.assertEqual("1, 2, 4, 8", quality.attrs["flag_masks"])
+        test_case.assertEqual("bad_geolocation timing_err bad_calibration radiometer_err", quality.attrs["flag_meanings"])

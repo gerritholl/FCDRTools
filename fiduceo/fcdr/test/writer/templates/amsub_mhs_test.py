@@ -14,6 +14,7 @@ class AMSUB_MHSTest(unittest.TestCase):
         AMSUB_MHS.add_original_variables(ds, 4)
 
         Assertions.assert_geolocation_variables(self, ds, 90, 4)
+        Assertions.assert_quality_flags(self, ds, 90, 4)
 
         btemps = ds.variables["btemps"]
         self.assertEqual((5, 4, 90), btemps.shape)

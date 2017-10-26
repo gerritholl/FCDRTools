@@ -25,6 +25,9 @@ class MVIRI:
     @staticmethod
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
+
+        tu.add_quality_flags(dataset, FULL_DIMENSION, FULL_DIMENSION)
+
         # time
         default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint32)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)

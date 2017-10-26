@@ -7,7 +7,8 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil
 
 
 class TemplateUtilTest(unittest.TestCase):
-    def test_add_golocation_variables(self):
+
+    def test_add_geolocation_variables(self):
         ds = xr.Dataset()
         TemplateUtil.add_geolocation_variables(ds, 8, 10)
 
@@ -30,3 +31,14 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertEqual(-32768, longitude.encoding['_FillValue'])
         self.assertEqual(0.0054933317, longitude.encoding['scale_factor'])
         self.assertEqual(0.0, longitude.encoding['add_offset'])
+
+    def test_add_quality_flags(self):
+        ds = xr.Dataset()
+        TemplateUtil.add_quality_flags(ds, 9, 11)
+
+        quality = ds.variables["quality_pixel_bitmask"]
+        self.assertEqual((11, 9), quality.shape)
+        self.assertEqual(0, quality.data[5, 5])
+        self.assertEqual("status_flag", quality.attrs["standard_name"])
+        self.assertEqual("1, 2, 4, 8", quality.attrs["flag_masks"])
+        self.assertEqual("bad_geolocation timing_err bad_calibration radiometer_err", quality.attrs["flag_meanings"])

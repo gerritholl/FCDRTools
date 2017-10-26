@@ -26,6 +26,10 @@ class HIRS:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
 
     @staticmethod
+    def add_quality_flags(dataset, height):
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
+
+    @staticmethod
     def add_extended_flag_variables(dataset, height):
         # linqualflags
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)

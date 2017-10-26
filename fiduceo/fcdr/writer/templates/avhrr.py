@@ -17,6 +17,7 @@ class AVHRR:
     @staticmethod
     def add_original_variables(dataset, height):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
 
         # Time
         default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)

@@ -13,6 +13,7 @@ class SSMT2Test(unittest.TestCase):
         SSMT2.add_original_variables(ds, 4)
 
         Assertions.assert_geolocation_variables(self, ds, 28, 4)
+        Assertions.assert_quality_flags(self, ds, 28, 4)
 
         temp_misc_hk = ds.variables["Temperature_misc_housekeeping"]
         self.assertEqual((18, 4), temp_misc_hk.shape)

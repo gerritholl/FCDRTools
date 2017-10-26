@@ -11,10 +11,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(22, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self._verify_amsub_specific_variables(ds)
@@ -29,10 +30,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(29, len(ds.variables))
+        self.assertEqual(30, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self._verify_amsub_specific_variables(ds)
@@ -55,10 +57,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(20, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.verify_SSMT2_specific_variables(ds)
@@ -73,10 +76,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(26, len(ds.variables))
+        self.assertEqual(27, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.verify_SSMT2_specific_variables(ds)
@@ -97,10 +101,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(29, len(ds.variables))
+        self.assertEqual(30, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self._verify_avhrr_specific_variables(ds)
@@ -125,10 +130,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(68, len(ds.variables))
+        self.assertEqual(69, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self._verify_avhrr_specific_variables(ds)
@@ -206,10 +212,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(16, len(ds.variables))
+        self.assertEqual(17, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.assertIsNotNone(ds.variables["bt"])
@@ -232,10 +239,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(137, len(ds.variables))
+        self.assertEqual(138, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
@@ -302,10 +310,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(22, len(ds.variables))
+        self.assertEqual(23, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.assertIsNotNone(ds.variables["bt"])
@@ -332,10 +341,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(143, len(ds.variables))
+        self.assertEqual(144, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
@@ -400,10 +410,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(22, len(ds.variables))
+        self.assertEqual(23, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.assertIsNotNone(ds.variables["bt"])
@@ -430,10 +441,11 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(143, len(ds.variables))
+        self.assertEqual(144, len(ds.variables))
 
-        # geolocation
+        # geolocation + flags
         self._verify_geolocation_variables(ds)
+        self._verify_quality_flags(ds)
 
         # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
         self.assertIsNotNone(ds.variables["bt"])
@@ -498,7 +510,9 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(44, len(ds.variables))
+        self._verify_quality_flags(ds)
+
+        self.assertEqual(45, len(ds.variables))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -548,7 +562,9 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(54, len(ds.variables))
+        self.assertEqual(55, len(ds.variables))
+
+        self._verify_quality_flags(ds)
 
         # sensor specific
         self.assertIsNotNone(ds.variables["count_vis"])
@@ -606,6 +622,8 @@ class FCDRWriterTest(unittest.TestCase):
         ds = FCDRWriter.createTemplateEasy('MVIRI_STATIC', 5000)
         self.assertIsNotNone(ds.variables["latitude_vis"])
         self.assertIsNotNone(ds.variables["longitude_vis"])
+        self.assertIsNotNone(ds.variables["latitude_ir_wv"])
+        self.assertIsNotNone(ds.variables["longitude_ir_wv"])
 
     def test_create_file_name_FCDR_easy(self):
         start = datetime.datetime(2015, 8, 23, 14, 24, 52)
@@ -644,6 +662,9 @@ class FCDRWriterTest(unittest.TestCase):
     def _verify_geolocation_variables(self, ds):
         self.assertIsNotNone(ds.variables["latitude"])
         self.assertIsNotNone(ds.variables["longitude"])
+
+    def _verify_quality_flags(self, ds):
+        self.assertIsNotNone(ds.variables["quality_pixel_bitmask"])
 
     def _verify_geometry_variables(self, ds):
         self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])

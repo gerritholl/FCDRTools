@@ -314,12 +314,12 @@ class AVHRR:
 
         if systematic:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
-            variable.attrs["valid_min"] = 3
             variable.attrs["valid_max"] = 5
+            variable.attrs["valid_min"] = 3
         else:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001)
-            variable.attrs["valid_min"] = 10
             variable.attrs["valid_max"] = 1000
+            variable.attrs["valid_min"] = 10
         return variable
 
     @staticmethod
@@ -330,8 +330,8 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         tu.add_units(variable, "K")
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001)
-        variable.attrs["valid_max"] = 1
-        variable.attrs["valid_min"] = 15000
+        variable.attrs["valid_max"] = 15000
+        variable.attrs["valid_min"] = 1
         return variable
 
     @staticmethod
@@ -348,8 +348,8 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+        tu.add_units(variable, "1")
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.0001)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
         return variable
@@ -365,3 +365,4 @@ class AVHRR:
         variable.attrs["valid_min"] = -20000
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, 273.15)
         return variable
+

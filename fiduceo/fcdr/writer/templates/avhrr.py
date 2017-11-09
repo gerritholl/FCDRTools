@@ -96,7 +96,7 @@ class AVHRR:
         # u_structured_Ch1-3a
         long_names = ["structured uncertainty per pixel for channel 1", "structured uncertainty per pixel for channel 2", "structured uncertainty per pixel for channel 3a"]
         names = ["u_structured_Ch1", "u_structured_Ch2", "u_structured_Ch3a"]
-        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, systematic=True)
+        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, structured=True)
 
         # u_independent_Ch3b-5
         long_names = ["independent uncertainty per pixel for channel 3b", "independent uncertainty per pixel for channel 4", "independent uncertainty per pixel for channel 5"]
@@ -271,9 +271,9 @@ class AVHRR:
     #         dataset[name] = variable
 
     @staticmethod
-    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, systematic=False):
+    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, structured=False):
         for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i], systematic=systematic)
+            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i], structured=structured)
             dataset[name] = variable
 
     @staticmethod
@@ -304,17 +304,17 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def _create_refl_uncertainty_variable(height, long_name=None, systematic=False):
+    def _create_refl_uncertainty_variable(height, long_name=None, structured=False):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
 
         tu.add_units(variable, "percent")
         variable.attrs["long_name"] = long_name
 
-        if systematic:
+        if structured:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
-            variable.attrs["valid_max"] = 5
             variable.attrs["valid_min"] = 3
+            variable.attrs["valid_max"] = 5
         else:
             tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001)
             variable.attrs["valid_max"] = 1000

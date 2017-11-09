@@ -23,24 +23,29 @@ class HIRSTest(unittest.TestCase):
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 7, 56), l_earth.shape)
         self.assertTrue(np.isnan(l_earth.data[0, 2, 4]))
-        self.assertTrue(np.isnan(l_earth.attrs["_FillValue"]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), l_earth.encoding["_FillValue"])
+        self.assertEqual(0.0001, l_earth.encoding["scale_factor"])
+        self.assertEqual(np.uint32, l_earth.encoding["dtype"])
         self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
         self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
         self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
-        self.assertEqual("radiance", l_earth.attrs["orig_name"])
         self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
 
         u_lat = ds.variables["u_lat"]
         self.assertEqual((7, 56), u_lat.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.data[3, 3])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lat.attrs["_FillValue"])
+        self.assertEqual(65535, u_lat.encoding["_FillValue"])
+        self.assertEqual(0.01, u_lat.encoding["scale_factor"])
+        self.assertEqual(np.int16, u_lat.encoding["dtype"])
         self.assertEqual("uncertainty_latitude", u_lat.attrs["standard_name"])
         self.assertEqual("degree", u_lat.attrs["units"])
 
         u_lon = ds.variables["u_lon"]
         self.assertEqual((7, 56), u_lon.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.data[4, 4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_lon.attrs["_FillValue"])
+        self.assertEqual(65535, u_lon.encoding["_FillValue"])
+        self.assertEqual(0.01, u_lon.encoding["scale_factor"])
+        self.assertEqual(np.int16, u_lon.encoding["dtype"])
         self.assertEqual("uncertainty_longitude", u_lon.attrs["standard_name"])
         self.assertEqual("degree", u_lon.attrs["units"])
 

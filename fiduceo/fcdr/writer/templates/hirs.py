@@ -128,19 +128,19 @@ class HIRS:
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
-        variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "independent uncertainty per pixel"
-        tu.add_units(variable, "K")
-        dataset["u_independent"] = variable
+        dataset["u_independent"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from independent errors")
+        dataset["u_structured"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from structured errors")
 
+    @staticmethod
+    def _create_easy_fcdr_variable(height, long_name):
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "structured uncertainty per pixel"
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001)
+        variable.attrs["long_name"] = long_name
         tu.add_units(variable, "K")
-        dataset["u_structured"] = variable
+        variable.attrs["valid_min"] = 1
+        variable.attrs["valid_max"] = 65534
+        return variable
 
     @staticmethod
     def add_common_full_fcdr_variables(dataset, height):
@@ -161,11 +161,10 @@ class HIRS:
         # L_earth
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_RAD_CHANNELS, np.float32, np.NaN, ["rad_channel", "y", "x"])
         variable = Variable(["rad_channel", "y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
+        tu.add_encoding(variable, np.uint32, DefaultData.get_default_fill_value(np.uint32), 0.0001)
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
         tu.add_units(variable, "W/Hz/m ** 2/sr")
         variable.attrs["long_name"] = "Channel radiance, NOAA/EUMETSAT calibrated"
-        variable.attrs["orig_name"] = "radiance"
         variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
         dataset["L_earth"] = variable
 
@@ -549,6 +548,7 @@ class HIRS:
     def _create_angle_variable(height, standard_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, standard_name)
         tu.add_units(variable, "degree")
+        tu.add_encoding(variable, np.int16, 65535, 0.01)
         return variable
 
     @staticmethod

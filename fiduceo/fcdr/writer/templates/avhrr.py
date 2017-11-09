@@ -309,7 +309,6 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
 
         tu.add_units(variable, "percent")
-        tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = long_name
 
         if systematic:

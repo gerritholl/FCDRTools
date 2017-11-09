@@ -277,7 +277,7 @@ class AVHRRTest(unittest.TestCase):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
-        self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertEqual(-32767, variable.encoding["_FillValue"])
         # @todo 2 tb/tb add checks for encoding, valid min and max 2017-10-19
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
@@ -292,7 +292,8 @@ class AVHRRTest(unittest.TestCase):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
-        # self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
+        self.assertEqual(-32767, variable.encoding["_FillValue"])
+
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 

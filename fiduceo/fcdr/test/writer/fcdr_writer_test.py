@@ -239,7 +239,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(138, len(ds.variables))
+        self.assertEqual(99, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -256,6 +256,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
+        self.assertIsNotNone(ds.variables["u_L_earth_independent"])
 
         self.assertIsNotNone(ds.variables["navigation_status"])
         self.assertIsNotNone(ds.variables["platform_altitude"])
@@ -264,25 +265,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["platform_yaw_angle"])
         self.assertIsNotNone(ds.variables["quality_flags"])
         self.assertIsNotNone(ds.variables["scan_angles"])
-        self.assertIsNotNone(ds.variables["scanline_number"])
+        self.assertIsNotNone(ds.variables["l1b_scanline_number"])
         self.assertIsNotNone(ds.variables["scanline_position"])
-        self.assertIsNotNone(ds.variables["second_original_calibration_coefficients"])
-        self.assertIsNotNone(ds.variables["TK_baseplate"])
-        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
-        self.assertIsNotNone(ds.variables["TK_ch"])
-        self.assertIsNotNone(ds.variables["TK_elec_analog"])
-        self.assertIsNotNone(ds.variables["TK_elec"])
-        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
-        self.assertIsNotNone(ds.variables["TK_fwh"])
-        self.assertIsNotNone(ds.variables["TK_iwct"])
-        self.assertIsNotNone(ds.variables["TK_patch_analog"])
-        self.assertIsNotNone(ds.variables["TK_patch_exp"])
-        self.assertIsNotNone(ds.variables["TK_patch_full"])
-        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
-        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
-        self.assertIsNotNone(ds.variables["TK_scanmotor"])
+        self.assertIsNotNone(ds.variables["l1b_second_original_calibration_coefficients"])
         self.assertIsNotNone(ds.variables["u_c_earth"])
         self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
         self.assertIsNotNone(ds.variables["u_c_space"])
@@ -341,7 +326,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(144, len(ds.variables))
+        self.assertEqual(105, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -356,6 +341,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
+        self.assertIsNotNone(ds.variables["u_L_earth_independent"])
 
         self.assertIsNotNone(ds.variables["navigation_status"])
         self.assertIsNotNone(ds.variables["platform_altitude"])
@@ -364,25 +350,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["platform_yaw_angle"])
         self.assertIsNotNone(ds.variables["quality_flags"])
         self.assertIsNotNone(ds.variables["scan_angles"])
-        self.assertIsNotNone(ds.variables["scanline_number"])
+        self.assertIsNotNone(ds.variables["l1b_scanline_number"])
         self.assertIsNotNone(ds.variables["scanline_position"])
-        self.assertIsNotNone(ds.variables["second_original_calibration_coefficients"])
-        self.assertIsNotNone(ds.variables["TK_baseplate"])
-        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
-        self.assertIsNotNone(ds.variables["TK_ch"])
-        self.assertIsNotNone(ds.variables["TK_elec_analog"])
-        self.assertIsNotNone(ds.variables["TK_elec"])
-        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
-        self.assertIsNotNone(ds.variables["TK_fwh"])
-        self.assertIsNotNone(ds.variables["TK_iwct"])
-        self.assertIsNotNone(ds.variables["TK_patch_analog"])
-        self.assertIsNotNone(ds.variables["TK_patch_exp"])
-        self.assertIsNotNone(ds.variables["TK_patch_full"])
-        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
-        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
-        self.assertIsNotNone(ds.variables["TK_scanmotor"])
+        self.assertIsNotNone(ds.variables["l1b_second_original_calibration_coefficients"])
         self.assertIsNotNone(ds.variables["u_c_earth"])
         self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
         self.assertIsNotNone(ds.variables["u_c_space"])
@@ -441,7 +411,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(144, len(ds.variables))
+        self.assertEqual(105, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -457,6 +427,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
 
+        self.assertIsNotNone(ds.variables["u_L_earth_independent"])
+
         self.assertIsNotNone(ds.variables["navigation_status"])
         self.assertIsNotNone(ds.variables["platform_altitude"])
         self.assertIsNotNone(ds.variables["platform_pitch_angle"])
@@ -464,25 +436,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["platform_yaw_angle"])
         self.assertIsNotNone(ds.variables["quality_flags"])
         self.assertIsNotNone(ds.variables["scan_angles"])
-        self.assertIsNotNone(ds.variables["scanline_number"])
+        self.assertIsNotNone(ds.variables["l1b_scanline_number"])
         self.assertIsNotNone(ds.variables["scanline_position"])
-        self.assertIsNotNone(ds.variables["second_original_calibration_coefficients"])
-        self.assertIsNotNone(ds.variables["TK_baseplate"])
-        self.assertIsNotNone(ds.variables["TK_baseplate_analog"])
-        self.assertIsNotNone(ds.variables["TK_ch"])
-        self.assertIsNotNone(ds.variables["TK_elec_analog"])
-        self.assertIsNotNone(ds.variables["TK_elec"])
-        self.assertIsNotNone(ds.variables["TK_fwm_analog"])
-        self.assertIsNotNone(ds.variables["TK_fwh"])
-        self.assertIsNotNone(ds.variables["TK_iwct"])
-        self.assertIsNotNone(ds.variables["TK_patch_analog"])
-        self.assertIsNotNone(ds.variables["TK_patch_exp"])
-        self.assertIsNotNone(ds.variables["TK_patch_full"])
-        self.assertIsNotNone(ds.variables["TK_radiator_analog"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror"])
-        self.assertIsNotNone(ds.variables["TK_scanmirror_analog"])
-        self.assertIsNotNone(ds.variables["TK_tlscp_sec"])
-        self.assertIsNotNone(ds.variables["TK_scanmotor"])
+        self.assertIsNotNone(ds.variables["l1b_second_original_calibration_coefficients"])
         self.assertIsNotNone(ds.variables["u_c_earth"])
         self.assertIsNotNone(ds.variables["u_c_earth_chan_corr"])
         self.assertIsNotNone(ds.variables["u_c_space"])

@@ -83,7 +83,7 @@ class HIRS:
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
         tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0)
-        variable.attrs["ancilliary_variables"] = "scnlinf scantype quality_scanline_bitmask quality_channel_bitmask mnfrqualflags"
+        variable.attrs["ancilliary_variables"] = "quality_scanline_bitmask quality_channel_bitmask"
         dataset["bt"] = variable
 
     @staticmethod

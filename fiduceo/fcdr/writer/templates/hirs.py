@@ -55,26 +55,6 @@ class HIRS:
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         tu.add_units(variable, "s")
         dataset["time"] = variable
-        # scnlintime
-        variable = HIRS._create_int32_vector(height, standard_name="time", long_name="Scan line time of day", orig_name="hrs_scnlintime")
-        tu.add_units(variable, "ms")
-        dataset["scnlintime"] = variable
-        # scnlinf
-        default_array = DefaultData.create_default_vector(height, np.int16, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "scanline_bitfield"
-        variable.attrs["flag_masks"] = "16384, 32768"
-        variable.attrs["flag_meanings"] = "clock_drift_correction southbound_data"
-        dataset["scnlinf"] = variable
-        # scantype
-        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "scantype_bitfield"
-        variable.attrs["flag_values"] = "0, 1, 2, 3"
-        variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
-        dataset["scantype"] = variable
         # quality_scanline_bitmask
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
         variable = Variable(["y"], default_array)
@@ -398,6 +378,29 @@ class HIRS:
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
         dataset["mnfrqualflags"] = variable
+
+        # scnlintime
+        variable = HIRS._create_int32_vector(height, standard_name="time", long_name="Scan line time of day", orig_name="hrs_scnlintime")
+        tu.add_units(variable, "ms")
+        dataset["scnlintime"] = variable
+
+        # scnlinf
+        default_array = DefaultData.create_default_vector(height, np.int16, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scanline_bitfield"
+        variable.attrs["flag_masks"] = "16384, 32768"
+        variable.attrs["flag_meanings"] = "clock_drift_correction southbound_data"
+        dataset["scnlinf"] = variable
+
+        # scantype
+        default_array = DefaultData.create_default_vector(height, np.int8, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "scantype_bitfield"
+        variable.attrs["flag_values"] = "0, 1, 2, 3"
+        variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
+        dataset["scantype"] = variable
 
     @staticmethod
     def _create_channel_uncertainty_uint16(height, variable):

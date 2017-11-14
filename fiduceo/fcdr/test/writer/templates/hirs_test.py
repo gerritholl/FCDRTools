@@ -402,6 +402,31 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("Offset for effective temperature correction", temp_corr_offset.attrs["long_name"])
         self.assertEqual("1", temp_corr_offset.attrs["units"])
 
+        scnlintime = ds.variables["scnlintime"]
+        self.assertEqual((7,), scnlintime.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.attrs["_FillValue"])
+        self.assertEqual("time", scnlintime.attrs["standard_name"])
+        self.assertEqual("Scan line time of day", scnlintime.attrs["long_name"])
+        self.assertEqual("hrs_scnlintime", scnlintime.attrs["orig_name"])
+        self.assertEqual("ms", scnlintime.attrs["units"])
+
+        scnlinf = ds.variables["scnlinf"]
+        self.assertEqual((7,), scnlinf.shape)
+        self.assertEqual(0, scnlinf.data[4])
+        self.assertEqual("16384, 32768", scnlinf.attrs["flag_masks"])
+        self.assertEqual("clock_drift_correction southbound_data", scnlinf.attrs["flag_meanings"])
+        self.assertEqual("status_flag", scnlinf.attrs["standard_name"])
+        self.assertEqual("scanline_bitfield", scnlinf.attrs["long_name"])
+
+        scantype = ds.variables["scantype"]
+        self.assertEqual((7,), scantype.shape)
+        self.assertEqual(0, scantype.data[5])
+        self.assertEqual("0, 1, 2, 3", scantype.attrs["flag_values"])
+        self.assertEqual("earth_view space_view cold_bb_view main_bb_view", scantype.attrs["flag_meanings"])
+        self.assertEqual("status_flag", scantype.attrs["standard_name"])
+        self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
+
     def test_add_HIRS2_flag_variables(self):
         ds = xr.Dataset()
         HIRS._add_HIRS2_flag_variables(ds, 7)

@@ -212,7 +212,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(17, len(ds.variables))
+        self.assertEqual(14, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -224,9 +224,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scnlinf"])
-        self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
 
         # easy FCDR variables
@@ -292,7 +289,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(20, len(ds.variables))
+        self.assertEqual(17, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -306,9 +303,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scnlinf"])
-        self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
@@ -372,7 +366,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(20, len(ds.variables))
+        self.assertEqual(17, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -386,9 +380,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scnlinf"])
-        self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 

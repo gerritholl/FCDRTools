@@ -80,28 +80,6 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
         self.assertEqual("s", time.attrs["units"])
-        scnlintime = ds.variables["scnlintime"]
-        self.assertEqual((6,), scnlintime.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.int32), scnlintime.attrs["_FillValue"])
-        self.assertEqual("time", scnlintime.attrs["standard_name"])
-        self.assertEqual("Scan line time of day", scnlintime.attrs["long_name"])
-        self.assertEqual("hrs_scnlintime", scnlintime.attrs["orig_name"])
-        self.assertEqual("ms", scnlintime.attrs["units"])
-        scnlinf = ds.variables["scnlinf"]
-        self.assertEqual((6,), scnlinf.shape)
-        self.assertEqual(0, scnlinf.data[4])
-        self.assertEqual("16384, 32768", scnlinf.attrs["flag_masks"])
-        self.assertEqual("clock_drift_correction southbound_data", scnlinf.attrs["flag_meanings"])
-        self.assertEqual("status_flag", scnlinf.attrs["standard_name"])
-        self.assertEqual("scanline_bitfield", scnlinf.attrs["long_name"])
-        scantype = ds.variables["scantype"]
-        self.assertEqual((6,), scantype.shape)
-        self.assertEqual(0, scantype.data[5])
-        self.assertEqual("0, 1, 2, 3", scantype.attrs["flag_values"])
-        self.assertEqual("earth_view space_view cold_bb_view main_bb_view", scantype.attrs["flag_meanings"])
-        self.assertEqual("status_flag", scantype.attrs["standard_name"])
-        self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
         qual_scan_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((6,), qual_scan_bitmask.shape)
         self.assertEqual(0, qual_scan_bitmask.data[5])

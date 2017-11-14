@@ -21,8 +21,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(-999, bt.encoding['_FillValue'])
         self.assertEqual(0.01, bt.encoding['scale_factor'])
         self.assertEqual(150.0, bt.encoding['add_offset'])
-        self.assertEqual("scnlinf scantype qualind linqualflags chqualflags mnfrqualflags",
-                         bt.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf scantype qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
 
     def assert_common_angles(self, ds):
         satellite_zenith_angle = ds.variables["satellite_zenith_angle"]
@@ -107,9 +106,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual((6,), qualind.shape)
         self.assertEqual(0, qualind.data[5])
         self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", qualind.attrs["flag_masks"])
-        self.assertEqual(
-            "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete",
-            qualind.attrs["flag_meanings"])
+        self.assertEqual("do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete", qualind.attrs["flag_meanings"])
         self.assertEqual("status_flag", qualind.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qualind.attrs["long_name"])
 
@@ -117,8 +114,7 @@ class HIRSAssert(unittest.TestCase):
         linqualflags = ds.variables["linqualflags"]
         self.assertEqual((6,), linqualflags.shape)
         self.assertEqual(0, linqualflags.data[0])
-        self.assertEqual(
-            "256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
+        self.assertEqual("256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456",
             linqualflags.attrs["flag_masks"])
         self.assertEqual(
             "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant",
@@ -130,6 +126,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(0, chqualflags.data[1, 2])
         self.assertEqual("status_flag", chqualflags.attrs["standard_name"])
         self.assertEqual("channel_quality_flags_bitfield", chqualflags.attrs["long_name"])
+
+    def assert_minor_frame_flags(self, ds):
         mnfrqualflags = ds.variables["mnfrqualflags"]
         self.assertEqual((6, 64), mnfrqualflags.shape)
         self.assertEqual(0, mnfrqualflags.data[2, 5])

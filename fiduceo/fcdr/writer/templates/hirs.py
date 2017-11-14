@@ -46,12 +46,6 @@ class HIRS:
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "channel_quality_flags_bitfield"
         dataset["chqualflags"] = variable
-        # mnfrqualflags
-        default_array = DefaultData.create_default_array(NUM_MINOR_FRAME, height, np.int32, dims_names=["y", "minor_frame"], fill_value=0)
-        variable = Variable(["y", "minor_frame"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
-        dataset["mnfrqualflags"] = variable
 
     @staticmethod
     def add_common_sensor_variables(dataset, height):
@@ -405,6 +399,13 @@ class HIRS:
         dataset["emissivity"] = tu.create_scalar_float_variable("emissivity", units="1")
         dataset["temp_corr_slope"] = tu.create_scalar_float_variable("Slope for effective temperature correction", units="1")
         dataset["temp_corr_offset"] = tu.create_scalar_float_variable("Offset for effective temperature correction", units="1")
+
+        # mnfrqualflags
+        default_array = DefaultData.create_default_array(NUM_MINOR_FRAME, height, np.int32, dims_names=["y", "minor_frame"], fill_value=0)
+        variable = Variable(["y", "minor_frame"], default_array)
+        variable.attrs["standard_name"] = "status_flag"
+        variable.attrs["long_name"] = "minor_frame_quality_flags_bitfield"
+        dataset["mnfrqualflags"] = variable
 
     @staticmethod
     def _create_channel_uncertainty_uint16(height, variable):

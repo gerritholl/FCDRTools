@@ -239,7 +239,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(99, len(ds.variables))
+        self.assertEqual(101, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -292,7 +292,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(23, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -311,7 +311,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["linqualflags"])
         self.assertIsNotNone(ds.variables["chqualflags"])
-        self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -365,6 +364,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["temp_corr_slope"])
         self.assertIsNotNone(ds.variables["temp_corr_offset"])
         self.assertIsNotNone(ds.variables["emissivity"])
+        self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
     def testCreateTemplateEasy_HIRS4(self):
         ds = FCDRWriter.createTemplateEasy('HIRS4', 211)
@@ -372,7 +372,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(23, len(ds.variables))
+        self.assertEqual(21, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -391,7 +391,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["linqualflags"])
         self.assertIsNotNone(ds.variables["chqualflags"])
-        self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -444,6 +443,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["temp_corr_slope"])
         self.assertIsNotNone(ds.variables["temp_corr_offset"])
         self.assertIsNotNone(ds.variables["emissivity"])
+        self.assertIsNotNone(ds.variables["mnfrqualflags"])
 
     def testCreateTemplateEasy_MVIRI(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI', 5000)

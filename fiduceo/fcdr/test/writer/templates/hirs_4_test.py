@@ -32,4 +32,7 @@ class HIRS4Test(unittest.TestCase):
         ha.assert_easy_fcdr_uncertainties(ds)
 
     def test_add_full_fcdr_variables(self):
-        pass
+        ha = HIRSAssert()
+        ds = xr.Dataset()
+        HIRS4.add_full_fcdr_variables(ds, 6)
+        ha.assert_minor_frame_flags(ds)

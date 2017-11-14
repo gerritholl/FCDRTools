@@ -18,8 +18,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(65535, c_earth.attrs["_FillValue"])
         self.assertEqual("counts_earth", c_earth.attrs["long_name"])
         self.assertEqual("count", c_earth.attrs["units"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags",
-                         c_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
 
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 7, 56), l_earth.shape)
@@ -30,8 +29,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
         self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
         self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags",
-                         l_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
 
         u_lat = ds.variables["u_lat"]
         self.assertEqual((7, 56), u_lat.shape)
@@ -167,8 +165,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(np.int32, l1b_calcof.encoding["dtype"])
         self.assertEqual("calibration_coefficients", l1b_calcof.attrs["standard_name"])
 
-        self._assert_line_int32_variable(ds, "navigation_status", standard_name="status_flag",
-                                         long_name="Navigation status bit field", orig_name="hrs_navstat")
+        self._assert_line_int32_variable(ds, "navigation_status", standard_name="status_flag", long_name="Navigation status bit field", orig_name="hrs_navstat")
 
         variable = self._assert_line_uint16_variable(ds, "platform_altitude", long_name="Platform altitude", orig_name="hrs_scalti")
         self.assertEqual("km", variable.attrs["units"])
@@ -182,8 +179,7 @@ class HIRSTest(unittest.TestCase):
         variable = self._assert_line_scaled_int16_variable(ds, "platform_yaw_angle", long_name="Platform yaw angle", orig_name="hrs_yawang")
         self.assertEqual("degree", variable.attrs["units"])
 
-        self._assert_line_int32_variable(ds, "quality_flags", standard_name="status_flag",
-                                         long_name="Quality indicator bit field", orig_name="hrs_qualind")
+        self._assert_line_int32_variable(ds, "quality_flags", standard_name="status_flag", long_name="Quality indicator bit field", orig_name="hrs_qualind")
 
         scan_angles = ds.variables["scan_angles"]
         self.assertEqual((7, 168), scan_angles.shape)
@@ -223,69 +219,64 @@ class HIRSTest(unittest.TestCase):
         self._assert_line_counts_variable(ds, "Tc_scanmirror", "temperature_scanmirror_counts")
         self._assert_line_counts_variable(ds, "Tc_scanmotor", "temperature_scanmotor_counts")
 
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_baseplate",
-                                                             "uncertainty_temperature_baseplate_counts")
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_ch",
-                                                             "uncertainty_temperature_coolerhousing_counts")
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_elec",
-                                                             "uncertainty_temperature_electronics_counts")
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fsr",
-                                                             "uncertainty_temperature_first_stage_radiator_counts")
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fwh",
-                                                             "uncertainty_temperature_filter_wheel_housing_counts")
-        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fwm",
-                                                             "uncertainty_temperature_filter_wheel_monitor_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_icct",
-                                                             "uncertainty_temperature_internal_cold_calibration_target_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_iwct",
-                                                             "uncertainty_temperature_internal_warm_calibration_target_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_patch_exp",
-                                                             "uncertainty_temperature_patch_expanded_scale_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_patch_full",
-                                                             "uncertainty_temperature_patch_full_range_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_prim",
-                                                             "uncertainty_temperature_telescope_primary_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_sec",
-                                                             "uncertainty_temperature_telescope_secondary_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_tert",
-                                                             "uncertainty_temperature_telescope_tertiary_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_scanmirror",
-                                                             "uncertainty_temperature_scanmirror_counts")
-        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_scanmotor",
-                                                             "uncertainty_temperature_scanmotor_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_baseplate", "uncertainty_temperature_baseplate_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_ch", "uncertainty_temperature_coolerhousing_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_elec", "uncertainty_temperature_electronics_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fsr", "uncertainty_temperature_first_stage_radiator_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fwh", "uncertainty_temperature_filter_wheel_housing_counts")
+        self._assert_line_counts_uncertainty_variable_uint16(ds, "u_Tc_fwm", "uncertainty_temperature_filter_wheel_monitor_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_icct", "uncertainty_temperature_internal_cold_calibration_target_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_iwct", "uncertainty_temperature_internal_warm_calibration_target_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_patch_exp", "uncertainty_temperature_patch_expanded_scale_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_patch_full", "uncertainty_temperature_patch_full_range_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_prim", "uncertainty_temperature_telescope_primary_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_sec", "uncertainty_temperature_telescope_secondary_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_tlscp_tert", "uncertainty_temperature_telescope_tertiary_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_scanmirror", "uncertainty_temperature_scanmirror_counts")
+        self._assert_line_counts_uncertainty_variable_uint32(ds, "u_Tc_scanmotor", "uncertainty_temperature_scanmotor_counts")
 
-        u_solar_zenith_angle = ds.variables["u_solar_zenith_angle"]
-        self.assertEqual((7, 56), u_solar_zenith_angle.shape)
-        self.assertEqual(-999.0, u_solar_zenith_angle.data[4, 4])
-        self.assertEqual(-999.0, u_solar_zenith_angle.attrs["_FillValue"])
-        self.assertEqual("uncertainty_solar_zenith_angle", u_solar_zenith_angle.attrs["standard_name"])
-        self.assertEqual("degree", u_solar_zenith_angle.attrs["units"])
+        u_solar_za = ds.variables["u_sol_za"]
+        self.assertEqual((7, 56), u_solar_za.shape)
+        self.assertEqual(-999.0, u_solar_za.data[4, 4])
+        self.assertEqual(-999.0, u_solar_za.encoding["_FillValue"])
+        self.assertEqual(0.01, u_solar_za.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_solar_za.encoding["dtype"])
+        self.assertEqual("uncertainty_solar_zenith_angle", u_solar_za.attrs["standard_name"])
+        self.assertEqual("degree", u_solar_za.attrs["units"])
 
-        u_solar_azimuth_angle = ds.variables["u_solar_azimuth_angle"]
-        self.assertEqual((7, 56), u_solar_azimuth_angle.shape)
-        self.assertEqual(-999.0, u_solar_azimuth_angle.data[5, 5])
-        self.assertEqual(-999.0, u_solar_azimuth_angle.attrs["_FillValue"])
-        self.assertEqual("uncertainty_solar_azimuth_angle", u_solar_azimuth_angle.attrs["standard_name"])
-        self.assertEqual("degree", u_solar_azimuth_angle.attrs["units"])
+        u_sol_aa = ds.variables["u_sol_aa"]
+        self.assertEqual((7, 56), u_sol_aa.shape)
+        self.assertEqual(-999.0, u_sol_aa.data[5, 5])
+        self.assertEqual(-999.0, u_sol_aa.encoding["_FillValue"])
+        self.assertEqual(0.01, u_sol_aa.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_sol_aa.encoding["dtype"])
+        self.assertEqual("uncertainty_solar_azimuth_angle", u_sol_aa.attrs["standard_name"])
+        self.assertEqual("degree", u_sol_aa.attrs["units"])
 
-        u_satellite_zenith_angle = ds.variables["u_satellite_zenith_angle"]
-        self.assertEqual((7, 56), u_satellite_zenith_angle.shape)
-        self.assertEqual(-999.0, u_satellite_zenith_angle.data[5, 5])
-        self.assertEqual(-999.0, u_satellite_zenith_angle.attrs["_FillValue"])
-        self.assertEqual("uncertainty_satellite_zenith_angle", u_satellite_zenith_angle.attrs["standard_name"])
-        self.assertEqual("degree", u_satellite_zenith_angle.attrs["units"])
+        u_sat_za = ds.variables["u_sat_za"]
+        self.assertEqual((7, 56), u_sat_za.shape)
+        self.assertEqual(-999.0, u_sat_za.data[5, 5])
+        self.assertEqual(-999.0, u_sat_za.encoding["_FillValue"])
+        self.assertEqual(0.01, u_sat_za.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_sat_za.encoding["dtype"])
+        self.assertEqual("uncertainty_satellite_zenith_angle", u_sat_za.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_za.attrs["units"])
 
-        u_satellite_azimuth_angle = ds.variables["u_satellite_azimuth_angle"]
-        self.assertEqual((7, 56), u_satellite_azimuth_angle.shape)
-        self.assertEqual(-999.0, u_satellite_azimuth_angle.data[6, 6])
-        self.assertEqual(-999.0, u_satellite_azimuth_angle.attrs["_FillValue"])
-        self.assertEqual("uncertainty_local_azimuth_angle", u_satellite_azimuth_angle.attrs["standard_name"])
-        self.assertEqual("degree", u_satellite_azimuth_angle.attrs["units"])
+        u_sat_aa = ds.variables["u_sat_aa"]
+        self.assertEqual((7, 56), u_sat_aa.shape)
+        self.assertEqual(-999.0, u_sat_aa.data[6, 6])
+        self.assertEqual(-999.0, u_sat_aa.encoding["_FillValue"])
+        self.assertEqual(0.01, u_sat_aa.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_sat_aa.encoding["dtype"])
+        self.assertEqual("uncertainty_local_azimuth_angle", u_sat_aa.attrs["standard_name"])
+        self.assertEqual("degree", u_sat_aa.attrs["units"])
 
         u_c_earth_chan_corr = ds.variables["u_c_earth_chan_corr"]
         self.assertEqual((19, 19), u_c_earth_chan_corr.shape)
         self.assertTrue(np.isnan(u_c_earth_chan_corr.data[11, 14]))
-        self.assertTrue(np.isnan(u_c_earth_chan_corr.attrs["_FillValue"]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), u_c_earth_chan_corr.encoding["_FillValue"])
+        self.assertEqual(0.01, u_c_earth_chan_corr.encoding["scale_factor"])
+        self.assertEqual(np.int16, u_c_earth_chan_corr.encoding["dtype"])
         self.assertEqual("u_c_earth channel correlations", u_c_earth_chan_corr.attrs["long_name"])
 
         u_c_space = ds.variables["u_c_space"]
@@ -301,27 +292,35 @@ class HIRSTest(unittest.TestCase):
         u_c_space_chan_corr = ds.variables["u_c_space_chan_corr"]
         self.assertEqual((19, 19), u_c_space_chan_corr.shape)
         self.assertTrue(np.isnan(u_c_space_chan_corr.data[11, 14]))
-        self.assertTrue(np.isnan(u_c_space_chan_corr.attrs["_FillValue"]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_c_space_chan_corr.encoding["_FillValue"])
+        self.assertEqual(0.01, u_c_space_chan_corr.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_c_space_chan_corr.encoding["dtype"])
         self.assertEqual("u_c_space channel correlations", u_c_space_chan_corr.attrs["long_name"])
 
         u_earthshine = ds.variables["u_Earthshine"]
-        self.assertEqual((), u_earthshine.shape)
-        self.assertTrue(np.isnan(u_earthshine.data))
-        self.assertTrue(np.isnan(u_earthshine.attrs["_FillValue"]))
+        self.assertEqual((7, 19), u_earthshine.shape)
+        self.assertTrue(np.isnan(u_earthshine.data[3, 5]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_earthshine.encoding["_FillValue"])
+        self.assertEqual(0.01, u_earthshine.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_earthshine.encoding["dtype"])
 
         u_o_Re = ds.variables["u_O_Re"]
-        self.assertEqual((), u_o_Re.shape)
-        self.assertTrue(np.isnan(u_o_Re.data))
-        self.assertTrue(np.isnan(u_o_Re.attrs["_FillValue"]))
+        self.assertEqual((7, 19), u_o_Re.shape)
+        self.assertTrue(np.isnan(u_o_Re.data[4, 6]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_o_Re.encoding["_FillValue"])
+        self.assertEqual(0.01, u_o_Re.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_o_Re.encoding["dtype"])
 
         u_o_TIWCT = ds.variables["u_O_TIWCT"]
-        self.assertEqual((), u_o_TIWCT.shape)
-        self.assertTrue(np.isnan(u_o_TIWCT.data))
-        self.assertTrue(np.isnan(u_o_TIWCT.attrs["_FillValue"]))
+        self.assertEqual((7,), u_o_TIWCT.shape)
+        self.assertTrue(np.isnan(u_o_TIWCT.data[5]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_o_TIWCT.encoding["_FillValue"])
+        self.assertEqual(0.01, u_o_TIWCT.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_o_TIWCT.encoding["dtype"])
 
         u_o_TPRT = ds.variables["u_O_TPRT"]
-        self.assertEqual((), u_o_TPRT.shape)
-        self.assertEqual(65535, u_o_TPRT.data[()])
+        self.assertEqual((7,), u_o_TPRT.shape)
+        self.assertEqual(65535, u_o_TPRT.data[6])
         self.assertEqual(65535, u_o_TPRT.attrs["_FillValue"])
         self.assertEqual("all", u_o_TPRT.attrs["channels_affected"])
         self.assertEqual("rectangle_absolute", u_o_TPRT.attrs["pixel_correlation_form"])
@@ -340,46 +339,47 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("K", u_o_TPRT.attrs["units"])
         self.assertEqual("u_O_TPRT_chan_corr", u_o_TPRT.attrs["ancilliary_variables"])
 
-        u_o_TPRT_chan_corr = ds.variables["u_O_TPRT_chan_corr"]
-        self.assertEqual((19, 19), u_o_TPRT_chan_corr.shape)
-        self.assertTrue(np.isnan(u_o_TPRT_chan_corr.data[11, 14]))
-        self.assertTrue(np.isnan(u_o_TPRT_chan_corr.attrs["_FillValue"]))
-        self.assertEqual("u_O_TPRT channel correlations", u_o_TPRT_chan_corr.attrs["long_name"])
-
         u_Rself = ds.variables["u_Rself"]
-        self.assertEqual((), u_Rself.shape)
-        self.assertTrue(np.isnan(u_Rself.data))
-        self.assertTrue(np.isnan(u_Rself.attrs["_FillValue"]))
-
-        u_Rselfparams = ds.variables["u_Rselfparams"]
-        self.assertEqual((), u_Rselfparams.shape)
-        self.assertTrue(np.isnan(u_Rselfparams.data))
-        self.assertTrue(np.isnan(u_Rselfparams.attrs["_FillValue"]))
+        self.assertEqual((7, 19), u_Rself.shape)
+        self.assertTrue(np.isnan(u_Rself.data[0, 8]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_Rself.encoding["_FillValue"])
+        self.assertEqual(0.01, u_Rself.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_Rself.encoding["dtype"])
 
         u_srf_calib = ds.variables["u_SRF_calib"]
-        self.assertEqual((), u_srf_calib.shape)
-        self.assertTrue(np.isnan(u_srf_calib.data))
-        self.assertTrue(np.isnan(u_srf_calib.attrs["_FillValue"]))
+        self.assertEqual((7, 19), u_srf_calib.shape)
+        self.assertTrue(np.isnan(u_srf_calib.data[1, 9]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_srf_calib.encoding["_FillValue"])
+        self.assertEqual(0.01, u_srf_calib.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_srf_calib.encoding["dtype"])
 
         u_d_prt = ds.variables["u_d_PRT"]
-        self.assertEqual((), u_d_prt.shape)
-        self.assertTrue(np.isnan(u_d_prt.data))
-        self.assertTrue(np.isnan(u_d_prt.attrs["_FillValue"]))
+        self.assertEqual((5, 4), u_d_prt.shape)
+        self.assertTrue(np.isnan(u_d_prt.data[2,0]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_d_prt.encoding["_FillValue"])
+        self.assertEqual(0.01, u_d_prt.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_d_prt.encoding["dtype"])
 
         u_electronics = ds.variables["u_electronics"]
-        self.assertEqual((), u_electronics.shape)
-        self.assertTrue(np.isnan(u_electronics.data))
-        self.assertTrue(np.isnan(u_electronics.attrs["_FillValue"]))
+        self.assertEqual((7, 19), u_electronics.shape)
+        self.assertTrue(np.isnan(u_electronics.data[3,10]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_electronics.encoding["_FillValue"])
+        self.assertEqual(0.01, u_electronics.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_electronics.encoding["dtype"])
 
-        u_exp_periodic = ds.variables["u_extraneous_periodic"]
-        self.assertEqual((), u_exp_periodic.shape)
-        self.assertTrue(np.isnan(u_exp_periodic.data))
-        self.assertTrue(np.isnan(u_exp_periodic.attrs["_FillValue"]))
+        u_nonlinearity = ds.variables["u_nonlinearity"]
+        self.assertEqual((19, ), u_nonlinearity.shape)
+        self.assertEqual(DefaultData.get_default_fill_value(np.float32), u_nonlinearity.data[4])
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_nonlinearity.encoding["_FillValue"])
+        self.assertEqual(0.01, u_nonlinearity.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_nonlinearity.encoding["dtype"])
 
-        u_non_lin = ds.variables["u_nonlinearity"]
-        self.assertEqual((), u_non_lin.shape)
-        self.assertTrue(np.isnan(u_non_lin.data))
-        self.assertTrue(np.isnan(u_non_lin.attrs["_FillValue"]))
+        u_periodic_noise = ds.variables["u_periodic_noise"]
+        self.assertEqual((7, 19), u_periodic_noise.shape)
+        self.assertTrue(np.isnan(u_periodic_noise.data[4,11]))
+        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_periodic_noise.encoding["_FillValue"])
+        self.assertEqual(0.01, u_periodic_noise.encoding["scale_factor"])
+        self.assertEqual(np.uint16, u_periodic_noise.encoding["dtype"])
 
         emissivity = ds.variables["emissivity"]
         self.assertEqual((), emissivity.shape)
@@ -508,8 +508,7 @@ class HIRSTest(unittest.TestCase):
         return variable
 
     def _assert_line_temperature_variable(self, ds, name, long_name, orig_name=None, fill_value=None):
-        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name,
-                                                    fill_value=fill_value)
+        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name, fill_value=fill_value)
         self.assertEqual("K", variable.attrs["units"])
 
     def _assert_line_counts_uncertainty_variable_uint16(self, ds, name, standard_name):
@@ -521,12 +520,10 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("count", variable.attrs["units"])
 
     def _assert_line_angle_variable(self, ds, name, long_name=None, orig_name=None, fill_value=None):
-        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name,
-                                                    fill_value=fill_value)
+        variable = self._assert_line_float_variable(ds, name, long_name=long_name, orig_name=orig_name, fill_value=fill_value)
         self.assertEqual("degree", variable.attrs["units"])
 
-    def _assert_line_float_variable(self, ds, name, standard_name=None, long_name=None, orig_name=None,
-                                    fill_value=None):
+    def _assert_line_float_variable(self, ds, name, standard_name=None, long_name=None, orig_name=None, fill_value=None):
         variable = ds.variables[name]
         self.assertEqual((7,), variable.shape)
         if fill_value is None:

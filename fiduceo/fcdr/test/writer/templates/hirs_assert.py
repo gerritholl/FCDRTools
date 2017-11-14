@@ -21,7 +21,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(-999, bt.encoding['_FillValue'])
         self.assertEqual(0.01, bt.encoding['scale_factor'])
         self.assertEqual(150.0, bt.encoding['add_offset'])
-        self.assertEqual("scnlinf scantype qualind linqualflags chqualflags mnfrqualflags", bt.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf scantype quality_scanline_bitmask quality_channel_bitmask mnfrqualflags", bt.attrs["ancilliary_variables"])
 
     def assert_common_angles(self, ds):
         satellite_zenith_angle = ds.variables["satellite_zenith_angle"]
@@ -114,7 +114,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("quality_indicator_bitfield", qual_scan_bitmask.attrs["long_name"])
 
     def assert_extended_quality_flags(self, ds):
-        chqualflags = ds.variables["chqualflags"]
+        chqualflags = ds.variables["quality_channel_bitmask"]
         self.assertEqual((6, 19), chqualflags.shape)
         self.assertEqual(0, chqualflags.data[1, 2])
         self.assertEqual("status_flag", chqualflags.attrs["standard_name"])

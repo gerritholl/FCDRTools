@@ -31,12 +31,12 @@ class HIRS:
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):
-        # chqualflags
+        # quality_channel_bitmask
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.int32, dims_names=["y", "channel"], fill_value=0)
         variable = Variable(["y", "channel"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "channel_quality_flags_bitfield"
-        dataset["chqualflags"] = variable
+        dataset["quality_channel_bitmask"] = variable
 
     @staticmethod
     def add_common_sensor_variables(dataset, height):
@@ -75,7 +75,7 @@ class HIRS:
         variable.attrs["flag_values"] = "0, 1, 2, 3"
         variable.attrs["flag_meanings"] = "earth_view space_view cold_bb_view main_bb_view"
         dataset["scantype"] = variable
-        # qualind
+        # quality_scanline_bitmask
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
         variable = Variable(["y"], default_array)
         variable.attrs["standard_name"] = "status_flag"
@@ -103,7 +103,7 @@ class HIRS:
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
         tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0)
-        variable.attrs["ancilliary_variables"] = "scnlinf scantype qualind linqualflags chqualflags mnfrqualflags"
+        variable.attrs["ancilliary_variables"] = "scnlinf scantype quality_scanline_bitmask quality_channel_bitmask mnfrqualflags"
         dataset["bt"] = variable
 
     @staticmethod
@@ -139,7 +139,7 @@ class HIRS:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
         variable.attrs["long_name"] = "counts_earth"
         tu.add_units(variable, "count")
-        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
+        variable.attrs["ancilliary_variables"] = "scnlinf quality_scanline_bitmask quality_channel_bitmask mnfrqualflags"
         dataset["c_earth"] = variable
 
         # L_earth
@@ -149,7 +149,7 @@ class HIRS:
         variable.attrs["standard_name"] = "toa_outgoing_inband_radiance"
         tu.add_units(variable, "W/Hz/m ** 2/sr")
         variable.attrs["long_name"] = "Channel radiance, NOAA/EUMETSAT calibrated"
-        variable.attrs["ancilliary_variables"] = "scnlinf qualind linqualflags chqualflags mnfrqualflags"
+        variable.attrs["ancilliary_variables"] = "scnlinf quality_scanline_bitmask quality_channel_bitmask mnfrqualflags"
         dataset["L_earth"] = variable
 
         # u_lat

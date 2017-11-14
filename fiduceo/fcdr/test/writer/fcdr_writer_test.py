@@ -310,7 +310,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
-        self.assertIsNotNone(ds.variables["chqualflags"])
+        self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -390,7 +390,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
-        self.assertIsNotNone(ds.variables["chqualflags"])
+        self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])

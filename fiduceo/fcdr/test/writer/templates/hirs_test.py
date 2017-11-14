@@ -18,7 +18,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual(65535, c_earth.attrs["_FillValue"])
         self.assertEqual("counts_earth", c_earth.attrs["long_name"])
         self.assertEqual("count", c_earth.attrs["units"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", c_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf quality_scanline_bitmask quality_channel_bitmask mnfrqualflags", c_earth.attrs["ancilliary_variables"])
 
         l_earth = ds.variables["L_earth"]
         self.assertEqual((20, 7, 56), l_earth.shape)
@@ -29,7 +29,7 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("toa_outgoing_inband_radiance", l_earth.attrs["standard_name"])
         self.assertEqual("W/Hz/m ** 2/sr", l_earth.attrs["units"])
         self.assertEqual("Channel radiance, NOAA/EUMETSAT calibrated", l_earth.attrs["long_name"])
-        self.assertEqual("scnlinf qualind linqualflags chqualflags mnfrqualflags", l_earth.attrs["ancilliary_variables"])
+        self.assertEqual("scnlinf quality_scanline_bitmask quality_channel_bitmask mnfrqualflags", l_earth.attrs["ancilliary_variables"])
 
         u_lat = ds.variables["u_lat"]
         self.assertEqual((7, 56), u_lat.shape)

@@ -31,15 +31,6 @@ class HIRS:
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):
-        # linqualflags
-        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["long_name"] = "scanline_quality_flags_bitfield"
-        variable.attrs["flag_masks"] = "256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456"
-        variable.attrs[
-            "flag_meanings"] = "time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
-        dataset["linqualflags"] = variable
         # chqualflags
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.int32, dims_names=["y", "channel"], fill_value=0)
         variable = Variable(["y", "channel"], default_array)
@@ -89,9 +80,10 @@ class HIRS:
         variable = Variable(["y"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "quality_indicator_bitfield"
-        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128"
-        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete"
-        dataset["qualind"] = variable
+        variable.attrs[
+            "flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456"
+        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
+        dataset["quality_scanline_bitmask"] = variable
 
     @staticmethod
     def add_common_angles(dataset, height):

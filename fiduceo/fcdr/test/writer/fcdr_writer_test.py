@@ -227,7 +227,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["qualind"])
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -252,7 +252,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["qualind"])
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -292,7 +292,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(20, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -309,7 +309,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["linqualflags"])
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["chqualflags"])
 
         # easy FCDR variables
@@ -322,7 +322,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(105, len(ds.variables))
+        self.assertEqual(104, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -372,7 +372,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(21, len(ds.variables))
+        self.assertEqual(20, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -389,7 +389,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scnlinf"])
         self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["linqualflags"])
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["chqualflags"])
 
         # easy FCDR variables
@@ -402,7 +402,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(105, len(ds.variables))
+        self.assertEqual(104, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)

@@ -8,6 +8,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 N_CHANS = 6
+CHUNKS_2D = (1024, 409)
 
 COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL, corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
                                 corr.SCAN_CORR_UNIT: corr.LINE, corr.SCAN_CORR_SCALE: [-25, 25], "pdf_shape": "digitised_gaussian"}
@@ -16,8 +17,8 @@ COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR
 class AVHRR:
     @staticmethod
     def add_original_variables(dataset, height):
-        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
-        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
+        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
 
         # Time
         default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)
@@ -33,7 +34,7 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "relative_azimuth_angle"
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = -18000
         dataset["relative_azimuth_angle"] = variable
@@ -43,7 +44,7 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "sensor_zenith_angle"
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
         dataset["satellite_zenith_angle"] = variable
@@ -53,7 +54,7 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "solar_zenith_angle"
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = 0
         dataset["solar_zenith_angle"] = variable
@@ -91,12 +92,12 @@ class AVHRR:
         # u_independent_Ch1-3a
         long_names = ["independent uncertainty per pixel for channel 1", "independent uncertainty per pixel for channel 2", "independent uncertainty per pixel for channel 3a"]
         names = ["u_independent_Ch1", "u_independent_Ch2", "u_independent_Ch3a"]
-        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names)
 
         # u_structured_Ch1-3a
         long_names = ["structured uncertainty per pixel for channel 1", "structured uncertainty per pixel for channel 2", "structured uncertainty per pixel for channel 3a"]
         names = ["u_structured_Ch1", "u_structured_Ch2", "u_structured_Ch3a"]
-        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, structured=True)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, structured=True)
 
         # u_independent_Ch3b-5
         long_names = ["independent uncertainty per pixel for channel 3b", "independent uncertainty per pixel for channel 4", "independent uncertainty per pixel for channel 5"]
@@ -232,7 +233,7 @@ class AVHRR:
         # Chx_u_Refl
         long_names = ["Ch1 Total uncertainty on toa reflectance", "Ch2 Total uncertainty on toa reflectance", "Ch3a Total uncertainty on toa reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
-        AVHRR._add_refl_uncertainties_variables_long_name(dataset, height, names, long_names)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names)
 
         # Chx_u_Bt
         standard_names = ["Ch3b Total uncertainty on brightness temperature", "Ch4 Total uncertainty on brightness temperature", "Ch5 Total uncertainty on brightness temperature"]
@@ -271,7 +272,7 @@ class AVHRR:
     #         dataset[name] = variable
 
     @staticmethod
-    def _add_refl_uncertainties_variables_long_name(dataset, height, names, long_names, structured=False):
+    def _add_refl_uncertainties_variables(dataset, height, names, long_names, structured=False):
         for i, name in enumerate(names):
             variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i], structured=structured)
             dataset[name] = variable
@@ -312,23 +313,21 @@ class AVHRR:
         variable.attrs["long_name"] = long_name
 
         if structured:
-            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01)
+            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
             variable.attrs["valid_min"] = 3
             variable.attrs["valid_max"] = 5
         else:
-            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001)
+            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001, chunksizes=CHUNKS_2D)
             variable.attrs["valid_max"] = 1000
             variable.attrs["valid_min"] = 10
         return variable
 
     @staticmethod
     def _create_bt_uncertainty_variable(height, long_name):
-        #        variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
-        #        tu.add_units(variable, "K")
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         tu.add_units(variable, "K")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 1
         return variable
@@ -348,7 +347,7 @@ class AVHRR:
         variable.attrs["standard_name"] = "toa_reflectance"
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "1")
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.0001)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.0001, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
         return variable
@@ -362,6 +361,5 @@ class AVHRR:
         tu.add_units(variable, "K")
         variable.attrs["valid_max"] = 10000
         variable.attrs["valid_min"] = -20000
-        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, 273.15)
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, 273.15, chunksizes=CHUNKS_2D)
         return variable
-

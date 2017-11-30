@@ -6,28 +6,30 @@ from fiduceo.fcdr.writer.default_data import DefaultData
 
 class TemplateUtil:
     @staticmethod
-    def add_geolocation_variables(dataset, width, height):
+    def add_geolocation_variables(dataset, width, height, chunksizes=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
 
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "latitude"
         TemplateUtil.add_units(variable, "degrees_north")
-        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0027466658)
+        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0027466658, chunksizes=chunksizes)
         dataset["latitude"] = variable
 
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "longitude"
         TemplateUtil.add_units(variable, "degrees_east")
-        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0054933317)
+        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0054933317, chunksizes=chunksizes)
         dataset["longitude"] = variable
 
     @staticmethod
-    def add_quality_flags(dataset, width, height):
+    def add_quality_flags(dataset, width, height, chunksizes=None):
         default_array = DefaultData.create_default_array(width, height, np.uint8, fill_value=0)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["flag_masks"] = "1, 2, 4, 8"
         variable.attrs["flag_meanings"] = "bad_geolocation timing_err bad_calibration radiometer_err"
+        if chunksizes is not None:
+            TemplateUtil.add_chunking(variable, chunksizes)
         dataset["quality_pixel_bitmask"] = variable
 
     @staticmethod
@@ -93,5 +95,12 @@ class TemplateUtil:
         variable.attrs["add_offset"] = offset
 
     @staticmethod
-    def add_encoding(variable, data_type, fill_value, scale_factor=1.0, offset=0.0):
-        variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset)])
+    def add_encoding(variable, data_type, fill_value, scale_factor=1.0, offset=0.0, chunksizes=None):
+        if chunksizes is None:
+            variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset)])
+        else:
+            variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset), ('chunksizes', chunksizes)])
+
+    @staticmethod
+    def add_chunking(variable, chunksizes):
+        variable.encoding = dict([('chunksizes', chunksizes)])

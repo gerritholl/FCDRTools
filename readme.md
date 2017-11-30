@@ -18,3 +18,15 @@ The FCDR Tools depend on a number of modules, namely:
 * `netcdf4`
 * `numpy`
 * `numexpr`
+* `dask`
+
+## Testing
+The FCDR tools are developed using a large set of unit-level and integration tests. To 
+check correct functionality please execute in the module root directory:
+
+'python -m unittest discover  -p "*_test.py"'
+
+To execute I/O based (slow) tests, please execute
+
+'python -m unittest discover  -p "*_iotest.py"'
+ 

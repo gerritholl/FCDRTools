@@ -10,7 +10,7 @@ class HIRSAssert(unittest.TestCase):
     def runTest(self):
         pass
 
-    def assert_bt_variable(self, ds):
+    def assert_bt_variable(self, ds, chunking=None):
         bt = ds.variables["bt"]
         self.assertEqual((19, 6, 56), bt.shape)
         self.assertTrue(np.isnan(bt.data[0, 2, 1]))
@@ -21,9 +21,12 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(-999, bt.encoding['_FillValue'])
         self.assertEqual(0.01, bt.encoding['scale_factor'])
         self.assertEqual(150.0, bt.encoding['add_offset'])
+        if chunking is not None:
+            self.assertEqual(chunking, bt.encoding['chunksizes'])
+
         self.assertEqual("quality_scanline_bitmask quality_channel_bitmask", bt.attrs["ancilliary_variables"])
 
-    def assert_common_angles(self, ds):
+    def assert_common_angles(self, ds, chunking=None):
         satellite_zenith_angle = ds.variables["satellite_zenith_angle"]
         self.assertEqual((6, 56), satellite_zenith_angle.shape)
         self.assertTrue(np.isnan(satellite_zenith_angle.data[2, 2]))
@@ -31,6 +34,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.encoding['_FillValue'])
         self.assertEqual(0.01, satellite_zenith_angle.encoding['scale_factor'])
         self.assertEqual(-180.0, satellite_zenith_angle.encoding['add_offset'])
+        if chunking is not None:
+            self.assertEqual(chunking, satellite_zenith_angle.encoding['chunksizes'])
         self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
         self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
 
@@ -41,6 +46,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_zenith_angle.encoding['_FillValue'])
         self.assertEqual(0.01, solar_zenith_angle.encoding['scale_factor'])
         self.assertEqual(-180.0, solar_zenith_angle.encoding['add_offset'])
+        if chunking is not None:
+            self.assertEqual(chunking, solar_zenith_angle.encoding['chunksizes'])
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["standard_name"])
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["orig_name"])
         self.assertEqual("degree", solar_zenith_angle.attrs["units"])
@@ -52,6 +59,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_azimuth_angle.encoding['_FillValue'])
         self.assertEqual(0.01, satellite_azimuth_angle.encoding['scale_factor'])
         self.assertEqual(-180.0, satellite_azimuth_angle.encoding['add_offset'])
+        if chunking is not None:
+            self.assertEqual(chunking, satellite_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("sensor_azimuth_angle", satellite_azimuth_angle.attrs["standard_name"])
         self.assertEqual("local_azimuth_angle", satellite_azimuth_angle.attrs["long_name"])
         self.assertEqual("degree", satellite_azimuth_angle.attrs["units"])
@@ -63,6 +72,8 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.encoding['_FillValue'])
         self.assertEqual(0.01, solar_azimuth_angle.encoding['scale_factor'])
         self.assertEqual(-180.0, solar_azimuth_angle.encoding['add_offset'])
+        if chunking is not None:
+            self.assertEqual(chunking, solar_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
 
@@ -105,17 +116,20 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("status_flag", mnfrqualflags.attrs["standard_name"])
         self.assertEqual("minor_frame_quality_flags_bitfield", mnfrqualflags.attrs["long_name"])
 
-    def assert_easy_fcdr_uncertainties(self, ds):
-        self._assert_3d_channel_variable(ds, "u_independent", "uncertainty from independent errors")
-        self._assert_3d_channel_variable(ds, "u_structured", "uncertainty from structured errors")
+    def assert_easy_fcdr_uncertainties(self, ds, chunking=None):
+        self._assert_3d_channel_variable(ds, "u_independent", "uncertainty from independent errors", chunking=chunking)
+        self._assert_3d_channel_variable(ds, "u_structured", "uncertainty from structured errors", chunking=chunking)
 
-    def _assert_3d_channel_variable(self, ds, name, long_name):
+    def _assert_3d_channel_variable(self, ds, name, long_name, chunking=None):
         variable = ds.variables[name]
         self.assertEqual((19, 7, 56), variable.shape)
         self.assertTrue(np.isnan(variable.data[2, 5, 3]))
         self.assertEqual(65535, variable.encoding["_FillValue"])
         self.assertEqual(0.001, variable.encoding["scale_factor"])
         self.assertEqual(np.uint16, variable.encoding['dtype'])
+        if chunking is not None:
+            self.assertEqual(chunking, variable.encoding['chunksizes'])
+            
         self.assertEqual(long_name, variable.attrs["long_name"])
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(1, variable.attrs["valid_min"])

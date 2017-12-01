@@ -8,6 +8,8 @@ from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
 
+CHUNKING_3D = (10, 512, 56)
+CHUNKING_2D = (512, 56)
 
 class HIRS2Test(unittest.TestCase):
     def test_add_original_variables(self):
@@ -15,10 +17,10 @@ class HIRS2Test(unittest.TestCase):
         ds = xr.Dataset()
         HIRS2.add_original_variables(ds, 6)
 
-        Assertions.assert_geolocation_variables(self, ds, 56, 6)
-        Assertions.assert_quality_flags(self, ds, 56, 6)
+        Assertions.assert_geolocation_variables(self, ds, 56, 6, chunking=CHUNKING_2D)
+        Assertions.assert_quality_flags(self, ds, 56, 6, chunking=CHUNKING_2D)
 
-        ha.assert_bt_variable(ds)
+        ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
         self._assert_angle_variables(ds)
         ha.assert_common_sensor_variables(ds)
 
@@ -30,7 +32,7 @@ class HIRS2Test(unittest.TestCase):
         ds = xr.Dataset()
         HIRS2.add_easy_fcdr_variables(ds, 7)
 
-        ha.assert_easy_fcdr_uncertainties(ds)
+        ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
 
     def test_add_full_fcdr_variables(self):
         pass
@@ -53,5 +55,6 @@ class HIRS2Test(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.encoding['_FillValue'])
         self.assertEqual(0.01, solar_azimuth_angle.encoding['scale_factor'])
         self.assertEqual(-180.0, solar_azimuth_angle.encoding['add_offset'])
+        self.assertEqual(CHUNKING_2D, solar_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])

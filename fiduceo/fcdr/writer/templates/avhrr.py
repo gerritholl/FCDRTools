@@ -8,7 +8,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 N_CHANS = 6
-CHUNKS_2D = (1024, 409)
+CHUNKS_2D = (1280, 409)
 
 COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL, corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
                                 corr.SCAN_CORR_UNIT: corr.LINE, corr.SCAN_CORR_SCALE: [-25, 25], "pdf_shape": "digitised_gaussian"}
@@ -265,12 +265,6 @@ class AVHRR:
             variable = AVHRR._create_bt_uncertainty_variable(height, long_name=long_names[i])
             dataset[name] = variable
 
-    # @staticmethod
-    # def _add_refl_uncertainties_variables(dataset, height, names, standard_names,systematic=False):
-    #     for i, name in enumerate(names):
-    #         variable = AVHRR._create_refl_uncertainty_variable(height, standard_name=standard_names[i],systematic=systematic)
-    #         dataset[name] = variable
-
     @staticmethod
     def _add_refl_uncertainties_variables(dataset, height, names, long_names, structured=False):
         for i, name in enumerate(names):
@@ -330,6 +324,7 @@ class AVHRR:
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 1
+        variable.attrs["long_name"] = long_name
         return variable
 
     @staticmethod

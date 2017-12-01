@@ -35,6 +35,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
+        self.assertEqual((1280, 409), sat_zenith.encoding["chunksizes"])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertEqual((5, 409), sol_zenith.shape)
@@ -47,6 +48,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sol_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
+        self.assertEqual((1280, 409), sol_zenith.encoding["chunksizes"])
 
         ch1_ref = ds.variables["Ch1_Ref"]
         self._assert_correct_refl_variable(ch1_ref, "Channel 1 Reflectance")
@@ -278,6 +280,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual(-32767, variable.encoding["_FillValue"])
+        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
         # @todo 2 tb/tb add checks for encoding, valid min and max 2017-10-19
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
@@ -293,12 +296,13 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual(-32767, variable.encoding["_FillValue"])
+        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
 
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 
-        # if long_name is not None:
-        #   self.assertEqual(long_name, variable.attrs["long_name"])
+        if long_name is not None:
+          self.assertEqual(long_name, variable.attrs["long_name"])
 
         self.assertEqual("K", variable.attrs["units"])
 
@@ -312,6 +316,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
         self.assertEqual(0.0001, variable.encoding['scale_factor'])
         self.assertEqual(0.0, variable.encoding['add_offset'])
+        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
         self.assertEqual(15000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
 
@@ -324,6 +329,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
         self.assertEqual(0.01, variable.encoding['scale_factor'])
         self.assertEqual(273.15, variable.encoding['add_offset'])
+        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(-20000, variable.attrs["valid_min"])

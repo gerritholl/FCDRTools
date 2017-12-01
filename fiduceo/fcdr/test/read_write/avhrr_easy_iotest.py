@@ -8,6 +8,8 @@ import xarray as xr
 
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
+EXPECTED_CHUNKING = (1280, 409)
+
 
 class AvhrrEASYIoTest(unittest.TestCase):
     temp_dir = None
@@ -44,35 +46,41 @@ class AvhrrEASYIoTest(unittest.TestCase):
         try:
             variable = target_data["Ch1_Ref"]
             self.assertAlmostEqual(0.0, variable.data[0, 0], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch2_Ref"]
             self.assertAlmostEqual(0.002, variable.data[1, 1], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch3a_Ref"]
             self.assertAlmostEqual(0.006, variable.data[2, 2], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch4_Bt"]
             self.assertAlmostEqual(0.01, variable.data[3, 3], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("toa_brightness_temperature", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch5_Bt"]
             self.assertAlmostEqual(0.02, variable.data[4, 4], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("toa_brightness_temperature", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Time"]
             self.assertAlmostEqual(1.0, variable.data[5], 8)
+            self.assertEqual("time", variable.attrs["standard_name"])
             self.assertEqual((13198,), variable.encoding["chunksizes"])
 
             variable = target_data["latitude"]
             self.assertAlmostEqual(0.041199987, variable.data[6, 6], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["longitude"]
             self.assertAlmostEqual(0.0494399853, variable.data[7, 7], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["quality_channel_bitmask"]
             self.assertEqual(1, variable.data[8, 1])
@@ -80,7 +88,7 @@ class AvhrrEASYIoTest(unittest.TestCase):
 
             variable = target_data["quality_pixel_bitmask"]
             self.assertEqual(9, variable.data[9, 9])
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["quality_scanline_bitmask"]
             self.assertEqual(1, variable.data[10])
@@ -88,55 +96,57 @@ class AvhrrEASYIoTest(unittest.TestCase):
 
             variable = target_data["relative_azimuth_angle"]
             self.assertAlmostEqual(0.11, variable.data[11, 11], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["satellite_zenith_angle"]
             self.assertAlmostEqual(0.13, variable.data[12, 12], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("sensor_zenith_angle", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["solar_zenith_angle"]
             self.assertAlmostEqual(0.16, variable.data[13, 13], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual("solar_zenith_angle", variable.attrs["standard_name"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_Ch1"]
             self.assertAlmostEqual(0.182, variable.data[14, 14], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_Ch2"]
             self.assertAlmostEqual(0.21, variable.data[15, 15], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_Ch3a"]
             self.assertAlmostEqual(0.24, variable.data[16, 16], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_Ch4"]
             self.assertAlmostEqual(0.272, variable.data[17, 17], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_Ch5"]
             self.assertAlmostEqual(0.306, variable.data[18, 18], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch1"]
             self.assertAlmostEqual(0.34, variable.data[19, 19], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch2"]
             self.assertAlmostEqual(0.38, variable.data[20, 20], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch3a"]
             self.assertAlmostEqual(0.42, variable.data[21, 21], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch4"]
             self.assertAlmostEqual(0.462, variable.data[22, 22], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch5"]
             self.assertAlmostEqual(0.506, variable.data[23, 23], 8)
-            self.assertEqual((1024, 409), variable.encoding["chunksizes"])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
         finally:
             target_data.close()
 

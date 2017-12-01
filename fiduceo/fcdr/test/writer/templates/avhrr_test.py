@@ -7,14 +7,16 @@ from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
+CHUNKING = (1280, 409)
+
 
 class AVHRRTest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
         AVHRR.add_original_variables(ds, 5)
 
-        Assertions.assert_geolocation_variables(self, ds, 409, 5)
-        Assertions.assert_quality_flags(self, ds, 409, 5)
+        Assertions.assert_geolocation_variables(self, ds, 409, 5, chunking=CHUNKING)
+        Assertions.assert_quality_flags(self, ds, 409, 5, chunking=CHUNKING)
 
         time = ds.variables["Time"]
         self.assertEqual((5,), time.shape)
@@ -35,7 +37,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
-        self.assertEqual((1280, 409), sat_zenith.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, sat_zenith.encoding["chunksizes"])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertEqual((5, 409), sol_zenith.shape)
@@ -48,7 +50,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sol_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
-        self.assertEqual((1280, 409), sol_zenith.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, sol_zenith.encoding["chunksizes"])
 
         ch1_ref = ds.variables["Ch1_Ref"]
         self._assert_correct_refl_variable(ch1_ref, "Channel 1 Reflectance")
@@ -316,7 +318,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
         self.assertEqual(0.0001, variable.encoding['scale_factor'])
         self.assertEqual(0.0, variable.encoding['add_offset'])
-        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         self.assertEqual(15000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
 
@@ -329,7 +331,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), variable.encoding['_FillValue'])
         self.assertEqual(0.01, variable.encoding['scale_factor'])
         self.assertEqual(273.15, variable.encoding['add_offset'])
-        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(-20000, variable.attrs["valid_min"])

@@ -75,7 +75,7 @@ class AvhrrEASYIoTest(unittest.TestCase):
             self.assertEqual((13198,), variable.encoding["chunksizes"])
 
             variable = target_data["latitude"]
-            self.assertAlmostEqual(0.041199987, variable.data[6, 6], 8)
+            self.assertAlmostEqual(0.0357066554, variable.data[6, 6], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["longitude"]

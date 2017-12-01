@@ -15,6 +15,7 @@ class TemplateUtil:
         TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0027466658, chunksizes=chunksizes)
         dataset["latitude"] = variable
 
+        default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "longitude"
         TemplateUtil.add_units(variable, "degrees_east")

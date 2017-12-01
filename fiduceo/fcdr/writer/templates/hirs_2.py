@@ -1,7 +1,7 @@
 import numpy as np
 from xarray import Variable
 
-from fiduceo.fcdr.writer.templates.hirs import HIRS
+from fiduceo.fcdr.writer.templates.hirs import HIRS, CHUNKING_2D
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
@@ -38,6 +38,6 @@ class HIRS2(HIRS):
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
         dataset["satellite_zenith_angle"] = variable
 
-        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
+        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=CHUNKING_2D)
 
 

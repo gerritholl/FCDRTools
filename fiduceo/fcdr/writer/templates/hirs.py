@@ -19,15 +19,18 @@ PRT_READING = 5
 SWATH_WIDTH = 56
 WIDTH_TODO = 60
 
+CHUNKING_BT = (10, 512, 56)
+CHUNKING_2D = (512, 56)
+
 
 class HIRS:
     @staticmethod
     def add_geolocation_variables(dataset, height):
-        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
+        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
 
     @staticmethod
     def add_quality_flags(dataset, height):
-        tu.add_quality_flags(dataset, SWATH_WIDTH, height)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):
@@ -62,17 +65,18 @@ class HIRS:
         variable.attrs["long_name"] = "quality_indicator_bitfield"
         variable.attrs[
             "flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456"
-        variable.attrs["flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
+        variable.attrs[
+            "flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant"
         dataset["quality_scanline_bitmask"] = variable
 
     @staticmethod
     def add_common_angles(dataset, height):
-        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height)
-        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height)
+        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height, chunking=CHUNKING_2D)
+        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height, chunking=CHUNKING_2D)
         dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
 
-        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle")
-        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height)
+        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle", chunking=CHUNKING_2D)
+        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=CHUNKING_2D)
 
     @staticmethod
     def add_bt_variable(dataset, height):
@@ -82,7 +86,7 @@ class HIRS:
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
-        tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0)
+        tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0, chunksizes=CHUNKING_BT)
         variable.attrs["ancilliary_variables"] = "quality_scanline_bitmask quality_channel_bitmask"
         dataset["bt"] = variable
 
@@ -99,7 +103,7 @@ class HIRS:
     def _create_easy_fcdr_variable(height, long_name):
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001, chunksizes=CHUNKING_BT)
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "K")
         variable.attrs["valid_min"] = 1
@@ -567,7 +571,7 @@ class HIRS:
         return variable
 
     @staticmethod
-    def _create_geo_angle_variable(standard_name, height, orig_name=None):
+    def _create_geo_angle_variable(standard_name, height, orig_name=None, chunking=None):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = standard_name
@@ -575,7 +579,7 @@ class HIRS:
             variable.attrs["orig_name"] = orig_name
 
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0, chunking)
         return variable
 
     @staticmethod

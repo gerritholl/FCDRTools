@@ -5,6 +5,8 @@ from fiduceo.fcdr.writer.correlation import Correlation as corr
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
+CHUNKSIZES = (512, 512)
+
 SRF_VIS_DIMENSION = "srf_size_vis"
 SRF_IR_WV_DIMENSION = "srf_size_ir_wv"
 IR_X_DIMENSION = "x_ir_wv"
@@ -36,6 +38,7 @@ class MVIRI:
         variable.attrs["long_name"] = "Acquisition time of pixel"
         tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
         tu.add_offset(variable, TIME_FILL_VALUE)
+        tu.add_chunking(variable, CHUNKSIZES)
         dataset["time"] = variable
 
         dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="solar_azimuth_angle", unsigned=True)
@@ -47,6 +50,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Infrared Image Counts"
         tu.add_units(variable, "count")
+        tu.add_chunking(variable, CHUNKSIZES)
         dataset["count_ir"] = variable
 
         # count_wv
@@ -55,6 +59,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "WV Image Counts"
         tu.add_units(variable, "count")
+        tu.add_chunking(variable, CHUNKSIZES)
         dataset["count_wv"] = variable
 
         # distance_sun_earth
@@ -95,6 +100,7 @@ class MVIRI:
         variable = Variable([SRF_VIS_DIMENSION, SRF_VIS_DIMENSION], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Covariance of the Visible Band Spectral Response Function"
+        tu.add_chunking(variable, CHUNKSIZES)
         dataset["covariance_spectral_response_function_vis"] = variable
 
         # srf_ir
@@ -157,7 +163,7 @@ class MVIRI:
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
         tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_independent
@@ -165,7 +171,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "independent uncertainty per pixel"
         tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
         dataset["u_independent_toa_bidirectional_reflectance"] = variable
 
         # u_structured
@@ -173,7 +179,7 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "structured uncertainty per pixel"
         tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
         dataset["u_structured_toa_bidirectional_reflectance"] = variable
 
         dataset["sub_satellite_latitude_start"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image start", units="degrees_north")
@@ -289,5 +295,5 @@ class MVIRI:
             variable.attrs["long_name"] = long_name
 
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, data_type, fill_value, scale_factor)
+        tu.add_encoding(variable, data_type, fill_value, scale_factor,  chunksizes=CHUNKSIZES)
         return variable

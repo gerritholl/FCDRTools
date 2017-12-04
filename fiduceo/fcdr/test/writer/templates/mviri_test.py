@@ -7,6 +7,8 @@ from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
 
+CHUNKING = (512, 512)
+
 
 class MVIRITest(unittest.TestCase):
     def test_add_original_variables(self):
@@ -22,6 +24,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time of pixel", time.attrs["long_name"])
         self.assertEqual("seconds since 1970-01-01 00:00:00", time.attrs["units"])
+        self.assertEqual(CHUNKING, time.encoding["chunksizes"])
         self.assertEqual(-32768, time.attrs["add_offset"])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
@@ -33,6 +36,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_azimuth.encoding['_FillValue'])
         self.assertEqual(0.005493164, sol_azimuth.encoding['scale_factor'])
         self.assertEqual(0.0, sol_azimuth.encoding['add_offset'])
+        self.assertEqual(CHUNKING, sol_azimuth.encoding["chunksizes"])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
         self.assertEqual((5000, 5000), sol_zenith.shape)
@@ -43,6 +47,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
         self.assertEqual(0.005493248, sol_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
+        self.assertEqual(CHUNKING, sol_zenith.encoding["chunksizes"])
 
         count = ds.variables["count_ir"]
         self.assertEqual((2500, 2500), count.shape)
@@ -50,6 +55,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint8), count.attrs["_FillValue"])
         self.assertEqual("Infrared Image Counts", count.attrs["long_name"])
         self.assertEqual("count", count.attrs["units"])
+        self.assertEqual(CHUNKING, count.encoding["chunksizes"])
 
         count = ds.variables["count_wv"]
         self.assertEqual((2500, 2500), count.shape)
@@ -57,6 +63,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint8), count.attrs["_FillValue"])
         self.assertEqual("WV Image Counts", count.attrs["long_name"])
         self.assertEqual("count", count.attrs["units"])
+        self.assertEqual(CHUNKING, count.encoding["chunksizes"])
 
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
         self._assert_scalar_float_variable(ds, "solar_irradiance_vis", "Solar effective Irradiance", "W*m-2", standard_name="solar_irradiance_vis")
@@ -91,6 +98,7 @@ class MVIRITest(unittest.TestCase):
         self.assertTrue(np.isnan(cov_srf.data[116, 22]))
         self.assertTrue(np.isnan(cov_srf.attrs["_FillValue"]))
         self.assertEqual("Covariance of the Visible Band Spectral Response Function", cov_srf.attrs["long_name"])
+        self.assertEqual(CHUNKING, cov_srf.encoding["chunksizes"])
 
         srf_ir = ds.variables["spectral_response_function_ir"]
         self.assertEqual((1011,), srf_ir.shape)
@@ -151,6 +159,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), reflectance.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, reflectance.encoding['scale_factor'])
         self.assertEqual(0.0, reflectance.encoding['add_offset'])
+        self.assertEqual(CHUNKING, reflectance.encoding["chunksizes"])
 
         u_indep = ds.variables["u_independent_toa_bidirectional_reflectance"]
         self.assertEqual((5000, 5000), u_indep.shape)
@@ -161,6 +170,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_indep.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, u_indep.encoding['scale_factor'])
         self.assertEqual(0.0, u_indep.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_indep.encoding["chunksizes"])
 
         u_struct = ds.variables["u_structured_toa_bidirectional_reflectance"]
         self.assertEqual((5000, 5000), u_struct.shape)
@@ -171,6 +181,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_struct.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, u_struct.encoding['scale_factor'])
         self.assertEqual(0.0, u_struct.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_struct.encoding["chunksizes"])
 
         self._assert_scalar_float_variable(ds, "sub_satellite_latitude_start", "Latitude of the sub satellite point at image start", "degrees_north")
         self._assert_scalar_float_variable(ds, "sub_satellite_longitude_start", "Longitude of the sub satellite point at image start", "degrees_east")
@@ -229,7 +240,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("gaussian", u_lon.attrs["pdf_shape"])
 
         u_time = ds.variables["u_time"]
-        self.assertEqual((2500, ), u_time.shape)
+        self.assertEqual((2500,), u_time.shape)
         self.assertTrue(np.isnan(u_time.data[111]))
         self.assertEqual("Uncertainty in Time", u_time.attrs["standard_name"])
         self.assertEqual("s", u_time.attrs["units"])

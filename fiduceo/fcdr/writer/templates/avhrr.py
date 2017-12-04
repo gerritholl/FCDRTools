@@ -190,8 +190,8 @@ class AVHRR:
         dataset["R_ICT"] = variable
 
         # T_instr
-        default_array = np.NaN
-        variable = Variable([], default_array)
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Instrument temperature"
         tu.add_units(variable, "K")
@@ -290,12 +290,14 @@ class AVHRR:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "count")
+        tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
     @staticmethod
     def _create_angle_uncertainty_variable(angle_name, height):
         variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name, fill_value=np.NaN)
         tu.add_units(variable, "degree")
+        tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
     @staticmethod

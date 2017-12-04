@@ -101,6 +101,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_latitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of latitude", u_latitude.attrs["long_name"])
         self.assertEqual("degree", u_latitude.attrs["units"])
+        self.assertEqual(CHUNKING, u_latitude.encoding["chunksizes"])
 
         u_longitude = ds.variables["u_longitude"]
         self.assertEqual((5, 409), u_longitude.shape)
@@ -108,6 +109,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_longitude.attrs["_FillValue"]))
         self.assertEqual("uncertainty of longitude", u_longitude.attrs["long_name"])
         self.assertEqual("degree", u_longitude.attrs["units"])
+        self.assertEqual(CHUNKING, u_longitude.encoding["chunksizes"])
 
         u_time = ds.variables["u_time"]
         self.assertEqual((5,), u_time.shape)
@@ -122,6 +124,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_sat_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite azimuth angle", u_sat_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sat_azimuth.attrs["units"])
+        self.assertEqual(CHUNKING, u_sat_azimuth.encoding["chunksizes"])
 
         u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
         self.assertEqual((5, 409), u_sat_zenith.shape)
@@ -129,6 +132,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_sat_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of satellite zenith angle", u_sat_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sat_zenith.attrs["units"])
+        self.assertEqual(CHUNKING, u_sat_zenith.encoding["chunksizes"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
         self.assertEqual((5, 409), u_sol_azimuth.shape)
@@ -136,6 +140,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_sol_azimuth.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar azimuth angle", u_sol_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sol_azimuth.attrs["units"])
+        self.assertEqual(CHUNKING, u_sol_azimuth.encoding["chunksizes"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
         self.assertEqual((5, 409), u_sol_zenith.shape)
@@ -143,6 +148,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_sol_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])
+        self.assertEqual(CHUNKING, u_sol_zenith.encoding["chunksizes"])
 
         prt_c = ds.variables["PRT_C"]
         self.assertEqual((5, 3), prt_c.shape)
@@ -174,8 +180,8 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("mW m^-2 sr^-1 cm", r_ict.attrs["units"])
 
         t_instr = ds.variables["T_instr"]
-        self.assertEqual((), t_instr.shape)
-        self.assertTrue(np.isnan(t_instr.data))
+        self.assertEqual((5, ), t_instr.shape)
+        self.assertTrue(np.isnan(t_instr.data[4]))
         self.assertTrue(np.isnan(t_instr.attrs["_FillValue"]))
         self.assertEqual("Instrument temperature", t_instr.attrs["long_name"])
         self.assertEqual("K", t_instr.attrs["units"])
@@ -268,6 +274,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.int32), variable.attrs["_FillValue"])
         self.assertEqual(long_name, variable.attrs["long_name"])
         self.assertEqual("count", variable.attrs["units"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
 
     def _assert_correct_counts_uncertainty_variable(self, ds, name, standard_name):
         variable = ds.variables[name]

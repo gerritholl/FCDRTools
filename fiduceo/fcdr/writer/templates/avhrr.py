@@ -281,6 +281,7 @@ class AVHRR:
     def _create_counts_uncertainty_variable(height, long_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
         tu.add_units(variable, "count")
+        tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
     @staticmethod

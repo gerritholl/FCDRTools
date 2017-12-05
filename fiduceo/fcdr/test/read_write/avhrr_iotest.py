@@ -194,6 +194,150 @@ class AvhrrIoTest(unittest.TestCase):
             variable = target_data["Ch5_Csp"]
             self.assertEqual(273, variable.data[39, 39])
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_Cict"]
+            self.assertEqual(320, variable.data[40, 40])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_Cict"]
+            self.assertEqual(369, variable.data[41, 41])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_Cict"]
+            self.assertEqual(420, variable.data[42, 42])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch1_Ce"]
+            self.assertEqual(473, variable.data[43, 43])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch2_Ce"]
+            self.assertEqual(528, variable.data[44, 44])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3a_Ce"]
+            self.assertEqual(585, variable.data[45, 45])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_Ce"]
+            self.assertEqual(644, variable.data[46, 46])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_Ce"]
+            self.assertEqual(705, variable.data[47, 47])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_Ce"]
+            self.assertEqual(768, variable.data[48, 48])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch1_u_Csp"]
+            self.assertAlmostEqual(8.33, variable.data[49, 49], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch2_u_Csp"]
+            self.assertAlmostEqual(9.0, variable.data[50, 50], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3a_u_Csp"]
+            self.assertAlmostEqual(9.69, variable.data[51, 51], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_u_Csp"]
+            self.assertAlmostEqual(10.4, variable.data[52, 52], 5)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_u_Csp"]
+            self.assertAlmostEqual(11.13, variable.data[53, 53], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_u_Csp"]
+            self.assertAlmostEqual(11.88, variable.data[54, 54], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_u_Cict"]
+            self.assertAlmostEqual(12.65, variable.data[55, 55], 5)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_u_Cict"]
+            self.assertAlmostEqual(13.44, variable.data[56, 56], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_u_Cict"]
+            self.assertAlmostEqual(14.25, variable.data[57, 57], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch1_u_Ce"]
+            self.assertAlmostEqual(15.08, variable.data[58, 58], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch2_u_Ce"]
+            self.assertAlmostEqual(15.93, variable.data[59, 59], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3a_u_Ce"]
+            self.assertAlmostEqual(16.8, variable.data[60, 60], 5)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_u_Ce"]
+            self.assertAlmostEqual(17.69, variable.data[61, 61], 5)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_u_Ce"]
+            self.assertAlmostEqual(18.6, variable.data[62, 62], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_u_Ce"]
+            self.assertAlmostEqual(19.53, variable.data[63, 63], 5)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch1_u_Refl"]
+            self.assertAlmostEqual(0.16384, variable.data[64, 64], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch2_u_Refl"]
+            self.assertAlmostEqual(-0.17688, variable.data[65, 65], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3a_u_Refl"]
+            self.assertAlmostEqual(0.15776, variable.data[66, 66], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_u_Bt"]
+            self.assertAlmostEqual(23.45, variable.data[67, 67], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_u_Bt"]
+            self.assertAlmostEqual(24.48, variable.data[68, 68], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_u_Bt"]
+            self.assertAlmostEqual(25.53, variable.data[69, 69], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_ur_Bt"]
+            self.assertAlmostEqual(26.6, variable.data[70, 70], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_ur_Bt"]
+            self.assertAlmostEqual(27.69, variable.data[71, 71], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_ur_Bt"]
+            self.assertAlmostEqual(28.8, variable.data[72, 72], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch3b_us_Bt"]
+            self.assertAlmostEqual(29.93, variable.data[73, 73], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch4_us_Bt"]
+            self.assertAlmostEqual(31.08, variable.data[74, 74], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["Ch5_us_Bt"]
+            self.assertAlmostEqual(32.25, variable.data[75, 75], 6)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
         finally:
             target_data.close()
 
@@ -243,6 +387,42 @@ class AvhrrIoTest(unittest.TestCase):
             avhrr_full["Ch3b_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 5
             avhrr_full["Ch4_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 6
             avhrr_full["Ch5_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 7
+            avhrr_full["Ch3b_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 8
+            avhrr_full["Ch4_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 9
+            avhrr_full["Ch5_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 10
+            avhrr_full["Ch1_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 11
+            avhrr_full["Ch2_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 12
+            avhrr_full["Ch3a_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 13
+            avhrr_full["Ch3b_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 14
+            avhrr_full["Ch4_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 15
+            avhrr_full["Ch5_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int32) * x * 16
+            avhrr_full["Ch1_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.17
+            avhrr_full["Ch2_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.18
+            avhrr_full["Ch3a_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.19
+            avhrr_full["Ch3b_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.2
+            avhrr_full["Ch4_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.21
+            avhrr_full["Ch5_u_Csp"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.22
+            avhrr_full["Ch3b_u_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.23
+            avhrr_full["Ch4_u_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.24
+            avhrr_full["Ch5_u_Cict"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.25
+            avhrr_full["Ch1_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.26
+            avhrr_full["Ch2_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.27
+            avhrr_full["Ch3a_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.28
+            avhrr_full["Ch3b_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.29
+            avhrr_full["Ch4_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.3
+            avhrr_full["Ch5_u_Ce"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.31
+            avhrr_full["Ch1_u_Refl"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.32
+            avhrr_full["Ch2_u_Refl"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.33
+            avhrr_full["Ch3a_u_Refl"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.34
+            avhrr_full["Ch3b_u_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.35
+            avhrr_full["Ch4_u_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.36
+            avhrr_full["Ch5_u_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.37
+            avhrr_full["Ch3b_ur_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.38
+            avhrr_full["Ch4_ur_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.39
+            avhrr_full["Ch5_ur_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.4
+            avhrr_full["Ch3b_us_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.41
+            avhrr_full["Ch4_us_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.42
+            avhrr_full["Ch5_us_Bt"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.float32) * x * 0.43
 
         for x in range(0, N_PRT):
             avhrr_full["PRT_C"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x

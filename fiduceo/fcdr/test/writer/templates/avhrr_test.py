@@ -283,13 +283,14 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(variable.attrs["_FillValue"]))
         self.assertEqual(standard_name, variable.attrs["long_name"])
         self.assertEqual("count", variable.attrs["units"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
 
     def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, units=None, long_name=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual(-32767, variable.encoding["_FillValue"])
-        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         # @todo 2 tb/tb add checks for encoding, valid min and max 2017-10-19
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
@@ -305,7 +306,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual(-32767, variable.encoding["_FillValue"])
-        self.assertEqual((1280, 409), variable.encoding["chunksizes"])
+        self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
 
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])

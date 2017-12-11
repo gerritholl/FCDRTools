@@ -51,14 +51,6 @@ class AvhrrIoTest(unittest.TestCase):
             self.assert_global_flags(target_data)
             self.assert_sensor_variables(target_data)
 
-            variable = target_data["quality_channel_bitmask"]
-            self.assertEqual(1, variable.data[8, 1])
-            self.assertEqual((13198, 6), variable.encoding["chunksizes"])
-
-            variable = target_data["quality_scanline_bitmask"]
-            self.assertEqual(1, variable.data[10])
-            self.assertEqual((13198,), variable.encoding["chunksizes"])
-
             variable = target_data["relative_azimuth_angle"]
             self.assertAlmostEqual(0.11, variable.data[11, 11], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
@@ -432,6 +424,11 @@ class AvhrrIoTest(unittest.TestCase):
         avhrr_full["u_time"].data[:] = np.ones(PRODUCT_HEIGHT, np.float64) * 0.16
         avhrr_full["T_instr"].data[:] = np.ones(PRODUCT_HEIGHT, np.float32) * 0.17
 
+        for x in range(0, 6):
+            avhrr_full["quality_channel_bitmask"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int8) * x
+
+        avhrr_full["quality_scanline_bitmask"].data[:] = np.ones(PRODUCT_HEIGHT, np.int8)
+
         return avhrr_full
 
     def add_global_attributes(self, dataset):
@@ -512,6 +509,14 @@ class AvhrrIoTest(unittest.TestCase):
         self.assertAlmostEqual(0.16, variable.data[13, 13], 8)
         self.assertEqual("solar_zenith_angle", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+        variable = target_data["quality_channel_bitmask"]
+        self.assertEqual(1, variable.data[8, 1])
+        self.assertEqual((13198, 6), variable.encoding["chunksizes"])
+
+        variable = target_data["quality_scanline_bitmask"]
+        self.assertEqual(1, variable.data[10])
+        self.assertEqual((13198,), variable.encoding["chunksizes"])
 
     def assert_global_flags(self, target_data):
         variable = target_data["quality_pixel_bitmask"]

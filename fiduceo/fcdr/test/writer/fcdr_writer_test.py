@@ -130,7 +130,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(69, len(ds.variables))
+        self.assertEqual(72, len(ds.variables))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -641,3 +641,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["Ch3b_Bt"])
         self.assertIsNotNone(ds.variables["Ch4_Bt"])
         self.assertIsNotNone(ds.variables["Ch5_Bt"])
+
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
+        self.assertIsNotNone(ds.variables["quality_channel_bitmask"])

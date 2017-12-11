@@ -70,6 +70,22 @@ class AVHRRTest(unittest.TestCase):
         ch5_bt = ds.variables["Ch5_Bt"]
         self._assert_correct_bt_variable(ch5_bt, "Channel 5 Brightness Temperature")
 
+        qs_bitmask = ds.variables["quality_scanline_bitmask"]
+        self.assertEqual((5,), qs_bitmask.shape)
+        self.assertEqual(0, qs_bitmask.data[1])
+        self.assertEqual("status_flag", qs_bitmask.attrs["standard_name"])
+        self.assertEqual("bitmask for quality per scanline", qs_bitmask.attrs["long_name"])
+        self.assertEqual("1,2,4,8,16,32,64", qs_bitmask.attrs["flag_masks"])
+        self.assertEqual("do_not_use bad_time bad_navigation bad_calibration channel3a_present solar_contamination_failure solar_contamination", qs_bitmask.attrs["flag_meanings"])
+
+        qc_bitmask = ds.variables["quality_channel_bitmask"]
+        self.assertEqual((5, 6), qc_bitmask.shape)
+        self.assertEqual(0, qc_bitmask.data[2, 1])
+        self.assertEqual("status_flag", qc_bitmask.attrs["standard_name"])
+        self.assertEqual("bitmask for quality per channel", qc_bitmask.attrs["long_name"])
+        self.assertEqual("1,2", qc_bitmask.attrs["flag_masks"])
+        self.assertEqual("bad_channel some_pixels_not_detected_2sigma", qc_bitmask.attrs["flag_meanings"])
+
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())
 
@@ -180,7 +196,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("mW m^-2 sr^-1 cm", r_ict.attrs["units"])
 
         t_instr = ds.variables["T_instr"]
-        self.assertEqual((5, ), t_instr.shape)
+        self.assertEqual((5,), t_instr.shape)
         self.assertTrue(np.isnan(t_instr.data[4]))
         self.assertTrue(np.isnan(t_instr.attrs["_FillValue"]))
         self.assertEqual("Instrument temperature", t_instr.attrs["long_name"])
@@ -312,7 +328,7 @@ class AVHRRTest(unittest.TestCase):
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 
         if long_name is not None:
-          self.assertEqual(long_name, variable.attrs["long_name"])
+            self.assertEqual(long_name, variable.attrs["long_name"])
 
         self.assertEqual("K", variable.attrs["units"])
 

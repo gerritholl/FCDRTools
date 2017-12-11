@@ -83,6 +83,22 @@ class AVHRR:
         variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
 
+        default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=0)
+        variable = Variable(["y"], default_array)
+        variable.attrs["long_name"] = 'bitmask for quality per scanline'
+        variable.attrs["standard_name"] = 'status_flag'
+        variable.attrs["flag_masks"] = '1,2,4,8,16,32,64'
+        variable.attrs['flag_meanings'] = 'do_not_use bad_time bad_navigation bad_calibration channel3a_present solar_contamination_failure solar_contamination'
+        dataset['quality_scanline_bitmask'] = variable
+
+        default_array = DefaultData.create_default_array(N_CHANS, height, np.uint8, fill_value=0)
+        variable = Variable(["y", "channel"], default_array)
+        variable.attrs["long_name"] = 'bitmask for quality per channel'
+        variable.attrs["standard_name"] = 'status_flag'
+        variable.attrs["flag_masks"] = '1,2'
+        variable.attrs['flag_meanings'] = 'bad_channel some_pixels_not_detected_2sigma'
+        dataset['quality_channel_bitmask'] = variable
+
     @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
@@ -108,20 +124,6 @@ class AVHRR:
         long_names = ["structured uncertainty per pixel for channel 3b", "structured uncertainty per pixel for channel 4", "structured uncertainty per pixel for channel 5"]
         names = ["u_structured_Ch3b", "u_structured_Ch4", "u_structured_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
-
-        default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=None)
-        variable = Variable(["y"], default_array)
-        variable.attrs["long_name"] = 'Bitmask for quality per scanline'
-        variable.attrs["flag_masks"] = '1,2,4,8,16,32,64'
-        variable.attrs['flag_meanings'] = 'DO_NOT_USE, BAD_TIME, BAD_NAVIGATION, BAD_CALIBRATION, CHANNEL3A_PRESENT,SOLAR_CONTAMINATION_FAILURE,SOLAR_CONTAMINATION'
-        dataset['quality_scanline_bitmask'] = variable
-
-        default_array = DefaultData.create_default_array(N_CHANS, height, np.uint8, fill_value=None)
-        variable = Variable(["y", "nchan"], default_array)
-        variable.attrs["long_name"] = 'Bitmask for quality per channel/scanline'
-        variable.attrs["flag_masks"] = '1,2'
-        variable.attrs['flag_meanings'] = 'BAD_CHANNEL, SOME_PIXELS_NOT_DETECTED_2SIGMA'
-        dataset['quality_channel_bitmask'] = variable
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

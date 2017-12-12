@@ -198,6 +198,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint8), count.attrs["_FillValue"])
         self.assertEqual("Image counts", count.attrs["long_name"])
         self.assertEqual("count", count.attrs["units"])
+        self.assertEqual(CHUNKING, count.encoding["chunksizes"])
 
         u_lat = ds.variables["u_latitude"]
         self.assertEqual((5000, 5000), u_lat.shape)
@@ -218,6 +219,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("images", u_lat.attrs["image_correlation_units"])
         self.assertEqual([-12, 0], u_lat.attrs["image_correlation_scales"])
         self.assertEqual("gaussian", u_lat.attrs["pdf_shape"])
+        self.assertEqual(CHUNKING, u_lat.encoding["chunksizes"])
 
         u_lon = ds.variables["u_longitude"]
         self.assertEqual((5000, 5000), u_lon.shape)
@@ -238,6 +240,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("images", u_lon.attrs["image_correlation_units"])
         self.assertEqual([-12, 0], u_lon.attrs["image_correlation_scales"])
         self.assertEqual("gaussian", u_lon.attrs["pdf_shape"])
+        self.assertEqual(CHUNKING, u_lon.encoding["chunksizes"])
 
         u_time = ds.variables["u_time"]
         self.assertEqual((2500,), u_time.shape)
@@ -259,6 +262,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_sat_zenith.encoding['_FillValue'])
         self.assertEqual(7.62939E-05, u_sat_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, u_sat_zenith.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_sat_zenith.encoding["chunksizes"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
         self.assertEqual((5000, 5000), u_sat_azimuth.shape)
@@ -269,6 +273,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_sat_azimuth.encoding['_FillValue'])
         self.assertEqual(7.62939E-05, u_sat_azimuth.encoding['scale_factor'])
         self.assertEqual(0.0, u_sat_azimuth.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_sat_azimuth.encoding["chunksizes"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
         self.assertEqual((5000, 5000), u_sol_zenith.shape)
@@ -279,6 +284,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_sol_zenith.encoding['_FillValue'])
         self.assertEqual(7.62939E-05, u_sol_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, u_sol_zenith.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_sol_zenith.encoding["chunksizes"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
         self.assertEqual((5000, 5000), u_sol_azimuth.shape)
@@ -289,6 +295,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_sol_azimuth.encoding['_FillValue'])
         self.assertEqual(7.62939E-05, u_sol_azimuth.encoding['scale_factor'])
         self.assertEqual(0.0, u_sol_azimuth.encoding['add_offset'])
+        self.assertEqual(CHUNKING, u_sol_azimuth.encoding["chunksizes"])
 
         a0 = ds.variables["a0_vis"]
         self.assertEqual((), a0.shape)

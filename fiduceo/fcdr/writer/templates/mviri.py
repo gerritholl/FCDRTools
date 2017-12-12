@@ -197,6 +197,7 @@ class MVIRI:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Image counts"
         tu.add_units(variable, "count")
+        tu.add_chunking(variable, CHUNKSIZES)
         dataset["count_vis"] = variable
 
         dataset["u_latitude"] = MVIRI._create_angle_variable_int(1.5E-05, long_name="Uncertainty in Latitude", unsigned=True)

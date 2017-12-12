@@ -97,6 +97,65 @@ class MviriIoTest(unittest.TestCase):
         try:
             self.assert_global_flags(target_data)
             self.assert_sensor_variables(target_data)
+
+            variable = target_data["count_vis"]
+            self.assertEqual(11, variable.data[11, 11])
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_latitude"]
+            self.assertAlmostEqual(0.21696, variable.data[12, 12], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_longitude"]
+            self.assertAlmostEqual(0.633915, variable.data[13, 13], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_time"]
+            self.assertAlmostEqual(0.402832012, variable.data[14], 8)
+            self.assertEqual((2500,), variable.encoding["chunksizes"])
+
+            variable = target_data["u_satellite_zenith_angle"]
+            self.assertAlmostEqual(4.4999668098, variable.data[15, 15], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_satellite_azimuth_angle"]
+            self.assertAlmostEqual(1.399993065, variable.data[16, 16], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_solar_zenith_angle"]
+            self.assertAlmostEqual(3.4999826625, variable.data[17, 17], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_solar_azimuth_angle"]
+            self.assertAlmostEqual(0.8000178354, variable.data[18, 18], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["a0_vis"]
+            self.assertAlmostEqual(7.7, variable.data, 8)
+
+            variable = target_data["a1_vis"]
+            self.assertAlmostEqual(8.8, variable.data, 8)
+
+            variable = target_data["mean_count_space_vis"]
+            self.assertAlmostEqual(9.9, variable.data, 8)
+
+            variable = target_data["u_a0_vis"]
+            self.assertAlmostEqual(10.1, variable.data, 8)
+
+            variable = target_data["u_a1_vis"]
+            self.assertAlmostEqual(11.11, variable.data, 8)
+
+            variable = target_data["covariance_a0_a1_vis"]
+            self.assertAlmostEqual(12.12, variable.data, 8)
+
+            variable = target_data["u_electronics_counts_vis"]
+            self.assertAlmostEqual(13.13, variable.data, 8)
+
+            variable = target_data["u_digitization_counts_vis"]
+            self.assertAlmostEqual(14.14, variable.data, 8)
+
+            variable = target_data["allan_deviation_counts_space_vis"]
+            self.assertAlmostEqual(15.15, variable.data, 8)
         finally:
             target_data.close()
 
@@ -123,6 +182,27 @@ class MviriIoTest(unittest.TestCase):
         self.add_global_attributes(mviri_full)
         self.add_global_flags(mviri_full)
         self.add_sensor_data(mviri_full)
+
+        for x in range(0, 5000):
+            mviri_full["count_vis"].data[:, x] = np.ones((5000), np.uint8) * x
+            mviri_full["u_latitude"].data[:, x] = np.ones((5000), np.float32) * x * 0.1
+            mviri_full["u_longitude"].data[:, x] = np.ones((5000), np.float32) * x * 0.2
+            mviri_full["u_satellite_zenith_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.3
+            mviri_full["u_satellite_azimuth_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.4
+            mviri_full["u_solar_zenith_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.5
+            mviri_full["u_solar_azimuth_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.6
+
+        mviri_full["u_time"].data[:] = np.ones((2500), np.float32) * 0.4
+
+        mviri_full["a0_vis"].data = 7.7
+        mviri_full["a1_vis"].data = 8.8
+        mviri_full["mean_count_space_vis"].data = 9.9
+        mviri_full["u_a0_vis"].data = 10.1
+        mviri_full["u_a1_vis"].data = 11.11
+        mviri_full["covariance_a0_a1_vis"].data = 12.12
+        mviri_full["u_electronics_counts_vis"].data = 13.13
+        mviri_full["u_digitization_counts_vis"].data = 14.14
+        mviri_full["allan_deviation_counts_space_vis"].data = 15.15
 
         return mviri_full
 
@@ -265,7 +345,7 @@ class MviriIoTest(unittest.TestCase):
         dataset["u_spectral_response_function_ir"].data[:] = np.ones((1011), np.float32) * 0.05
         dataset["spectral_response_function_wv"].data[:] = np.ones((1011), np.float32) * 0.06
         dataset["u_spectral_response_function_wv"].data[:] = np.ones((1011), np.float32) * 0.07
-        
+
         dataset["distance_sun_earth"].data = 3.3
         dataset["solar_irradiance_vis"].data = 4.4
         dataset["u_solar_irradiance_vis"].data = 5.5

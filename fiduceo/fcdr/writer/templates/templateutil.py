@@ -23,12 +23,21 @@ class TemplateUtil:
         dataset["longitude"] = variable
 
     @staticmethod
-    def add_quality_flags(dataset, width, height, chunksizes=None):
+    def add_quality_flags(dataset, width, height, chunksizes=None, masks_append=None, meanings_append=None):
         default_array = DefaultData.create_default_array(width, height, np.uint8, fill_value=0)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "status_flag"
-        variable.attrs["flag_masks"] = "1, 2, 4, 8"
-        variable.attrs["flag_meanings"] = "bad_geolocation timing_err bad_calibration radiometer_err"
+
+        masks = "1, 2, 4, 8, 16, 32, 64"
+        if masks_append is not None:
+            masks = masks + masks_append
+        variable.attrs["flag_masks"] = masks
+
+        meanings = "invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data"
+        if meanings_append is not None:
+            meanings = meanings + meanings_append
+        variable.attrs["flag_meanings"] = meanings
+
         if chunksizes is not None:
             TemplateUtil.add_chunking(variable, chunksizes)
         dataset["quality_pixel_bitmask"] = variable

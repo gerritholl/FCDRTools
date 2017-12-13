@@ -40,5 +40,5 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertEqual((11, 9), quality.shape)
         self.assertEqual(0, quality.data[5, 5])
         self.assertEqual("status_flag", quality.attrs["standard_name"])
-        self.assertEqual("1, 2, 4, 8", quality.attrs["flag_masks"])
-        self.assertEqual("bad_geolocation timing_err bad_calibration radiometer_err", quality.attrs["flag_meanings"])
+        self.assertEqual("1, 2, 4, 8, 16, 32, 64", quality.attrs["flag_masks"])
+        self.assertEqual("invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data", quality.attrs["flag_meanings"])

@@ -30,7 +30,9 @@ class HIRS:
 
     @staticmethod
     def add_quality_flags(dataset, height):
-        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
+        hirs_masks = ", 128, 256, 512, 1024, 2048, 4096, 8192, 16384"
+        hirs_meanings=" uncertainty_suspicious self_emission_fails calibration_impossible suspect_calib suspect_mirror_any reduced_context uncertainty_suspicious bad_temp_no_rself"
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D, masks_append=hirs_masks, meanings_append=hirs_meanings)
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):

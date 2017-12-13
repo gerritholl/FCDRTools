@@ -2,8 +2,10 @@ import unittest
 
 import numpy as np
 
+from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 
+CHUNKING_2D = (512, 56)
 
 class HIRSAssert(unittest.TestCase):
     # this is a mean hack - there is some error in the framework when using Python 2.7 that requests this method tb 2017-05-10
@@ -119,6 +121,11 @@ class HIRSAssert(unittest.TestCase):
     def assert_easy_fcdr_uncertainties(self, ds, chunking=None):
         self._assert_3d_channel_variable(ds, "u_independent", "uncertainty from independent errors", chunking=chunking)
         self._assert_3d_channel_variable(ds, "u_structured", "uncertainty from structured errors", chunking=chunking)
+
+    def assert_global_flags(self, ds):
+        hirs_masks = ", 128, 256, 512, 1024, 2048, 4096, 8192, 16384"
+        hirs_meanings = " uncertainty_suspicious self_emission_fails calibration_impossible suspect_calib suspect_mirror_any reduced_context uncertainty_suspicious bad_temp_no_rself"
+        Assertions.assert_quality_flags(self, ds, 56, 6, chunking=CHUNKING_2D, masks_append=hirs_masks, meanings_append=hirs_meanings)
 
     def _assert_3d_channel_variable(self, ds, name, long_name, chunking=None):
         variable = ds.variables[name]

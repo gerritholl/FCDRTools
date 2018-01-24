@@ -1,5 +1,7 @@
 <img alt="FIDUCEO FCDR Tools" align="right" src="http://www.fiduceo.eu/sites/default/files/FIDUCEO-logo.png" />
 
+.
+
 # FCDR Tools
 
 Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) files.

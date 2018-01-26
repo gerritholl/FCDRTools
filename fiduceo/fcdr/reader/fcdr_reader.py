@@ -28,23 +28,25 @@ class FCDRReader:
                 dic.update({varName: ds._variables[varName]})
         return dic
 
-
     @classmethod
     def _get_virtual_lazy_load(cls, ds, var_name):
-        import numexpr
-        from xarray import Variable
+        from numexpr import NumExpr, disassemble, evaluate
+        import xarray as xr
+        from xarray import Variable, Dataset, DataArray
+        from dask.dataframe import DataFrame, Series
+        import numpy as np
 
         def _virtual_lazy_load(self):
             dic = cls._create_dictionary_of_non_virtuals(ds)
             expression_ = self.attrs["expression"]
-            values = numexpr.evaluate(expression_, dic)
-            tmp_var = Variable(["y", "x"], values)
+            values = evaluate(expression_, dic)
+            dims = dic.copy().popitem()[1]._dims
+            tmp_var = Variable(dims, values)
             tmp_var.attrs = self.attrs
             ds._variables[var_name] = tmp_var
             return ds._variables[var_name]
 
         return _virtual_lazy_load
-
 
     @classmethod
     def _prepare_virtual_variables(cls, ds):

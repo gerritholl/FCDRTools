@@ -6,14 +6,24 @@ class FCDRReader:
     @classmethod
     def read(cls, file_str, drop_variables_str=None, decode_cf=True, decode_times=True,
              engine_str=None):
-        """
-        Read a dataset from a netCDF 3/4 or HDF file.
+        """Read a dataset from a netCDF 3/4 or HDF file.
 
-        :param file: The netCDF file path.
-        :param drop_variables: List of variables to be dropped.
-        :param decode_cf: Whether to decode CF attributes and coordinate variables.
-        :param decode_times: Whether to decode time information (convert time coordinates to ``datetime`` objects).
-        :param engine: Optional netCDF engine name.
+        Parameters
+        ----------
+        file_str: str
+            The netCDF file path.
+        drop_variables_str: str or iterable, optional
+            List of variables to be dropped.
+        decode_cf: bool, optional
+            Whether to decode CF attributes and coordinate variables.
+        decode_times: bool, optional
+            Whether to decode time information (convert time coordinates to ``datetime`` objects).
+        engine_str: str, optional
+            Optional netCDF engine name.
+
+        Return
+        ------
+        xarray.Dataset
         """
 
         ds = xr.open_dataset(file_str, drop_variables=drop_variables_str, decode_cf=decode_cf, decode_times=decode_times, engine=engine_str, chunks=1000000)
@@ -98,7 +108,7 @@ class FCDRReader:
         sorted_keys = cls._get_keys_sorted__longest_first(dic)
         for key in sorted_keys:
             if key in expression:
-                expression.replace(key, '$$')
+                expression.replace(key, '')
                 variable = dic[key]
                 if len(variable.shape) == 1 and variable.dims[0] == dim_of_interest:
                     one_dimensional_variables.append(key)

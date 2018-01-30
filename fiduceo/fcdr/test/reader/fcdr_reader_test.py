@@ -1,6 +1,7 @@
 import unittest as ut
 import xarray as xr
 import numpy as np
+import fiduceo.fcdr.test.test_utils as tu
 from fiduceo.fcdr.reader.fcdr_reader import FCDRReader
 
 
@@ -30,7 +31,7 @@ class FCDR_Reader_Test(ut.TestCase):
 
         self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
-        self._assert_array_equals_with_index_error_message(expected, actual)
+        tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
 
     def test_adding_1_three_dimensional_variable_and_1_two_dimensional_variable(self):
@@ -57,7 +58,7 @@ class FCDR_Reader_Test(ut.TestCase):
 
         self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
-        self._assert_array_equals_with_index_error_message(expected, actual)
+        tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
 
     def test_adding_1_three_dimensional_variable_and_1_one_dimensional_variable(self):
@@ -84,7 +85,7 @@ class FCDR_Reader_Test(ut.TestCase):
 
         self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
-        self._assert_array_equals_with_index_error_message(expected, actual)
+        tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
 
     def test_prepare_virtual_variables(self):
@@ -127,11 +128,3 @@ class FCDR_Reader_Test(ut.TestCase):
         return v_var
 
 
-    def _assert_array_equals_with_index_error_message(self, expected, actual):
-        ex_fl = expected.flatten()
-        ac_fl = actual.flatten()
-        self.assertEqual(len(ex_fl), len(ac_fl), 'Arrays have not the same length.')
-        for idx, exp in enumerate(ex_fl):
-            actl = ac_fl[idx]
-            self.assertAlmostEqual(exp, actl, msg="values at index " + str(idx) + " are not equal.")
-            idx += 1

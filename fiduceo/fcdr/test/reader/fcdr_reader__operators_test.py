@@ -260,7 +260,7 @@ class FCDR_Reader_Operators_Test(ut.TestCase):
              -0.142314838273]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
-    def test_tangens(self):
+    def test_tangent(self):
         expression = 'tan(a)'
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
@@ -283,7 +283,7 @@ class FCDR_Reader_Operators_Test(ut.TestCase):
         ds['a'] = xr.Variable(('x'), [0, 0.5, 1])
         Reader._prepare_virtual_variables(ds)
         ds['v'].load()
-        expected =ds['a']
+        expected = ds['a']
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
     def test_inverse_cosine(self):
@@ -293,17 +293,182 @@ class FCDR_Reader_Operators_Test(ut.TestCase):
         ds['a'] = xr.Variable(('x'), [1, 0.5, 0])
         Reader._prepare_virtual_variables(ds)
         ds['v'].load()
-        expected =ds['a']
+        expected = ds['a']
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
-    def test_inverse_tangens(self):
+    def test_inverse_tangent(self):
         expression = 'arctan(tan(a))'
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x'), [1, 0.5, 0])
         Reader._prepare_virtual_variables(ds)
         ds['v'].load()
-        expected =ds['a']
+        expected = ds['a']
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_arctan2(self):
+        expression = 'arctan2(a, b)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        ds['b'] = xr.Variable(('x'), [0.8, 0.7, 0.6])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.atan2(0.2, 0.8),
+                                       math.atan2(0.4, 0.7),
+                                       math.atan2(0.5, 0.6), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_hyperbolic_sine(self):
+        expression = 'sinh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.sinh(0.2),
+                                       math.sinh(0.4),
+                                       math.sinh(0.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_hyperbolic_cosine(self):
+        expression = 'cosh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.cosh(0.2),
+                                       math.cosh(0.4),
+                                       math.cosh(0.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_hyperbolic_tangent(self):
+        expression = 'tanh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.tanh(0.2),
+                                       math.tanh(0.4),
+                                       math.tanh(0.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_inverse_hyperbolic_sine(self):
+        expression = 'arcsinh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.asinh(0.2),
+                                       math.asinh(0.4),
+                                       math.asinh(0.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_inverse_hyperbolic_cosine(self):
+        expression = 'arccosh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2, 4, 5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.acosh(2),
+                                       math.acosh(4),
+                                       math.acosh(5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_inverse_hyperbolic_tangent(self):
+        expression = 'arctanh(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [0.2, 0.4, 0.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.atanh(0.2),
+                                       math.atanh(0.4),
+                                       math.atanh(0.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_natural_logarithm(self):
+        expression = 'log(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2.2, 3.4, 4.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.log(2.2),
+                                       math.log(3.4),
+                                       math.log(4.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_base_10_logarithm(self):
+        expression = 'log10(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2.2, 3.4, 4.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.log10(2.2),
+                                       math.log10(3.4),
+                                       math.log10(4.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_natural_logarithm_1_plus_x(self):
+        expression = 'log1p(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2.2, 3.4, 4.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.log1p(2.2),
+                                       math.log1p(3.4),
+                                       math.log1p(4.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_exponential(self):
+        expression = 'exp(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2.2, 3.4, 4.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.exp(2.2),
+                                       math.exp(3.4),
+                                       math.exp(4.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_exponential_minus_one(self):
+        expression = 'expm1(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [2.2, 3.4, 4.5])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [math.expm1(2.2),
+                                       math.expm1(3.4),
+                                       math.expm1(4.5), ])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_square_root(self):
+        expression = 'sqrt(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [4, 9, math.pow(12, 2)])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [2, 3, 12])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_absolute_value(self):
+        expression = 'abs(a)'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(('x'), [-2.2, -3.4, 4.5*-1])
+        Reader._prepare_virtual_variables(ds)
+        ds['v'].load()
+        expected = xr.Variable(('x'), [2.2, 3.4, 4.5])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
 

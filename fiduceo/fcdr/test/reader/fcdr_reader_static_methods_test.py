@@ -1,7 +1,8 @@
 import unittest as ut
 import xarray as xr
 import numpy as np
-import fiduceo.fcdr.test.test_utils as tu
+
+import fiduceo.fcdr.test.test_utils as ftu
 from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as RD
 
 
@@ -111,4 +112,4 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         expected = np.asarray([[5, 5, 5, 5],
                                [6, 6, 6, 6],
                                [7, 7, 7, 7], ])
-        tu.assert_array_equals_with_index_error_message(self, expected, extended.data)
+        ftu.assert_array_equals_with_index_error_message(self, expected, extended.data)

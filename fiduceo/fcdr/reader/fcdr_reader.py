@@ -50,8 +50,7 @@ class FCDRReader:
             dims = biggest_variable.dims
             to_extend = cls._find_used_one_dimensional_variables_to_extend(dic, dims, expression_)
             for name in to_extend:
-                extended_name = name + "_extended"
-                print extended_name
+                dic[name] = cls._extend_1D_vertical_to_2D(dic[name], biggest_variable)
             values = evaluate(expression_, dic)
             tmp_var = Variable(dims, values)
             tmp_var.attrs = self.attrs
@@ -117,7 +116,6 @@ class FCDRReader:
     @classmethod
     def _extend_1D_vertical_to_2D(cls, vertical_variable, reference_var):
         shape = reference_var.shape[-2:]
-        var_reshaped = np.resize(vertical_variable.data, shape[::-1])
-        var_reshaped = np.rot90(var_reshaped, 3).copy()
+        var_reshaped = np.resize(vertical_variable, shape[::-1])
+        var_reshaped = np.moveaxis(var_reshaped, 0, 1)
         return xr.Variable(reference_var.dims[-2:], var_reshaped)
-

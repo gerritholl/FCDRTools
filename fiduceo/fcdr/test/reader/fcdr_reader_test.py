@@ -2,19 +2,19 @@ import unittest as ut
 import xarray as xr
 import numpy as np
 import fiduceo.fcdr.test.test_utils as tu
-from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as Reader
+from fiduceo.fcdr.reader.fcdr_reader import prepare_virtual_variables
 
 
-class FCDR_Reader_Test(ut.TestCase):
+class FCDRReaderTest(ut.TestCase):
 
     def test_adding_2_three_dimensional_variables(self):
         ds = xr.Dataset()
-        ds['a'] = self._get_three_dim_variable()
-        ds['b'] = self._get_three_dim_variable()
-        v_var = self._create_virtual_variable("a + b")
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_three_dim_variable()
+        v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        Reader._prepare_virtual_variables(ds)
+        prepare_virtual_variables(ds)
         ds['v_var'].load()
 
         self.assertTrue('v_var' in ds)
@@ -35,12 +35,12 @@ class FCDR_Reader_Test(ut.TestCase):
 
     def test_adding_1_three_dimensional_variable_and_1_two_dimensional_variable(self):
         ds = xr.Dataset()
-        ds['a'] = self._get_three_dim_variable()
-        ds['b'] = self._get_two_dim_variable()
-        v_var = self._create_virtual_variable("a + b")
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_two_dim_variable()
+        v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        Reader._prepare_virtual_variables(ds)
+        prepare_virtual_variables(ds)
         ds['v_var'].load()
 
         self.assertTrue('v_var' in ds)
@@ -61,12 +61,12 @@ class FCDR_Reader_Test(ut.TestCase):
 
     def test_adding_1_three_dimensional_variable_and_1_one_dimensional_variable(self):
         ds = xr.Dataset()
-        ds['a'] = self._get_three_dim_variable()
-        ds['b'] = self._get_one_dim_variable()
-        v_var = self._create_virtual_variable("a + b")
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_one_dim_variable()
+        v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        Reader._prepare_virtual_variables(ds)
+        prepare_virtual_variables(ds)
         ds['v_var'].load()
 
         self.assertTrue('v_var' in ds)
@@ -87,12 +87,12 @@ class FCDR_Reader_Test(ut.TestCase):
 
     def test_adding_1_three_dimensional_variable_and_1_vertical_one_dimensional_variable(self):
         ds = xr.Dataset()
-        ds['a'] = self._get_three_dim_variable()
-        ds['b'] = self._get_vertical_one_dim_variable()
-        v_var = self._create_virtual_variable("a + b")
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_vertical_one_dim_variable()
+        v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        Reader._prepare_virtual_variables(ds)
+        prepare_virtual_variables(ds)
         ds['v_var'].load()
 
         self.assertTrue('v_var' in ds)
@@ -111,41 +111,76 @@ class FCDR_Reader_Test(ut.TestCase):
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
+    def test_multiplying_1_three_dimensional_variable_and_1_scalar_variable(self):
+        ds = xr.Dataset()
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_scalar_variable(2.7)
+        v_var = create_virtual_variable("a * b")
+        ds["v_var"] = v_var
+
+        prepare_virtual_variables(ds)
+        ds['v_var'].load()
+
+        self.assertTrue('v_var' in ds)
+        virtual_loaded = ds['v_var']
+        self.assertEqual(('z', 'y', 'x'), virtual_loaded.dims)
+        self.assertEqual((4, 2, 3), virtual_loaded.shape)
+        self.assertEqual(v_var.attrs, virtual_loaded.attrs)
+
+        expected = np.asarray([[[2.7, 5.4, 8.1], [2.97, 5.67, 8.37]],
+                               [[29.7, 32.4, 35.1], [29.97, 32.67, 35.37]],
+                               [[56.7, 59.4, 62.1], [56.97, 59.67, 62.37]],
+                               [[83.7, 86.4, 89.1], [83.97, 86.67, 89.37]]])
+        actual = virtual_loaded.values
+
+        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
+        self.assertEqual(type(expected), type(actual))
+        tu.assert_array_equals_with_index_error_message(self, expected, actual)
+
     def test_prepare_virtual_variables(self):
         ds = xr.Dataset()
-        ds['a'] = self._get_three_dim_variable()
-        ds['b'] = self._get_two_dim_variable()
-        ds["v_var"] = self._create_virtual_variable("a + b")
+        ds['a'] = create_three_dim_variable()
+        ds['b'] = create_two_dim_variable()
+        ds["v_var"] = create_virtual_variable("a + b")
 
         self.assertEqual(3, len(ds.data_vars))
-        Reader._prepare_virtual_variables(ds)
+        prepare_virtual_variables(ds)
         self.assertEqual(3, len(ds.data_vars))
         expected = np.full([1], 1)
         actual = ds['v_var'].values
         self.assertEqual(type(expected), type(actual))
         self.assertEqual(len(expected), len(actual))
 
-    def _get_three_dim_variable(self):
-        return xr.Variable(['z', 'y', 'x'], np.asarray(
-            [[[1.0, 2.0, 3.0], [1.1, 2.1, 3.1]],
-             [[11.0, 12.0, 13.0], [11.1, 12.1, 13.1]],
-             [[21.0, 22.0, 23.0], [21.1, 22.1, 23.1]],
-             [[31.0, 32.0, 33.0], [31.1, 32.1, 33.1]]]))
 
-    def _get_two_dim_variable(self):
-        return xr.Variable(['y', 'x'], np.asarray(
-            [[1, 2, 3], [4, 5, 6]]))
+def create_three_dim_variable():
+    return xr.Variable(['z', 'y', 'x'], np.asarray(
+        [[[1.0, 2.0, 3.0], [1.1, 2.1, 3.1]],
+         [[11.0, 12.0, 13.0], [11.1, 12.1, 13.1]],
+         [[21.0, 22.0, 23.0], [21.1, 22.1, 23.1]],
+         [[31.0, 32.0, 33.0], [31.1, 32.1, 33.1]]]))
 
-    def _get_one_dim_variable(self):
-        return xr.Variable(['x'], np.asarray(
-            [1.3, 2.3, 3.3]))
 
-    def _get_vertical_one_dim_variable(self):
-        return xr.Variable(['y'], np.asarray(
-            [5, 6]))
+def create_two_dim_variable():
+    return xr.Variable(['y', 'x'], np.asarray(
+        [[1, 2, 3], [4, 5, 6]]))
 
-    def _create_virtual_variable(self, expression):
-        v_var = xr.Variable(["virtual"], np.full([1], 1))
-        v_var.attrs["virtual"] = "true"
-        v_var.attrs["expression"] = expression
-        return v_var
+
+def create_one_dim_variable():
+    return xr.Variable(['x'], np.asarray(
+        [1.3, 2.3, 3.3]))
+
+
+def create_vertical_one_dim_variable():
+    return xr.Variable(['y'], np.asarray(
+        [5, 6]))
+
+
+def create_scalar_variable(value):
+    return xr.Variable(['s'], np.asarray([value]))
+
+
+def create_virtual_variable(expression):
+    v_var = xr.Variable(["virtual"], np.full([1], 1))
+    v_var.attrs["virtual"] = "true"
+    v_var.attrs["expression"] = expression
+    return v_var

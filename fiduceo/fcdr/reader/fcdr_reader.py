@@ -26,40 +26,31 @@ class FCDRReader:
         ------
         xarray.Dataset
         """
-
         ds = xr.open_dataset(file_str, drop_variables=drop_variables_str, decode_cf=decode_cf, decode_times=decode_times, engine=engine_str, chunks=1000000)
-        prepare_virtual_variables(ds)
         return ds
 
+    @classmethod
+    def load_virtual_variable(cls, ds, var_name):
 
-def prepare_virtual_variables(ds):
-    for varName in ds.variables:
-        if "virtual" in ds.variables[varName].attrs:
-            import types
-            ds.variables[varName].load = types.MethodType(get_virtual_lazy_load(ds, varName), ds.variables[varName])
+        import numexpr as ne
+        import exceptions as ex
 
-    return ds
-
-
-def get_virtual_lazy_load(ds, var_name):
-    from numexpr import evaluate
-    from xarray import Variable
-
-    def _virtual_lazy_load(self):
-        dic = create_dictionary_of_non_virtuals(ds)
-        expression_ = self.attrs["expression"]
-        biggest_variable = get_biggest_variable(dic, expression_)
-        dims = biggest_variable.dims
-        to_extend = find_used_one_dimensional_variables_to_extend(dic, dims, expression_)
-        for name in to_extend:
-            dic[name] = extend_1d_vertical_to_2d(dic[name], biggest_variable)
-        values = evaluate(expression_, dic)
-        tmp_var = Variable(dims, values)
-        tmp_var.attrs = self.attrs
-        ds._variables[var_name] = tmp_var
-        return ds.variables[var_name]
-
-    return _virtual_lazy_load
+        v_var = ds.variables[var_name]
+        if v_var is not None and "virtual" in v_var.attrs:
+            if get_shape_product(v_var) <= 1:
+                dic = create_dictionary_of_non_virtuals(ds)
+                expression_ = v_var.attrs["expression"]
+                biggest_variable = get_biggest_variable(dic, expression_)
+                dims = biggest_variable.dims
+                to_extend = find_used_one_dimensional_variables_to_extend(dic, dims, expression_)
+                for name in to_extend:
+                    dic[name] = extend_1d_vertical_to_2d(dic[name], biggest_variable)
+                values = ne.evaluate(expression_, dic)
+                tmp_var = xr.Variable(dims, values)
+                tmp_var.attrs = v_var.attrs
+                ds._variables[var_name] = tmp_var
+        else:
+            raise ex.ValueError('no such virtual variable: "' + var_name + '"')
 
 
 def get_biggest_variable(dic, expression):

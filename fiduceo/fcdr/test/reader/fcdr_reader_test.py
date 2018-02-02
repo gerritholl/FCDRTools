@@ -2,7 +2,7 @@ import unittest as ut
 import xarray as xr
 import numpy as np
 import fiduceo.fcdr.test.test_utils as tu
-from fiduceo.fcdr.reader.fcdr_reader import prepare_virtual_variables
+from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as R
 
 
 class FCDRReaderTest(ut.TestCase):
@@ -14,8 +14,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        prepare_virtual_variables(ds)
-        ds['v_var'].load()
+        R.load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -40,8 +39,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        prepare_virtual_variables(ds)
-        ds['v_var'].load()
+        R.load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -66,8 +64,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        prepare_virtual_variables(ds)
-        ds['v_var'].load()
+        R.load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -92,8 +89,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        prepare_virtual_variables(ds)
-        ds['v_var'].load()
+        R.load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -118,8 +114,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a * b")
         ds["v_var"] = v_var
 
-        prepare_virtual_variables(ds)
-        ds['v_var'].load()
+        R.load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -144,12 +139,12 @@ class FCDRReaderTest(ut.TestCase):
         ds["v_var"] = create_virtual_variable("a + b")
 
         self.assertEqual(3, len(ds.data_vars))
-        prepare_virtual_variables(ds)
+        R.load_virtual_variable(ds, 'v_var')
         self.assertEqual(3, len(ds.data_vars))
-        expected = np.full([1], 1)
+        expected = np.full([4, 2, 3], 1)
         actual = ds['v_var'].values
         self.assertEqual(type(expected), type(actual))
-        self.assertEqual(len(expected), len(actual))
+        self.assertEqual(expected.shape, actual.shape)
 
 
 def create_three_dim_variable():

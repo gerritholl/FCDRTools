@@ -2,12 +2,7 @@ import unittest as ut
 import xarray as xr
 import numpy as np
 import fiduceo.fcdr.test.test_utils as ftu
-from fiduceo.fcdr.reader.fcdr_reader import \
-    extend_1d_vertical_to_2d, \
-    create_dictionary_of_non_virtuals, \
-    get_keys_sorted__longest_first, \
-    find_used_one_dimensional_variables_to_extend, \
-    get_biggest_variable
+from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as R
 
 
 class FCDRReaderStaticMethodsTest(ut.TestCase):
@@ -21,32 +16,32 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         ds['ody'] = xr.Variable(['y'], range(17, 21))
         ds['woody'] = xr.Variable(['y'], np.full([4], 18))
         self.ds = ds
-        self.dic = create_dictionary_of_non_virtuals(ds)
+        self.dic = R._create_dictionary_of_non_virtuals(ds)
 
     def test_GetBiggestDimension(self):
         expression = '(asd)*[lsmf + bottle] - ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         self.assertEqual(("z", "y", "x"), biggest_variable.dims)
 
         expression = '[lsmf + bottle] - ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         self.assertEqual(("y", "x"), biggest_variable.dims)
 
         expression = 'lsmf +  ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         self.assertEqual(("y", "x"), biggest_variable.dims)
 
         expression = 'bottle - ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         self.assertEqual(("y", "x"), biggest_variable.dims)
 
         expression = 'ka * 4'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         self.assertEqual(("x",), biggest_variable.dims)
 
     def test_GetKeysSorted_LongestFirst(self):
         dictionary = {"a": 1, "a2": 2, "b": 3, "bb3": 4, "c2": 5}
-        sorted_keys = get_keys_sorted__longest_first(dictionary)
+        sorted_keys = R._get_keys_sorted__longest_first(dictionary)
         self.assertEqual(["bb3", "a2", "c2", "a", "b"], sorted_keys)
 
     def test_ExpandOneDimensionalVariables(self):
@@ -58,9 +53,9 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         Only variables with 'y' dimension must be extended.
         """
         expression = 'asd * ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         dims = biggest_variable.dims
-        one_d_vars = find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
+        one_d_vars = R._find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
         self.assertEquals(list(), one_d_vars)
 
     def test_FindUsedOneDimensionalVerticalToExtend_oneResult(self):
@@ -68,9 +63,9 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         'ody' is a one dimensional variable with dimension 'y'
         """
         expression = 'asd * ody + ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         dims = biggest_variable.dims
-        one_d_vars = find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
+        one_d_vars = R._find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
         self.assertEquals(1, len(one_d_vars))
         self.assertTrue('ody' in one_d_vars)
         variable = self.dic['ody']
@@ -82,9 +77,9 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         'ody' and 'woody' are a one dimensional variables with dimension 'y'
         """
         expression = 'asd * (ody - woody) + ka'
-        biggest_variable = get_biggest_variable(self.dic, expression)
+        biggest_variable = R._get_biggest_variable(self.dic, expression)
         dims = biggest_variable.dims
-        one_d_vars = find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
+        one_d_vars = R._find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
         self.assertEquals(2, len(one_d_vars))
         self.assertTrue('ody' in one_d_vars)
         self.assertTrue('woody' in one_d_vars)
@@ -103,7 +98,7 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
                                                            [[4, 5, 6, 7],
                                                             [5, 6, 7, 8],
                                                             [6, 7, 8, 9], ], ])
-        extended = extend_1d_vertical_to_2d(vertical_variable, reference_variable)
+        extended = R._extend_1d_vertical_to_2d(vertical_variable, reference_variable)
         self.assertEqual((3, 4), extended.shape)
         self.assertEqual(('y', 'x'), extended.dims)
         expected = np.asarray([[5, 5, 5, 5],

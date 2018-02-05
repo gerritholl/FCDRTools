@@ -1,5 +1,5 @@
-import xarray as xr
 import numpy as np
+import xarray as xr
 
 
 class FCDRReader:
@@ -33,7 +33,6 @@ class FCDRReader:
     def load_virtual_variable(cls, ds, var_name):
 
         import numexpr as ne
-        import exceptions as ex
 
         v_var = ds.variables[var_name]
         if v_var is not None and "virtual" in v_var.attrs:
@@ -50,7 +49,7 @@ class FCDRReader:
                 tmp_var.attrs = v_var.attrs
                 ds._variables[var_name] = tmp_var
         else:
-            raise ex.ValueError('no such virtual variable: "' + var_name + '"')
+            raise IOError('no such virtual variable: "' + var_name + '"')
 
     @classmethod
     def _get_biggest_variable(cls, dic, expression):
@@ -86,7 +85,7 @@ class FCDRReader:
         sorted_keys = cls._get_keys_sorted__longest_first(dic)
         for key in sorted_keys:
             if key in expression:
-                expression.replace(str(key), '')
+                expression = expression.replace(str(key), '')
                 variable = dic[key]
                 if len(variable.shape) == 1 and variable.dims[0] == dim_of_interest:
                     one_dimensional_variables.append(key)
@@ -94,7 +93,7 @@ class FCDRReader:
 
     @classmethod
     def _get_keys_sorted__longest_first(cls, dic):
-        dic_keys = dic.viewkeys()
+        dic_keys = dic.keys()
         return sorted(dic_keys, key=len, reverse=True)
 
     @classmethod

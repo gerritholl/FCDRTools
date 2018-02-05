@@ -42,7 +42,7 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
     def test_GetKeysSorted_LongestFirst(self):
         dictionary = {"a": 1, "a2": 2, "b": 3, "bb3": 4, "c2": 5}
         sorted_keys = R._get_keys_sorted__longest_first(dictionary)
-        self.assertEqual(["bb3", "a2", "c2", "a", "b"], sorted_keys)
+        self.assertEqual(['bb3', 'c2', 'a2', 'a', 'b'], sorted_keys)
 
     def test_ExpandOneDimensionalVariables(self):
         pass

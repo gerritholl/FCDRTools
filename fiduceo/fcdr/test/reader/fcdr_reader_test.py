@@ -1,6 +1,8 @@
 import unittest as ut
-import xarray as xr
+
 import numpy as np
+import xarray as xr
+
 import fiduceo.fcdr.test.test_utils as tu
 from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as R
 
@@ -28,7 +30,6 @@ class FCDRReaderTest(ut.TestCase):
                                [[62, 64, 66], [62.2, 64.2, 66.2]]])
         actual = ds['v_var'].values
 
-        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
@@ -53,7 +54,6 @@ class FCDRReaderTest(ut.TestCase):
                                [[32, 34, 36], [35.1, 37.1, 39.1]]])
         actual = virtual_loaded.values
 
-        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
@@ -78,7 +78,6 @@ class FCDRReaderTest(ut.TestCase):
                                [[32.3, 34.3, 36.3], [32.4, 34.4, 36.4]]])
         actual = virtual_loaded.values
 
-        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
@@ -103,7 +102,6 @@ class FCDRReaderTest(ut.TestCase):
                                [[36, 37, 38], [37.1, 38.1, 39.1]]])
         actual = virtual_loaded.values
 
-        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 
@@ -128,7 +126,6 @@ class FCDRReaderTest(ut.TestCase):
                                [[83.7, 86.4, 89.1], [83.97, 86.67, 89.37]]])
         actual = virtual_loaded.values
 
-        self.assertEqual("<type 'numpy.ndarray'>", str(type(actual)))
         self.assertEqual(type(expected), type(actual))
         tu.assert_array_equals_with_index_error_message(self, expected, actual)
 

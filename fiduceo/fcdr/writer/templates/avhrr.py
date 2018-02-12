@@ -83,6 +83,15 @@ class AVHRR:
         variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
         dataset["Ch5_Bt"] = variable
 
+        # data_quality_bitmask
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint8, fill_value=0)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["standard_name"] = 'status_flag'
+        variable.attrs["long_name"] = 'bitmask for quality per pixel'
+        variable.attrs["flag_masks"] = '1,2'
+        variable.attrs['flag_meanings'] = 'bad_geolocation_timing_err bad_calibration_radiometer_err'
+        dataset['data_quality_bitmask'] = variable
+
         default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=0)
         variable = Variable(["y"], default_array)
         variable.attrs["long_name"] = 'bitmask for quality per scanline'

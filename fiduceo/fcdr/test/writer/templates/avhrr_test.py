@@ -70,6 +70,14 @@ class AVHRRTest(unittest.TestCase):
         ch5_bt = ds.variables["Ch5_Bt"]
         self._assert_correct_bt_variable(ch5_bt, "Channel 5 Brightness Temperature")
 
+        dq_bitmask = ds.variables["data_quality_bitmask"]
+        self.assertEqual((5, 409), dq_bitmask.shape)
+        self.assertEqual(0, dq_bitmask.data[1, 23])
+        self.assertEqual("status_flag", dq_bitmask.attrs["standard_name"])
+        self.assertEqual("bitmask for quality per pixel", dq_bitmask.attrs["long_name"])
+        self.assertEqual("1,2", dq_bitmask.attrs["flag_masks"])
+        self.assertEqual("bad_geolocation_timing_err bad_calibration_radiometer_err", dq_bitmask.attrs["flag_meanings"])
+
         qs_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((5,), qs_bitmask.shape)
         self.assertEqual(0, qs_bitmask.data[1])

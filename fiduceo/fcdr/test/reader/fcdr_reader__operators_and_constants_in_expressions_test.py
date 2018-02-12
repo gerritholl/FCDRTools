@@ -9,7 +9,7 @@ t, f = True, False
 pi = math.pi
 
 
-class FCDRReaderOperatorsTest(ut.TestCase):
+class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
 
     def test_and(self):
         expression = 'a & b'  # the meaning is "a and b"
@@ -430,6 +430,35 @@ class FCDRReaderOperatorsTest(ut.TestCase):
         ds['a'] = xr.Variable(('x',), [-2.2, -3.4, 4.5 * -1])
         R.load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [2.2, 3.4, 4.5])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_replace_pi(self):
+        expression = 'a*pi'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        R.load_virtual_variable(ds, 'v')
+        expected = xr.Variable(['x'], [3.14159265359, 6.28318530718, 9.42477796077, 12.5663706144, 0.0314159265359])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_dont_replace_pi_if_it_part_of_a_word(self):
+        expression = 'lpit + pit + lpi'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['lpit'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        ds['pit'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        ds['lpi'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        R.load_virtual_variable(ds, 'v')
+        expected = xr.Variable(['x'], [3, 6, 9, 12, 0.03])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
+    def test_number_constants_with_scientific_notation(self):
+        expression = 'a + 257e-3'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        R.load_virtual_variable(ds, 'v')
+        expected = xr.Variable(['x'], [1.257, 2.257, 3.257, 4.257, 0.267])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
 

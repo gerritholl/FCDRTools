@@ -452,6 +452,15 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         expected = xr.Variable(['x'], [3, 6, 9, 12, 0.03])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
+    def test_number_constants_with_scientific_notation(self):
+        expression = 'a + 257e-3'
+        ds = xr.Dataset()
+        ds['v'] = create_virtual_variable(expression)
+        ds['a'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
+        R.load_virtual_variable(ds, 'v')
+        expected = xr.Variable(['x'], [1.257, 2.257, 3.257, 4.257, 0.267])
+        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+
 
 def get_one_dim_radians():
     pi_4 = pi / 4

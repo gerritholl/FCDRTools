@@ -28,12 +28,12 @@ class TemplateUtil:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "status_flag"
 
-        masks = "1, 2, 4, 8, 16, 32, 64"
+        masks = "1, 2, 4, 8, 16, 32, 64, 128"
         if masks_append is not None:
             masks = masks + masks_append
         variable.attrs["flag_masks"] = masks
 
-        meanings = "invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data"
+        meanings = "invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data incomplete_channel_data"
         if meanings_append is not None:
             meanings = meanings + meanings_append
         variable.attrs["flag_meanings"] = meanings

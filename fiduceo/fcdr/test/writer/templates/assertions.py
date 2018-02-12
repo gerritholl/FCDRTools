@@ -35,12 +35,12 @@ class Assertions:
         test_case.assertEqual(0, quality.data[1, 1])
         test_case.assertEqual("status_flag", quality.attrs["standard_name"])
 
-        masks = "1, 2, 4, 8, 16, 32, 64"
+        masks = "1, 2, 4, 8, 16, 32, 64, 128"
         if masks_append is not None:
             masks = masks + masks_append
         test_case.assertEqual(masks, quality.attrs["flag_masks"])
 
-        meanings = "invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data"
+        meanings = "invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data incomplete_channel_data"
         if meanings_append is not None:
             meanings = meanings + meanings_append
         test_case.assertEqual(meanings, quality.attrs["flag_meanings"])

@@ -39,6 +39,7 @@ class TemplateUtilTest(unittest.TestCase):
         quality = ds.variables["quality_pixel_bitmask"]
         self.assertEqual((11, 9), quality.shape)
         self.assertEqual(0, quality.data[5, 5])
+        self.assertEqual(np.uint8, quality.dtype)
         self.assertEqual("status_flag", quality.attrs["standard_name"])
-        self.assertEqual("1, 2, 4, 8, 16, 32, 64", quality.attrs["flag_masks"])
-        self.assertEqual("invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data", quality.attrs["flag_meanings"])
+        self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", quality.attrs["flag_masks"])
+        self.assertEqual("invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data incomplete_channel_data", quality.attrs["flag_meanings"])

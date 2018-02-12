@@ -1,5 +1,8 @@
 import numpy as np
 import xarray as xr
+import numexpr as ne
+from math import pi
+import re
 
 
 class FCDRReader:
@@ -32,8 +35,6 @@ class FCDRReader:
     @classmethod
     def load_virtual_variable(cls, ds, var_name):
 
-        import numexpr as ne
-
         v_var = ds.variables[var_name]
         if v_var is not None and "virtual" in v_var.attrs:
             if cls._get_shape_product(v_var) <= 1:
@@ -44,6 +45,7 @@ class FCDRReader:
                 to_extend = cls._find_used_one_dimensional_variables_to_extend(dic, dims, expression_)
                 for name in to_extend:
                     dic[name] = cls._extend_1d_vertical_to_2d(dic[name], biggest_variable)
+                expression_ = cls._replace_constants(expression_)
                 values = ne.evaluate(expression_, dic)
                 tmp_var = xr.Variable(dims, values)
                 tmp_var.attrs = v_var.attrs
@@ -52,19 +54,24 @@ class FCDRReader:
             raise IOError('no such virtual variable: "' + var_name + '"')
 
     @classmethod
+    def _replace_constants(cls, expression_):
+        _pattern_to_detect_pi = "\\b[Pp][Ii]\\b"
+        return re.sub(_pattern_to_detect_pi, str(pi), expression_)
+
+    @classmethod
     def _get_biggest_variable(cls, dic, expression):
-        bigest_shape_product = 0
-        bigest_var = None
-        skeys = cls._get_keys_sorted__longest_first(dic)
-        for key in skeys:
+        biggest_shape_product = 0
+        biggest_var = None
+        sorted_keys = cls._get_keys_sorted__longest_first(dic)
+        for key in sorted_keys:
             if key in expression:
                 expression = expression.replace(str(key), '')
                 variable = dic[key]
                 shape_product = cls._get_shape_product(variable)
-                if shape_product > bigest_shape_product:
-                    bigest_shape_product = shape_product
-                    bigest_var = variable
-        return bigest_var
+                if shape_product > biggest_shape_product:
+                    biggest_shape_product = shape_product
+                    biggest_var = variable
+        return biggest_var
 
     @classmethod
     def _get_shape_product(cls, variable):

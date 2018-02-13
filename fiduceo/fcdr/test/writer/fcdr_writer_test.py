@@ -212,7 +212,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(11, len(ds.data_vars))
+        self.assertEqual(12, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -224,6 +224,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
 
         # easy FCDR variables
@@ -236,7 +237,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(90, len(ds.data_vars))
+        self.assertEqual(91, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -249,6 +250,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
@@ -289,7 +291,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(14, len(ds.data_vars))
+        self.assertEqual(15, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -303,6 +305,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
@@ -316,7 +319,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(93, len(ds.data_vars))
+        self.assertEqual(94, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -328,6 +331,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scantype"])
+
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -366,7 +371,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(14, len(ds.data_vars))
+        self.assertEqual(15, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -380,6 +385,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["time"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
@@ -393,7 +399,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(93, len(ds.data_vars))
+        self.assertEqual(94, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -405,6 +411,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])

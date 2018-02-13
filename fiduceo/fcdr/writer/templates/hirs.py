@@ -30,9 +30,16 @@ class HIRS:
 
     @staticmethod
     def add_quality_flags(dataset, height):
-        hirs_masks = ", 128, 256, 512, 1024, 2048, 4096, 8192, 16384"
-        hirs_meanings=" uncertainty_suspicious self_emission_fails calibration_impossible suspect_calib suspect_mirror_any reduced_context uncertainty_suspicious bad_temp_no_rself"
-        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D, masks_append=hirs_masks, meanings_append=hirs_meanings)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
+
+        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16, fill_value=0)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024"
+        variable.attrs[
+            "flag_meanings"] = "uncertainty_suspicious self_emission_fails calibration_impossible suspect_calib suspect_mirror reduced_context bad_temp_no_rself suspect_geo suspect_time outlier_nos uncertainty_too_large"
+        variable.attrs["standard_name"] = "status_flag"
+        tu.add_chunking(variable, CHUNKING_2D)
+        dataset["data_quality_bitmask"] = variable
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):
@@ -330,10 +337,10 @@ class HIRS:
         dataset["u_c_space_chan_corr"] = HIRS._create_channel_correlation_variable("u_c_space channel correlations", np.uint16)
 
         # u_Earthshine
-        dataset["u_Earthshine"] = HIRS._create_channel_uncertainty_uint16(height, variable)
+        dataset["u_Earthshine"] = HIRS._create_channel_uncertainty_uint16(height)
 
         # u_O_Re
-        dataset["u_O_Re"] = HIRS._create_channel_uncertainty_uint16(height, variable)
+        dataset["u_O_Re"] = HIRS._create_channel_uncertainty_uint16(height)
 
         # u_O_TIWCT
         default_array = DefaultData.create_default_vector(height, np.float32, np.NaN)
@@ -363,16 +370,16 @@ class HIRS:
         variable.attrs["ancilliary_variables"] = "u_O_TPRT_chan_corr"
         dataset["u_O_TPRT"] = variable
 
-        dataset["u_Rself"] = HIRS._create_channel_uncertainty_uint16(height, variable)
-        dataset["u_SRF_calib"] = HIRS._create_channel_uncertainty_uint16(height, variable)
+        dataset["u_Rself"] = HIRS._create_channel_uncertainty_uint16(height)
+        dataset["u_SRF_calib"] = HIRS._create_channel_uncertainty_uint16(height)
 
         default_array = DefaultData.create_default_array(PRT_NUMBER_IWT, PRT_READING, dtype=np.float32, dims_names=["prt_number_iwt", "prt_reading"], fill_value=np.NaN)
         variable = Variable(["prt_number_iwt", "prt_reading"], default_array)
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01)
         dataset["u_d_PRT"] = variable
 
-        dataset["u_electronics"] = HIRS._create_channel_uncertainty_uint16(height, variable)
-        dataset["u_periodic_noise"] = HIRS._create_channel_uncertainty_uint16(height, variable)
+        dataset["u_electronics"] = HIRS._create_channel_uncertainty_uint16(height)
+        dataset["u_periodic_noise"] = HIRS._create_channel_uncertainty_uint16(height)
         dataset["u_nonlinearity"] = HIRS._create_scaled_uint16_vector(NUM_CHANNELS, dimension_name=["channel"], scale_factor=0.01)
         dataset["emissivity"] = tu.create_scalar_float_variable("emissivity", units="1")
         dataset["temp_corr_slope"] = tu.create_scalar_float_variable("Slope for effective temperature correction", units="1")
@@ -409,23 +416,11 @@ class HIRS:
         dataset["scantype"] = variable
 
     @staticmethod
-    def _create_channel_uncertainty_uint16(height, variable):
+    def _create_channel_uncertainty_uint16(height):
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, dtype=np.float32, dims_names=["y", "channel"], fill_value=np.NaN)
         variable = Variable(["y", "channel"], default_array)
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01)
         return variable
-
-    @staticmethod
-    def _add_HIRS2_flag_variables(dataset, height):
-        pass
-
-    @staticmethod
-    def _add_HIRS3_flag_variables(dataset, height):
-        pass
-
-    @staticmethod
-    def _add_HIRS4_flag_variables(dataset, height):
-        pass
 
     @staticmethod
     def _create_temperature_array_3d(height, long_name, orig_name, dim_names):

@@ -427,21 +427,6 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("status_flag", scantype.attrs["standard_name"])
         self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
 
-    def test_add_HIRS2_flag_variables(self):
-        ds = xr.Dataset()
-        HIRS._add_HIRS2_flag_variables(ds, 7)
-        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
-
-    def test_add_HIRS3_flag_variables(self):
-        ds = xr.Dataset()
-        HIRS._add_HIRS3_flag_variables(ds, 7)
-        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
-
-    def test_add_HIRS4_flag_variables(self):
-        ds = xr.Dataset()
-        HIRS._add_HIRS4_flag_variables(ds, 7)
-        # @todo 2 tb/tb add assertions when Gerrit has defined the data for this sensor 2017-04-12
-
     def _assert_2d_temperature_variable(self, ds, name, long_name, orig_name):
         variable = ds.variables[name]
         self.assertEqual((7, 5), variable.shape)
@@ -563,3 +548,4 @@ class HIRSTest(unittest.TestCase):
 
         self._assert_name_attributes(variable, standard_name, long_name, orig_name)
         return variable
+

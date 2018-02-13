@@ -18,8 +18,8 @@ class HIRS2Test(unittest.TestCase):
         HIRS2.add_original_variables(ds, 6)
 
         Assertions.assert_geolocation_variables(self, ds, 56, 6, chunking=CHUNKING_2D)
+        Assertions.assert_quality_flags(self, ds, 56, 6, chunking=CHUNKING_2D)
 
-        ha.assert_global_flags(ds)
         ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
         self._assert_angle_variables(ds)
         ha.assert_common_sensor_variables(ds)

@@ -59,6 +59,10 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(3, variable.data[3, 3])
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
+            variable = target_data["data_quality_bitmask"]
+            self.assertEqual(2, variable.data[9, 2])
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
             variable = target_data["quality_scanline_bitmask"]
             self.assertEqual(1, variable.data[4])
             self.assertEqual((944,), variable.encoding["chunksizes"])
@@ -122,6 +126,10 @@ class HirsEASYIoTest(unittest.TestCase):
 
             variable = target_data["quality_pixel_bitmask"]
             self.assertEqual(4, variable.data[4, 4])
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
+            variable = target_data["data_quality_bitmask"]
+            self.assertEqual(3, variable.data[10, 3])
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["quality_scanline_bitmask"]
@@ -201,6 +209,10 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(5, variable.data[5, 5])
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
+            variable = target_data["data_quality_bitmask"]
+            self.assertEqual(4, variable.data[11, 4])
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
             variable = target_data["quality_scanline_bitmask"]
             self.assertEqual(1, variable.data[6])
             self.assertEqual((944,), variable.encoding["chunksizes"])
@@ -256,6 +268,7 @@ class HirsEASYIoTest(unittest.TestCase):
             hirs_easy["bt"].data[:, :, x] = np.ones((944), np.int16) * x * 0.01
             hirs_easy["latitude"].data[:, x] = np.ones((944), np.int16) * x * 0.02
             hirs_easy["longitude"].data[:, x] = np.ones((944), np.int16) * x * 0.03
+            hirs_easy["data_quality_bitmask"].data[:, x] = np.ones((944), np.int8) * x
             hirs_easy["quality_pixel_bitmask"].data[:, x] = np.ones((944), np.int8) * x
             if type != "HIRS2":
                 hirs_easy["satellite_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.04

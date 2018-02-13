@@ -7,7 +7,7 @@ from fiduceo.fcdr.test.writer.templates.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
 
-CHUNKING = (512, 512)
+CHUNKING = (500, 500)
 
 
 class MVIRITest(unittest.TestCase):
@@ -64,6 +64,13 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("WV Image Counts", count.attrs["long_name"])
         self.assertEqual("count", count.attrs["units"])
         self.assertEqual(CHUNKING, count.encoding["chunksizes"])
+
+        dq_bitmask = ds.variables["data_quality_bitmask"]
+        self.assertEqual((5000, 5000), dq_bitmask.shape)
+        self.assertEqual(0, dq_bitmask.data[1, 6])
+        self.assertEqual("1, 2, 4, 8, 16, 32", dq_bitmask.attrs["flag_masks"])
+        self.assertEqual("uncertainty_suspicious uncertainty_too_large space_view_suspicious not_on_earth suspect_time suspect_geo", dq_bitmask.attrs["flag_meanings"])
+        self.assertEqual("status_flag", dq_bitmask.attrs["standard_name"])
 
         self._assert_scalar_float_variable(ds, "distance_sun_earth", "Sun-Earth distance", "au")
         self._assert_scalar_float_variable(ds, "solar_irradiance_vis", "Solar effective Irradiance", "W*m-2", standard_name="solar_irradiance_vis")

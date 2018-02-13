@@ -5,7 +5,7 @@ from fiduceo.fcdr.writer.correlation import Correlation as corr
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
-CHUNKSIZES = (512, 512)
+CHUNKSIZES = (500, 500)
 
 SRF_VIS_DIMENSION = "srf_size_vis"
 SRF_IR_WV_DIMENSION = "srf_size_ir_wv"
@@ -61,6 +61,14 @@ class MVIRI:
         tu.add_units(variable, "count")
         tu.add_chunking(variable, CHUNKSIZES)
         dataset["count_wv"] = variable
+
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8, fill_value=0)
+        variable = Variable(["y", "x"], default_array)
+        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32"
+        variable.attrs["flag_meanings"] = "uncertainty_suspicious uncertainty_too_large space_view_suspicious not_on_earth suspect_time suspect_geo"
+        variable.attrs["standard_name"] = "status_flag"
+        tu.add_chunking(variable, CHUNKSIZES)
+        dataset["data_quality_bitmask"] = variable
 
         # distance_sun_earth
         dataset["distance_sun_earth"] = tu.create_scalar_float_variable(long_name="Sun-Earth distance", units="au")

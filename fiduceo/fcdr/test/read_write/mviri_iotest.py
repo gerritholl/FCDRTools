@@ -8,7 +8,7 @@ import xarray as xr
 
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
-EXPECTED_CHUNKING = (512, 512)
+EXPECTED_CHUNKING = (500, 500)
 
 PRODUCT_WIDTH = 5000
 PRODUCT_HEIGHT = 5000
@@ -217,6 +217,7 @@ class MviriIoTest(unittest.TestCase):
     def add_global_flags(self, dataset):
         for x in range(0, PRODUCT_WIDTH):
             dataset["quality_pixel_bitmask"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int8) * x
+            dataset["data_quality_bitmask"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int8) * x + 1
 
     def assert_global_flags(self, target_data):
         variable = target_data["quality_pixel_bitmask"]
@@ -241,6 +242,10 @@ class MviriIoTest(unittest.TestCase):
 
         variable = target_data["count_wv"]
         self.assertEqual(5, variable.data[4, 4])
+        self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+        variable = target_data["data_quality_bitmask"]
+        self.assertEqual(6, variable.data[5, 5])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
         variable = target_data["distance_sun_earth"]

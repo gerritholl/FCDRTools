@@ -451,7 +451,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verify_quality_flags(ds)
 
-        self.assertEqual(39, len(ds.data_vars))
+        self.assertEqual(40, len(ds.data_vars))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -465,6 +465,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["count_ir"])
         self.assertIsNotNone(ds.variables["count_wv"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["distance_sun_earth"])
         self.assertIsNotNone(ds.variables["solar_irradiance_vis"])
         self.assertIsNotNone(ds.variables["u_solar_irradiance_vis"])
@@ -501,7 +502,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(49, len(ds.data_vars))
+        self.assertEqual(50, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -513,6 +514,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["count_ir"])
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["count_vis"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["covariance_spectral_response_function_vis"])
         self.assertIsNotNone(ds.variables["spectral_response_function_ir"])

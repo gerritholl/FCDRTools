@@ -185,9 +185,20 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['a'] = get_two_dim_int_variable()
         ds['b'] = get_vertical_one_dim_int_variable()
         R.load_virtual_variable(ds, 'v')
-        expected = xr.Variable(['y', 'x'], np.asarray(
-            [[20, 10, 6, 5], [23, 13, 9, 6], [25, 15, 11, 8]]))
-        tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
+        loaded_ = ds['v']
+        # if two arrays of type integer are divided, the result data type can be integer or float
+        # the expected preparation depends on returned datatype
+        if np.issubdtype(loaded_.dtype, np.integer):
+            expected = xr.Variable(['y', 'x'], np.asarray(
+                [[20, 10, 6, 5],
+                 [23, 13, 9, 6],
+                 [25, 15, 11, 8]]))
+        else:
+            expected = xr.Variable(['y', 'x'], np.asarray(
+                [[20, 10, 6.666666666666667, 5],
+                 [23.076923076923077, 13.043478260869565, 9.090909090909092, 6.976744186046512],
+                 [25, 15.384615384615385, 11.11111111111111, 8.695652173913043]]))
+        tu.assert_array_equals_with_index_error_message(self, expected, loaded_)
 
     def test_power(self):
         expression = 'a ** 2'

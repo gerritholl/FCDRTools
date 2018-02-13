@@ -458,6 +458,7 @@ class AvhrrIoTest(unittest.TestCase):
             dataset["relative_azimuth_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.010
             dataset["satellite_zenith_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.011
             dataset["solar_zenith_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.012
+            dataset["data_quality_bitmask"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.uint8) * x
 
         dataset["Time"].data[:] = np.ones((PRODUCT_HEIGHT), np.float64)
 
@@ -508,6 +509,10 @@ class AvhrrIoTest(unittest.TestCase):
         variable = target_data["solar_zenith_angle"]
         self.assertAlmostEqual(0.16, variable.data[13, 13], 8)
         self.assertEqual("solar_zenith_angle", variable.attrs["standard_name"])
+        self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+        variable = target_data["data_quality_bitmask"]
+        self.assertEqual(2, variable.data[9, 2])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
         variable = target_data["quality_channel_bitmask"]

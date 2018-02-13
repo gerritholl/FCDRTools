@@ -90,6 +90,7 @@ class AVHRR:
         variable.attrs["long_name"] = 'bitmask for quality per pixel'
         variable.attrs["flag_masks"] = '1,2'
         variable.attrs['flag_meanings'] = 'bad_geolocation_timing_err bad_calibration_radiometer_err'
+        tu.add_chunking(variable, CHUNKS_2D)
         dataset['data_quality_bitmask'] = variable
 
         default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=0)

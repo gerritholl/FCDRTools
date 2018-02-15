@@ -30,6 +30,10 @@ class HIRS2(HIRS):
         return HIRS.get_swath_width()
 
     @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "HIRS2"
+
+    @staticmethod
     def _add_angle_variables(dataset, height):
         default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
         variable = Variable(["y"], default_array)

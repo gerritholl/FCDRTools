@@ -39,3 +39,10 @@ class HIRS3Test(unittest.TestCase):
         ds = xr.Dataset()
         HIRS3.add_full_fcdr_variables(ds, 6)
         ha.assert_minor_frame_flags(ds)
+
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        HIRS3.add_template_key(ds)
+
+        self.assertEqual("HIRS3", ds.attrs["template_key"])

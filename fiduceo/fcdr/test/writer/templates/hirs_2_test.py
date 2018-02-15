@@ -35,7 +35,15 @@ class HIRS2Test(unittest.TestCase):
         ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
 
     def test_add_full_fcdr_variables(self):
+        # @todo 2 tb/tb add something here
         pass
+
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        HIRS2.add_template_key(ds)
+
+        self.assertEqual("HIRS2", ds.attrs["template_key"])
 
     def _assert_angle_variables(self, ds):
         satellite_zenith_angle = ds.variables["satellite_zenith_angle"]

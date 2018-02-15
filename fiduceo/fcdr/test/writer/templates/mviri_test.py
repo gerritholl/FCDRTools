@@ -390,6 +390,13 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_space.attrs["scan_correlation_scales"])
         self.assertEqual("digitised_gaussian", u_space.attrs["pdf_shape"])
 
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        MVIRI.add_template_key(ds)
+
+        self.assertEqual("MVIRI", ds.attrs["template_key"])
+
     def _assert_scalar_float_variable(self, ds, name, long_name, units, standard_name=None):
         dse = ds.variables[name]
         self.assertEqual((), dse.shape)

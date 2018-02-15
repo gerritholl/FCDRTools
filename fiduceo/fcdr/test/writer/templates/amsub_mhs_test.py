@@ -227,3 +227,10 @@ class AMSUB_MHSTest(unittest.TestCase):
         self.assertTrue(np.isnan(u_sol_zenith.attrs["_FillValue"]))
         self.assertEqual("uncertainty of solar zenith angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])
+
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        AMSUB_MHS.add_template_key(ds)
+
+        self.assertEqual("AMSUB_MHS", ds.attrs["template_key"])

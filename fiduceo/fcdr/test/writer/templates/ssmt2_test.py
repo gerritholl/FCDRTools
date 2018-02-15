@@ -154,3 +154,10 @@ class SSMT2Test(unittest.TestCase):
         self.assertTrue(np.isnan(u_warm_counts.data[2, 3, 7]))
         self.assertTrue(np.isnan(u_warm_counts.attrs['_FillValue']))
         self.assertEqual("TODO", u_warm_counts.attrs["long_name"])
+
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        SSMT2.add_template_key(ds)
+
+        self.assertEqual("SSMT2", ds.attrs["template_key"])

@@ -263,6 +263,10 @@ class AVHRR:
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, standard_names)
 
     @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "AVHRR"
+
+    @staticmethod
     def _add_counts_uncertainties_variables(dataset, height, names, long_names, attributes=None):
         for i, name in enumerate(names):
             variable = AVHRR._create_counts_uncertainty_variable(height, long_names[i])

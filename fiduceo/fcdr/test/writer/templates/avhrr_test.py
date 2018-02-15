@@ -277,6 +277,13 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_us_Bt", long_name="Ch4 Systematic uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch5_us_Bt", long_name="Ch5 Systematic uncertainty on brightness temperature")
 
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        AVHRR.add_template_key(ds)
+
+        self.assertEqual("AVHRR", ds.attrs["template_key"])
+
     def _assert_earth_counts_pdf(self, ds, name):
         variable = ds.variables[name]
         self.assertEqual("digitised_gaussian", variable.attrs["pdf_shape"])

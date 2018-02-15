@@ -183,6 +183,10 @@ class AMSUB_MHS:
         dataset["u_solar_zenith_angle"] = variable
 
     @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "AMSUB_MHS"
+
+    @staticmethod
     def create_angle_uncertainty_variable(angle_name, height):
         variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name, fill_value=np.NaN)
         tu.add_units(variable, "degree")

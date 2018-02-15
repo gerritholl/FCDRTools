@@ -74,3 +74,10 @@ class MVIRI_STATICTest(unittest.TestCase):
 
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI_STATIC.get_swath_width())
+
+    def test_add_template_key(self):
+        ds = xr.Dataset()
+
+        MVIRI_STATIC.add_template_key(ds)
+
+        self.assertEqual("MVIRI_STATIC", ds.attrs["template_key"])

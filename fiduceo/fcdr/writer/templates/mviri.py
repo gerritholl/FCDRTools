@@ -259,6 +259,10 @@ class MVIRI:
         dataset["allan_deviation_counts_space_vis"] = variable
 
     @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "MVIRI"
+
+    @staticmethod
     def _add_geo_correlation_attributes(geo_variable):
         geo_variable.attrs[corr.PIX_CORR_FORM] = corr.TRI_REL
         geo_variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL

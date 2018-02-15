@@ -189,3 +189,7 @@ class SSMT2:
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["u_warm_counts"] = variable
+
+    @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "SSMT2"

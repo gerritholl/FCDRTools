@@ -24,3 +24,7 @@ class HIRS4:
     @staticmethod
     def get_swath_width():
         return HIRS.get_swath_width()
+
+    @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "HIRS4"

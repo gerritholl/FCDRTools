@@ -65,6 +65,10 @@ class MVIRI_STATIC:
         dataset["satellite_azimuth_angle"] = variable
 
     @staticmethod
+    def add_template_key(dataset):
+        dataset.attrs["template_key"] = "MVIRI_STATIC"
+
+    @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         pass  # not required in this class
 

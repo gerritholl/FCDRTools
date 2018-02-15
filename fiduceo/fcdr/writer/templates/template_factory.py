@@ -18,8 +18,8 @@ class TemplateFactory:
             [("AMSUB", AMSUB_MHS), ("MHS", AMSUB_MHS), ("SSMT2", SSMT2), ("AVHRR", AVHRR), ("HIRS2", HIRS2), ("HIRS3", HIRS3), ("HIRS4", HIRS4), ("MVIRI", MVIRI), ("MVIRI_STATIC", MVIRI_STATIC)])
 
         self.flag_mapper = dict(
-            [("AMSUB", DefaultFlagMapper), ("MHS", DefaultFlagMapper), ("SSMT2", DefaultFlagMapper), ("AVHRR", AVHRR_FlagMapper), ("HIRS2", HIRS_FlagMapper), ("HIRS3", HIRS_FlagMapper),
-             ("HIRS4", HIRS_FlagMapper), ("MVIRI", MVIRI_FlagMapper)])
+            [("AMSUB", DefaultFlagMapper()), ("MHS", DefaultFlagMapper()), ("SSMT2", DefaultFlagMapper()), ("AVHRR", AVHRR_FlagMapper()), ("HIRS2", HIRS_FlagMapper()), ("HIRS3", HIRS_FlagMapper()),
+             ("HIRS4", HIRS_FlagMapper()), ("MVIRI", MVIRI_FlagMapper())])
 
     def get_sensor_template(self, name):
         return self.templates[name]

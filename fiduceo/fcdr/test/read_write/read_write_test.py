@@ -9,6 +9,9 @@ from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 class ReadWriteTests(unittest.TestCase):
     def setUp(self):
+        self.dataset = xr.Dataset()
+        self.dataset.attrs["template_key"] = "HIRS2"
+
         tempDir = tempfile.gettempdir()
         self.testDir = os.path.join(tempDir, 'fcdr')
         os.mkdir(self.testDir)
@@ -21,31 +24,28 @@ class ReadWriteTests(unittest.TestCase):
 
     def test_write_empty(self):
         testFile = os.path.join(self.testDir, 'delete_me.nc')
-        emptyDataset = xr.Dataset()
 
-        FCDRWriter.write(emptyDataset, testFile)
+        FCDRWriter.write(self.dataset, testFile)
 
         self.assertTrue(os.path.isfile(testFile))
 
     def test_write_overwrite_true(self):
         testFile = os.path.join(self.testDir, 'delete_me.nc')
-        emptyDataset = xr.Dataset()
 
-        FCDRWriter.write(emptyDataset, testFile, overwrite=True)
+        FCDRWriter.write(self.dataset, testFile, overwrite=True)
         self.assertTrue(os.path.isfile(testFile))
 
-        FCDRWriter.write(emptyDataset, testFile, overwrite=True)
+        FCDRWriter.write(self.dataset, testFile, overwrite=True)
         self.assertTrue(os.path.isfile(testFile))
 
     def test_write_overwrite_false(self):
         testFile = os.path.join(self.testDir, 'delete_me.nc')
-        emptyDataset = xr.Dataset()
 
-        FCDRWriter.write(emptyDataset, testFile)
+        FCDRWriter.write(self.dataset, testFile)
         self.assertTrue(os.path.isfile(testFile))
 
         try:
-            FCDRWriter.write(emptyDataset, testFile, overwrite=False)
+            FCDRWriter.write(self.dataset, testFile, overwrite=False)
             self.fail("IOError expected")
         except IOError:
             pass

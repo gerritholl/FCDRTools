@@ -45,33 +45,33 @@ class TemplateFactoryTest(unittest.TestCase):
     def test_get_flag_mapper(self):
         amsub = self.factory.get_flag_mapper("AMSUB")
         self.assertIsNotNone(amsub)
-        self.assertIsInstance(amsub, DefaultFlagMapper.__class__)
+        self.assertIsInstance(amsub, DefaultFlagMapper)
 
         mhs = self.factory.get_flag_mapper("MHS")
         self.assertIsNotNone(mhs)
-        self.assertIsInstance(mhs, DefaultFlagMapper.__class__)
+        self.assertIsInstance(mhs, DefaultFlagMapper)
 
         ssmt2 = self.factory.get_flag_mapper("SSMT2")
         self.assertIsNotNone(ssmt2)
-        self.assertIsInstance(ssmt2, DefaultFlagMapper.__class__)
+        self.assertIsInstance(ssmt2, DefaultFlagMapper)
 
         avhrr = self.factory.get_flag_mapper("AVHRR")
         self.assertIsNotNone(avhrr)
-        self.assertIsInstance(avhrr, AVHRR_FlagMapper.__class__)
+        self.assertIsInstance(avhrr, AVHRR_FlagMapper)
 
         hirs2 = self.factory.get_flag_mapper("HIRS2")
         self.assertIsNotNone(hirs2)
-        self.assertIsInstance(hirs2, HIRS_FlagMapper.__class__)
+        self.assertIsInstance(hirs2, HIRS_FlagMapper)
 
         hirs3 = self.factory.get_flag_mapper("HIRS3")
         self.assertIsNotNone(hirs3)
-        self.assertIsInstance(hirs3, HIRS_FlagMapper.__class__)
+        self.assertIsInstance(hirs3, HIRS_FlagMapper)
 
         hirs4 = self.factory.get_flag_mapper("HIRS4")
         self.assertIsNotNone(hirs4)
-        self.assertIsInstance(hirs4, HIRS_FlagMapper.__class__)
+        self.assertIsInstance(hirs4, HIRS_FlagMapper)
 
         mviri = self.factory.get_flag_mapper("MVIRI")
         self.assertIsNotNone(mviri)
-        self.assertIsInstance(mviri, MVIRI_FlagMapper.__class__)
+        self.assertIsInstance(mviri, MVIRI_FlagMapper)
 

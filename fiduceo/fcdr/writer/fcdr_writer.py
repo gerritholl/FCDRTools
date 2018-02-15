@@ -24,6 +24,11 @@ class FCDRWriter:
             else:
                 raise IOError("The file already exists: " + file)
 
+        # trigger mapping of sensor specific flags to the global flag variable
+        template_factory = TemplateFactory()
+        flag_mapper = template_factory.get_flag_mapper(ds.attrs["template_key"])
+        flag_mapper.map_global_flags(ds)
+
         # set up compression parameter for ALL variables. Unfortunately, xarray does not allow
         # one set of compression params per file, only per variable. tb 2017-01-25
         if compression_level is None:
@@ -75,6 +80,7 @@ class FCDRWriter:
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height)
         sensor_template.add_full_fcdr_variables(dataset, height)
+        sensor_template.add_template_key(dataset)
 
         return dataset
 
@@ -112,7 +118,8 @@ class FCDRWriter:
                          "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
                          "Observations\". Grant Agreement: 638822."
         dataset.attrs["writer_version"] = FCDRWriter._version
-        # @todo tb/tb 2 the following dictionary entries have to be supplied by the data generators
+
+        # The following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None
         dataset.attrs["title"] = None
         dataset.attrs["source"] = None

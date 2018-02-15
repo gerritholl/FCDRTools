@@ -1,35 +1,77 @@
 import unittest
 
 from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
+from fiduceo.fcdr.writer.templates.amsub_mhs import AMSUB_MHS
+from fiduceo.fcdr.writer.templates.avhrr_flag_mapper import AVHRR_FlagMapper
+from fiduceo.fcdr.writer.templates.default_flag_mapper import DefaultFlagMapper
+from fiduceo.fcdr.writer.templates.hirs_flag_mapper import HIRS_FlagMapper
+from fiduceo.fcdr.writer.templates.mviri_flag_mapper import MVIRI_FlagMapper
 
 
 class TemplateFactoryTest(unittest.TestCase):
+
+    def setUp(self):
+        self.factory = TemplateFactory()
+
     def test_get_sensor_template(self):
-        template_factory = TemplateFactory()
-
-        amsub = template_factory.get_sensor_template("AMSUB")
+        amsub = self.factory.get_sensor_template("AMSUB")
         self.assertIsNotNone(amsub)
+        self.assertIsInstance(amsub, AMSUB_MHS.__class__)
 
-        mhs = template_factory.get_sensor_template("MHS")
+        mhs = self.factory.get_sensor_template("MHS")
         self.assertIsNotNone(mhs)
 
-        ssmts = template_factory.get_sensor_template("SSMT2")
+        ssmts = self.factory.get_sensor_template("SSMT2")
         self.assertIsNotNone(ssmts)
 
-        avhrr = template_factory.get_sensor_template("AVHRR")
+        avhrr = self.factory.get_sensor_template("AVHRR")
         self.assertIsNotNone(avhrr)
 
-        hirs_2 = template_factory.get_sensor_template("HIRS2")
+        hirs_2 = self.factory.get_sensor_template("HIRS2")
         self.assertIsNotNone(hirs_2)
 
-        hirs_3 = template_factory.get_sensor_template("HIRS3")
+        hirs_3 = self.factory.get_sensor_template("HIRS3")
         self.assertIsNotNone(hirs_3)
 
-        hirs_4 = template_factory.get_sensor_template("HIRS4")
+        hirs_4 = self.factory.get_sensor_template("HIRS4")
         self.assertIsNotNone(hirs_4)
 
-        mviri = template_factory.get_sensor_template("MVIRI")
+        mviri = self.factory.get_sensor_template("MVIRI")
         self.assertIsNotNone(mviri)
 
-        mviri_static = template_factory.get_sensor_template("MVIRI_STATIC")
+        mviri_static = self.factory.get_sensor_template("MVIRI_STATIC")
         self.assertIsNotNone(mviri_static)
+
+    def test_get_flag_mapper(self):
+        amsub = self.factory.get_flag_mapper("AMSUB")
+        self.assertIsNotNone(amsub)
+        self.assertIsInstance(amsub, DefaultFlagMapper.__class__)
+
+        mhs = self.factory.get_flag_mapper("MHS")
+        self.assertIsNotNone(mhs)
+        self.assertIsInstance(mhs, DefaultFlagMapper.__class__)
+
+        ssmt2 = self.factory.get_flag_mapper("SSMT2")
+        self.assertIsNotNone(ssmt2)
+        self.assertIsInstance(ssmt2, DefaultFlagMapper.__class__)
+
+        avhrr = self.factory.get_flag_mapper("AVHRR")
+        self.assertIsNotNone(avhrr)
+        self.assertIsInstance(avhrr, AVHRR_FlagMapper.__class__)
+
+        hirs2 = self.factory.get_flag_mapper("HIRS2")
+        self.assertIsNotNone(hirs2)
+        self.assertIsInstance(hirs2, HIRS_FlagMapper.__class__)
+
+        hirs3 = self.factory.get_flag_mapper("HIRS3")
+        self.assertIsNotNone(hirs3)
+        self.assertIsInstance(hirs3, HIRS_FlagMapper.__class__)
+
+        hirs4 = self.factory.get_flag_mapper("HIRS4")
+        self.assertIsNotNone(hirs4)
+        self.assertIsInstance(hirs4, HIRS_FlagMapper.__class__)
+
+        mviri = self.factory.get_flag_mapper("MVIRI")
+        self.assertIsNotNone(mviri)
+        self.assertIsInstance(mviri, MVIRI_FlagMapper.__class__)
+

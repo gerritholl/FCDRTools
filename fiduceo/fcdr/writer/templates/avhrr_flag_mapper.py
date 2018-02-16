@@ -1,9 +1,10 @@
 import numpy as np
 
 from fiduceo.fcdr.writer.global_flags import GlobalFlags as gf
+from fiduceo.fcdr.writer.templates.default_flag_mapper import DefaultFlagMapper
 
 
-class AVHRR_FlagMapper:
+class AVHRR_FlagMapper(DefaultFlagMapper):
     BAD_GEOLOCATION_TIMING_ERR = np.uint8(1)
     BAD_CALIBRATION_RADIOMETER_ERR = np.uint8(2)
 
@@ -14,8 +15,6 @@ class AVHRR_FlagMapper:
         global_flag_data = dataset["quality_pixel_bitmask"].data
         avhrr_flag_data = dataset["data_quality_bitmask"].data
 
-        for source_mask, target_mask in zip(self.source_masks, self.target_masks):
-            intermediate = np.logical_and(avhrr_flag_data, source_mask).astype(np.uint8) * target_mask
-            global_flag_data = np.bitwise_or(global_flag_data, intermediate)
+        global_flag_data = self.evaluate_masks_uint8(avhrr_flag_data, global_flag_data, self.source_masks, self.target_masks)
 
         dataset["quality_pixel_bitmask"].data = global_flag_data

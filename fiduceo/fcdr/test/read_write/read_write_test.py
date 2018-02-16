@@ -3,7 +3,10 @@ import unittest
 
 import os
 import xarray as xr
+import numpy as np
+from xarray import Variable
 
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 
@@ -11,6 +14,11 @@ class ReadWriteTests(unittest.TestCase):
     def setUp(self):
         self.dataset = xr.Dataset()
         self.dataset.attrs["template_key"] = "HIRS2"
+
+        default_array = DefaultData.create_default_array(5, 5, np.uint16, fill_value=0)
+        variable = Variable(["y", "x"], default_array)
+        self.dataset["data_quality_bitmask"] = variable
+        self.dataset["quality_pixel_bitmask"] = variable
 
         tempDir = tempfile.gettempdir()
         self.testDir = os.path.join(tempDir, 'fcdr')

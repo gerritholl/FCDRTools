@@ -525,5 +525,5 @@ class AvhrrIoTest(unittest.TestCase):
 
     def assert_global_flags(self, target_data):
         variable = target_data["quality_pixel_bitmask"]
-        self.assertEqual(9, variable.data[9, 9])
+        self.assertEqual(11, variable.data[9, 9])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])

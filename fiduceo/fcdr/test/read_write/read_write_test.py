@@ -20,6 +20,14 @@ class ReadWriteTests(unittest.TestCase):
         self.dataset["data_quality_bitmask"] = variable
         self.dataset["quality_pixel_bitmask"] = variable
 
+        default_array = DefaultData.create_default_vector(5, np.int32, fill_value=0)
+        variable = Variable(["y"], default_array)
+        self.dataset["quality_scanline_bitmask"] = variable
+
+        default_array = DefaultData.create_default_array(19, 5, np.uint8, fill_value=0)
+        variable = Variable(["y", "channel"], default_array)
+        self.dataset["quality_channel_bitmask"] = variable
+
         tempDir = tempfile.gettempdir()
         self.testDir = os.path.join(tempDir, 'fcdr')
         os.mkdir(self.testDir)

@@ -125,7 +125,7 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["quality_pixel_bitmask"]
-            self.assertEqual(4, variable.data[4, 4])
+            self.assertEqual(6, variable.data[4, 4])
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["data_quality_bitmask"]

@@ -5,18 +5,26 @@ from fiduceo.fcdr.writer.templates.default_flag_mapper import DefaultFlagMapper
 
 
 class HIRS_FlagMapper(DefaultFlagMapper):
+    # pixel_quality
+    SUSPECT_MIRROR = np.uint8(1)
+    SUSPECT_GEO = np.uint8(2)
+    SUSPECT_TIME = np.uint8(4)
+    OUTLIER_NOS = np.uint8(8)
+    UNCERTAINTY_TOO_LARGE = np.uint8(16)
 
+    # scanline_quality
     REDUCED_CONTEXT = np.int32(536870912)
     BAD_TEMP_NO_RSELF = np.int32(1073741824)
 
+    # channel_quality
     DO_NOT_USE = np.uint8(1)
     UNCERTAINTY_SUSPICIOUS = np.uint8(2)
     SELF_EMISSION_FAILS = np.uint8(4)
     CALIBRATION_IMPOSSIBLE = np.uint8(8)
     CALIBRATION_SUSPECT = np.uint8(16)
 
-    source_masks = []     # @todo 1 tb/tb fill in other flags, add tests 2018-02-19
-    target_masks = []
+    source_masks = [SUSPECT_MIRROR, SUSPECT_GEO, SUSPECT_TIME, OUTLIER_NOS, UNCERTAINTY_TOO_LARGE]
+    target_masks = [gf.USE_WITH_CAUTION, gf.USE_WITH_CAUTION, gf.USE_WITH_CAUTION, gf.USE_WITH_CAUTION, gf.USE_WITH_CAUTION]
 
     source_scanline_masks = [REDUCED_CONTEXT, BAD_TEMP_NO_RSELF]
     target_scanline_masks = [gf.USE_WITH_CAUTION, gf.INVALID]
@@ -37,7 +45,7 @@ class HIRS_FlagMapper(DefaultFlagMapper):
         dataset["quality_pixel_bitmask"].data = global_flag_data
 
     def apply_channel_flags(self, dataset, global_flag_data):
-        if not "quality_channel_bitmask" in dataset.data_vars:   # special case for HIRS2, does not contain this variable tb 2018-02-19
+        if not "quality_channel_bitmask" in dataset.data_vars:  # special case for HIRS2, does not contain this variable tb 2018-02-19
             return global_flag_data
 
         channel_flag_data = dataset["quality_channel_bitmask"].data
@@ -64,7 +72,6 @@ class HIRS_FlagMapper(DefaultFlagMapper):
 
                 if flag_set:
                     global_flag_data[line, :] = np.bitwise_or(global_flag_data[line, :], gf.USE_WITH_CAUTION)
-
 
         return global_flag_data
 

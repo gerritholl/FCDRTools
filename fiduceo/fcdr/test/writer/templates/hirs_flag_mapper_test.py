@@ -35,17 +35,27 @@ class HIRS_FlagMapperTest(unittest.TestCase):
         self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 0])
         self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[0, 1])
 
-    # @todo 1 tb/tb reactivate when the set of flags is clear 2018-02-19
-    # def test_map_global_flags_uncertainty_suspicious(self):
-    #     self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.USE_WITH_CAUTION
-    #
-    #     self.dataset["data_quality_bitmask"].data[1, 0] = 1
-    #
-    #     self.mapper.map_global_flags(self.dataset)
-    #
-    #     self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 0])  # use_with_caution
-    #     self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[2, 0])  # use_with_caution
-    #     self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[0, 1])
+    def test_map_global_flags_suspect_mirror(self):
+        self.dataset["quality_pixel_bitmask"].data[2, 1] = gf.PADDED_DATA
+
+        self.dataset["data_quality_bitmask"].data[1, 0] = 1  # suspect_mirror
+
+        self.mapper.map_global_flags(self.dataset)
+
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 0])  # use_with_caution
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 0])
+        self.assertEqual(64, self.dataset["quality_pixel_bitmask"].data[2, 1])
+
+    def test_map_global_flags_suspect_time(self):
+        self.dataset["quality_pixel_bitmask"].data[2, 2] = gf.INCOMPLETE_CHANNEL_DATA
+
+        self.dataset["data_quality_bitmask"].data[1, 1] = 4  # suspect_time
+
+        self.mapper.map_global_flags(self.dataset)
+
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[1, 0])
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 1])  # use_with_caution
+        self.assertEqual(128, self.dataset["quality_pixel_bitmask"].data[2, 2])
 
     def test_map_global_flags_reduced_context_scanline(self):
         self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.INCOMPLETE_CHANNEL_DATA
@@ -116,26 +126,27 @@ class HIRS_FlagMapperTest(unittest.TestCase):
         self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[0, 2])  # use_with_caution
         self.assertEqual(1, self.dataset["quality_pixel_bitmask"].data[2, 2])  # invalid
         self.assertEqual(4, self.dataset["quality_pixel_bitmask"].data[1, 1])  # invalid_input
-        
-    # def test_map_global_flags_bad_calibration_radiometer_err(self):
-    #     self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.INVALID_INPUT
-    #
-    #     self.dataset["data_quality_bitmask"].data[1, 0] = 2
-    #
-    #     self.mapper.map_global_flags(self.dataset)
-    #
-    #     self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[0, 0])
-    #     self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 0])  # use_with_caution
-    #     self.assertEqual(4, self.dataset["quality_pixel_bitmask"].data[2, 0])  # invalid_input
-    #
-    # def test_map_global_all_flags(self):
-    #     self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.INVALID_GEOLOC
-    #     self.dataset["quality_pixel_bitmask"].data[0, 1] = gf.INVALID_GEOLOC
-    #
-    #     self.dataset["data_quality_bitmask"].data[2, 0] = 3
-    #
-    #     self.mapper.map_global_flags(self.dataset)
-    #
-    #     self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[1, 0])
-    #     self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[2, 0])  # invalid_input & invalid_geoloc
-    #     self.assertEqual(8, self.dataset["quality_pixel_bitmask"].data[0, 1])  # invalid_input
+
+    def test_map_global_all_flags(self):
+        self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.INVALID_GEOLOC
+        self.dataset["quality_pixel_bitmask"].data[0, 1] = gf.INVALID_GEOLOC
+
+        self.dataset["data_quality_bitmask"].data[2, 0] = 3  # suspect_mirror & suspect_geo
+
+        self.dataset["quality_channel_bitmask"].data[1, :] = 2  # uncertainty_suspicious in all channels
+
+        self.dataset["quality_scanline_bitmask"].data[0] = 536870912  # reduced_context
+
+        self.mapper.map_global_flags(self.dataset)
+
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[0, 0])  # use_with_caution
+        self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[0, 1])  # use_with_caution & invalid_geoloc
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[0, 2])  # use_with_caution
+
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 0])  # use_with_caution
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 1])  # use_with_caution
+        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 2])  # use_with_caution
+
+        self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[2, 0])  # use_with_caution & invalid_geoloc
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 1])  
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 2])

@@ -29,8 +29,8 @@ class HIRS_FlagMapper(DefaultFlagMapper):
     source_scanline_masks = [REDUCED_CONTEXT, BAD_TEMP_NO_RSELF]
     target_scanline_masks = [gf.USE_WITH_CAUTION, gf.INVALID]
 
-    source_channel_masks_dual = [DO_NOT_USE, CALIBRATION_IMPOSSIBLE]
-    source_channel_masks = [UNCERTAINTY_SUSPICIOUS, SELF_EMISSION_FAILS, CALIBRATION_SUSPECT]
+    source_channel_masks_dual = [DO_NOT_USE, SELF_EMISSION_FAILS, CALIBRATION_IMPOSSIBLE]
+    source_channel_masks = [UNCERTAINTY_SUSPICIOUS, CALIBRATION_SUSPECT]
 
     def map_global_flags(self, dataset):
         global_flag_data = dataset["quality_pixel_bitmask"].data

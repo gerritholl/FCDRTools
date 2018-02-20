@@ -148,5 +148,5 @@ class HIRS_FlagMapperTest(unittest.TestCase):
         self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 2])  # use_with_caution
 
         self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[2, 0])  # use_with_caution & invalid_geoloc
-        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 1])  
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 1])
         self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 2])

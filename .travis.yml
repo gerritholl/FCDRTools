@@ -22,7 +22,7 @@ install:
   - conda info -a
 
   - conda env create --file environment.yml
-  - source activate dmi-oe-sst-env
+  - source activate fiduceo-fcdr-tools-env
   - python setup.py install
 
 script:

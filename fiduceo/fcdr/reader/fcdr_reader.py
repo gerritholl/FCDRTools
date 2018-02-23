@@ -33,18 +33,20 @@ class FCDRReader:
         return ds
 
     @classmethod
-    def load_virtual_variable(cls, ds, var_name):
+    def _load_virtual_variable(cls, ds, var_name):
 
         v_var = ds.variables[var_name]
         if v_var is not None and "virtual" in v_var.attrs:
-            if cls._get_shape_product(v_var) <= 1:
+            if not cls._is_already_loaded(v_var):
                 dic = cls._create_dictionary_of_non_virtuals(ds)
                 expression_ = v_var.attrs["expression"]
                 biggest_variable = cls._get_biggest_variable(dic, expression_)
                 dims = biggest_variable.dims
+
                 to_extend = cls._find_used_one_dimensional_variables_to_extend(dic, dims, expression_)
                 for name in to_extend:
                     dic[name] = cls._extend_1d_vertical_to_2d(dic[name], biggest_variable)
+
                 expression_ = cls._replace_constants(expression_)
                 values = ne.evaluate(expression_, dic)
                 tmp_var = xr.Variable(dims, values)
@@ -67,20 +69,32 @@ class FCDRReader:
             if key in expression:
                 expression = expression.replace(str(key), '')
                 variable = dic[key]
-                shape_product = cls._get_shape_product(variable)
+                shape_product = cls._get_num_data_elements(variable)
                 if shape_product > biggest_shape_product:
                     biggest_shape_product = shape_product
                     biggest_var = variable
         return biggest_var
 
     @classmethod
-    def _get_shape_product(cls, variable):
+    def _get_num_data_elements(cls, variable):
         shape = variable.shape
         shape_len = len(shape)
-        prod = shape[0]
+        if shape_len == 0:
+            return 1    # scalar variable
+        
+        num_elems = shape[0]
         for i in range(1, shape_len):
-            prod = shape[i] * prod
-        return prod
+            num_elems = shape[i] * num_elems
+
+        return num_elems
+
+    @classmethod
+    def _is_already_loaded(cls, variable):
+        shape_len = len(variable.shape)
+        if shape_len >= 1:
+            return True
+
+        return False
 
     @classmethod
     def _find_used_one_dimensional_variables_to_extend(cls, dic, biggest_dims, expression):
@@ -88,6 +102,7 @@ class FCDRReader:
         dim_len = len(biggest_dims)
         if dim_len == 1:
             return one_dimensional_variables
+
         dim_of_interest = biggest_dims[dim_len - 2]
         sorted_keys = cls._get_keys_sorted__longest_first(dic)
         for key in sorted_keys:

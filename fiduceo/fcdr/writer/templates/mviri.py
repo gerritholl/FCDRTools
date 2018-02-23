@@ -258,6 +258,13 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "digitised_gaussian"
         dataset["allan_deviation_counts_space_vis"] = variable
 
+        # sensitivity_solar_irradiance_vis
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth"
+        dataset["sensitivity_solar_irradiance_vis"] = variable
+
     @staticmethod
     def add_template_key(dataset):
         dataset.attrs["template_key"] = "MVIRI"
@@ -308,5 +315,5 @@ class MVIRI:
             variable.attrs["long_name"] = long_name
 
         tu.add_units(variable, "degree")
-        tu.add_encoding(variable, data_type, fill_value, scale_factor,  chunksizes=CHUNKSIZES)
+        tu.add_encoding(variable, data_type, fill_value, scale_factor, chunksizes=CHUNKSIZES)
         return variable

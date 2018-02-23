@@ -17,7 +17,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_bool_variable()
         ds['b'] = get_two_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray([[t, f, f, f], [f, f, f, f], [t, f, f, f]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -27,7 +27,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_bool_variable()
         ds['b'] = get_two_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray([[t, f, t, t], [t, f, t, t], [t, f, t, f]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -36,7 +36,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], np.asarray([f, t, f, t]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -46,7 +46,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_vertical_one_dim_bool_variable()
         ds['b'] = get_two_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray([[f, f, f, f], [f, f, f, t], [f, f, f, f]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -56,7 +56,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_vertical_one_dim_bool_variable()
         ds['b'] = get_two_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray([[t, f, f, t], [t, t, t, t], [t, f, f, f]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -65,7 +65,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_vertical_one_dim_bool_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y'], np.asarray([t, f, t]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -74,7 +74,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[t, t, t, t], [t, t, t, f], [t, t, f, f]],
              [[t, f, f, f], [f, f, f, f], [f, f, f, f]]]))
@@ -85,7 +85,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[t, t, t, t], [t, t, t, t], [t, t, t, f]],
              [[t, t, f, f], [t, f, f, f], [f, f, f, f]]]))
@@ -96,7 +96,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[f, f, f, f], [f, f, f, t], [f, f, t, f]],
              [[f, t, f, f], [t, f, f, f], [f, f, f, f]]]))
@@ -107,7 +107,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[t, t, t, t], [t, t, t, f], [t, t, f, t]],
              [[t, f, t, t], [f, t, t, t], [t, t, t, t]]]))
@@ -118,7 +118,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[f, f, f, f], [f, f, f, t], [f, f, t, t]],
              [[f, t, t, t], [t, t, t, t], [t, t, t, t]]]))
@@ -129,7 +129,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_three_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['z', 'y', 'x'], np.asarray(
             [[[f, f, f, f], [f, f, f, f], [f, f, f, t]],
              [[f, f, t, t], [f, t, t, t], [t, t, t, t]]]))
@@ -140,7 +140,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[-10, -20, -30, -40], [-13, -23, -33, -43], [-16, -26, -36, -46]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -151,7 +151,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
         ds['b'] = get_vertical_one_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[210, 220, 230, 240], [313, 323, 333, 343], [416, 426, 436, 446]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -162,7 +162,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
         ds['b'] = get_vertical_one_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[190, 180, 170, 160], [287, 277, 267, 257], [384, 374, 364, 354]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -173,7 +173,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
         ds['b'] = get_vertical_one_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[2000, 4000, 6000, 8000], [3900, 6900, 9900, 12900], [6400, 10400, 14400, 18400]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -184,7 +184,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
         ds['b'] = get_vertical_one_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         loaded_ = ds['v']
         # if two arrays of type integer are divided, the result data type can be integer or float
         # the expected preparation depends on returned datatype
@@ -205,7 +205,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[100, 400, 900, 1600], [169, 529, 1089, 1849], [256, 676, 1296, 2116]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -215,7 +215,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_two_dim_int_variable()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['y', 'x'], np.asarray(
             [[3, 6, 2, 5], [6, 2, 5, 1], [2, 5, 1, 4]]))
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
@@ -225,7 +225,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_radians()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], np.asarray(
             [0,
              0.70710678,
@@ -240,7 +240,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_radians()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], np.asarray(
             [1,
              0.70710678,
@@ -255,7 +255,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = get_one_dim_radians()
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], np.asarray(
             [0,
              1,
@@ -270,7 +270,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0, 0.5, 1])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = ds['a']
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -279,7 +279,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [1, 0.5, 0])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = ds['a']
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -288,7 +288,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [1, 0.5, 0])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = ds['a']
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -298,7 +298,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
         ds['b'] = xr.Variable(('x',), [0.8, 0.7, 0.6])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.atan2(0.2, 0.8),
                                         math.atan2(0.4, 0.7),
                                         math.atan2(0.5, 0.6), ])
@@ -309,7 +309,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.sinh(0.2),
                                         math.sinh(0.4),
                                         math.sinh(0.5), ])
@@ -320,7 +320,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.cosh(0.2),
                                         math.cosh(0.4),
                                         math.cosh(0.5), ])
@@ -331,7 +331,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.tanh(0.2),
                                         math.tanh(0.4),
                                         math.tanh(0.5), ])
@@ -342,7 +342,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.asinh(0.2),
                                         math.asinh(0.4),
                                         math.asinh(0.5), ])
@@ -353,7 +353,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2, 4, 5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.acosh(2),
                                         math.acosh(4),
                                         math.acosh(5), ])
@@ -364,7 +364,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [0.2, 0.4, 0.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.atanh(0.2),
                                         math.atanh(0.4),
                                         math.atanh(0.5), ])
@@ -375,7 +375,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2.2, 3.4, 4.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.log(2.2),
                                         math.log(3.4),
                                         math.log(4.5), ])
@@ -386,7 +386,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2.2, 3.4, 4.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.log10(2.2),
                                         math.log10(3.4),
                                         math.log10(4.5), ])
@@ -397,7 +397,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2.2, 3.4, 4.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.log1p(2.2),
                                         math.log1p(3.4),
                                         math.log1p(4.5), ])
@@ -408,7 +408,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2.2, 3.4, 4.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.exp(2.2),
                                         math.exp(3.4),
                                         math.exp(4.5), ])
@@ -419,7 +419,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [2.2, 3.4, 4.5])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [math.expm1(2.2),
                                         math.expm1(3.4),
                                         math.expm1(4.5), ])
@@ -430,7 +430,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [4, 9, math.pow(12, 2)])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [2, 3, 12])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -439,7 +439,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(('x',), [-2.2, -3.4, 4.5 * -1])
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(('x',), [2.2, 3.4, 4.5])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -448,7 +448,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], [3.14159265359, 6.28318530718, 9.42477796077, 12.5663706144, 0.0314159265359])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -459,7 +459,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds['lpit'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
         ds['pit'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
         ds['lpi'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], [3, 6, 9, 12, 0.03])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -468,7 +468,7 @@ class FCDRReaderExpressionOperatorsAndConstantsTest(ut.TestCase):
         ds = xr.Dataset()
         ds['v'] = create_virtual_variable(expression)
         ds['a'] = xr.Variable(['x'], np.asarray([1, 2, 3, 4, 0.01]))
-        R.load_virtual_variable(ds, 'v')
+        R._load_virtual_variable(ds, 'v')
         expected = xr.Variable(['x'], [1.257, 2.257, 3.257, 4.257, 0.267])
         tu.assert_array_equals_with_index_error_message(self, expected, ds['v'])
 
@@ -516,7 +516,7 @@ def get_vertical_one_dim_int_variable():
 
 
 def create_virtual_variable(expression):
-    v_var = xr.Variable(["virtual"], np.full([0], float('nan')))
+    v_var = xr.Variable([], np.NaN)
     v_var.attrs["virtual"] = "true"
     v_var.attrs["expression"] = expression
     return v_var

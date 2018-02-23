@@ -4,10 +4,13 @@ import numpy as np
 import xarray as xr
 
 import fiduceo.fcdr.test.test_utils as tu
-from fiduceo.fcdr.reader.fcdr_reader import FCDRReader as R
+from fiduceo.fcdr.reader.fcdr_reader import FCDRReader
 
 
 class FCDRReaderTest(ut.TestCase):
+
+    def setUp(self):
+        self.fcdr_reader = FCDRReader()
 
     def test_adding_2_three_dimensional_variables(self):
         ds = xr.Dataset()
@@ -16,7 +19,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -40,7 +43,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -64,7 +67,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -88,7 +91,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a + b")
         ds["v_var"] = v_var
 
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -112,7 +115,7 @@ class FCDRReaderTest(ut.TestCase):
         v_var = create_virtual_variable("a * b")
         ds["v_var"] = v_var
 
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertTrue('v_var' in ds)
         virtual_loaded = ds['v_var']
@@ -135,13 +138,36 @@ class FCDRReaderTest(ut.TestCase):
         ds['b'] = create_two_dim_variable()
         ds["v_var"] = create_virtual_variable("a + b")
 
-        self.assertEqual(3, len(ds.data_vars))
-        R.load_virtual_variable(ds, 'v_var')
+        self.fcdr_reader._load_virtual_variable(ds, 'v_var')
+
         self.assertEqual(3, len(ds.data_vars))
         expected = np.full([4, 2, 3], 1)
         actual = ds['v_var'].values
         self.assertEqual(type(expected), type(actual))
         self.assertEqual(expected.shape, actual.shape)
+
+    def test_is_already_loaded(self):
+        virtual_variable = create_virtual_variable("alpha * beta")
+        self.assertFalse(self.fcdr_reader._is_already_loaded(virtual_variable))
+
+        variable = create_three_dim_variable()
+        self.assertTrue(self.fcdr_reader._is_already_loaded(variable))
+
+    def test_get_num_data_elements_virtual(self):
+        virtual_variable = create_virtual_variable("alpha * beta")
+        self.assertEqual(1, self.fcdr_reader._get_num_data_elements(virtual_variable))
+
+    def test_get_num_data_elements_one_d(self):
+        one_d_variable = create_one_dim_variable()
+        self.assertEqual(3, self.fcdr_reader._get_num_data_elements(one_d_variable))
+        
+    def test_get_num_data_elements_two_d(self):
+        two_d_variable = create_two_dim_variable()
+        self.assertEqual(6, self.fcdr_reader._get_num_data_elements(two_d_variable))
+
+    def test_get_num_data_elements_three_d(self):
+        three_d_variable = create_three_dim_variable()
+        self.assertEqual(24, self.fcdr_reader._get_num_data_elements(three_d_variable))
 
 
 def create_three_dim_variable():
@@ -172,7 +198,7 @@ def create_scalar_variable(value):
 
 
 def create_virtual_variable(expression):
-    v_var = xr.Variable(["virtual"], np.full([1], 1))
+    v_var = xr.Variable([], np.float32(1.0))
     v_var.attrs["virtual"] = "true"
     v_var.attrs["expression"] = expression
     return v_var

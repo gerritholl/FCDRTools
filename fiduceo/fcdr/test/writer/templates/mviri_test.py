@@ -390,6 +390,13 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_space.attrs["scan_correlation_scales"])
         self.assertEqual("digitised_gaussian", u_space.attrs["pdf_shape"])
 
+        s_sol_irr_vis = ds.variables["sensitivity_solar_irradiance_vis"]
+        self.assertEqual((), s_sol_irr_vis.shape)
+        self.assertTrue(np.isnan(s_sol_irr_vis.data))
+        self.assertEqual("true", s_sol_irr_vis.attrs["virtual"])
+        self.assertEqual("y, x", s_sol_irr_vis.attrs["dimension"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth", s_sol_irr_vis.attrs["expression"])
+
     def test_add_template_key(self):
         ds = xr.Dataset()
 

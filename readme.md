@@ -6,6 +6,11 @@
 
 Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) files.
 
+## Status
+
+[![Build Status](https://travis-ci.org/FIDUCEO/FCDRTools.svg?branch=master)](https://travis-ci.org/FIDUCEO/FCDRTools)
+[![codecov.io](https://codecov.io/gh/FIDUCEO/FCDRTools/branch/master/graphs/badge.svg?)](https://codecov.io/gh/FIDUCEO/FCDRTools/branch/master/graphs/badge.svg?)
+
 ## Contents
 
 * `reader` - reading utilities

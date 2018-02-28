@@ -4,6 +4,9 @@ import numpy as np
 class DataUtility:
     @staticmethod
     def check_scaling_ranges(variable):
+        if (variable.encoding.get("dtype") is None):
+            return  # unscaled variable - no need to check anything tb 2018-02-28
+
         valid_range = DataUtility._get_min_max(variable)
         valid_min = DataUtility._apply_min_attribute(variable, valid_range)
         valid_max = DataUtility._apply_max_attribute(variable, valid_range)
@@ -38,7 +41,7 @@ class DataUtility:
             return add_offset
 
         return 0.0
-    
+
     @staticmethod
     def _get_min_max(variable):
         data_type = variable.encoding.get('dtype')

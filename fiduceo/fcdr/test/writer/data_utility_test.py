@@ -8,6 +8,7 @@ from fiduceo.fcdr.writer.default_data import DefaultData
 
 
 class DataUtilityTest(unittest.TestCase):
+
     def test_check_scaling_ranges_int8_vector_ok(self):
         default_array = DefaultData.create_default_vector(4, np.float32)
         default_array[0] = 11.872  # -128
@@ -15,8 +16,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 12.04
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.001), ('add_offset', 12)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.001), ('add_offset', 12)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -27,8 +27,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 12.04
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.001), ('add_offset', 12)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.001), ('add_offset', 12)])
         
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -43,8 +42,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 13.05
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint8), ('_FillValue', 255), ('scale_factor', 0.02), ('add_offset', 11)])
+        variable.encoding = dict([('dtype', np.uint8), ('_FillValue', 255), ('scale_factor', 0.02), ('add_offset', 11)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -55,8 +53,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 13.05
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint8), ('_FillValue', 255), ('scale_factor', 0.02), ('add_offset', 11)])
+        variable.encoding = dict([('dtype', np.uint8), ('_FillValue', 255), ('scale_factor', 0.02), ('add_offset', 11)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -71,8 +68,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[1][0] = np.NaN
         default_array[1][1] = 14.06
         variable = Variable(["y", "x"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+        variable.encoding = dict([('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -83,8 +79,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[1][0] = np.NaN
         default_array[1][1] = 14.06
         variable = Variable(["y", "x"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+        variable.encoding = dict([('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -99,8 +94,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[1][0] = np.NaN
         default_array[1][1] = 14.06
         variable = Variable(["y", "x"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint16), ('_FillValue', 65535), ('scale_factor', 0.003), ('add_offset', 9)])
+        variable.encoding = dict([('dtype', np.uint16), ('_FillValue', 65535), ('scale_factor', 0.003), ('add_offset', 9)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -111,8 +105,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[1][0] = np.NaN
         default_array[1][1] = 14.06
         variable = Variable(["y", "x"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint16), ('_FillValue', 65535), ('scale_factor', 0.003), ('add_offset', 9)])
+        variable.encoding = dict([('dtype', np.uint16), ('_FillValue', 65535), ('scale_factor', 0.003), ('add_offset', 9)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -127,8 +120,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 14.04
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int32), ('_FillValue', -2147483647), ('scale_factor', 0.00001), ('add_offset', 13)])
+        variable.encoding = dict([('dtype', np.int32), ('_FillValue', -2147483647), ('scale_factor', 0.00001), ('add_offset', 13)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -139,8 +131,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 14.04
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int32), ('_FillValue', -2147483647), ('scale_factor', 0.00001), ('add_offset', 13)])
+        variable.encoding = dict([('dtype', np.int32), ('_FillValue', -2147483647), ('scale_factor', 0.00001), ('add_offset', 13)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -155,8 +146,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 14.01
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
+        variable.encoding = dict([('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -167,8 +157,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = 14.01
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
+        variable.encoding = dict([('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -183,8 +172,7 @@ class DataUtilityTest(unittest.TestCase):
         default_array[2] = np.NaN
         default_array[3] = np.NaN
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
+        variable.encoding = dict([('dtype', np.uint32), ('_FillValue', 4294967295), ('scale_factor', 0.00002), ('add_offset', 14)])
 
         DataUtility.check_scaling_ranges(variable)
 
@@ -197,8 +185,7 @@ class DataUtilityTest(unittest.TestCase):
         variable = Variable(["y", "x"], default_array)
         variable.attrs["valid_max"] = 25000
         variable.attrs["valid_min"] = 0
-        variable.encoding = dict(
-            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+        variable.encoding = dict([('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -215,8 +202,7 @@ class DataUtilityTest(unittest.TestCase):
         variable = Variable(["y", "x"], default_array)
         variable.attrs["valid_max"] = 25000
         variable.attrs["valid_min"] = 0
-        variable.encoding = dict(
-            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+        variable.encoding = dict([('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
 
         try:
             DataUtility.check_scaling_ranges(variable)
@@ -233,16 +219,25 @@ class DataUtilityTest(unittest.TestCase):
         variable = Variable(["y", "x"], default_array)
         variable.attrs["valid_max"] = 25000
         variable.attrs["valid_min"] = 0
-        variable.encoding = dict(
-            [('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+        variable.encoding = dict([('dtype', np.int16), ('_FillValue', -32767), ('scale_factor', 0.002), ('add_offset', 10)])
+
+        DataUtility.check_scaling_ranges(variable)
+
+    def test_check_scaling_ranges_int8_vector_unscaled(self):
+        default_array = DefaultData.create_default_vector(4, np.int8)
+        default_array[0] = 108
+        default_array[1] = 109
+        default_array[2] = -127
+        default_array[3] = 110
+        variable = Variable(["y"], default_array)
+        variable.encoding = dict([('_FillValue', -127)])
 
         DataUtility.check_scaling_ranges(variable)
 
     def test__get_scale_factor(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023), ('add_offset', 12)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023), ('add_offset', 12)])
 
         scale_factor = DataUtility._get_scale_factor(variable)
         self.assertEqual(0.023, scale_factor)
@@ -250,8 +245,7 @@ class DataUtilityTest(unittest.TestCase):
     def test__get_scale_factor_missing(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('add_offset', 12)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('add_offset', 12)])
 
         scale_factor = DataUtility._get_scale_factor(variable)
         self.assertEqual(1.0, scale_factor)
@@ -259,8 +253,7 @@ class DataUtilityTest(unittest.TestCase):
     def test__get_add_offset(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023), ('add_offset', 1.98)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023), ('add_offset', 1.98)])
 
         add_offset = DataUtility._get_add_offset(variable)
         self.assertEqual(1.98, add_offset)
@@ -268,8 +261,7 @@ class DataUtilityTest(unittest.TestCase):
     def test__get_add_offset_missing(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023)])
 
         add_offset = DataUtility._get_add_offset(variable)
         self.assertEqual(0.0, add_offset)
@@ -277,8 +269,7 @@ class DataUtilityTest(unittest.TestCase):
     def test__get_min_max(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023)])
+        variable.encoding = dict([('dtype', np.int8), ('_FillValue', -127), ('scale_factor', 0.023)])
 
         min_max = DataUtility._get_min_max(variable)
         self.assertEqual(-128, min_max.min)
@@ -287,8 +278,7 @@ class DataUtilityTest(unittest.TestCase):
     def test__get_min_max_missing_type(self):
         default_array = DefaultData.create_default_vector(2, np.float32)
         variable = Variable(["y"], default_array)
-        variable.encoding = dict(
-            [('_FillValue', -127), ('scale_factor', 0.023)])
+        variable.encoding = dict([('_FillValue', -127), ('scale_factor', 0.023)])
 
         try:
             DataUtility._get_min_max(variable)

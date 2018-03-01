@@ -262,8 +262,36 @@ class MVIRI:
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
-        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth"
+        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)"
         dataset["sensitivity_solar_irradiance_vis"] = variable
+
+        # sensitivity_count_vis
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        dataset["sensitivity_count_vis"] = variable
+
+        # sensitivity_count_space
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs["expression"] = "-1.0 * distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        dataset["sensitivity_count_space"] = variable
+
+        # sensitivity_a0_vis
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        dataset["sensitivity_a0_vis"] = variable
+
+        # sensitivity_a1_vis
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        dataset["sensitivity_a1_vis"] = variable
 
     @staticmethod
     def add_template_key(dataset):

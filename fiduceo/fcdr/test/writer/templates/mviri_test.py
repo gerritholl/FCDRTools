@@ -395,7 +395,35 @@ class MVIRITest(unittest.TestCase):
         self.assertTrue(np.isnan(s_sol_irr_vis.data))
         self.assertEqual("true", s_sol_irr_vis.attrs["virtual"])
         self.assertEqual("y, x", s_sol_irr_vis.attrs["dimension"])
-        self.assertEqual("distance_sun_earth * distance_sun_earth", s_sol_irr_vis.attrs["expression"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)", s_sol_irr_vis.attrs["expression"])
+
+        s_count_vis = ds.variables["sensitivity_count_vis"]
+        self.assertEqual((), s_count_vis.shape)
+        self.assertTrue(np.isnan(s_count_vis.data))
+        self.assertEqual("true", s_count_vis.attrs["virtual"])
+        self.assertEqual("y, x", s_count_vis.attrs["dimension"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_count_vis.attrs["expression"])
+
+        s_count_space = ds.variables["sensitivity_count_space"]
+        self.assertEqual((), s_count_space.shape)
+        self.assertTrue(np.isnan(s_count_space.data))
+        self.assertEqual("true", s_count_space.attrs["virtual"])
+        self.assertEqual("y, x", s_count_space.attrs["dimension"])
+        self.assertEqual("-1.0 * distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_count_space.attrs["expression"])
+
+        s_a0_vis = ds.variables["sensitivity_a0_vis"]
+        self.assertEqual((), s_a0_vis.shape)
+        self.assertTrue(np.isnan(s_a0_vis.data))
+        self.assertEqual("true", s_a0_vis.attrs["virtual"])
+        self.assertEqual("y, x", s_a0_vis.attrs["dimension"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_a0_vis.attrs["expression"])
+
+        s_a1_vis = ds.variables["sensitivity_a1_vis"]
+        self.assertEqual((), s_a1_vis.shape)
+        self.assertTrue(np.isnan(s_a1_vis.data))
+        self.assertEqual("true", s_a1_vis.attrs["virtual"])
+        self.assertEqual("y, x", s_a1_vis.attrs["dimension"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_a1_vis.attrs["expression"])
 
     def test_add_template_key(self):
         ds = xr.Dataset()

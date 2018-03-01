@@ -502,7 +502,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(51, len(ds.data_vars))
+        self.assertEqual(55, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -561,6 +561,10 @@ class FCDRWriterTest(unittest.TestCase):
 
         # virtual variables
         self.assertIsNotNone(ds.variables["sensitivity_solar_irradiance_vis"])
+        self.assertIsNotNone(ds.variables["sensitivity_count_vis"])
+        self.assertIsNotNone(ds.variables["sensitivity_count_space"])
+        self.assertIsNotNone(ds.variables["sensitivity_a0_vis"])
+        self.assertIsNotNone(ds.variables["sensitivity_a1_vis"])
 
     def testCreate_MVIRI_STATIC(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI_STATIC', 5000)

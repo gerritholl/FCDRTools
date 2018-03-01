@@ -2,5 +2,6 @@
 *.ipr
 *.iws
 .idea
+.coverage
 dist
 fcdr_tools.egg-info

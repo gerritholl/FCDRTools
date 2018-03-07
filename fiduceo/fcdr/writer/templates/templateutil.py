@@ -1,5 +1,5 @@
 import numpy as np
-from xarray import Variable
+from xarray import Variable, Coordinate
 
 from fiduceo.fcdr.writer.default_data import DefaultData
 
@@ -114,3 +114,15 @@ class TemplateUtil:
     @staticmethod
     def add_chunking(variable, chunksizes):
         variable.encoding = dict([('chunksizes', chunksizes)])
+
+    @staticmethod
+    def add_coordinates(ds):
+        x_dim = ds.dims["x"]
+        ds["x"] = Coordinate("x", np.arange(x_dim, dtype=np.uint16))
+
+        y_dim = ds.dims["y"]
+        ds["y"] = Coordinate("y", np.arange(y_dim, dtype=np.uint16))
+
+        if "channel" in ds.dims:
+            channels_dim = ds.dims["channel"]
+            ds["channel"] = Coordinate("channel", np.arange(channels_dim, dtype=np.uint16))

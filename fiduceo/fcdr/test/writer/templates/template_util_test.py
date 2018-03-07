@@ -2,7 +2,9 @@ import unittest
 
 import numpy as np
 import xarray as xr
+from xarray import Variable
 
+from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil
 
 
@@ -43,3 +45,37 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertEqual("status_flag", quality.attrs["standard_name"])
         self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128", quality.attrs["flag_masks"])
         self.assertEqual("invalid use_with_caution invalid_input invalid_geoloc invalid_time sensor_error padded_data incomplete_channel_data", quality.attrs["flag_meanings"])
+
+    def test_add_coordinates(self):
+        ds = xr.Dataset()
+        TemplateUtil.add_geolocation_variables(ds, 13, 108)
+
+        TemplateUtil.add_coordinates(ds)
+
+        x = ds["x"]
+        self.assertEqual((13,), x.shape)
+        self.assertEqual(np.uint16, x.dtype)
+
+        y = ds["y"]
+        self.assertEqual((108,), y.shape)
+        self.assertEqual(np.uint16, y.dtype)
+
+    def test_add_coordinates_with_channel(self):
+        ds = xr.Dataset()
+        TemplateUtil.add_geolocation_variables(ds, 8, 11)
+        default_array = DefaultData.create_default_array_3d(8, 11, 4, np.float32, np.NaN)
+        ds["three_d"] = Variable(["channel", "y", "x"], default_array)
+
+        TemplateUtil.add_coordinates(ds)
+
+        x = ds["x"]
+        self.assertEqual((8,), x.shape)
+        self.assertEqual(np.uint16, x.dtype)
+
+        y = ds["y"]
+        self.assertEqual((11,), y.shape)
+        self.assertEqual(np.uint16, y.dtype)
+
+        channel = ds["channel"]
+        self.assertEqual((4,), channel.shape)
+        self.assertEqual(np.uint16, channel.dtype)

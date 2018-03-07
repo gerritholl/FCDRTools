@@ -94,6 +94,11 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("1,2", qc_bitmask.attrs["flag_masks"])
         self.assertEqual("bad_channel some_pixels_not_detected_2sigma", qc_bitmask.attrs["flag_meanings"])
 
+        x = ds.variables["x"]
+        self.assertEqual((409,), x.shape)
+        self.assertEqual(13, x[13])
+
+
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())
 

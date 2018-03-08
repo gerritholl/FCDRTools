@@ -1,5 +1,5 @@
 import numpy as np
-from xarray import Variable
+from xarray import Variable, Coordinate
 
 from fiduceo.fcdr.writer.correlation import Correlation as corr
 from fiduceo.fcdr.writer.default_data import DefaultData
@@ -156,6 +156,14 @@ class MVIRI:
         dataset["bt_a_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter A", units="1")
         dataset["bt_b_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
         dataset["years_since_launch"] = tu.create_scalar_float_variable(long_name="Fractional year since launch of satellite", units="years")
+
+        tu.add_coordinates(dataset)
+
+        x_ir_wv_dim = dataset.dims["x_ir_wv"]
+        dataset["x_ir_wv"] = Coordinate("x_ir_wv", np.arange(x_ir_wv_dim, dtype=np.uint16))
+
+        y_ir_wv_dim = dataset.dims["y_ir_wv"]
+        dataset["y_ir_wv"] = Coordinate("y_ir_wv", np.arange(y_ir_wv_dim, dtype=np.uint16))
 
     @staticmethod
     def get_swath_width():

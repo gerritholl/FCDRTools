@@ -94,11 +94,11 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("1,2", qc_bitmask.attrs["flag_masks"])
         self.assertEqual("bad_channel some_pixels_not_detected_2sigma", qc_bitmask.attrs["flag_meanings"])
 
-        x = ds.variables["x"]
+        x = ds.coords["x"]
         self.assertEqual((409,), x.shape)
         self.assertEqual(13, x[13])
 
-        y = ds.variables["y"]
+        y = ds.coords["y"]
         self.assertEqual((5,), y.shape)
         self.assertEqual(4, y[4])
 

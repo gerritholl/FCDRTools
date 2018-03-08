@@ -149,6 +149,22 @@ class MVIRITest(unittest.TestCase):
         self._assert_scalar_float_variable(ds, "bt_b_wv", "WV Band BT conversion parameter B", "1")
         self._assert_scalar_float_variable(ds, "years_since_launch", "Fractional year since launch of satellite", "years")
 
+        x = ds.coords["x"]
+        self.assertEqual((5000,), x.shape)
+        self.assertEqual(15, x[15])
+
+        y = ds.coords["y"]
+        self.assertEqual((5000,), y.shape)
+        self.assertEqual(6, y[6])
+
+        x_ir_wv = ds.coords["x_ir_wv"]
+        self.assertEqual((2500,), x_ir_wv.shape)
+        self.assertEqual(16, x_ir_wv[16])
+
+        y_ir_wv = ds.coords["y_ir_wv"]
+        self.assertEqual((2500,), y_ir_wv.shape)
+        self.assertEqual(17, x[17])
+
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI.get_swath_width())
 

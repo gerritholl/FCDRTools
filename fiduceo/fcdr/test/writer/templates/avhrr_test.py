@@ -52,23 +52,23 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
         self.assertEqual(CHUNKING, sol_zenith.encoding["chunksizes"])
 
-        ch1_ref = ds.variables["Ch1_Ref"]
-        self._assert_correct_refl_variable(ch1_ref, "Channel 1 Reflectance")
+        ch1 = ds.variables["Ch1"]
+        self._assert_correct_refl_variable(ch1, "Channel 1 Reflectance")
 
-        ch2_ref = ds.variables["Ch2_Ref"]
-        self._assert_correct_refl_variable(ch2_ref, "Channel 2 Reflectance")
+        ch2 = ds.variables["Ch2"]
+        self._assert_correct_refl_variable(ch2, "Channel 2 Reflectance")
 
-        ch3a_ref = ds.variables["Ch3a_Ref"]
-        self._assert_correct_refl_variable(ch3a_ref, "Channel 3a Reflectance")
+        ch3a = ds.variables["Ch3a"]
+        self._assert_correct_refl_variable(ch3a, "Channel 3a Reflectance")
 
-        ch3b_bt = ds.variables["Ch3b_Bt"]
-        self._assert_correct_bt_variable(ch3b_bt, "Channel 3b Brightness Temperature")
+        ch3b = ds.variables["Ch3b"]
+        self._assert_correct_bt_variable(ch3b, "Channel 3b Brightness Temperature")
 
-        ch4_bt = ds.variables["Ch4_Bt"]
-        self._assert_correct_bt_variable(ch4_bt, "Channel 4 Brightness Temperature")
+        ch4 = ds.variables["Ch4"]
+        self._assert_correct_bt_variable(ch4, "Channel 4 Brightness Temperature")
 
-        ch5_bt = ds.variables["Ch5_Bt"]
-        self._assert_correct_bt_variable(ch5_bt, "Channel 5 Brightness Temperature")
+        ch5 = ds.variables["Ch5"]
+        self._assert_correct_bt_variable(ch5, "Channel 5 Brightness Temperature")
 
         dq_bitmask = ds.variables["data_quality_bitmask"]
         self.assertEqual((5, 409), dq_bitmask.shape)

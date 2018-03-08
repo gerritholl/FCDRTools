@@ -450,11 +450,11 @@ class AvhrrIoTest(unittest.TestCase):
 
     def add_sensor_data(self, dataset):
         for x in range(0, PRODUCT_WIDTH):
-            dataset["Ch1_Ref"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.001
-            dataset["Ch2_Ref"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.002
-            dataset["Ch3a_Ref"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.003
-            dataset["Ch4_Bt"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.004
-            dataset["Ch5_Bt"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.005
+            dataset["Ch1"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.001
+            dataset["Ch2"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.002
+            dataset["Ch3a"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.003
+            dataset["Ch4"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.004
+            dataset["Ch5"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.005
             dataset["relative_azimuth_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.010
             dataset["satellite_zenith_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.011
             dataset["solar_zenith_angle"].data[:, x] = np.ones((PRODUCT_HEIGHT), np.int16) * x * 0.012
@@ -471,27 +471,27 @@ class AvhrrIoTest(unittest.TestCase):
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
     def assert_sensor_variables(self, target_data):
-        variable = target_data["Ch1_Ref"]
+        variable = target_data["Ch1"]
         self.assertAlmostEqual(0.0, variable.data[0, 0], 8)
         self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
-        variable = target_data["Ch2_Ref"]
+        variable = target_data["Ch2"]
         self.assertAlmostEqual(0.002, variable.data[1, 1], 8)
         self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
-        variable = target_data["Ch3a_Ref"]
+        variable = target_data["Ch3a"]
         self.assertAlmostEqual(0.006, variable.data[2, 2], 8)
         self.assertEqual("toa_reflectance", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
-        variable = target_data["Ch4_Bt"]
+        variable = target_data["Ch4"]
         self.assertAlmostEqual(0.01, variable.data[3, 3], 8)
         self.assertEqual("toa_brightness_temperature", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
-        variable = target_data["Ch5_Bt"]
+        variable = target_data["Ch5"]
         self.assertAlmostEqual(0.02, variable.data[4, 4], 8)
         self.assertEqual("toa_brightness_temperature", variable.attrs["standard_name"])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])

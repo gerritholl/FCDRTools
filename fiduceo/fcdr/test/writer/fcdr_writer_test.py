@@ -651,12 +651,12 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
 
-        self.assertIsNotNone(ds.variables["Ch1_Ref"])
-        self.assertIsNotNone(ds.variables["Ch2_Ref"])
-        self.assertIsNotNone(ds.variables["Ch3a_Ref"])
-        self.assertIsNotNone(ds.variables["Ch3b_Bt"])
-        self.assertIsNotNone(ds.variables["Ch4_Bt"])
-        self.assertIsNotNone(ds.variables["Ch5_Bt"])
+        self.assertIsNotNone(ds.variables["Ch1"])
+        self.assertIsNotNone(ds.variables["Ch2"])
+        self.assertIsNotNone(ds.variables["Ch3a"])
+        self.assertIsNotNone(ds.variables["Ch3b"])
+        self.assertIsNotNone(ds.variables["Ch4"])
+        self.assertIsNotNone(ds.variables["Ch5"])
 
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])

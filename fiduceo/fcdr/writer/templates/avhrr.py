@@ -60,29 +60,12 @@ class AVHRR:
         variable.attrs["valid_min"] = 0
         dataset["solar_zenith_angle"] = variable
 
-        # Ch1_Ref
-        variable = AVHRR._create_channel_refl_variable(height, "Channel 1 Reflectance")
-        dataset["Ch1_Ref"] = variable
-
-        # Ch2_Ref
-        variable = AVHRR._create_channel_refl_variable(height, "Channel 2 Reflectance")
-        dataset["Ch2_Ref"] = variable
-
-        # Ch3a_Ref
-        variable = AVHRR._create_channel_refl_variable(height, "Channel 3a Reflectance")
-        dataset["Ch3a_Ref"] = variable
-
-        # Ch3b_Bt
-        variable = AVHRR._create_channel_bt_variable(height, "Channel 3b Brightness Temperature")
-        dataset["Ch3b_Bt"] = variable
-
-        # Ch4_Bt
-        variable = AVHRR._create_channel_bt_variable(height, "Channel 4 Brightness Temperature")
-        dataset["Ch4_Bt"] = variable
-
-        # Ch5_Bt
-        variable = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
-        dataset["Ch5_Bt"] = variable
+        dataset["Ch1"] = AVHRR._create_channel_refl_variable(height, "Channel 1 Reflectance")
+        dataset["Ch2"] = AVHRR._create_channel_refl_variable(height, "Channel 2 Reflectance")
+        dataset["Ch3a"] = AVHRR._create_channel_refl_variable(height, "Channel 3a Reflectance")
+        dataset["Ch3b"] = AVHRR._create_channel_bt_variable(height, "Channel 3b Brightness Temperature")
+        dataset["Ch4"] = AVHRR._create_channel_bt_variable(height, "Channel 4 Brightness Temperature")
+        dataset["Ch5"] = AVHRR._create_channel_bt_variable(height, "Channel 5 Brightness Temperature")
 
         # data_quality_bitmask
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint8, fill_value=0)

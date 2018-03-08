@@ -102,6 +102,10 @@ class HIRS:
         dataset["bt"] = variable
 
     @staticmethod
+    def add_coordinates(self, dataset):
+        tu.add_coordinates(dataset)
+
+    @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
 

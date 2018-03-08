@@ -135,6 +135,19 @@ class HIRSAssert(unittest.TestCase):
         self._assert_3d_channel_variable(ds, "u_independent", "uncertainty from independent errors", chunking=chunking)
         self._assert_3d_channel_variable(ds, "u_structured", "uncertainty from structured errors", chunking=chunking)
 
+    def assert_coordinates(self, ds):
+        x = ds.variables["x"]
+        self.assertEqual((56,), x.shape)
+        self.assertEqual(14, x[14])
+
+        y = ds.variables["y"]
+        self.assertEqual((6,), y.shape)
+        self.assertEqual(5, y[5])
+
+        channel = ds.variables["channel"]
+        self.assertEqual((19,), channel.shape)
+        self.assertEqual(6, channel[6])
+
     def _assert_3d_channel_variable(self, ds, name, long_name, chunking=None):
         variable = ds.variables[name]
         self.assertEqual((19, 7, 56), variable.shape)

@@ -98,6 +98,10 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((409,), x.shape)
         self.assertEqual(13, x[13])
 
+        y = ds.variables["y"]
+        self.assertEqual((5,), y.shape)
+        self.assertEqual(4, y[4])
+
 
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())

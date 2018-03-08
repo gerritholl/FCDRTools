@@ -23,6 +23,7 @@ class HIRS2Test(unittest.TestCase):
         ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
         self._assert_angle_variables(ds)
         ha.assert_common_sensor_variables(ds)
+        ha.assert_coordinates(ds)
 
     def test_get_swath_width(self):
         self.assertEqual(56, HIRS2.get_swath_width())

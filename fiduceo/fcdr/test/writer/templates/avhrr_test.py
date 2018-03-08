@@ -102,6 +102,10 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((5,), y.shape)
         self.assertEqual(4, y[4])
 
+        channel = ds.coords["channel"]
+        self.assertEqual((6,), channel.shape)
+        self.assertEqual(5, channel[5])
+
 
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())

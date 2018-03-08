@@ -165,6 +165,10 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual((2500,), y_ir_wv.shape)
         self.assertEqual(17, x[17])
 
+        srf_size = ds.coords["srf_size"]
+        self.assertEqual((1011,), srf_size.shape)
+        self.assertEqual(18, srf_size[18])
+
     def test_get_swath_width(self):
         self.assertEqual(5000, MVIRI.get_swath_width())
 

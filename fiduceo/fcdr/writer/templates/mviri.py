@@ -7,7 +7,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 CHUNKSIZES = (500, 500)
 
-SRF_VIS_DIMENSION = "srf_size_vis"
+SRF_VIS_DIMENSION = "srf_size"
 SRF_IR_WV_DIMENSION = "srf_size_ir_wv"
 IR_X_DIMENSION = "x_ir_wv"
 IR_Y_DIMENSION = "y_ir_wv"
@@ -164,6 +164,9 @@ class MVIRI:
 
         y_ir_wv_dim = dataset.dims["y_ir_wv"]
         dataset["y_ir_wv"] = Coordinate("y_ir_wv", np.arange(y_ir_wv_dim, dtype=np.uint16))
+
+        srf_size_dim = dataset.dims["srf_size"]
+        dataset["srf_size"] = Coordinate("srf_size", np.arange(srf_size_dim, dtype=np.uint16))
 
     @staticmethod
     def get_swath_width():

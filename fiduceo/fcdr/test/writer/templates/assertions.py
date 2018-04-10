@@ -47,3 +47,21 @@ class Assertions:
         
         if chunking is not None:
             test_case.assertEqual(chunking, quality.encoding['chunksizes'])
+
+    @staticmethod
+    def assert_correlation_matrices(test_case, ds, num_channels):
+        ch_corr_indep = ds.variables["channel_correlation_matrix_independent"]
+        test_case.assertEqual((num_channels, num_channels), ch_corr_indep.shape)
+        test_case.assertAlmostEqual(1.0, ch_corr_indep[0, 0])
+        test_case.assertAlmostEqual(0.0, ch_corr_indep[1, 0])
+        test_case.assertEqual("Channel_correlation_matrix_independent_effects", ch_corr_indep.attrs["long_name"])
+        test_case.assertEqual("1", ch_corr_indep.attrs["units"])
+        test_case.assertEqual("Channel error correlation matrix for independent effects", ch_corr_indep.attrs["description"])
+
+        ch_corr_stuct = ds.variables["channel_correlation_matrix_structured"]
+        test_case.assertEqual((num_channels, num_channels), ch_corr_stuct.shape)
+        test_case.assertAlmostEqual(1.0, ch_corr_stuct[1, 1])
+        test_case.assertAlmostEqual(0.0, ch_corr_stuct[0, 2])
+        test_case.assertEqual("Channel_correlation_matrix_structured_effects", ch_corr_stuct.attrs["long_name"])
+        test_case.assertEqual("1", ch_corr_stuct.attrs["units"])
+        test_case.assertEqual("Channel error correlation matrix for structured effects", ch_corr_stuct.attrs["description"])

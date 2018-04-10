@@ -106,7 +106,6 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((6,), channel.shape)
         self.assertEqual(5, channel[5])
 
-
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())
 
@@ -127,6 +126,8 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch4", long_name="structured uncertainty per pixel for channel 4")
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch5", long_name="independent uncertainty per pixel for channel 5")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch5", long_name="structured uncertainty per pixel for channel 5")
+
+        Assertions.assert_correlation_matrices(self, ds, 6)
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

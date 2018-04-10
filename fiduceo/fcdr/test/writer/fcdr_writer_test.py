@@ -101,7 +101,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(28, len(ds.data_vars))
+        self.assertEqual(30, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -123,6 +123,9 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_structured_Ch4"])
         self.assertIsNotNone(ds.variables["u_independent_Ch5"])
         self.assertIsNotNone(ds.variables["u_structured_Ch5"])
+
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 
     def testCreateTemplateFull_AVHRR(self):
         ds = FCDRWriter.createTemplateFull('AVHRR', 13667)
@@ -212,7 +215,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(12, len(ds.data_vars))
+        self.assertEqual(14, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -230,6 +233,8 @@ class FCDRWriterTest(unittest.TestCase):
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
         self.assertIsNotNone(ds.variables["u_structured"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 
     def testCreateTemplateFull_HIRS2(self):
         ds = FCDRWriter.createTemplateFull('HIRS2', 209)
@@ -291,7 +296,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(15, len(ds.data_vars))
+        self.assertEqual(17, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -312,6 +317,8 @@ class FCDRWriterTest(unittest.TestCase):
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
         self.assertIsNotNone(ds.variables["u_structured"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 
     def testCreateTemplateFull_HIRS3(self):
         ds = FCDRWriter.createTemplateFull('HIRS3', 209)
@@ -371,7 +378,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(15, len(ds.data_vars))
+        self.assertEqual(17, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -392,6 +399,8 @@ class FCDRWriterTest(unittest.TestCase):
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
         self.assertIsNotNone(ds.variables["u_structured"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 
     def testCreateTemplateFull_HIRS4(self):
         ds = FCDRWriter.createTemplateFull('HIRS4', 209)

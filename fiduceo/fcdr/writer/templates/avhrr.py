@@ -119,6 +119,8 @@ class AVHRR:
         names = ["u_structured_Ch3b", "u_structured_Ch4", "u_structured_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
+        tu.add_correlation_matrices(dataset, N_CHANS)
+
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
         # u_latitude

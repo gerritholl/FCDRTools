@@ -102,7 +102,7 @@ class HIRS:
         dataset["bt"] = variable
 
     @staticmethod
-    def add_coordinates(self, dataset):
+    def add_coordinates(dataset):
         tu.add_coordinates(dataset)
 
     @staticmethod
@@ -113,6 +113,8 @@ class HIRS:
     def add_easy_fcdr_variables(dataset, height):
         dataset["u_independent"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from independent errors")
         dataset["u_structured"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from structured errors")
+
+        tu.add_correlation_matrices(dataset, NUM_CHANNELS)
 
     @staticmethod
     def _create_easy_fcdr_variable(height, long_name):

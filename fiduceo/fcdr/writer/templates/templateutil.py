@@ -126,3 +126,19 @@ class TemplateUtil:
         if "channel" in ds.dims:
             channels_dim = ds.dims["channel"]
             ds["channel"] = Coordinate("channel", np.arange(channels_dim, dtype=np.uint16))
+
+    @staticmethod
+    def add_correlation_matrices(dataset, num_channels):
+        default_array = np.diag(np.ones(num_channels, dtype=np.float32))
+        variable = Variable(["channel", "channel"], default_array)
+        variable.attrs["long_name"] = "Channel_correlation_matrix_independent_effects"
+        variable.attrs["units"] = "1"
+        variable.attrs["description"] = "Channel error correlation matrix for independent effects"
+        dataset['channel_correlation_matrix_independent'] = variable
+
+        default_array = np.diag(np.ones(num_channels, dtype=np.float32))
+        variable = Variable(["channel", "channel"], default_array)
+        variable.attrs["long_name"] = "Channel_correlation_matrix_structured_effects"
+        variable.attrs["units"] = "1"
+        variable.attrs["description"] = "Channel error correlation matrix for structured effects"
+        dataset['channel_correlation_matrix_structured'] = variable

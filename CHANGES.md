@@ -3,3 +3,4 @@
 - implemented virtual variables handling for MVIRI
 - added coordinate variables for x/y/channel
 - renamed AVHRR channel variables
+- added channel correlation matrices for AVHRR and HIRS

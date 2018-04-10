@@ -35,6 +35,8 @@ class HIRS2Test(unittest.TestCase):
 
         ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
 
+        Assertions.assert_correlation_matrices(self, ds, 19)
+
     def test_add_full_fcdr_variables(self):
         # @todo 2 tb/tb add something here
         pass

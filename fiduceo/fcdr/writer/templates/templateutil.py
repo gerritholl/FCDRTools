@@ -133,12 +133,18 @@ class TemplateUtil:
         variable = Variable(["channel", "channel"], default_array)
         variable.attrs["long_name"] = "Channel_correlation_matrix_independent_effects"
         variable.attrs["units"] = "1"
+        variable.attrs["valid_min"] = "-10000"
+        variable.attrs["valid_max"] = "10000"
         variable.attrs["description"] = "Channel error correlation matrix for independent effects"
+        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0001)
         dataset['channel_correlation_matrix_independent'] = variable
 
         default_array = np.diag(np.ones(num_channels, dtype=np.float32))
         variable = Variable(["channel", "channel"], default_array)
         variable.attrs["long_name"] = "Channel_correlation_matrix_structured_effects"
         variable.attrs["units"] = "1"
+        variable.attrs["valid_min"] = "-10000"
+        variable.attrs["valid_max"] = "10000"
         variable.attrs["description"] = "Channel error correlation matrix for structured effects"
+        TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0001)
         dataset['channel_correlation_matrix_structured'] = variable

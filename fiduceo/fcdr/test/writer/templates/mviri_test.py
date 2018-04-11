@@ -215,6 +215,12 @@ class MVIRITest(unittest.TestCase):
         self._assert_scalar_float_variable(ds, "sub_satellite_latitude_end", "Latitude of the sub satellite point at image end", "degrees_north")
         self._assert_scalar_float_variable(ds, "sub_satellite_longitude_end", "Longitude of the sub satellite point at image end", "degrees_east")
 
+        Assertions.assert_correlation_matrices(self, ds, 3)
+
+        channel = ds.coords["channel"]
+        self.assertEqual((3,), channel.shape)
+        self.assertEqual("wv", channel[1])
+
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()
         MVIRI.add_full_fcdr_variables(ds, 7)

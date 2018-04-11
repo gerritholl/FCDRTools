@@ -12,6 +12,7 @@ class HIRS4:
 
         HIRS.add_common_sensor_variables(dataset, height)
         HIRS.add_extended_flag_variables(dataset, height)
+        HIRS.add_coordinates(dataset)
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):

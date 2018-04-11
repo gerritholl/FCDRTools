@@ -103,7 +103,11 @@ class HIRS:
 
     @staticmethod
     def add_coordinates(dataset):
-        tu.add_coordinates(dataset)
+        channel_names = []
+        for i in range(0, 19):
+            channel_names.append("Ch" + str(i))
+
+        tu.add_coordinates(dataset, channel_names)
 
     @staticmethod
     def get_swath_width():

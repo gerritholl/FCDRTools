@@ -19,6 +19,8 @@ SRF_SIZE_VIS = 1011
 SRF_SIZE_IR_WV = 1011
 SOL_IRR_SIZE = 24
 
+NUM_CHANNELS = 3
+
 TIME_FILL_VALUE = -32768
 
 
@@ -157,8 +159,6 @@ class MVIRI:
         dataset["bt_b_wv"] = tu.create_scalar_float_variable(long_name="WV Band BT conversion parameter B", units="1")
         dataset["years_since_launch"] = tu.create_scalar_float_variable(long_name="Fractional year since launch of satellite", units="years")
 
-        tu.add_coordinates(dataset)
-
         x_ir_wv_dim = dataset.dims["x_ir_wv"]
         dataset["x_ir_wv"] = Coordinate("x_ir_wv", np.arange(x_ir_wv_dim, dtype=np.uint16))
 
@@ -205,6 +205,10 @@ class MVIRI:
         dataset["sub_satellite_longitude_start"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image start", units="degrees_east")
         dataset["sub_satellite_latitude_end"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image end", units="degrees_north")
         dataset["sub_satellite_longitude_end"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image end", units="degrees_east")
+
+        tu.add_correlation_matrices(dataset, NUM_CHANNELS)
+
+        tu.add_coordinates(dataset, ["vis", "wv", "ir"])
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

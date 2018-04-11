@@ -19,7 +19,6 @@ class AVHRR:
     def add_original_variables(dataset, height):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
         tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
-        tu.add_coordinates(dataset)
 
         # Time
         default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)
@@ -92,6 +91,8 @@ class AVHRR:
         variable.attrs["flag_masks"] = '1,2'
         variable.attrs['flag_meanings'] = 'bad_channel some_pixels_not_detected_2sigma'
         dataset['quality_channel_bitmask'] = variable
+
+        tu.add_coordinates(dataset, ["Ch1", "Ch2", "Ch3a", "Ch3b", "Ch4", "Ch5"])
 
     @staticmethod
     def get_swath_width():

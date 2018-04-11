@@ -460,7 +460,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verify_quality_flags(ds)
 
-        self.assertEqual(40, len(ds.data_vars))
+        self.assertEqual(42, len(ds.data_vars))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -504,6 +504,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["sub_satellite_longitude_start"])
         self.assertIsNotNone(ds.variables["sub_satellite_latitude_end"])
         self.assertIsNotNone(ds.variables["sub_satellite_longitude_end"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
+        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 
     def testCreateTemplateFull_MVIRI(self):
         ds = FCDRWriter.createTemplateFull('MVIRI', 5000)

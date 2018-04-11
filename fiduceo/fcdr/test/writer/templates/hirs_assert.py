@@ -146,7 +146,7 @@ class HIRSAssert(unittest.TestCase):
 
         channel = ds.coords["channel"]
         self.assertEqual((19,), channel.shape)
-        self.assertEqual(6, channel[6])
+        self.assertEqual("Ch6", channel[6])
 
     def _assert_3d_channel_variable(self, ds, name, long_name, chunking=None):
         variable = ds.variables[name]

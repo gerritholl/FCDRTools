@@ -16,6 +16,7 @@ class HIRS2(HIRS):
         HIRS2._add_angle_variables(dataset, height)
 
         HIRS.add_common_sensor_variables(dataset, height)
+        HIRS.add_coordinates(dataset)
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):

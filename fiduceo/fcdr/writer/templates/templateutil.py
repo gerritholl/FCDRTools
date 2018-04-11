@@ -116,16 +116,19 @@ class TemplateUtil:
         variable.encoding = dict([('chunksizes', chunksizes)])
 
     @staticmethod
-    def add_coordinates(ds):
+    def add_coordinates(ds, channel_data=None):
         x_dim = ds.dims["x"]
         ds["x"] = Coordinate("x", np.arange(x_dim, dtype=np.uint16))
 
         y_dim = ds.dims["y"]
         ds["y"] = Coordinate("y", np.arange(y_dim, dtype=np.uint16))
 
-        if "channel" in ds.dims:
+        if "channel" in ds.dims and channel_data is None:
             channels_dim = ds.dims["channel"]
             ds["channel"] = Coordinate("channel", np.arange(channels_dim, dtype=np.uint16))
+
+        if channel_data is not None:
+            ds["channel"] = Coordinate("channel", channel_data)
 
     @staticmethod
     def add_correlation_matrices(dataset, num_channels):

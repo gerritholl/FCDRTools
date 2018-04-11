@@ -4,3 +4,4 @@
 - added coordinate variables for x/y/channel
 - renamed AVHRR channel variables
 - added channel correlation matrices for AVHRR and HIRS
+- added channel coordinate variables

@@ -104,7 +104,7 @@ class HIRS:
     @staticmethod
     def add_coordinates(dataset):
         channel_names = []
-        for i in range(0, 19):
+        for i in range(1, 20):
             channel_names.append("Ch" + str(i))
 
         tu.add_coordinates(dataset, channel_names)

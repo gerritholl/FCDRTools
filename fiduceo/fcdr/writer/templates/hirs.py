@@ -39,6 +39,7 @@ class HIRS:
             "flag_meanings"] = "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large"
         variable.attrs["standard_name"] = "status_flag"
         tu.add_chunking(variable, CHUNKING_2D)
+        tu.add_geolocation_attribute(variable)
         dataset["data_quality_bitmask"] = variable
 
     @staticmethod
@@ -98,6 +99,7 @@ class HIRS:
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
         tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0, chunksizes=CHUNKING_BT)
+        tu.add_geolocation_attribute(variable)
         variable.attrs["ancilliary_variables"] = "quality_scanline_bitmask quality_channel_bitmask"
         dataset["bt"] = variable
 
@@ -588,6 +590,7 @@ class HIRS:
             variable.attrs["orig_name"] = orig_name
 
         tu.add_units(variable, "degree")
+        tu.add_geolocation_attribute(variable)
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0, chunking)
         return variable
 

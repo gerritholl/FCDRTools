@@ -19,6 +19,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("toa_brightness_temperature", bt.attrs["standard_name"])
         self.assertEqual("Brightness temperature, NOAA/EUMETSAT calibrated", bt.attrs["long_name"])
         self.assertEqual("K", bt.attrs["units"])
+        self.assertEqual("longitude latitude", bt.attrs["coordinates"])
         self.assertEqual(np.int16, bt.encoding['dtype'])
         self.assertEqual(-999, bt.encoding['_FillValue'])
         self.assertEqual(0.01, bt.encoding['scale_factor'])
@@ -40,6 +41,7 @@ class HIRSAssert(unittest.TestCase):
             self.assertEqual(chunking, satellite_zenith_angle.encoding['chunksizes'])
         self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
         self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
+        self.assertEqual("longitude latitude", satellite_zenith_angle.attrs["coordinates"])
 
         solar_zenith_angle = ds.variables["solar_zenith_angle"]
         self.assertEqual((6, 56), solar_zenith_angle.shape)
@@ -53,6 +55,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["standard_name"])
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["orig_name"])
         self.assertEqual("degree", solar_zenith_angle.attrs["units"])
+        self.assertEqual("longitude latitude", solar_zenith_angle.attrs["coordinates"])
 
         satellite_azimuth_angle = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((6, 56), satellite_azimuth_angle.shape)
@@ -66,6 +69,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("sensor_azimuth_angle", satellite_azimuth_angle.attrs["standard_name"])
         self.assertEqual("local_azimuth_angle", satellite_azimuth_angle.attrs["long_name"])
         self.assertEqual("degree", satellite_azimuth_angle.attrs["units"])
+        self.assertEqual("longitude latitude", satellite_azimuth_angle.attrs["coordinates"])
 
         solar_azimuth_angle = ds.variables["solar_azimuth_angle"]
         self.assertEqual((6, 56), solar_azimuth_angle.shape)
@@ -78,6 +82,7 @@ class HIRSAssert(unittest.TestCase):
             self.assertEqual(chunking, solar_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
+        self.assertEqual("longitude latitude", solar_azimuth_angle.attrs["coordinates"])
 
     def assert_common_sensor_variables(self, ds):
         scanline = ds.variables["scanline"]
@@ -103,6 +108,7 @@ class HIRSAssert(unittest.TestCase):
             "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large",
             dq_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", dq_bitmask.attrs["standard_name"])
+        self.assertEqual("longitude latitude", dq_bitmask.attrs["coordinates"])
 
         qual_scan_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((6,), qual_scan_bitmask.shape)

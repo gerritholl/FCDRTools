@@ -79,3 +79,11 @@ class TemplateUtilTest(unittest.TestCase):
         channel = ds["channel"]
         self.assertEqual((4,), channel.shape)
         self.assertEqual(np.uint16, channel.dtype)
+
+    def test_add_geolocation_attribute(self):
+        default_array = DefaultData.create_default_array_3d(8, 6, 4, np.float32, np.NaN)
+        variable = Variable(["channel", "y", "x"], default_array)
+
+        TemplateUtil.add_geolocation_attribute(variable)
+        self.assertEqual("longitude latitude", variable.attrs["coordinates"])
+

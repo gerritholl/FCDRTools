@@ -40,6 +40,7 @@ class HIRS2(HIRS):
         variable = Variable(["y"], default_array)
         variable.attrs["standard_name"] = "platform_zenith_angle"
         tu.add_units(variable, "degree")
+        tu.add_geolocation_attribute(variable)
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
         dataset["satellite_zenith_angle"] = variable
 

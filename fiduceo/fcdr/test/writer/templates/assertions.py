@@ -34,6 +34,7 @@ class Assertions:
         test_case.assertEqual((height, width), quality.shape)
         test_case.assertEqual(0, quality.data[1, 1])
         test_case.assertEqual("status_flag", quality.attrs["standard_name"])
+        test_case.assertEqual("longitude latitude", quality.attrs["coordinates"])
 
         masks = "1, 2, 4, 8, 16, 32, 64, 128"
         if masks_append is not None:

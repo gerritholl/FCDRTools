@@ -37,6 +37,7 @@ class AVHRR:
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = -18000
+        tu.add_geolocation_attribute(variable)
         dataset["relative_azimuth_angle"] = variable
 
         # satellite_zenith_angle
@@ -47,6 +48,7 @@ class AVHRR:
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 9000
         variable.attrs["valid_min"] = 0
+        tu.add_geolocation_attribute(variable)
         dataset["satellite_zenith_angle"] = variable
 
         # solar_zenith_angle
@@ -57,6 +59,7 @@ class AVHRR:
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 18000
         variable.attrs["valid_min"] = 0
+        tu.add_geolocation_attribute(variable)
         dataset["solar_zenith_angle"] = variable
 
         dataset["Ch1"] = AVHRR._create_channel_refl_variable(height, "Channel 1 Reflectance")
@@ -74,6 +77,7 @@ class AVHRR:
         variable.attrs["flag_masks"] = '1,2'
         variable.attrs['flag_meanings'] = 'bad_geolocation_timing_err bad_calibration_radiometer_err'
         tu.add_chunking(variable, CHUNKS_2D)
+        tu.add_geolocation_attribute(variable)
         dataset['data_quality_bitmask'] = variable
 
         default_array = DefaultData.create_default_vector(height, np.uint8, fill_value=0)
@@ -351,6 +355,7 @@ class AVHRR:
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.0001, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 0
+        tu.add_geolocation_attribute(variable)
         return variable
 
     @staticmethod
@@ -362,5 +367,6 @@ class AVHRR:
         tu.add_units(variable, "K")
         variable.attrs["valid_max"] = 10000
         variable.attrs["valid_min"] = -20000
+        tu.add_geolocation_attribute(variable)
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, 273.15, chunksizes=CHUNKS_2D)
         return variable

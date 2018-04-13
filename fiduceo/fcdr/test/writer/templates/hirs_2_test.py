@@ -58,6 +58,7 @@ class HIRS2Test(unittest.TestCase):
         self.assertEqual(-180.0, satellite_zenith_angle.encoding['add_offset'])
         self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
         self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
+        self.assertEqual("longitude latitude", satellite_zenith_angle.attrs["coordinates"])
 
         solar_azimuth_angle = ds.variables["solar_azimuth_angle"]
         self.assertEqual((6, 56), solar_azimuth_angle.shape)
@@ -69,3 +70,4 @@ class HIRS2Test(unittest.TestCase):
         self.assertEqual(CHUNKING_2D, solar_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
+        self.assertEqual("longitude latitude", solar_azimuth_angle.attrs["coordinates"])

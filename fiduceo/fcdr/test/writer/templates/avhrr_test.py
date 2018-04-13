@@ -33,6 +33,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("degree", sat_zenith.attrs["units"])
         self.assertEqual(9000, sat_zenith.attrs["valid_max"])
         self.assertEqual(0, sat_zenith.attrs["valid_min"])
+        self.assertEqual("longitude latitude", sat_zenith.attrs["coordinates"])
         self.assertEqual(np.int16, sat_zenith.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sat_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
@@ -46,6 +47,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("degree", sol_zenith.attrs["units"])
         self.assertEqual(18000, sol_zenith.attrs["valid_max"])
         self.assertEqual(0, sol_zenith.attrs["valid_min"])
+        self.assertEqual("longitude latitude", sol_zenith.attrs["coordinates"])
         self.assertEqual(np.int16, sol_zenith.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
         self.assertEqual(0.01, sol_zenith.encoding['scale_factor'])
@@ -77,6 +79,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("bitmask for quality per pixel", dq_bitmask.attrs["long_name"])
         self.assertEqual("1,2", dq_bitmask.attrs["flag_masks"])
         self.assertEqual("bad_geolocation_timing_err bad_calibration_radiometer_err", dq_bitmask.attrs["flag_meanings"])
+        self.assertEqual("longitude latitude", dq_bitmask.attrs["coordinates"])
 
         qs_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((5,), qs_bitmask.shape)
@@ -374,6 +377,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         self.assertEqual(15000, variable.attrs["valid_max"])
         self.assertEqual(0, variable.attrs["valid_min"])
+        self.assertEqual("longitude latitude", variable.attrs["coordinates"])
 
     def _assert_correct_bt_variable(self, variable, long_name):
         self.assertEqual((5, 409), variable.shape)
@@ -388,3 +392,5 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(10000, variable.attrs["valid_max"])
         self.assertEqual(-20000, variable.attrs["valid_min"])
+        self.assertEqual("longitude latitude", variable.attrs["coordinates"])
+

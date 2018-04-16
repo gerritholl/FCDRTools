@@ -129,6 +129,7 @@ class HIRS:
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001, chunksizes=CHUNKING_BT)
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "K")
+        tu.add_geolocation_attribute(variable)
         variable.attrs["valid_min"] = 1
         variable.attrs["valid_max"] = 65534
         return variable

@@ -168,3 +168,4 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("K", variable.attrs["units"])
         self.assertEqual(1, variable.attrs["valid_min"])
         self.assertEqual(65534, variable.attrs["valid_max"])
+        self.assertEqual("longitude latitude", variable.attrs["coordinates"])

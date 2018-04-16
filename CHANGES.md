@@ -5,3 +5,4 @@
 - renamed AVHRR channel variables
 - added channel correlation matrices for AVHRR and HIRS
 - added channel coordinate variables
+- added coordinates attribute to geolocated variables

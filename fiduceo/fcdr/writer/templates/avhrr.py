@@ -288,6 +288,7 @@ class AVHRR:
     def _create_counts_uncertainty_variable(height, long_name):
         variable = tu.create_float_variable(SWATH_WIDTH, height, long_name=long_name, fill_value=np.NaN)
         tu.add_units(variable, "count")
+        tu.add_geolocation_attribute(variable)
         tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
@@ -298,6 +299,7 @@ class AVHRR:
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int32))
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "count")
+        tu.add_geolocation_attribute(variable)
         tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
@@ -305,6 +307,7 @@ class AVHRR:
     def _create_angle_uncertainty_variable(angle_name, height):
         variable = tu.create_float_variable(SWATH_WIDTH, height, long_name="uncertainty of " + angle_name, fill_value=np.NaN)
         tu.add_units(variable, "degree")
+        tu.add_geolocation_attribute(variable)
         tu.add_chunking(variable, CHUNKS_2D)
         return variable
 
@@ -314,6 +317,7 @@ class AVHRR:
         variable = Variable(["y", "x"], default_array)
 
         tu.add_units(variable, "percent")
+        tu.add_geolocation_attribute(variable)
         variable.attrs["long_name"] = long_name
 
         if structured:
@@ -331,6 +335,7 @@ class AVHRR:
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         tu.add_units(variable, "K")
+        tu.add_geolocation_attribute(variable)
         tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.001, chunksizes=CHUNKS_2D)
         variable.attrs["valid_max"] = 15000
         variable.attrs["valid_min"] = 1

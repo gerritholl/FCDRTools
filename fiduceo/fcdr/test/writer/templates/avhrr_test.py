@@ -116,12 +116,12 @@ class AVHRRTest(unittest.TestCase):
         ds = xr.Dataset()
         AVHRR.add_easy_fcdr_variables(ds, 5)
 
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="percent", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="percent", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="percent", valid_min=3, valid_max=5)
 
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch3b", long_name="independent uncertainty per pixel for channel 3b")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch3b", long_name="structured uncertainty per pixel for channel 3b")
@@ -341,7 +341,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
 
-    def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, units=None, long_name=None):
+    def _assert_correct_refl_uncertainty_variable(self, ds, name, standard_name=None, units=None, long_name=None, valid_min=None, valid_max=None):
         variable = ds.variables[name]
         self.assertEqual((5, 409), variable.shape)
         self.assertTrue(np.isnan(variable.data[4, 307]))
@@ -349,7 +349,13 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(-32767, variable.encoding["_FillValue"])
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
-        # @todo 2 tb/tb add checks for encoding, valid min and max 2017-10-19
+
+        if valid_min is not None:
+            self.assertEqual(valid_min, variable.attrs["valid_min"])
+
+        if valid_max is not None:
+            self.assertEqual(valid_max, variable.attrs["valid_max"])
+
         if standard_name is not None:
             self.assertEqual(standard_name, variable.attrs["standard_name"])
 

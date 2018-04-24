@@ -8,6 +8,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 N_CHANS = 6
+N_FREQUENCIES = 512
 CHUNKS_2D = (1280, 409)
 
 COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL, corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
@@ -95,6 +96,21 @@ class AVHRR:
         variable.attrs["flag_masks"] = '1,2'
         variable.attrs['flag_meanings'] = 'bad_channel some_pixels_not_detected_2sigma'
         dataset['quality_channel_bitmask'] = variable
+
+        default_array = DefaultData.create_default_array(N_FREQUENCIES, N_CHANS, np.int16, fill_value=-32768)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function weights'
+        variable.attrs["description"] = 'Per channel: weights for the relative spectral response function'
+        tu.add_encoding(variable, np.int16, -32768, 0.000033)
+        dataset['SRF_weights'] = variable
+
+        default_array = DefaultData.create_default_array(N_FREQUENCIES, N_CHANS, np.int32, fill_value=-2147483648)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function frequencies'
+        variable.attrs["description"] = 'Per channel: frequencies for the relative spectral response function'
+        tu.add_encoding(variable, np.int32, -2147483648, 0.0001)
+        tu.add_units(variable, "um")
+        dataset['SRF_frequencies'] = variable
 
         tu.add_coordinates(dataset, ["Ch1", "Ch2", "Ch3a", "Ch3b", "Ch4", "Ch5"])
 
@@ -341,14 +357,6 @@ class AVHRR:
         variable.attrs["valid_min"] = 1
         variable.attrs["long_name"] = long_name
         return variable
-
-    @staticmethod
-    def _add_temperature_attributes(variable):
-        variable.attrs["add_offset"] = 273.15
-        tu.add_scale_factor(variable, 0.01)
-        tu.add_units(variable, "K")
-        variable.attrs["valid_max"] = 10000
-        variable.attrs["valid_min"] = -20000
 
     @staticmethod
     def _create_channel_refl_variable(height, long_name):

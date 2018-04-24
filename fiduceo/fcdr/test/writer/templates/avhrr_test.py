@@ -97,6 +97,23 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("1,2", qc_bitmask.attrs["flag_masks"])
         self.assertEqual("bad_channel some_pixels_not_detected_2sigma", qc_bitmask.attrs["flag_meanings"])
 
+        srf_weights = ds.variables["SRF_weights"]
+        self.assertEqual((6, 512), srf_weights.shape)
+        self.assertEqual(-32768, srf_weights.data[3, 2])
+        self.assertEqual("Spectral Response Function weights", srf_weights.attrs["long_name"])
+        self.assertEqual("Per channel: weights for the relative spectral response function", srf_weights.attrs["description"])
+        self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
+        self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
+
+        srf_freqs = ds.variables["SRF_frequencies"]
+        self.assertEqual((6, 512), srf_freqs.shape)
+        self.assertEqual(-2147483648, srf_freqs.data[4, 3])
+        self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
+        self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
+        self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])
+        self.assertEqual(0.0001, srf_freqs.encoding['scale_factor'])
+        self.assertEqual("um", srf_freqs.attrs["units"])
+
         x = ds.coords["x"]
         self.assertEqual((409,), x.shape)
         self.assertEqual(13, x[13])

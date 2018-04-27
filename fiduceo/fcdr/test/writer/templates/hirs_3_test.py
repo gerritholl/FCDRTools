@@ -9,19 +9,21 @@ from fiduceo.fcdr.writer.templates.hirs_3 import HIRS3
 CHUNKING_3D = (10, 512, 56)
 CHUNKING_2D = (512, 56)
 
+SRF_SIZE = 205
+
 
 class HIRS3Test(unittest.TestCase):
     def test_add_original_variables(self):
         ha = HIRSAssert()
         ds = xr.Dataset()
-        HIRS3.add_original_variables(ds, 6)
+        HIRS3.add_original_variables(ds, 6, srf_size=SRF_SIZE)
 
         Assertions.assert_geolocation_variables(self, ds, 56, 6, chunking=CHUNKING_2D)
         Assertions.assert_quality_flags(self, ds, 56, 6, chunking=CHUNKING_2D)
 
         ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
         ha.assert_common_angles(ds, chunking=CHUNKING_2D)
-        ha.assert_common_sensor_variables(ds)
+        ha.assert_common_sensor_variables(ds, SRF_SIZE)
         ha.assert_extended_quality_flags(ds)
         ha.assert_coordinates(ds)
 

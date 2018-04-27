@@ -257,24 +257,20 @@ class MviriIoTest(unittest.TestCase):
         variable = target_data["u_solar_irradiance_vis"]
         self.assertAlmostEqual(5.5, variable.data, 8)
 
-        variable = target_data["spectral_response_function_vis"]
-        self.assertAlmostEqual(0.03, variable.data[4], 8)
-        self.assertEqual((1011,), variable.encoding["chunksizes"])
+        variable = target_data["SRF_weights"]
+        self.assertAlmostEqual(0.159984, variable.data[0, 4], 8)
+        self.assertEqual((3, 1011), variable.encoding["chunksizes"])
+
+        variable = target_data["SRF_frequencies"]
+        self.assertAlmostEqual(0.25, variable.data[1, 5], 8)
+        self.assertEqual((3, 1011), variable.encoding["chunksizes"])
 
         variable = target_data["covariance_spectral_response_function_vis"]
         self.assertAlmostEqual(40.4, variable.data[5, 5], 5)
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
-        variable = target_data["spectral_response_function_ir"]
-        self.assertAlmostEqual(0.04, variable.data[6], 8)
-        self.assertEqual((1011,), variable.encoding["chunksizes"])
-
         variable = target_data["u_spectral_response_function_ir"]
         self.assertAlmostEqual(0.05, variable.data[7], 8)
-        self.assertEqual((1011,), variable.encoding["chunksizes"])
-
-        variable = target_data["spectral_response_function_wv"]
-        self.assertAlmostEqual(0.06, variable.data[8], 8)
         self.assertEqual((1011,), variable.encoding["chunksizes"])
 
         variable = target_data["u_spectral_response_function_wv"]
@@ -345,10 +341,11 @@ class MviriIoTest(unittest.TestCase):
         for x in range(0, 1011):
             dataset["covariance_spectral_response_function_vis"].data[:] = np.ones((1011), np.float32) * x * 0.04
 
-        dataset["spectral_response_function_vis"].data[:] = np.ones((1011), np.float32) * 0.03
-        dataset["spectral_response_function_ir"].data[:] = np.ones((1011), np.float32) * 0.04
+        for freq in range(0, 1011):
+            dataset["SRF_weights"].data[:, freq] = np.ones((3), np.float32) * freq * 0.04
+            dataset["SRF_frequencies"].data[:, freq] = np.ones((3), np.float32) * freq * 0.05
+
         dataset["u_spectral_response_function_ir"].data[:] = np.ones((1011), np.float32) * 0.05
-        dataset["spectral_response_function_wv"].data[:] = np.ones((1011), np.float32) * 0.06
         dataset["u_spectral_response_function_wv"].data[:] = np.ones((1011), np.float32) * 0.07
 
         dataset["distance_sun_earth"].data = 3.3

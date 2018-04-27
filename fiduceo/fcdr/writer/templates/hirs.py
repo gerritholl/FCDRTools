@@ -54,7 +54,7 @@ class HIRS:
         dataset["quality_channel_bitmask"] = variable
 
     @staticmethod
-    def add_common_sensor_variables(dataset, height):
+    def add_common_sensor_variables(dataset, height, srf_size):
         # scanline
         default_array = DefaultData.create_default_vector(height, np.int16)
         variable = Variable(["y"], default_array)
@@ -80,6 +80,21 @@ class HIRS:
         variable.attrs[
             "flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant reduced_context bad_temp_no_rself"
         dataset["quality_scanline_bitmask"] = variable
+
+        default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function weights'
+        variable.attrs["description"] = 'Per channel: weights for the relative spectral response function'
+        tu.add_encoding(variable, np.int16, -32768, 0.000033)
+        dataset['SRF_weights'] = variable
+
+        default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function frequencies'
+        variable.attrs["description"] = 'Per channel: frequencies for the relative spectral response function'
+        tu.add_encoding(variable, np.int32, -2147483648, 0.0001)
+        tu.add_units(variable, "nm")
+        dataset['SRF_frequencies'] = variable
 
     @staticmethod
     def add_common_angles(dataset, height):

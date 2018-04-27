@@ -1,21 +1,26 @@
 import numpy as np
 from xarray import Variable
 
-from fiduceo.fcdr.writer.templates.hirs import HIRS, CHUNKING_2D
 from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.fcdr.writer.templates.hirs import HIRS, CHUNKING_2D
 from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
+
+MAX_SRF_SIZE = 102
 
 
 class HIRS2(HIRS):
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_original_variables(dataset, height, srf_size=None):
         HIRS.add_geolocation_variables(dataset, height)
         HIRS.add_quality_flags(dataset, height)
 
         HIRS.add_bt_variable(dataset, height)
         HIRS2._add_angle_variables(dataset, height)
 
-        HIRS.add_common_sensor_variables(dataset, height)
+        if srf_size is None:
+            srf_size = MAX_SRF_SIZE
+
+        HIRS.add_common_sensor_variables(dataset, height, srf_size)
         HIRS.add_coordinates(dataset)
 
     @staticmethod
@@ -45,5 +50,3 @@ class HIRS2(HIRS):
         dataset["satellite_zenith_angle"] = variable
 
         dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=CHUNKING_2D)
-
-

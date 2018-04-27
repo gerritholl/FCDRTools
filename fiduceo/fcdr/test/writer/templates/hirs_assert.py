@@ -84,7 +84,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
         self.assertEqual("longitude latitude", solar_azimuth_angle.attrs["coordinates"])
 
-    def assert_common_sensor_variables(self, ds):
+    def assert_common_sensor_variables(self, ds, srf_size):
         scanline = ds.variables["scanline"]
         self.assertEqual((6,), scanline.shape)
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), scanline.data[3])
@@ -120,6 +120,23 @@ class HIRSAssert(unittest.TestCase):
             qual_scan_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", qual_scan_bitmask.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qual_scan_bitmask.attrs["long_name"])
+
+        srf_weights = ds.variables["SRF_weights"]
+        self.assertEqual((19, srf_size), srf_weights.shape)
+        self.assertTrue(np.isnan(srf_weights.data[4, 6]))
+        self.assertEqual("Spectral Response Function weights", srf_weights.attrs["long_name"])
+        self.assertEqual("Per channel: weights for the relative spectral response function", srf_weights.attrs["description"])
+        self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
+        self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
+
+        srf_freqs = ds.variables["SRF_frequencies"]
+        self.assertEqual((19, srf_size), srf_freqs.shape)
+        self.assertTrue(np.isnan(srf_freqs.data[5, 7]))
+        self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
+        self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
+        self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])
+        self.assertEqual(0.0001, srf_freqs.encoding['scale_factor'])
+        self.assertEqual("nm", srf_freqs.attrs["units"])
 
     def assert_extended_quality_flags(self, ds):
         chqualflags = ds.variables["quality_channel_bitmask"]

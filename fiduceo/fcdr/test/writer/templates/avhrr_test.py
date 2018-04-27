@@ -8,12 +8,13 @@ from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
 CHUNKING = (1280, 409)
+SRF_SIZE = 512
 
 
 class AVHRRTest(unittest.TestCase):
     def test_add_original_variables(self):
         ds = xr.Dataset()
-        AVHRR.add_original_variables(ds, 5)
+        AVHRR.add_original_variables(ds, 5, srf_size=SRF_SIZE)
 
         Assertions.assert_geolocation_variables(self, ds, 409, 5, chunking=CHUNKING)
         Assertions.assert_quality_flags(self, ds, 409, 5, chunking=CHUNKING)
@@ -98,16 +99,16 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("bad_channel some_pixels_not_detected_2sigma", qc_bitmask.attrs["flag_meanings"])
 
         srf_weights = ds.variables["SRF_weights"]
-        self.assertEqual((6, 512), srf_weights.shape)
-        self.assertEqual(-32768, srf_weights.data[3, 2])
+        self.assertEqual((6, SRF_SIZE), srf_weights.shape)
+        self.assertTrue(np.isnan(srf_weights.data[3, 5]))
         self.assertEqual("Spectral Response Function weights", srf_weights.attrs["long_name"])
         self.assertEqual("Per channel: weights for the relative spectral response function", srf_weights.attrs["description"])
         self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
         self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
 
         srf_freqs = ds.variables["SRF_frequencies"]
-        self.assertEqual((6, 512), srf_freqs.shape)
-        self.assertEqual(-2147483648, srf_freqs.data[4, 3])
+        self.assertEqual((6, SRF_SIZE), srf_freqs.shape)
+        self.assertTrue(np.isnan(srf_freqs.data[4, 6]))
         self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
         self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
         self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])

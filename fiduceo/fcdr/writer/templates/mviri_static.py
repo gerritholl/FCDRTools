@@ -11,7 +11,7 @@ SSP_Y = 2
 
 class MVIRI_STATIC:
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_original_variables(dataset, height, srf_size=None):
         # height is ignored - supplied just for interface compatibility tb 2017-07-19
         # latitude_vis
         default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)

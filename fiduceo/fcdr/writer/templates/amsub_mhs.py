@@ -11,7 +11,7 @@ SWATH_WIDTH = 90
 
 class AMSUB_MHS:
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_original_variables(dataset, height, srf_size=None):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
         tu.add_quality_flags(dataset, SWATH_WIDTH, height)
 

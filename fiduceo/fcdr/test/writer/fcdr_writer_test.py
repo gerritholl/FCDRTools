@@ -215,7 +215,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(14, len(ds.data_vars))
+        self.assertEqual(16, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -229,6 +229,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -242,7 +244,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(91, len(ds.data_vars))
+        self.assertEqual(93, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -257,6 +259,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -296,7 +300,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(17, len(ds.data_vars))
+        self.assertEqual(19, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -313,6 +317,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -326,7 +332,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(94, len(ds.data_vars))
+        self.assertEqual(96, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -338,6 +344,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scanline"])
         self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
 
@@ -378,7 +386,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(17, len(ds.data_vars))
+        self.assertEqual(19, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -395,6 +403,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -408,7 +418,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(94, len(ds.data_vars))
+        self.assertEqual(96, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -421,6 +431,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scnlintime"])
         self.assertIsNotNone(ds.variables["scantype"])
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -460,15 +472,14 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verify_quality_flags(ds)
 
-        self.assertEqual(42, len(ds.data_vars))
+        self.assertEqual(41, len(ds.data_vars))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["covariance_spectral_response_function_vis"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_ir"])
         self.assertIsNotNone(ds.variables["u_spectral_response_function_ir"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["u_spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
@@ -513,7 +524,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verifyGlobalAttributes(ds.attrs)
 
-        self.assertEqual(55, len(ds.data_vars))
+        self.assertEqual(54, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -526,11 +537,10 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["count_vis"])
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_vis"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["covariance_spectral_response_function_vis"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_ir"])
         self.assertIsNotNone(ds.variables["u_spectral_response_function_ir"])
-        self.assertIsNotNone(ds.variables["spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["u_spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["a0_vis"])
         self.assertIsNotNone(ds.variables["a1_vis"])

@@ -8,7 +8,7 @@ from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
 N_CHANS = 6
-N_FREQUENCIES = 512
+MAX_SRF_SIZE = 5902
 CHUNKS_2D = (1280, 409)
 
 COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR_UNIT: corr.PIXEL, corr.PIX_CORR_SCALE: [-np.inf, np.inf], corr.SCAN_CORR_FORM: corr.TRI_REL,
@@ -17,7 +17,7 @@ COUNT_CORRELATION_ATTRIBUTES = {corr.PIX_CORR_FORM: corr.RECT_ABS, corr.PIX_CORR
 
 class AVHRR:
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_original_variables(dataset, height, srf_size=None):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
         tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
 
@@ -97,14 +97,17 @@ class AVHRR:
         variable.attrs['flag_meanings'] = 'bad_channel some_pixels_not_detected_2sigma'
         dataset['quality_channel_bitmask'] = variable
 
-        default_array = DefaultData.create_default_array(N_FREQUENCIES, N_CHANS, np.int16, fill_value=-32768)
+        if srf_size is None:
+            srf_size = MAX_SRF_SIZE
+
+        default_array = DefaultData.create_default_array(srf_size, N_CHANS, np.float32, fill_value=np.NaN)
         variable = Variable(["channel", "n_frequencies"], default_array)
         variable.attrs["long_name"] = 'Spectral Response Function weights'
         variable.attrs["description"] = 'Per channel: weights for the relative spectral response function'
         tu.add_encoding(variable, np.int16, -32768, 0.000033)
         dataset['SRF_weights'] = variable
 
-        default_array = DefaultData.create_default_array(N_FREQUENCIES, N_CHANS, np.int32, fill_value=-2147483648)
+        default_array = DefaultData.create_default_array(srf_size, N_CHANS, np.float32, fill_value=np.NaN)
         variable = Variable(["channel", "n_frequencies"], default_array)
         variable.attrs["long_name"] = 'Spectral Response Function frequencies'
         variable.attrs["description"] = 'Per channel: frequencies for the relative spectral response function'

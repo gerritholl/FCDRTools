@@ -45,11 +45,12 @@ class FCDRWriter:
         ds.to_netcdf(file, format='netCDF4', engine='netcdf4', encoding=encoding)
 
     @classmethod
-    def createTemplateEasy(cls, sensorType, height):
+    def createTemplateEasy(cls, sensorType, height, srf_size=None):
         """
         Create a template dataset in EASY FCDR format for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
-        :param height the hheight in pixels of the data product
+        :param height: the height in pixels of the data product
+        :param srf_size: if set, the length of the spectral response function in frequency steps
         :return the template dataset
          """
         dataset = xr.Dataset()
@@ -58,7 +59,7 @@ class FCDRWriter:
         template_factory = TemplateFactory()
 
         sensor_template = template_factory.get_sensor_template(sensorType)
-        sensor_template.add_original_variables(dataset, height)
+        sensor_template.add_original_variables(dataset, height, srf_size)
         sensor_template.add_easy_fcdr_variables(dataset, height)
         sensor_template.add_template_key(dataset)
 

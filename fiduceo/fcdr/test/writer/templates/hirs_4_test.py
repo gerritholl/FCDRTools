@@ -21,7 +21,7 @@ class HIRS4Test(unittest.TestCase):
 
         ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
         ha.assert_common_angles(ds, chunking=CHUNKING_2D)
-        ha.assert_common_sensor_variables(ds)
+        ha.assert_common_sensor_variables(ds, 2751)
         ha.assert_extended_quality_flags(ds)
         ha.assert_coordinates(ds)
 

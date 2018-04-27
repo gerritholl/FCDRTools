@@ -92,13 +92,24 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_sol_irr.attrs["image_correlation_scales"])
         self.assertEqual("rectangle", u_sol_irr.attrs["pdf_shape"])
 
-        srf = ds.variables["spectral_response_function_vis"]
-        self.assertEqual((1011,), srf.shape)
-        self.assertTrue(np.isnan(srf.data[116]))
-        self.assertTrue(np.isnan(srf.attrs["_FillValue"]))
-        self.assertEqual("Spectral Response Function for visible channel", srf.attrs["long_name"])
-        self.assertEqual("Filename of SRF", srf.attrs["source"])
-        self.assertEqual("datestring", srf.attrs["Valid(YYYYDDD)"])
+        srf_weights = ds.variables["SRF_weights"]
+        self.assertEqual((3, 1011), srf_weights.shape)
+        self.assertTrue(np.isnan(srf_weights.data[0, 7]))
+        self.assertEqual("Spectral Response Function weights", srf_weights.attrs["long_name"])
+        self.assertEqual("Per channel: weights for the relative spectral response function", srf_weights.attrs["description"])
+        self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
+        self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
+
+        srf_freqs = ds.variables["SRF_frequencies"]
+        self.assertEqual((3, 1011), srf_freqs.shape)
+        self.assertTrue(np.isnan(srf_freqs.data[1, 8]))
+        self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
+        self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
+        self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])
+        self.assertEqual(0.0001, srf_freqs.encoding['scale_factor'])
+        self.assertEqual("nm", srf_freqs.attrs["units"])
+        self.assertEqual("Filename of SRF", srf_freqs.attrs["source"])
+        self.assertEqual("datestring", srf_freqs.attrs["Valid(YYYYDDD)"])
 
         cov_srf = ds.variables["covariance_spectral_response_function_vis"]
         self.assertEqual((1011, 1011), cov_srf.shape)
@@ -107,23 +118,11 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("Covariance of the Visible Band Spectral Response Function", cov_srf.attrs["long_name"])
         self.assertEqual(CHUNKING, cov_srf.encoding["chunksizes"])
 
-        srf_ir = ds.variables["spectral_response_function_ir"]
-        self.assertEqual((1011,), srf_ir.shape)
-        self.assertTrue(np.isnan(srf_ir.data[118]))
-        self.assertTrue(np.isnan(srf_ir.attrs["_FillValue"]))
-        self.assertEqual("Spectral Response Function for IR channel", srf_ir.attrs["long_name"])
-
         u_srf_ir = ds.variables["u_spectral_response_function_ir"]
         self.assertEqual((1011,), u_srf_ir.shape)
         self.assertTrue(np.isnan(u_srf_ir.data[119]))
         self.assertTrue(np.isnan(u_srf_ir.attrs["_FillValue"]))
         self.assertEqual("Uncertainty in Spectral Response Function for IR channel", u_srf_ir.attrs["long_name"])
-
-        srf_wv = ds.variables["spectral_response_function_wv"]
-        self.assertEqual((1011,), srf_wv.shape)
-        self.assertTrue(np.isnan(srf_wv.data[118]))
-        self.assertTrue(np.isnan(srf_wv.attrs["_FillValue"]))
-        self.assertEqual("Spectral Response Function for WV channel", srf_wv.attrs["long_name"])
 
         u_srf_wv = ds.variables["u_spectral_response_function_wv"]
         self.assertEqual((1011,), u_srf_wv.shape)

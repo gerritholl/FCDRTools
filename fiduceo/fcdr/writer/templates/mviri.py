@@ -15,8 +15,7 @@ IR_Y_DIMENSION = "y_ir_wv"
 FULL_DIMENSION = 5000
 IR_DIMENSION = 2500
 
-SRF_SIZE_VIS = 1011
-SRF_SIZE_IR_WV = 1011
+SRF_SIZE = 1011
 SOL_IRR_SIZE = 24
 
 NUM_CHANNELS = 3
@@ -27,7 +26,7 @@ TIME_FILL_VALUE = -32768
 class MVIRI:
 
     @staticmethod
-    def add_original_variables(dataset, height):
+    def add_original_variables(dataset, height, srf_size=None):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         tu.add_quality_flags(dataset, FULL_DIMENSION, FULL_DIMENSION, chunksizes=CHUNKSIZES)
@@ -96,46 +95,43 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "rectangle"
         dataset["u_solar_irradiance_vis"] = variable
 
-        # srf_vis
-        default_array = DefaultData.create_default_vector(SRF_SIZE_VIS, np.float32, fill_value=np.NaN)
-        variable = Variable([SRF_VIS_DIMENSION], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "Spectral Response Function for visible channel"
+        if srf_size is None:
+            srf_size = SRF_SIZE
+
+        default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function weights'
+        variable.attrs["description"] = 'Per channel: weights for the relative spectral response function'
+        tu.add_encoding(variable, np.int16, -32768, 0.000033)
+        dataset['SRF_weights'] = variable
+
+        default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
+        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable.attrs["long_name"] = 'Spectral Response Function frequencies'
+        variable.attrs["description"] = 'Per channel: frequencies for the relative spectral response function'
+        tu.add_encoding(variable, np.int32, -2147483648, 0.0001)
+        tu.add_units(variable, "nm")
         variable.attrs["source"] = "Filename of SRF"
         variable.attrs["Valid(YYYYDDD)"] = "datestring"
-        dataset["spectral_response_function_vis"] = variable
+        dataset['SRF_frequencies'] = variable
 
         # srf covariance_
-        default_array = DefaultData.create_default_array(SRF_SIZE_VIS, SRF_SIZE_VIS, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(srf_size, srf_size, np.float32, fill_value=np.NaN)
         variable = Variable([SRF_VIS_DIMENSION, SRF_VIS_DIMENSION], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Covariance of the Visible Band Spectral Response Function"
         tu.add_chunking(variable, CHUNKSIZES)
         dataset["covariance_spectral_response_function_vis"] = variable
 
-        # srf_ir
-        default_array = DefaultData.create_default_vector(SRF_SIZE_IR_WV, np.float32, fill_value=np.NaN)
-        variable = Variable([SRF_IR_WV_DIMENSION], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "Spectral Response Function for IR channel"
-        dataset["spectral_response_function_ir"] = variable
-
         # u_srf_ir
-        default_array = DefaultData.create_default_vector(SRF_SIZE_IR_WV, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_vector(srf_size, np.float32, fill_value=np.NaN)
         variable = Variable([SRF_IR_WV_DIMENSION], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty in Spectral Response Function for IR channel"
         dataset["u_spectral_response_function_ir"] = variable
 
-        # srf_wv
-        default_array = DefaultData.create_default_vector(SRF_SIZE_IR_WV, np.float32, fill_value=np.NaN)
-        variable = Variable([SRF_IR_WV_DIMENSION], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["long_name"] = "Spectral Response Function for WV channel"
-        dataset["spectral_response_function_wv"] = variable
-
         # u_srf_wv
-        default_array = DefaultData.create_default_vector(SRF_SIZE_IR_WV, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_vector(srf_size, np.float32, fill_value=np.NaN)
         variable = Variable([SRF_IR_WV_DIMENSION], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "Uncertainty in Spectral Response Function for WV channel"
@@ -277,7 +273,8 @@ class MVIRI:
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
-        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)"
+        variable.attrs[
+            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)"
         dataset["sensitivity_solar_irradiance_vis"] = variable
 
         # sensitivity_count_vis
@@ -305,7 +302,8 @@ class MVIRI:
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
-        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        variable.attrs[
+            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
         dataset["sensitivity_a1_vis"] = variable
 
     @staticmethod

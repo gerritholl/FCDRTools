@@ -6,3 +6,4 @@
 - added channel correlation matrices for AVHRR and HIRS
 - added channel coordinate variables
 - added coordinates attribute to geolocated variables
+- added configurable spectral response function variables

@@ -11,6 +11,9 @@ from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 N_PRT = 3
 PRODUCT_WIDTH = 409
 PRODUCT_HEIGHT = 13198
+SRF_SIZE = 409
+NUM_CHANNELS = 6
+
 EXPECTED_CHUNKING = (1280, 409)
 
 
@@ -94,6 +97,8 @@ class AvhrrIoTest(unittest.TestCase):
             variable = target_data["u_structured_Ch5"]
             self.assertAlmostEqual(0.506, variable.data[23, 23], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            self.assert_srf_data(target_data)
         finally:
             target_data.close()
 
@@ -339,6 +344,7 @@ class AvhrrIoTest(unittest.TestCase):
         self.add_geolocation_data(avhrr_easy)
         self.add_global_flags(avhrr_easy)
         self.add_sensor_data(avhrr_easy)
+        self.add_srf_data(avhrr_easy)
 
         for x in range(0, PRODUCT_WIDTH):
             avhrr_easy["u_independent_Ch1"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.013
@@ -462,6 +468,11 @@ class AvhrrIoTest(unittest.TestCase):
 
         dataset["Time"].data[:] = np.ones((PRODUCT_HEIGHT), np.float64)
 
+    def add_srf_data(self, dataset):
+        for x in range(0, SRF_SIZE):
+            dataset["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.03
+            dataset["SRF_frequencies"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
+
     def assert_geolocation_variables(self, target_data):
         variable = target_data["latitude"]
         self.assertAlmostEqual(0.0357066554, variable.data[6, 6], 8)
@@ -527,3 +538,10 @@ class AvhrrIoTest(unittest.TestCase):
         variable = target_data["quality_pixel_bitmask"]
         self.assertEqual(11, variable.data[9, 9])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+    def assert_srf_data(self, target_data):
+        variable = target_data["SRF_weights"]
+        self.assertAlmostEqual(0.300003, variable.data[0, 10], 8)
+
+        variable = target_data["SRF_frequencies"]
+        self.assertAlmostEqual(0.44, variable.data[1, 11], 8)

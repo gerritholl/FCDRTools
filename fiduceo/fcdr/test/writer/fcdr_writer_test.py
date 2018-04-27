@@ -250,17 +250,7 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geolocation_variables(ds)
         self._verify_quality_flags(ds)
 
-        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
-        self.assertIsNotNone(ds.variables["bt"])
-        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
-        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
-        self.assertIsNotNone(ds.variables["scanline"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
-        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
-        self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self._assert_HIRS_common_variables(ds)
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])
@@ -293,6 +283,18 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["temp_corr_slope"])
         self.assertIsNotNone(ds.variables["temp_corr_offset"])
         self.assertIsNotNone(ds.variables["emissivity"])
+
+    def _assert_HIRS_common_variables(self, ds):
+        self.assertIsNotNone(ds.variables["bt"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
+        self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["scanline"])
+        self.assertIsNotNone(ds.variables["scnlintime"])
+        self.assertIsNotNone(ds.variables["scantype"])
+        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
+        self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
+        self.assertIsNotNone(ds.variables["SRF_weights"])
+        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
     def testCreateTemplateEasy_HIRS3(self):
         ds = FCDRWriter.createTemplateEasy('HIRS3', 211)
@@ -338,14 +340,9 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geolocation_variables(ds)
         self._verify_quality_flags(ds)
 
-        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
-        self.assertIsNotNone(ds.variables["bt"])
+        self._assert_HIRS_common_variables(ds)
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scanline"])
-        self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
 
@@ -424,15 +421,9 @@ class FCDRWriterTest(unittest.TestCase):
         self._verify_geolocation_variables(ds)
         self._verify_quality_flags(ds)
 
-        # TODO 1 tb/tb 2017-03-08 ad more sensor variables, maybe extract common assert method
-        self.assertIsNotNone(ds.variables["bt"])
+        self._assert_HIRS_common_variables(ds)
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
-        self.assertIsNotNone(ds.variables["scanline"])
-        self.assertIsNotNone(ds.variables["scnlintime"])
-        self.assertIsNotNone(ds.variables["scantype"])
-        self.assertIsNotNone(ds.variables["data_quality_bitmask"])
-        self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
 
         self.assertIsNotNone(ds.variables["c_earth"])
         self.assertIsNotNone(ds.variables["L_earth"])

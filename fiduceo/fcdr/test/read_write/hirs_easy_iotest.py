@@ -11,6 +11,9 @@ from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 EXPECTED_CHUNKING_2D = (512, 56)
 EXPECTED_CHUNKING_3D = (10, 512, 56)
 
+SRF_SIZE = 103
+NUM_CHANNELS = 19
+
 
 class HirsEASYIoTest(unittest.TestCase):
     temp_dir = None
@@ -90,6 +93,8 @@ class HirsEASYIoTest(unittest.TestCase):
             variable = target_data["u_structured"]
             self.assertAlmostEqual(0.7, variable.data[10, 10, 10], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
+            self.assert_srf(target_data)
         finally:
             target_data.close()
 
@@ -171,6 +176,8 @@ class HirsEASYIoTest(unittest.TestCase):
             variable = target_data["u_structured"]
             self.assertAlmostEqual(0.77, variable.data[11, 11, 11], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
+            self.assert_srf(target_data)
         finally:
             target_data.close()
 
@@ -252,11 +259,13 @@ class HirsEASYIoTest(unittest.TestCase):
             variable = target_data["u_structured"]
             self.assertAlmostEqual(0.84, variable.data[12, 12, 12], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
+            self.assert_srf(target_data)
         finally:
             target_data.close()
 
     def create_easy_dataset(self, type):
-        hirs_easy = FCDRWriter.createTemplateEasy(type, 944)
+        hirs_easy = FCDRWriter.createTemplateEasy(type, 944, SRF_SIZE)
         hirs_easy.attrs["institution"] = "test"
         hirs_easy.attrs["title"] = "sir"
         hirs_easy.attrs["source"] = "invention"
@@ -287,7 +296,18 @@ class HirsEASYIoTest(unittest.TestCase):
         hirs_easy["scanline"].data[:] = np.ones((944), np.int8) * 3
         hirs_easy["time"].data[:] = np.ones((944), np.int32) * 4
 
+        for x in range(0, SRF_SIZE):
+            hirs_easy["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
+            hirs_easy["SRF_frequencies"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.05
+
         if type == "HIRS2":
             hirs_easy["satellite_zenith_angle"].data[:] = np.ones((944), np.int8) * 2
 
         return hirs_easy
+
+    def assert_srf(self, dataset):
+        variable = dataset["SRF_weights"]
+        self.assertAlmostEqual(0.439989, variable.data[1, 11], 8)
+
+        variable = dataset["SRF_frequencies"]
+        self.assertAlmostEqual(0.6, variable.data[2, 12], 8)

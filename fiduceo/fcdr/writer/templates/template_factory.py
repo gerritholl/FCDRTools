@@ -5,11 +5,11 @@ from fiduceo.fcdr.writer.templates.default_flag_mapper import DefaultFlagMapper
 from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
 from fiduceo.fcdr.writer.templates.hirs_3 import HIRS3
 from fiduceo.fcdr.writer.templates.hirs_4 import HIRS4
+from fiduceo.fcdr.writer.templates.hirs_flag_mapper import HIRS_FlagMapper
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
+from fiduceo.fcdr.writer.templates.mviri_flag_mapper import MVIRI_FlagMapper
 from fiduceo.fcdr.writer.templates.mviri_static import MVIRI_STATIC
 from fiduceo.fcdr.writer.templates.ssmt2 import SSMT2
-from fiduceo.fcdr.writer.templates.hirs_flag_mapper import HIRS_FlagMapper
-from fiduceo.fcdr.writer.templates.mviri_flag_mapper import MVIRI_FlagMapper
 
 
 class TemplateFactory:

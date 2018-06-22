@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
-from fiduceo.fcdr.test.writer.templates.assertions import Assertions
+from fiduceo.common.test.assertions import Assertions
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import MVIRI
 

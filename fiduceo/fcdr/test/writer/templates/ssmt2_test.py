@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
-from fiduceo.fcdr.test.writer.templates.assertions import Assertions
+from fiduceo.common.test.assertions import Assertions
 from fiduceo.fcdr.writer.templates.ssmt2 import SSMT2
 
 

@@ -1,2 +1,4 @@
 class Albedo:
-    pass
+    @staticmethod
+    def add_variables(ds):
+        pass

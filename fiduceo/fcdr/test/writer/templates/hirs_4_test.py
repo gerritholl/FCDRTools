@@ -2,7 +2,7 @@ import unittest
 
 import xarray as xr
 
-from fiduceo.fcdr.test.writer.templates.assertions import Assertions
+from fiduceo.common.test.assertions import Assertions
 from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.fcdr.writer.templates.hirs_4 import HIRS4
 

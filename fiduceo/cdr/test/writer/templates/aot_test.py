@@ -16,3 +16,4 @@ class AOTTest(unittest.TestCase):
         AOT.add_variables(ds, 409, 12876)
 
         Assertions.assert_geolocation_variables(self, ds, 409, 12876, chunking=self.CHUNKING)
+        Assertions.assert_quality_flags(self, ds, 409, 12876, chunking=self.CHUNKING)

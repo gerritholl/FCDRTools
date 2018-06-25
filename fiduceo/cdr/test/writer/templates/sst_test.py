@@ -15,3 +15,4 @@ class SSTTest(unittest.TestCase):
         SST.add_variables(ds, 409, 12877)
 
         Assertions.assert_geolocation_variables(self, ds, 409, 12877, chunking=self.CHUNKING)
+        Assertions.assert_quality_flags(self, ds, 409, 12877, chunking=self.CHUNKING)

@@ -44,6 +44,7 @@ class TemplateUtil:
         variable = Variable(["y", "bounds"], default_array)
         TemplateUtil.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "latitude cell boundaries"
+        TemplateUtil.add_units(variable, LATITUDE_UNIT)
         dataset["lat_bnds"] = variable
 
         default_array = DefaultData.create_default_vector(width, np.float32, fill_value=np.NaN)
@@ -58,6 +59,7 @@ class TemplateUtil:
         default_array = DefaultData.create_default_array(2, width, np.float32, fill_value=np.NaN)
         variable = Variable(["x", "bounds"], default_array)
         TemplateUtil.add_fill_value(variable, np.NaN)
+        TemplateUtil.add_units(variable, LONGITUDE_UNIT)
         variable.attrs["long_name"] = "longitude cell boundaries"
         dataset["lon_bnds"] = variable
 

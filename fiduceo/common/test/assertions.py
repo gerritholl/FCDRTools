@@ -2,6 +2,7 @@ import numpy as np
 
 
 class Assertions:
+
     @staticmethod
     def assert_geolocation_variables(test_case, dataset, width, height, chunking=None):
         latitude = dataset.variables["latitude"]
@@ -27,6 +28,40 @@ class Assertions:
         test_case.assertEqual(0.0, longitude.encoding['add_offset'])
         if chunking is not None:
             test_case.assertEqual(chunking, longitude.encoding['chunksizes'])
+
+    @staticmethod
+    def assert_gridded_geolocation_variables(test_case, dataset, width, height):
+        lat = dataset.variables["lat"]
+        test_case.assertEqual((height, ), lat.shape)
+        test_case.assertTrue(np.isnan(lat.data[1]))
+        test_case.assertTrue(np.isnan(lat.attrs['_FillValue']))
+        test_case.assertEqual("latitude", lat.attrs["standard_name"])
+        test_case.assertEqual("latitude", lat.attrs["long_name"])
+        test_case.assertEqual("degrees_north", lat.attrs["units"])
+        test_case.assertEqual("lat_bnds", lat.attrs["bounds"])
+
+        lat_bnds = dataset.variables["lat_bnds"]
+        test_case.assertEqual((height, 2), lat_bnds.shape)
+        test_case.assertTrue(np.isnan(lat_bnds.data[2, 0]))
+        test_case.assertTrue(np.isnan(lat_bnds.attrs['_FillValue']))
+        test_case.assertEqual("latitude cell boundaries", lat_bnds.attrs["long_name"])
+        test_case.assertEqual("degrees_north", lat_bnds.attrs["units"])
+
+        lon = dataset.variables["lon"]
+        test_case.assertEqual((width, ), lon.shape)
+        test_case.assertTrue(np.isnan(lon.data[3]))
+        test_case.assertTrue(np.isnan(lon.attrs['_FillValue']))
+        test_case.assertEqual("longitude", lon.attrs["standard_name"])
+        test_case.assertEqual("longitude", lon.attrs["long_name"])
+        test_case.assertEqual("degrees_east", lon.attrs["units"])
+        test_case.assertEqual("lon_bnds", lon.attrs["bounds"])
+
+        lon_bnds = dataset.variables["lon_bnds"]
+        test_case.assertEqual((width, 2), lon_bnds.shape)
+        test_case.assertTrue(np.isnan(lon_bnds.data[3, 1]))
+        test_case.assertTrue(np.isnan(lon_bnds.attrs['_FillValue']))
+        test_case.assertEqual("longitude cell boundaries", lon_bnds.attrs["long_name"])
+        test_case.assertEqual("degrees_east", lon_bnds.attrs["units"])
 
     @staticmethod
     def assert_quality_flags(test_case, dataset, width, height, chunking=None, masks_append=None, meanings_append=None):

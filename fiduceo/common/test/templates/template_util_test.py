@@ -52,6 +52,7 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertTrue(np.isnan(lat_bnds.data[6, 0]))
         self.assertTrue(np.isnan(lat_bnds.attrs['_FillValue']))
         self.assertEqual("latitude cell boundaries", lat_bnds.attrs["long_name"])
+        self.assertEqual("degrees_north", lat_bnds.attrs["units"])
 
         lon = ds.variables["lon"]
         self.assertEqual((9,), lon.shape)
@@ -67,6 +68,7 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertTrue(np.isnan(lon_bnds.data[7, 1]))
         self.assertTrue(np.isnan(lon_bnds.attrs['_FillValue']))
         self.assertEqual("longitude cell boundaries", lon_bnds.attrs["long_name"])
+        self.assertEqual("degrees_east", lon_bnds.attrs["units"])
 
     def test_add_quality_flags(self):
         ds = xr.Dataset()

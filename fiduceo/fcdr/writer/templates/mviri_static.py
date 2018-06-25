@@ -1,9 +1,9 @@
 import numpy as np
 from xarray import Variable
 
+from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.mviri import FULL_DIMENSION, IR_DIMENSION, IR_X_DIMENSION
-from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 SSP_X = 2
 SSP_Y = 2

@@ -3,26 +3,63 @@ from xarray import Variable, Coordinate
 
 from fiduceo.fcdr.writer.default_data import DefaultData
 
+LATITUDE_UNIT = "degrees_north"
+LONGITUDE_UNIT = "degrees_east"
+
 LAT_NAME = "latitude"
 LON_NAME = "longitude"
 
+
 class TemplateUtil:
+
     @staticmethod
     def add_geolocation_variables(dataset, width, height, chunksizes=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
 
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = LAT_NAME
-        TemplateUtil.add_units(variable, "degrees_north")
+        TemplateUtil.add_units(variable, LATITUDE_UNIT)
         TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0027466658, chunksizes=chunksizes)
         dataset[LAT_NAME] = variable
 
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = LON_NAME
-        TemplateUtil.add_units(variable, "degrees_east")
+        TemplateUtil.add_units(variable, LONGITUDE_UNIT)
         TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0054933317, chunksizes=chunksizes)
         dataset[LON_NAME] = variable
+
+    @staticmethod
+    def add_gridded_geolocation_variables(dataset, width, height):
+        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["standard_name"] = LAT_NAME
+        variable.attrs["long_name"] = LAT_NAME
+        variable.attrs["bounds"] = "lat_bnds"
+        TemplateUtil.add_units(variable, LATITUDE_UNIT)
+        dataset["lat"] = variable
+
+        default_array = DefaultData.create_default_array(2, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "bounds"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "latitude cell boundaries"
+        dataset["lat_bnds"] = variable
+
+        default_array = DefaultData.create_default_vector(width, np.float32, fill_value=np.NaN)
+        variable = Variable(["x"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["standard_name"] = LON_NAME
+        variable.attrs["long_name"] = LON_NAME
+        TemplateUtil.add_units(variable, LONGITUDE_UNIT)
+        variable.attrs["bounds"] = "lon_bnds"
+        dataset["lon"] = variable
+
+        default_array = DefaultData.create_default_array(2, width, np.float32, fill_value=np.NaN)
+        variable = Variable(["x", "bounds"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "longitude cell boundaries"
+        dataset["lon_bnds"] = variable
 
     @staticmethod
     def add_quality_flags(dataset, width, height, chunksizes=None, masks_append=None, meanings_append=None):

@@ -1,2 +1,10 @@
+from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
+
+CHUNKING = (1280, 409)
+
+
 class SST:
-    pass
+
+    @staticmethod
+    def add_variables(ds, width, height):
+        tu.add_geolocation_variables(ds, width, height, chunksizes=CHUNKING)

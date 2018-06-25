@@ -4,8 +4,8 @@ import numpy as np
 import xarray as xr
 from xarray import Variable
 
+from fiduceo.common.writer.templates.templateutil import TemplateUtil
 from fiduceo.fcdr.writer.default_data import DefaultData
-from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil
 
 
 class TemplateUtilTest(unittest.TestCase):
@@ -33,6 +33,40 @@ class TemplateUtilTest(unittest.TestCase):
         self.assertEqual(-32768, longitude.encoding['_FillValue'])
         self.assertEqual(0.0054933317, longitude.encoding['scale_factor'])
         self.assertEqual(0.0, longitude.encoding['add_offset'])
+
+    def test_add_gridded_geolocation_variables(self):
+        ds = xr.Dataset()
+        TemplateUtil.add_gridded_geolocation_variables(ds, 9, 11)
+
+        lat = ds.variables["lat"]
+        self.assertEqual((11,), lat.shape)
+        self.assertTrue(np.isnan(lat.data[5]))
+        self.assertTrue(np.isnan(lat.attrs['_FillValue']))
+        self.assertEqual("latitude", lat.attrs["standard_name"])
+        self.assertEqual("latitude", lat.attrs["long_name"])
+        self.assertEqual("degrees_north", lat.attrs["units"])
+        self.assertEqual("lat_bnds", lat.attrs["bounds"])
+
+        lat_bnds = ds.variables["lat_bnds"]
+        self.assertEqual((11, 2), lat_bnds.shape)
+        self.assertTrue(np.isnan(lat_bnds.data[6, 0]))
+        self.assertTrue(np.isnan(lat_bnds.attrs['_FillValue']))
+        self.assertEqual("latitude cell boundaries", lat_bnds.attrs["long_name"])
+
+        lon = ds.variables["lon"]
+        self.assertEqual((9,), lon.shape)
+        self.assertTrue(np.isnan(lon.data[6]))
+        self.assertTrue(np.isnan(lon.attrs['_FillValue']))
+        self.assertEqual("longitude", lon.attrs["standard_name"])
+        self.assertEqual("longitude", lon.attrs["long_name"])
+        self.assertEqual("degrees_east", lon.attrs["units"])
+        self.assertEqual("lon_bnds", lon.attrs["bounds"])
+
+        lon_bnds = ds.variables["lon_bnds"]
+        self.assertEqual((9, 2), lon_bnds.shape)
+        self.assertTrue(np.isnan(lon_bnds.data[7, 1]))
+        self.assertTrue(np.isnan(lon_bnds.attrs['_FillValue']))
+        self.assertEqual("longitude cell boundaries", lon_bnds.attrs["long_name"])
 
     def test_add_quality_flags(self):
         ds = xr.Dataset()
@@ -86,4 +120,3 @@ class TemplateUtilTest(unittest.TestCase):
 
         TemplateUtil.add_geolocation_attribute(variable)
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
-

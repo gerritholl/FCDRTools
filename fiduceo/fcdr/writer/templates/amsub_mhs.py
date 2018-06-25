@@ -1,8 +1,8 @@
 import numpy as np
 from xarray import Variable
 
+from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.default_data import DefaultData
-from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 NUM_CHANNELS = 5
 BTEMPS_FILL_VALUE = -999999
@@ -55,7 +55,8 @@ class AMSUB_MHS:
         variable = Variable(["y"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["flag_masks"] = "8, 16, 32, 64, 128, 1024, 2048, 4096, 8192, 16384, 32768, 1048576, 2097152, 4194304, 8388608"
-        variable.attrs["flag_meanings"] = "earth_loc_quest_ant_pos earth_loc_quest_reas earth_loc_quest_margin earth_loc_quest_time no_earth_loc_time uncalib_instr_mode uncalib_channels calib_marg_prt uncalib_bad_prt calib_few_scans uncalib_bad_time repeat_scan_times inconsistent_time time_field_bad time_field_inferred"
+        variable.attrs[
+            "flag_meanings"] = "earth_loc_quest_ant_pos earth_loc_quest_reas earth_loc_quest_margin earth_loc_quest_time no_earth_loc_time uncalib_instr_mode uncalib_channels calib_marg_prt uncalib_bad_prt calib_few_scans uncalib_bad_time repeat_scan_times inconsistent_time time_field_bad time_field_inferred"
         dataset["scanqual"] = variable
 
         # scnlin

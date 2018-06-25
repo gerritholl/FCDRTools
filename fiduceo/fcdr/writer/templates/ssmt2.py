@@ -1,8 +1,8 @@
 import numpy as np
 from xarray import Variable
 
+from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.default_data import DefaultData
-from fiduceo.fcdr.writer.templates.templateutil import TemplateUtil as tu
 
 SWATH_WIDTH = 28
 NUM_CHANNELS = 5
@@ -54,7 +54,7 @@ class SSMT2:
         # counts_to_tb_gain
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["counts_to_tb_gain"] = variable
@@ -62,7 +62,7 @@ class SSMT2:
         # counts_to_tb_offset
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["counts_to_tb_offset"] = variable
@@ -70,7 +70,7 @@ class SSMT2:
         # gain_control
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["gain_control"] = variable
@@ -144,7 +144,7 @@ class SSMT2:
         # u_counts_to_tb_gain
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["u_counts_to_tb_gain"] = variable
@@ -152,7 +152,7 @@ class SSMT2:
         # u_counts_to_tb_offset
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["u_counts_to_tb_offset"] = variable
@@ -160,7 +160,7 @@ class SSMT2:
         # u_gain_control
         default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.float32, dims_names=["channel", "y"],
                                                          fill_value=np.NaN)
-        variable = Variable(["channel", "y",], default_array)
+        variable = Variable(["channel", "y", ], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["long_name"] = "TODO"
         dataset["u_gain_control"] = variable

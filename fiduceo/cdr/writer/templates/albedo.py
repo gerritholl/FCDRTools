@@ -30,23 +30,15 @@ class Albedo:
         variable.attrs["coordinates"] = "longitude latitude"
         dataset["surface_albedo"] = variable
 
-        default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
-        variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["description"] = "Uncertainty of surface_albedo due to independent effects"
-        variable.attrs["coordinates"] = "longitude latitude"
-        dataset["u_independent_surface_albedo"] = variable
+        dataset["u_independent_surface_albedo"] = Albedo.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to independent effects")
+        dataset["u_structured_surface_albedo"] = Albedo.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to structured effects")
+        dataset["u_common_surface_albedo"] = Albedo.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to common effects")
 
+    @staticmethod
+    def create_CDR_uncertainty(width, height, description):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, np.NaN)
-        variable.attrs["description"] = "Uncertainty of surface_albedo due to structured effects"
+        variable.attrs["description"] = description
         variable.attrs["coordinates"] = "longitude latitude"
-        dataset["u_structured_surface_albedo"] = variable
-
-        default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
-        variable = Variable(["y", "x"], default_array)
-        tu.add_fill_value(variable, np.NaN)
-        variable.attrs["description"] = "Uncertainty of surface_albedo due to common effects"
-        variable.attrs["coordinates"] = "longitude latitude"
-        dataset["u_common_surface_albedo"] = variable
+        return variable

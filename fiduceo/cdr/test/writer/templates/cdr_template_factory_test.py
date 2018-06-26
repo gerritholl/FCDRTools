@@ -18,5 +18,8 @@ class TemplateFactoryTest(unittest.TestCase):
         sst = self.factory.get_cdr_template("SST")
         self.assertIsNotNone(sst)
 
+        sst_ensemble = self.factory.get_cdr_template("SST_ENSEMBLE")
+        self.assertIsNotNone(sst_ensemble)
+
         uth = self.factory.get_cdr_template("UTH")
         self.assertIsNotNone(uth)

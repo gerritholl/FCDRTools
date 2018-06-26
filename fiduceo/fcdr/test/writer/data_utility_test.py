@@ -4,7 +4,7 @@ import numpy as np
 from xarray import Variable
 
 from fiduceo.fcdr.writer.data_utility import DataUtility
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 
 
 class DataUtilityTest(unittest.TestCase):

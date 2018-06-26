@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 
 
 class DefaultDataTest(unittest.TestCase):

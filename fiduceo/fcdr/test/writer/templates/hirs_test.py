@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import xarray as xr
 
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs import HIRS
 
 

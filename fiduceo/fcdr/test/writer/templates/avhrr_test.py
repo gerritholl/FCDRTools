@@ -4,7 +4,7 @@ import numpy as np
 import xarray as xr
 
 from fiduceo.common.test.assertions import Assertions
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
 CHUNKING = (1280, 409)

@@ -2,7 +2,7 @@ import numpy as np
 from xarray import Variable
 
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs import HIRS, CHUNKING_2D
 
 MAX_SRF_SIZE = 102

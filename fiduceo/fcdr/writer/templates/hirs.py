@@ -3,7 +3,7 @@ from xarray import Variable
 
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 
 FILL_VALUE = -999.0
 COUNTS_FILL_VALUE = 99999

@@ -5,7 +5,7 @@ import xarray as xr
 
 from fiduceo.common.test.assertions import Assertions
 from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
 
 CHUNKING_3D = (10, 512, 56)

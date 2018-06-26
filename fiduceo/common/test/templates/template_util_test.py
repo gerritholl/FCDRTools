@@ -5,7 +5,7 @@ import xarray as xr
 from xarray import Variable
 
 from fiduceo.common.writer.templates.templateutil import TemplateUtil
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 
 
 class TemplateUtilTest(unittest.TestCase):

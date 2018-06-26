@@ -6,7 +6,7 @@ import xarray as xr
 import numpy as np
 from xarray import Variable
 
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 

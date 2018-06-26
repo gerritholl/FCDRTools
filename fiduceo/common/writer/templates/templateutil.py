@@ -1,7 +1,7 @@
 import numpy as np
 from xarray import Variable, Coordinate
 
-from fiduceo.fcdr.writer.default_data import DefaultData
+from fiduceo.common.writer.default_data import DefaultData
 
 LATITUDE_UNIT = "degrees_north"
 LONGITUDE_UNIT = "degrees_east"

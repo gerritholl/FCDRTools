@@ -197,3 +197,12 @@ class TemplateUtil:
         variable.attrs["description"] = "Channel error correlation matrix for structured effects"
         TemplateUtil.add_encoding(variable, np.int16, -32768, scale_factor=0.0001)
         dataset['channel_correlation_matrix_structured'] = variable
+
+    @staticmethod
+    def create_CDR_uncertainty(width, height, description):
+        default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["description"] = description
+        variable.attrs["coordinates"] = "longitude latitude"
+        return variable

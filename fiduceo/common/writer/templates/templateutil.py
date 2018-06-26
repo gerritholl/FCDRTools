@@ -199,10 +199,14 @@ class TemplateUtil:
         dataset['channel_correlation_matrix_structured'] = variable
 
     @staticmethod
-    def create_CDR_uncertainty(width, height, description):
+    def create_CDR_uncertainty(width, height, description, coordinates=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         TemplateUtil.add_fill_value(variable, np.NaN)
         variable.attrs["description"] = description
-        variable.attrs["coordinates"] = "longitude latitude"
+        if coordinates is None:
+            variable.attrs["coordinates"] = "longitude latitude"
+        else:
+            variable.attrs["coordinates"] = coordinates
+
         return variable

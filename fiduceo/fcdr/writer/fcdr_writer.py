@@ -2,16 +2,17 @@ import os
 
 import xarray as xr
 
+from fiduceo.common.version import __version__
+from fiduceo.common.writer.writer_utils import WriterUtils
 from fiduceo.fcdr.writer.templates.template_factory import TemplateFactory
 
 DATE_PATTERN = "%Y%m%d%H%M%S"
 
 
 class FCDRWriter:
-    _version = "1.1.4"
 
-    @classmethod
-    def write(cls, ds, file, compression_level=None, overwrite=False):
+    @staticmethod
+    def write(ds, file, compression_level=None, overwrite=False):
         """
         Save a dataset to NetCDF file.
         :param ds: The dataset
@@ -44,8 +45,8 @@ class FCDRWriter:
 
         ds.to_netcdf(file, format='netCDF4', engine='netcdf4', encoding=encoding)
 
-    @classmethod
-    def createTemplateEasy(cls, sensorType, height, srf_size=None):
+    @staticmethod
+    def createTemplateEasy(sensorType, height, srf_size=None):
         """
         Create a template dataset in EASY FCDR format for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
@@ -54,7 +55,7 @@ class FCDRWriter:
         :return the template dataset
          """
         dataset = xr.Dataset()
-        cls._add_standard_global_attributes(dataset)
+        WriterUtils.add_standard_global_attributes(dataset)
 
         template_factory = TemplateFactory()
 
@@ -65,8 +66,8 @@ class FCDRWriter:
 
         return dataset
 
-    @classmethod
-    def createTemplateFull(cls, sensorType, height):
+    @staticmethod
+    def createTemplateFull(sensorType, height):
         """
         Create a template dataset in FULL FCDR format for the sensor given as argument.
         :param sensorType: the sensor type to create the template for
@@ -75,7 +76,7 @@ class FCDRWriter:
          """
         dataset = xr.Dataset()
 
-        cls._add_standard_global_attributes(dataset)
+        WriterUtils.add_standard_global_attributes(dataset)
 
         template_factory = TemplateFactory()
 
@@ -112,25 +113,8 @@ class FCDRWriter:
          """
         return FCDRWriter._create_file_name(end, platform, sensor, start, "FULL", version)
 
-    @classmethod
-    def _add_standard_global_attributes(cls, dataset):
-        dataset.attrs["Conventions"] = "CF-1.6"
-        dataset.attrs[
-            "licence"] = "This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC " \
-                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
-                         "Observations\". Grant Agreement: 638822."
-        dataset.attrs["writer_version"] = FCDRWriter._version
-
-        # The following dictionary entries have to be supplied by the data generators
-        dataset.attrs["institution"] = None
-        dataset.attrs["title"] = None
-        dataset.attrs["source"] = None
-        dataset.attrs["history"] = None
-        dataset.attrs["references"] = None
-        dataset.attrs["comment"] = None
-
     @staticmethod
     def _create_file_name(end, platform, sensor, start, type, version):
         start_string = start.strftime(DATE_PATTERN)
         end_string = end.strftime(DATE_PATTERN)
-        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + FCDRWriter._version + ".nc"
+        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + __version__ + ".nc"

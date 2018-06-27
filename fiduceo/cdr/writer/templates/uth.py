@@ -3,12 +3,15 @@ from xarray import Variable
 
 from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
+from fiduceo.common.writer.writer_utils import WriterUtils
 
 
 class UTH:
 
     @staticmethod
     def add_variables(dataset, width, height):
+        WriterUtils.add_gridded_global_attributes(dataset)
+
         tu.add_gridded_geolocation_variables(dataset, width, height)
         tu.add_quality_flags(dataset, width, height)
 

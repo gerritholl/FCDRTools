@@ -113,3 +113,37 @@ class Assertions:
         test_case.assertEqual("-10000", ch_corr_indep.attrs["valid_min"])
         test_case.assertEqual("10000", ch_corr_indep.attrs["valid_max"])
         test_case.assertEqual("Channel error correlation matrix for structured effects", ch_corr_stuct.attrs["description"])
+
+    @staticmethod
+    def assert_global_attributes(test_case, attributes):
+        test_case.assertIsNotNone(attributes)
+        test_case.assertEqual("CF-1.6", attributes["Conventions"])
+        test_case.assertEqual("This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
+                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
+                         "Observations\". Grant Agreement: 638822.", attributes["licence"])
+        test_case.assertEqual("1.1.5", attributes["writer_version"])
+
+        test_case.assertIsNone(attributes["institution"])
+        test_case.assertIsNone(attributes["source"])
+        test_case.assertIsNone(attributes["title"])
+        test_case.assertIsNone(attributes["history"])
+        test_case.assertIsNone(attributes["references"])
+        # @todo 3 tb/tb add "id" attribute when we have the DOI issue resolved 2018-06-27
+        # test_case.assertIsNone(attributes["id"])
+
+    @staticmethod
+    def assert_cdr_global_attributes(test_case, attributes):
+        test_case.assertIsNone(attributes["source"])
+        test_case.assertIsNone(attributes["auxiliary_data"])
+        test_case.assertIsNone(attributes["configuration"])
+        test_case.assertIsNone(attributes["time_coverage_start"])
+        test_case.assertIsNone(attributes["time_coverage_end"])
+        test_case.assertIsNone(attributes["time_coverage_duration"])
+        test_case.assertIsNone(attributes["time_coverage_resolution"])
+
+    @staticmethod
+    def assert_gridded_global_attributes(test_case, attributes):
+        test_case.assertIsNone(attributes["geospatial_lat_units"])
+        test_case.assertIsNone(attributes["geospatial_lon_units"])
+        test_case.assertIsNone(attributes["geospatial_lat_resolution"])
+        test_case.assertIsNone(attributes["geospatial_lon_resolution"])

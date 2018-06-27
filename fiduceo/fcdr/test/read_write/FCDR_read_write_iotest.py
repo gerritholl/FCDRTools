@@ -1,16 +1,17 @@
+import os
 import tempfile
 import unittest
 
-import os
-import xarray as xr
 import numpy as np
+import xarray as xr
 from xarray import Variable
 
 from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.fcdr.writer.fcdr_writer import FCDRWriter
 
 
-class ReadWriteTests(unittest.TestCase):
+class FCDRReadWriteTests(unittest.TestCase):
+
     def setUp(self):
         self.dataset = xr.Dataset()
         self.dataset.attrs["template_key"] = "HIRS2"
@@ -37,13 +38,6 @@ class ReadWriteTests(unittest.TestCase):
             for i in os.listdir(self.testDir):
                 os.remove(os.path.join(self.testDir, i))
             os.rmdir(self.testDir)
-
-    def test_write_empty(self):
-        testFile = os.path.join(self.testDir, 'delete_me.nc')
-
-        FCDRWriter.write(self.dataset, testFile)
-
-        self.assertTrue(os.path.isfile(testFile))
 
     def test_write_overwrite_true(self):
         testFile = os.path.join(self.testDir, 'delete_me.nc')

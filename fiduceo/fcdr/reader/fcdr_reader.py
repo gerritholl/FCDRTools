@@ -1,15 +1,16 @@
+import re
+from math import pi
+
+import numexpr as ne
 import numpy as np
 import xarray as xr
-import numexpr as ne
-from math import pi
-import re
+from gridtools.resampling import resample_2d
 
 
 class FCDRReader:
 
     @classmethod
-    def read(cls, file_str, drop_variables_str=None, decode_cf=True, decode_times=True,
-             engine_str=None):
+    def read(cls, file_str, drop_variables_str=None, decode_cf=True, decode_times=True, engine_str=None):
         """Read a dataset from a netCDF 3/4 or HDF file.
 
         Parameters
@@ -47,6 +48,10 @@ class FCDRReader:
                 for name in to_extend:
                     dic[name] = cls._extend_1d_vertical_to_2d(dic[name], biggest_variable)
 
+                to_interpolate = cls._find_used_tie_point_variables_to_extend(dic, expression_)
+                for name in to_interpolate:
+                    dic[name] = cls._interpolate_to_raster(dic[name], biggest_variable)
+
                 expression_ = cls._replace_constants(expression_)
                 values = ne.evaluate(expression_, dic)
                 tmp_var = xr.Variable(dims, values)
@@ -80,8 +85,8 @@ class FCDRReader:
         shape = variable.shape
         shape_len = len(shape)
         if shape_len == 0:
-            return 1    # scalar variable
-        
+            return 1  # scalar variable
+
         num_elems = shape[0]
         for i in range(1, shape_len):
             num_elems = shape[i] * num_elems
@@ -114,6 +119,20 @@ class FCDRReader:
         return one_dimensional_variables
 
     @classmethod
+    def _find_used_tie_point_variables_to_extend(cls, dic, expression):
+        tie_point_variables = list()
+
+        sorted_keys = cls._get_keys_sorted__longest_first(dic)
+        for key in sorted_keys:
+            if key in expression:
+                expression = expression.replace(str(key), '')
+                variable = dic[key]
+                if "tie_points" in variable.attrs:
+                    tie_point_variables.append(key)
+
+        return tie_point_variables
+
+    @classmethod
     def _get_keys_sorted__longest_first(cls, dic):
         dic_keys = dic.keys()
         return sorted(dic_keys, key=len, reverse=True)
@@ -124,6 +143,12 @@ class FCDRReader:
         var_reshaped = np.resize(vertical_variable, shape[::-1])
         var_reshaped = np.moveaxis(var_reshaped, 0, 1)
         return xr.Variable(reference_var.dims[-2:], var_reshaped)
+
+    @classmethod
+    def _interpolate_to_raster(cls, variable, biggest_variable):
+        shape = biggest_variable.shape
+        full_size_array = resample_2d(variable.values, shape[1], shape[0])
+        return xr.Variable(shape, full_size_array)
 
     @classmethod
     def _create_dictionary_of_non_virtuals(cls, ds):

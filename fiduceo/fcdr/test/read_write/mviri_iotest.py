@@ -185,12 +185,14 @@ class MviriIoTest(unittest.TestCase):
 
         for x in range(0, 5000):
             mviri_full["count_vis"].data[:, x] = np.ones((5000), np.uint8) * x
-            mviri_full["u_latitude"].data[:, x] = np.ones((5000), np.float32) * x * 0.1
-            mviri_full["u_longitude"].data[:, x] = np.ones((5000), np.float32) * x * 0.2
-            mviri_full["u_satellite_zenith_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.3
-            mviri_full["u_satellite_azimuth_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.4
-            mviri_full["u_solar_zenith_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.5
-            mviri_full["u_solar_azimuth_angle"].data[:, x] = np.ones((5000), np.float32) * x * 0.6
+
+        for x in range(0, 500):
+            mviri_full["u_latitude"].data[:, x] = np.ones((500), np.float32) * x * 0.1
+            mviri_full["u_longitude"].data[:, x] = np.ones((500), np.float32) * x * 0.2
+            mviri_full["u_satellite_zenith_angle"].data[:, x] = np.ones((500), np.float32) * x * 0.3
+            mviri_full["u_satellite_azimuth_angle"].data[:, x] = np.ones((500), np.float32) * x * 0.4
+            mviri_full["u_solar_zenith_angle"].data[:, x] = np.ones((500), np.float32) * x * 0.5
+            mviri_full["u_solar_azimuth_angle"].data[:, x] = np.ones((500), np.float32) * x * 0.6
 
         mviri_full["u_time"].data[:] = np.ones((2500), np.float32) * 0.4
 
@@ -334,9 +336,9 @@ class MviriIoTest(unittest.TestCase):
             dataset["count_ir"].data[:, x] = np.ones((2500), np.uint8) * x
             dataset["count_wv"].data[:, x] = np.ones((2500), np.uint8) * x + 1
 
-        for x in range(0, 5000):
-            dataset["solar_azimuth_angle"].data[:, x] = np.ones((5000), np.uint32) * x * 0.01
-            dataset["solar_zenith_angle"].data[:, x] = np.ones((5000), np.uint32) * x * 0.02
+        for x in range(0, 500):
+            dataset["solar_azimuth_angle"].data[:, x] = np.ones((500), np.uint32) * x * 0.01
+            dataset["solar_zenith_angle"].data[:, x] = np.ones((500), np.uint32) * x * 0.02
 
         for x in range(0, 1011):
             dataset["covariance_spectral_response_function_vis"].data[:] = np.ones((1011), np.float32) * x * 0.04

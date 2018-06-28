@@ -42,7 +42,7 @@ class FCDRReaderMviriVirtualVariablesTest(unittest.TestCase):
 
         virtual_variable = self.dataset["sensitivity_count_vis"]
         self.assertIsNotNone(virtual_variable)
-        self.assertEqual((5000, 5000), virtual_variable.shape)
+        self.assertEqual((500, 500), virtual_variable.shape)
 
         self.assertAlmostEqual(0.0062763287769869421, virtual_variable.data[1, 1])
 
@@ -58,7 +58,7 @@ class FCDRReaderMviriVirtualVariablesTest(unittest.TestCase):
 
         virtual_variable = self.dataset["sensitivity_count_space"]
         self.assertIsNotNone(virtual_variable)
-        self.assertEqual((5000, 5000), virtual_variable.shape)
+        self.assertEqual((500, 500), virtual_variable.shape)
 
         self.assertAlmostEqual(-0.0057376460063233922, virtual_variable.data[2, 2])
 

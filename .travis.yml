@@ -23,6 +23,7 @@ install:
 
   - conda env create --file environment.yml
   - source activate fiduceo-fcdr-tools-env
+  - conda install -c cablab gridtools
   - python setup.py install
 
 script:

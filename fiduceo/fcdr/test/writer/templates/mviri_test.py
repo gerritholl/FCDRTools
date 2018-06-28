@@ -28,10 +28,11 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(-32768, time.attrs["add_offset"])
 
         sol_azimuth = ds.variables["solar_azimuth_angle"]
-        self.assertEqual((5000, 5000), sol_azimuth.shape)
+        self.assertEqual((500, 500), sol_azimuth.shape)
         self.assertTrue(np.isnan(sol_azimuth.data[0, 111]))
         self.assertEqual("solar_azimuth_angle", sol_azimuth.attrs["standard_name"])
         self.assertEqual("degree", sol_azimuth.attrs["units"])
+        self.assertEqual("true", sol_azimuth.attrs["tie_points"])
         self.assertEqual(np.uint16, sol_azimuth.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), sol_azimuth.encoding['_FillValue'])
         self.assertEqual(0.005493164, sol_azimuth.encoding['scale_factor'])
@@ -39,15 +40,41 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, sol_azimuth.encoding["chunksizes"])
 
         sol_zenith = ds.variables["solar_zenith_angle"]
-        self.assertEqual((5000, 5000), sol_zenith.shape)
+        self.assertEqual((500, 500), sol_zenith.shape)
         self.assertTrue(np.isnan(sol_zenith.data[0, 112]))
         self.assertEqual("solar_zenith_angle", sol_zenith.attrs["standard_name"])
         self.assertEqual("degree", sol_zenith.attrs["units"])
+        self.assertEqual("true", sol_zenith.attrs["tie_points"])
         self.assertEqual(np.int16, sol_zenith.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.int16), sol_zenith.encoding['_FillValue'])
         self.assertEqual(0.005493248, sol_zenith.encoding['scale_factor'])
         self.assertEqual(0.0, sol_zenith.encoding['add_offset'])
         self.assertEqual(CHUNKING, sol_zenith.encoding["chunksizes"])
+
+        sat_azimuth = ds.variables["satellite_azimuth_angle"]
+        self.assertEqual((500, 500), sat_azimuth.shape)
+        self.assertTrue(np.isnan(sat_azimuth.data[2, 114]))
+        self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["standard_name"])
+        self.assertEqual("sensor_azimuth_angle", sat_azimuth.attrs["long_name"])
+        self.assertEqual("degree", sat_azimuth.attrs["units"])
+        self.assertEqual("true", sat_azimuth.attrs["tie_points"])
+        self.assertEqual(np.uint16, sat_azimuth.encoding['dtype'])
+        self.assertEqual(65535, sat_azimuth.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_azimuth.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_azimuth.encoding['add_offset'])
+        self.assertEqual(CHUNKING, sat_azimuth.encoding["chunksizes"])
+
+        sat_zenith = ds.variables["satellite_zenith_angle"]
+        self.assertEqual((500, 500), sat_zenith.shape)
+        self.assertTrue(np.isnan(sat_zenith.data[1, 113]))
+        self.assertEqual("platform_zenith_angle", sat_zenith.attrs["standard_name"])
+        self.assertEqual("degree", sat_zenith.attrs["units"])
+        self.assertEqual("true", sat_zenith.attrs["tie_points"])
+        self.assertEqual(np.uint16, sat_zenith.encoding['dtype'])
+        self.assertEqual(65535, sat_zenith.encoding['_FillValue'])
+        self.assertEqual(0.01, sat_zenith.encoding['scale_factor'])
+        self.assertEqual(0.0, sat_zenith.encoding['add_offset'])
+        self.assertEqual(CHUNKING, sat_zenith.encoding["chunksizes"])
 
         count = ds.variables["count_ir"]
         self.assertEqual((2500, 2500), count.shape)
@@ -204,10 +231,12 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("structured uncertainty per pixel", u_struct.attrs["long_name"])
         self.assertEqual("percent", u_struct.attrs["units"])
         self.assertEqual(np.uint16, u_struct.encoding['dtype'])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint16), u_struct.encoding['_FillValue'])
+        self.assertEqual(65535, u_struct.encoding['_FillValue'])
         self.assertEqual(1.52588E-05, u_struct.encoding['scale_factor'])
         self.assertEqual(0.0, u_struct.encoding['add_offset'])
         self.assertEqual(CHUNKING, u_struct.encoding["chunksizes"])
+
+        self._assert_scalar_float_variable(ds, "u_common_toa_bidirectional_reflectance", "common uncertainty per slot", "percent")
 
         self._assert_scalar_float_variable(ds, "sub_satellite_latitude_start", "Latitude of the sub satellite point at image start", "degrees_north")
         self._assert_scalar_float_variable(ds, "sub_satellite_longitude_start", "Longitude of the sub satellite point at image start", "degrees_east")
@@ -233,7 +262,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, count.encoding["chunksizes"])
 
         u_lat = ds.variables["u_latitude"]
-        self.assertEqual((5000, 5000), u_lat.shape)
+        self.assertEqual((500, 500), u_lat.shape)
         self.assertTrue(np.isnan(u_lat.data[5, 109]))
         self.assertEqual("Uncertainty in Latitude", u_lat.attrs["long_name"])
         self.assertEqual("degree", u_lat.attrs["units"])
@@ -254,7 +283,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, u_lat.encoding["chunksizes"])
 
         u_lon = ds.variables["u_longitude"]
-        self.assertEqual((5000, 5000), u_lon.shape)
+        self.assertEqual((500, 500), u_lon.shape)
         self.assertTrue(np.isnan(u_lon.data[6, 110]))
         self.assertEqual("Uncertainty in Longitude", u_lon.attrs["long_name"])
         self.assertEqual("degree", u_lon.attrs["units"])
@@ -286,7 +315,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("rectangle", u_time.attrs["pdf_shape"])
 
         u_sat_zenith = ds.variables["u_satellite_zenith_angle"]
-        self.assertEqual((5000, 5000), u_sat_zenith.shape)
+        self.assertEqual((500, 500), u_sat_zenith.shape)
         self.assertTrue(np.isnan(u_sat_zenith.data[1, 112]))
         self.assertEqual("Uncertainty in Satellite Zenith Angle", u_sat_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sat_zenith.attrs["units"])
@@ -297,7 +326,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, u_sat_zenith.encoding["chunksizes"])
 
         u_sat_azimuth = ds.variables["u_satellite_azimuth_angle"]
-        self.assertEqual((5000, 5000), u_sat_azimuth.shape)
+        self.assertEqual((500, 500), u_sat_azimuth.shape)
         self.assertTrue(np.isnan(u_sat_azimuth.data[2, 113]))
         self.assertEqual("Uncertainty in Satellite Azimuth Angle", u_sat_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sat_azimuth.attrs["units"])
@@ -308,7 +337,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, u_sat_azimuth.encoding["chunksizes"])
 
         u_sol_zenith = ds.variables["u_solar_zenith_angle"]
-        self.assertEqual((5000, 5000), u_sol_zenith.shape)
+        self.assertEqual((500, 500), u_sol_zenith.shape)
         self.assertTrue(np.isnan(u_sol_zenith.data[3, 114]))
         self.assertEqual("Uncertainty in Solar Zenith Angle", u_sol_zenith.attrs["long_name"])
         self.assertEqual("degree", u_sol_zenith.attrs["units"])
@@ -319,7 +348,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(CHUNKING, u_sol_zenith.encoding["chunksizes"])
 
         u_sol_azimuth = ds.variables["u_solar_azimuth_angle"]
-        self.assertEqual((5000, 5000), u_sol_azimuth.shape)
+        self.assertEqual((500, 500), u_sol_azimuth.shape)
         self.assertTrue(np.isnan(u_sol_azimuth.data[4, 115]))
         self.assertEqual("Uncertainty in Solar Azimuth Angle", u_sol_azimuth.attrs["long_name"])
         self.assertEqual("degree", u_sol_azimuth.attrs["units"])
@@ -342,6 +371,13 @@ class MVIRITest(unittest.TestCase):
         self.assertTrue(np.isnan(a1.attrs["_FillValue"]))
         self.assertEqual("Time variation of a0", a1.attrs["long_name"])
         self.assertEqual("Wm^-2sr^-1/count day^-1 10^5", a1.attrs["units"])
+
+        a2 = ds.variables["a2_vis"]
+        self.assertEqual((), a2.shape)
+        self.assertTrue(np.isnan(a2.data))
+        self.assertTrue(np.isnan(a2.attrs["_FillValue"]))
+        self.assertEqual("Time variation of a0, quadratic term", a2.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count year^-2", a2.attrs["units"])
 
         k_space = ds.variables["mean_count_space_vis"]
         self.assertEqual((), k_space.shape)

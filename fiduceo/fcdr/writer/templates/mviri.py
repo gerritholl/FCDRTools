@@ -12,8 +12,9 @@ SRF_IR_WV_DIMENSION = "srf_size_ir_wv"
 IR_X_DIMENSION = "x_ir_wv"
 IR_Y_DIMENSION = "y_ir_wv"
 
-FULL_DIMENSION = 5000
-IR_DIMENSION = 2500
+FULL_SIZE = 5000
+IR_SIZE = 2500
+TIE_SIZE = 500
 
 SRF_SIZE = 1011
 SOL_IRR_SIZE = 24
@@ -29,10 +30,10 @@ class MVIRI:
     def add_original_variables(dataset, height, srf_size=None):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
-        tu.add_quality_flags(dataset, FULL_DIMENSION, FULL_DIMENSION, chunksizes=CHUNKSIZES)
+        tu.add_quality_flags(dataset, FULL_SIZE, FULL_SIZE, chunksizes=CHUNKSIZES)
 
         # time
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint32)
+        default_array = DefaultData.create_default_array(IR_SIZE, IR_SIZE, np.uint32)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
         variable.attrs["standard_name"] = "time"
@@ -44,9 +45,11 @@ class MVIRI:
 
         dataset["solar_azimuth_angle"] = MVIRI._create_angle_variable_int(0.005493164, standard_name="solar_azimuth_angle", unsigned=True)
         dataset["solar_zenith_angle"] = MVIRI._create_angle_variable_int(0.005493248, standard_name="solar_zenith_angle")
+        dataset["satellite_azimuth_angle"] = MVIRI._create_angle_variable_int(0.01, standard_name="sensor_azimuth_angle", long_name="sensor_azimuth_angle", unsigned=True)
+        dataset["satellite_zenith_angle"] = MVIRI._create_angle_variable_int(0.01, standard_name="platform_zenith_angle", unsigned=True)
 
         # count_ir
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(IR_SIZE, IR_SIZE, np.uint8)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Infrared Image Counts"
@@ -55,7 +58,7 @@ class MVIRI:
         dataset["count_ir"] = variable
 
         # count_wv
-        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(IR_SIZE, IR_SIZE, np.uint8)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "WV Image Counts"
@@ -63,7 +66,7 @@ class MVIRI:
         tu.add_chunking(variable, CHUNKSIZES)
         dataset["count_wv"] = variable
 
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8, fill_value=0)
+        default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.uint8, fill_value=0)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32"
         variable.attrs["flag_meanings"] = "uncertainty_suspicious uncertainty_too_large space_view_suspicious not_on_earth suspect_time suspect_geo"
@@ -166,14 +169,14 @@ class MVIRI:
 
     @staticmethod
     def get_swath_width():
-        return FULL_DIMENSION
+        return FULL_SIZE
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # reflectance
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
@@ -182,7 +185,7 @@ class MVIRI:
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_independent
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "independent uncertainty per pixel"
         tu.add_units(variable, "percent")
@@ -190,12 +193,15 @@ class MVIRI:
         dataset["u_independent_toa_bidirectional_reflectance"] = variable
 
         # u_structured
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "structured uncertainty per pixel"
         tu.add_units(variable, "percent")
         tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
         dataset["u_structured_toa_bidirectional_reflectance"] = variable
+
+        # u_common
+        dataset["u_common_toa_bidirectional_reflectance"] = tu.create_scalar_float_variable(long_name="common uncertainty per slot", units="percent")
 
         dataset["sub_satellite_latitude_start"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image start", units="degrees_north")
         dataset["sub_satellite_longitude_start"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image start", units="degrees_east")
@@ -211,7 +217,7 @@ class MVIRI:
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # count_vis
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8)
+        default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.uint8)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
         variable.attrs["long_name"] = "Image counts"
@@ -226,7 +232,7 @@ class MVIRI:
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
-        default_array = DefaultData.create_default_vector(IR_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_vector(IR_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable([IR_Y_DIMENSION], default_array)
         variable.attrs["standard_name"] = "Uncertainty in Time"
         tu.add_units(variable, "s")
@@ -241,6 +247,7 @@ class MVIRI:
 
         dataset["a0_vis"] = tu.create_scalar_float_variable("Calibration Coefficient at Launch", units="Wm^-2sr^-1/count")
         dataset["a1_vis"] = tu.create_scalar_float_variable("Time variation of a0", units="Wm^-2sr^-1/count day^-1 10^5")
+        dataset["a2_vis"] = tu.create_scalar_float_variable("Time variation of a0, quadratic term", units="Wm^-2sr^-1/count year^-2")
         dataset["mean_count_space_vis"] = tu.create_scalar_float_variable("Space count", units="count")
 
         # u_a0_vis
@@ -338,8 +345,8 @@ class MVIRI:
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
-        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.float32, fill_value=np.NaN)
-        variable = Variable(["y", "x"], default_array)
+        default_array = DefaultData.create_default_array(TIE_SIZE, TIE_SIZE, np.float32, fill_value=np.NaN)
+        variable = Variable(["y_tie", "x_tie"], default_array)
 
         if unsigned is True:
             data_type = np.uint16
@@ -356,5 +363,6 @@ class MVIRI:
             variable.attrs["long_name"] = long_name
 
         tu.add_units(variable, "degree")
+        variable.attrs["tie_points"] = "true"
         tu.add_encoding(variable, data_type, fill_value, scale_factor, chunksizes=CHUNKSIZES)
         return variable

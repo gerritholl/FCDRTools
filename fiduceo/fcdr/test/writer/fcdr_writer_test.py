@@ -464,7 +464,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verify_quality_flags(ds)
 
-        self.assertEqual(41, len(ds.data_vars))
+        self.assertEqual(44, len(ds.data_vars))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -475,6 +475,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["count_ir"])
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
@@ -503,6 +505,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["toa_bidirectional_reflectance_vis"])
         self.assertIsNotNone(ds.variables["u_independent_toa_bidirectional_reflectance"])
         self.assertIsNotNone(ds.variables["u_structured_toa_bidirectional_reflectance"])
+        self.assertIsNotNone(ds.variables["u_common_toa_bidirectional_reflectance"])
         self.assertIsNotNone(ds.variables["sub_satellite_latitude_start"])
         self.assertIsNotNone(ds.variables["sub_satellite_longitude_start"])
         self.assertIsNotNone(ds.variables["sub_satellite_latitude_end"])
@@ -516,7 +519,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(54, len(ds.data_vars))
+        self.assertEqual(57, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -525,6 +528,8 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["time"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["solar_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["count_ir"])
         self.assertIsNotNone(ds.variables["count_wv"])
         self.assertIsNotNone(ds.variables["count_vis"])
@@ -536,6 +541,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_spectral_response_function_wv"])
         self.assertIsNotNone(ds.variables["a0_vis"])
         self.assertIsNotNone(ds.variables["a1_vis"])
+        self.assertIsNotNone(ds.variables["a2_vis"])
         self.assertIsNotNone(ds.variables["solar_irradiance_vis"])
         self.assertIsNotNone(ds.variables["u_solar_irradiance_vis"])
         self.assertIsNotNone(ds.variables["distance_sun_earth"])

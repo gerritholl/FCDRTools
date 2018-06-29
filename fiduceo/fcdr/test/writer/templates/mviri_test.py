@@ -565,7 +565,6 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual(np.int16, eff_corr_mat.encoding["dtype"])
         self.assertEqual(-32768, eff_corr_mat.encoding["_FillValue"])
         self.assertAlmostEqual(3.05176e-05, eff_corr_mat.encoding["scale_factor"], 8)
-        self.assertEqual(CHUNKING, eff_corr_mat.encoding["chunksizes"])
         self.assertEqual(1, eff_corr_mat.attrs["valid_max"])
         self.assertEqual(-1, eff_corr_mat.attrs["valid_min"])
         self.assertEqual("Channel error correlation matrix for structured effects.", eff_corr_mat.attrs["long_name"])

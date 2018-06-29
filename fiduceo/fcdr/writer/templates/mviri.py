@@ -353,7 +353,7 @@ class MVIRI:
         num_effects = len(effect_names)
         default_array = DefaultData.create_default_array(num_effects, num_effects, np.float32, fill_value=np.NaN)
         variable = Variable(["Ne", "Ne"], default_array)
-        tu.add_encoding(variable, np.int16, -32768, 3.05176E-05, chunksizes=CHUNKSIZES)
+        tu.add_encoding(variable, np.int16, -32768, 3.05176E-05)
         variable.attrs["valid_min"] = -1
         variable.attrs["valid_max"] = 1
         variable.attrs["long_name"] = "Channel error correlation matrix for structured effects."

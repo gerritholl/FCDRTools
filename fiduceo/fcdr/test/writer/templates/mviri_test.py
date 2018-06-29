@@ -404,7 +404,7 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual("gaussian", u_a0_vis.attrs["pdf_shape"])
 
         u_a1_vis = ds.variables["u_a1_vis"]
-        self.assertEqual((), u_a0_vis.shape)
+        self.assertEqual((), u_a1_vis.shape)
         self.assertTrue(np.isnan(u_a1_vis.data))
         self.assertTrue(np.isnan(u_a1_vis.attrs["_FillValue"]))
         self.assertEqual("Uncertainty in a1", u_a1_vis.attrs["long_name"])
@@ -420,11 +420,56 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-1.5, 1.5], u_a1_vis.attrs["image_correlation_scales"])
         self.assertEqual("gaussian", u_a1_vis.attrs["pdf_shape"])
 
-        u_a0_a1_cov = ds.variables["covariance_a0_a1_vis"]
-        self.assertEqual((), u_a0_a1_cov.shape)
-        self.assertTrue(np.isnan(u_a0_a1_cov.data))
-        self.assertTrue(np.isnan(u_a0_a1_cov.attrs["_FillValue"]))
-        self.assertEqual("Covariance of calibration coefficients", u_a0_a1_cov.attrs["long_name"])
+        u_a2_vis = ds.variables["u_a2_vis"]
+        self.assertEqual((), u_a2_vis.shape)
+        self.assertTrue(np.isnan(u_a2_vis.data))
+        self.assertTrue(np.isnan(u_a2_vis.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty in a2", u_a2_vis.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count year^-2", u_a2_vis.attrs["units"])
+        self.assertEqual("rectangle_absolute", u_a2_vis.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", u_a2_vis.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_a2_vis.attrs["pixel_correlation_scales"])
+        self.assertEqual("rectangle_absolute", u_a2_vis.attrs["scan_correlation_form"])
+        self.assertEqual("line", u_a2_vis.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_a2_vis.attrs["scan_correlation_scales"])
+        self.assertEqual("triangle_relative", u_a2_vis.attrs["image_correlation_form"])
+        self.assertEqual("months", u_a2_vis.attrs["image_correlation_units"])
+        self.assertEqual([-1.5, 1.5], u_a2_vis.attrs["image_correlation_scales"])
+        self.assertEqual("gaussian", u_a2_vis.attrs["pdf_shape"])
+
+        u_zero_vis = ds.variables["u_zero_vis"]
+        self.assertEqual((), u_zero_vis.shape)
+        self.assertTrue(np.isnan(u_zero_vis.data))
+        self.assertTrue(np.isnan(u_zero_vis.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty zero term", u_zero_vis.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count", u_zero_vis.attrs["units"])
+        self.assertEqual("rectangle_absolute", u_zero_vis.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", u_zero_vis.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_zero_vis.attrs["pixel_correlation_scales"])
+        self.assertEqual("rectangle_absolute", u_zero_vis.attrs["scan_correlation_form"])
+        self.assertEqual("line", u_zero_vis.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_zero_vis.attrs["scan_correlation_scales"])
+        self.assertEqual("triangle_relative", u_zero_vis.attrs["image_correlation_form"])
+        self.assertEqual("months", u_zero_vis.attrs["image_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_zero_vis.attrs["image_correlation_scales"])
+        self.assertEqual("gaussian", u_zero_vis.attrs["pdf_shape"])
+
+        u_a_cov = ds.variables["covariance_a_vis"]
+        self.assertEqual((3, 3), u_a_cov.shape)
+        self.assertTrue(np.isnan(u_a_cov.data[1, 2]))
+        self.assertTrue(np.isnan(u_a_cov.attrs["_FillValue"]))
+        self.assertEqual("Covariance of calibration coefficients from fit to calibration runs", u_a_cov.attrs["long_name"])
+        self.assertEqual("Wm^-2sr^-1/count", u_a_cov.attrs["units"])
+        self.assertEqual("rectangle_absolute", u_a_cov.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", u_a_cov.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_a_cov.attrs["pixel_correlation_scales"])
+        self.assertEqual("rectangle_absolute", u_a_cov.attrs["scan_correlation_form"])
+        self.assertEqual("line", u_a_cov.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_a_cov.attrs["scan_correlation_scales"])
+        self.assertEqual("triangle_relative", u_a_cov.attrs["image_correlation_form"])
+        self.assertEqual("months", u_a_cov.attrs["image_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_a_cov.attrs["image_correlation_scales"])
+        self.assertEqual("gaussian", u_a_cov.attrs["pdf_shape"])
 
         u_e_noise = ds.variables["u_electronics_counts_vis"]
         self.assertEqual((), u_e_noise.shape)
@@ -451,40 +496,80 @@ class MVIRITest(unittest.TestCase):
         self.assertEqual([-np.inf, np.inf], u_space.attrs["scan_correlation_scales"])
         self.assertEqual("digitised_gaussian", u_space.attrs["pdf_shape"])
 
+        u_mean_space = ds.variables["u_mean_counts_space_vis"]
+        self.assertEqual((), u_mean_space.shape)
+        self.assertTrue(np.isnan(u_mean_space.data))
+        self.assertTrue(np.isnan(u_mean_space.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of space count", u_mean_space.attrs["long_name"])
+        self.assertEqual("count", u_mean_space.attrs["units"])
+        self.assertEqual("rectangle_absolute", u_mean_space.attrs["pixel_correlation_form"])
+        self.assertEqual("pixel", u_mean_space.attrs["pixel_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_mean_space.attrs["pixel_correlation_scales"])
+        self.assertEqual("rectangle_absolute", u_mean_space.attrs["scan_correlation_form"])
+        self.assertEqual("line", u_mean_space.attrs["scan_correlation_units"])
+        self.assertEqual([-np.inf, np.inf], u_mean_space.attrs["scan_correlation_scales"])
+        self.assertEqual("digitised_gaussian", u_mean_space.attrs["pdf_shape"])
+
         s_sol_irr_vis = ds.variables["sensitivity_solar_irradiance_vis"]
         self.assertEqual((), s_sol_irr_vis.shape)
         self.assertTrue(np.isnan(s_sol_irr_vis.data))
         self.assertEqual("true", s_sol_irr_vis.attrs["virtual"])
         self.assertEqual("y, x", s_sol_irr_vis.attrs["dimension"])
-        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)", s_sol_irr_vis.attrs["expression"])
+        self.assertEqual(
+            "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)",
+            s_sol_irr_vis.attrs["expression"])
 
         s_count_vis = ds.variables["sensitivity_count_vis"]
         self.assertEqual((), s_count_vis.shape)
         self.assertTrue(np.isnan(s_count_vis.data))
         self.assertEqual("true", s_count_vis.attrs["virtual"])
         self.assertEqual("y, x", s_count_vis.attrs["dimension"])
-        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_count_vis.attrs["expression"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)",
+                         s_count_vis.attrs["expression"])
 
         s_count_space = ds.variables["sensitivity_count_space"]
         self.assertEqual((), s_count_space.shape)
         self.assertTrue(np.isnan(s_count_space.data))
         self.assertEqual("true", s_count_space.attrs["virtual"])
         self.assertEqual("y, x", s_count_space.attrs["dimension"])
-        self.assertEqual("-1.0 * distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_count_space.attrs["expression"])
+        self.assertEqual("-1.0 * distance_sun_earth * distance_sun_earth * PI * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)",
+                         s_count_space.attrs["expression"])
 
         s_a0_vis = ds.variables["sensitivity_a0_vis"]
         self.assertEqual((), s_a0_vis.shape)
         self.assertTrue(np.isnan(s_a0_vis.data))
         self.assertEqual("true", s_a0_vis.attrs["virtual"])
         self.assertEqual("y, x", s_a0_vis.attrs["dimension"])
-        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_a0_vis.attrs["expression"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)",
+                         s_a0_vis.attrs["expression"])
 
         s_a1_vis = ds.variables["sensitivity_a1_vis"]
         self.assertEqual((), s_a1_vis.shape)
         self.assertTrue(np.isnan(s_a1_vis.data))
         self.assertEqual("true", s_a1_vis.attrs["virtual"])
         self.assertEqual("y, x", s_a1_vis.attrs["dimension"])
-        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)", s_a1_vis.attrs["expression"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)",
+                         s_a1_vis.attrs["expression"])
+
+        s_a2_vis = ds.variables["sensitivity_a2_vis"]
+        self.assertEqual((), s_a2_vis.shape)
+        self.assertTrue(np.isnan(s_a2_vis.data))
+        self.assertEqual("true", s_a2_vis.attrs["virtual"])
+        self.assertEqual("y, x", s_a2_vis.attrs["dimension"])
+        self.assertEqual("distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch*years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)",
+                         s_a2_vis.attrs["expression"])
+
+        eff_corr_mat = ds.variables["effect_correlation_matrix"]
+        self.assertEqual((7, 7), eff_corr_mat.shape)
+        self.assertTrue(np.isnan(eff_corr_mat.data[1, 2]))
+        self.assertEqual(np.int16, eff_corr_mat.encoding["dtype"])
+        self.assertEqual(-32768, eff_corr_mat.encoding["_FillValue"])
+        self.assertAlmostEqual(3.05176e-05, eff_corr_mat.encoding["scale_factor"], 8)
+        self.assertEqual(CHUNKING, eff_corr_mat.encoding["chunksizes"])
+        self.assertEqual(1, eff_corr_mat.attrs["valid_max"])
+        self.assertEqual(-1, eff_corr_mat.attrs["valid_min"])
+        self.assertEqual("Channel error correlation matrix for structured effects.", eff_corr_mat.attrs["long_name"])
+        self.assertEqual("Matrix_describing correlations between errors of the uncertainty_effects due to spectral response function errors (determined using Monte Carlo approach)", eff_corr_mat.attrs["description"])
 
     def test_add_template_key(self):
         ds = xr.Dataset()

@@ -26,6 +26,7 @@ The FCDR Tools depend on a number of modules, namely:
 * `numpy`
 * `numexpr`
 * `dask`
+* `gridtools` - (channel "cablab")
 
 ## Testing
 The FCDR tools are developed using a large set of unit-level and integration tests. To 

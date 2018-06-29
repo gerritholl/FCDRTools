@@ -145,8 +145,15 @@ class MviriIoTest(unittest.TestCase):
             variable = target_data["u_a1_vis"]
             self.assertAlmostEqual(11.11, variable.data, 8)
 
-            variable = target_data["covariance_a0_a1_vis"]
+            variable = target_data["u_a2_vis"]
             self.assertAlmostEqual(12.12, variable.data, 8)
+
+            variable = target_data["u_zero_vis"]
+            self.assertAlmostEqual(13.13, variable.data, 8)
+
+            variable = target_data["covariance_a_vis"]
+            self.assertEqual((3,3), variable.shape)
+            self.assertAlmostEqual(0.56, variable.data[1, 2], 8)
 
             variable = target_data["u_electronics_counts_vis"]
             self.assertAlmostEqual(13.13, variable.data, 8)
@@ -196,12 +203,15 @@ class MviriIoTest(unittest.TestCase):
 
         mviri_full["u_time"].data[:] = np.ones((2500), np.float32) * 0.4
 
+        mviri_full["covariance_a_vis"].data = np.ones((3, 3), np.float32) * 0.56
+
         mviri_full["a0_vis"].data = 7.7
         mviri_full["a1_vis"].data = 8.8
         mviri_full["mean_count_space_vis"].data = 9.9
         mviri_full["u_a0_vis"].data = 10.1
         mviri_full["u_a1_vis"].data = 11.11
-        mviri_full["covariance_a0_a1_vis"].data = 12.12
+        mviri_full["u_a2_vis"].data = 12.12
+        mviri_full["u_zero_vis"].data = 13.13
         mviri_full["u_electronics_counts_vis"].data = 13.13
         mviri_full["u_digitization_counts_vis"].data = 14.14
         mviri_full["allan_deviation_counts_space_vis"].data = 15.15

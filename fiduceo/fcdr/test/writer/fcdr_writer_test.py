@@ -519,7 +519,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(57, len(ds.data_vars))
+        self.assertEqual(62, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -569,14 +569,18 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_time"])
         self.assertIsNotNone(ds.variables["u_a0_vis"])
         self.assertIsNotNone(ds.variables["u_a1_vis"])
-        self.assertIsNotNone(ds.variables["covariance_a0_a1_vis"])
+        self.assertIsNotNone(ds.variables["u_a2_vis"])
+        self.assertIsNotNone(ds.variables["u_zero_vis"])
+        self.assertIsNotNone(ds.variables["covariance_a_vis"])
         self.assertIsNotNone(ds.variables["u_electronics_counts_vis"])
         self.assertIsNotNone(ds.variables["u_digitization_counts_vis"])
         self.assertIsNotNone(ds.variables["allan_deviation_counts_space_vis"])
+        self.assertIsNotNone(ds.variables["u_mean_counts_space_vis"])
         self.assertIsNotNone(ds.variables["u_solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["u_solar_azimuth_angle"])
         self.assertIsNotNone(ds.variables["u_satellite_zenith_angle"])
         self.assertIsNotNone(ds.variables["u_satellite_azimuth_angle"])
+        self.assertIsNotNone(ds.variables["effect_correlation_matrix"])
 
         # virtual variables
         self.assertIsNotNone(ds.variables["sensitivity_solar_irradiance_vis"])
@@ -584,6 +588,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["sensitivity_count_space"])
         self.assertIsNotNone(ds.variables["sensitivity_a0_vis"])
         self.assertIsNotNone(ds.variables["sensitivity_a1_vis"])
+        self.assertIsNotNone(ds.variables["sensitivity_a2_vis"])
 
     def testCreate_MVIRI_STATIC(self):
         ds = FCDRWriter.createTemplateEasy('MVIRI_STATIC', 5000)

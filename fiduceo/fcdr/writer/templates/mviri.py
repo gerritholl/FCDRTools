@@ -1,9 +1,9 @@
 import numpy as np
 from xarray import Variable, Coordinate
 
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.common.writer.default_data import DefaultData
 
 CHUNKSIZES = (500, 500)
 
@@ -15,6 +15,7 @@ IR_Y_DIMENSION = "y_ir_wv"
 FULL_SIZE = 5000
 IR_SIZE = 2500
 TIE_SIZE = 500
+COV_SIZE = 3
 
 SRF_SIZE = 1011
 SOL_IRR_SIZE = 24
@@ -260,10 +261,22 @@ class MVIRI:
         MVIRI._add_calibration_coeff_correlation_attributes(variable)
         dataset["u_a1_vis"] = variable
 
-        # covariance_a0_a1_vis
-        variable = tu.create_scalar_float_variable("Covariance of calibration coefficients")
+        # u_a2_vis
+        variable = tu.create_scalar_float_variable("Uncertainty in a2", units="Wm^-2sr^-1/count year^-2")
+        MVIRI._add_calibration_coeff_correlation_attributes(variable)
+        dataset["u_a2_vis"] = variable
+
+        # u_zero_vis
+        variable = tu.create_scalar_float_variable("Uncertainty zero term", units="Wm^-2sr^-1/count")
+        MVIRI._add_calibration_coeff_correlation_attributes(variable, image_correlation_scale=[-np.inf, np.inf])
+        dataset["u_zero_vis"] = variable
+
+        # covariance_a_vis
+        variable = tu.create_float_variable(COV_SIZE, COV_SIZE, long_name="Covariance of calibration coefficients from fit to calibration runs", dim_names=["cov_size", "cov_size"], fill_value=np.NaN)
         tu.add_fill_value(variable, np.NaN)
-        dataset["covariance_a0_a1_vis"] = variable
+        tu.add_units(variable, "Wm^-2sr^-1/count")
+        MVIRI._add_calibration_coeff_correlation_attributes(variable, image_correlation_scale=[-np.inf, np.inf])
+        dataset["covariance_a_vis"] = variable
 
         dataset["u_electronics_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to Electronics noise", units="count")
         dataset["u_digitization_counts_vis"] = tu.create_scalar_float_variable("Uncertainty due to digitization", units="count")
@@ -276,26 +289,39 @@ class MVIRI:
         variable.attrs["pdf_shape"] = "digitised_gaussian"
         dataset["allan_deviation_counts_space_vis"] = variable
 
+        # u_mean_counts_space_vis
+        variable = tu.create_scalar_float_variable("Uncertainty of space count", units="count")
+        variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
+        variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs[corr.SCAN_CORR_FORM] = corr.RECT_ABS
+        variable.attrs[corr.SCAN_CORR_UNIT] = corr.LINE
+        variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
+        variable.attrs["pdf_shape"] = "digitised_gaussian"
+        dataset["u_mean_counts_space_vis"] = variable
+
         # sensitivity_solar_irradiance_vis
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
         variable.attrs[
-            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)"
+            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis * solar_irradiance_vis)"
         dataset["sensitivity_solar_irradiance_vis"] = variable
 
         # sensitivity_count_vis
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
-        variable.attrs["expression"] = "distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        variable.attrs[
+            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
         dataset["sensitivity_count_vis"] = variable
 
         # sensitivity_count_space
         variable = tu.create_scalar_float_variable()
         variable.attrs["virtual"] = "true"
         variable.attrs["dimension"] = "y, x"
-        variable.attrs["expression"] = "-1.0 * distance_sun_earth * distance_sun_earth * PI * (a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        variable.attrs[
+            "expression"] = "-1.0 * distance_sun_earth * distance_sun_earth * PI * (a2_vis * years_since_launch * years_since_launch + a1_vis * years_since_launch + a0_vis) / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
         dataset["sensitivity_count_space"] = variable
 
         # sensitivity_a0_vis
@@ -312,6 +338,27 @@ class MVIRI:
         variable.attrs[
             "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
         dataset["sensitivity_a1_vis"] = variable
+
+        # sensitivity_a2_vis
+        variable = tu.create_scalar_float_variable()
+        variable.attrs["virtual"] = "true"
+        variable.attrs["dimension"] = "y, x"
+        variable.attrs[
+            "expression"] = "distance_sun_earth * distance_sun_earth * PI * (count_vis - mean_count_space_vis) * years_since_launch*years_since_launch / (cos(solar_zenith_angle * PI / 180.0) * solar_irradiance_vis)"
+        dataset["sensitivity_a2_vis"] = variable
+
+        effect_names = ["u_solar_irradiance_vis", "u_a0_vis", "u_a1_vis", "u_a2_vis", "u_zero_vis", "u_solar_zenith_angle", "u_mean_count_space_vis"]
+        dataset["Ne"] = Coordinate("Ne", effect_names)
+
+        num_effects = len(effect_names)
+        default_array = DefaultData.create_default_array(num_effects, num_effects, np.float32, fill_value=np.NaN)
+        variable = Variable(["Ne", "Ne"], default_array)
+        tu.add_encoding(variable, np.int16, -32768, 3.05176E-05, chunksizes=CHUNKSIZES)
+        variable.attrs["valid_min"] = -1
+        variable.attrs["valid_max"] = 1
+        variable.attrs["long_name"] = "Channel error correlation matrix for structured effects."
+        variable.attrs["description"] = "Matrix_describing correlations between errors of the uncertainty_effects due to spectral response function errors (determined using Monte Carlo approach)"
+        dataset["effect_correlation_matrix"] = variable
 
     @staticmethod
     def add_template_key(dataset):
@@ -331,7 +378,7 @@ class MVIRI:
         geo_variable.attrs["pdf_shape"] = "gaussian"
 
     @staticmethod
-    def _add_calibration_coeff_correlation_attributes(coeff_variable):
+    def _add_calibration_coeff_correlation_attributes(coeff_variable, image_correlation_scale=None):
         coeff_variable.attrs[corr.PIX_CORR_FORM] = corr.RECT_ABS
         coeff_variable.attrs[corr.PIX_CORR_UNIT] = corr.PIXEL
         coeff_variable.attrs[corr.PIX_CORR_SCALE] = [-np.inf, np.inf]
@@ -340,7 +387,11 @@ class MVIRI:
         coeff_variable.attrs[corr.SCAN_CORR_SCALE] = [-np.inf, np.inf]
         coeff_variable.attrs[corr.IMG_CORR_FORM] = corr.TRI_REL
         coeff_variable.attrs[corr.IMG_CORR_UNIT] = corr.MONTHS
-        coeff_variable.attrs[corr.IMG_CORR_SCALE] = [-1.5, 1.5]
+        if image_correlation_scale is None:
+            coeff_variable.attrs[corr.IMG_CORR_SCALE] = [-1.5, 1.5]
+        else:
+            coeff_variable.attrs[corr.IMG_CORR_SCALE] = image_correlation_scale
+
         coeff_variable.attrs["pdf_shape"] = "gaussian"
 
     @staticmethod

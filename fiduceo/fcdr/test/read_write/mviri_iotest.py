@@ -313,18 +313,6 @@ class MviriIoTest(unittest.TestCase):
         variable = target_data["u_b_wv"]
         self.assertAlmostEqual(15.15, variable.data, 8)
 
-        variable = target_data["q_ir"]
-        self.assertAlmostEqual(16.16, variable.data, 8)
-
-        variable = target_data["q_wv"]
-        self.assertAlmostEqual(17.17, variable.data, 8)
-
-        variable = target_data["unit_conversion_ir"]
-        self.assertAlmostEqual(18.18, variable.data, 8)
-
-        variable = target_data["unit_conversion_wv"]
-        self.assertAlmostEqual(19.19, variable.data, 8)
-
         variable = target_data["bt_a_ir"]
         self.assertAlmostEqual(20.2, variable.data, 8)
 
@@ -371,10 +359,6 @@ class MviriIoTest(unittest.TestCase):
         dataset["b_wv"].data = 13.13
         dataset["u_a_wv"].data = 14.14
         dataset["u_b_wv"].data = 15.15
-        dataset["q_ir"].data = 16.16
-        dataset["q_wv"].data = 17.17
-        dataset["unit_conversion_ir"].data = 18.18
-        dataset["unit_conversion_wv"].data = 19.19
         dataset["bt_a_ir"].data = 20.2
         dataset["bt_b_ir"].data = 21.21
         dataset["bt_a_wv"].data = 22.22

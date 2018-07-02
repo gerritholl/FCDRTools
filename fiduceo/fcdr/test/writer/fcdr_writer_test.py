@@ -464,7 +464,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         self._verify_quality_flags(ds)
 
-        self.assertEqual(44, len(ds.data_vars))
+        self.assertEqual(40, len(ds.data_vars))
 
         # sensor specific
         self.assertIsNotNone(ds.variables["time"])
@@ -491,10 +491,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["b_wv"])
         self.assertIsNotNone(ds.variables["u_a_wv"])
         self.assertIsNotNone(ds.variables["u_b_wv"])
-        self.assertIsNotNone(ds.variables["q_ir"])
-        self.assertIsNotNone(ds.variables["q_wv"])
-        self.assertIsNotNone(ds.variables["unit_conversion_ir"])
-        self.assertIsNotNone(ds.variables["unit_conversion_wv"])
         self.assertIsNotNone(ds.variables["bt_a_ir"])
         self.assertIsNotNone(ds.variables["bt_b_ir"])
         self.assertIsNotNone(ds.variables["bt_a_wv"])
@@ -519,7 +515,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(62, len(ds.data_vars))
+        self.assertEqual(58, len(ds.data_vars))
 
         self._verify_quality_flags(ds)
 
@@ -553,10 +549,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["b_wv"])
         self.assertIsNotNone(ds.variables["u_a_wv"])
         self.assertIsNotNone(ds.variables["u_b_wv"])
-        self.assertIsNotNone(ds.variables["q_ir"])
-        self.assertIsNotNone(ds.variables["q_wv"])
-        self.assertIsNotNone(ds.variables["unit_conversion_ir"])
-        self.assertIsNotNone(ds.variables["unit_conversion_wv"])
         self.assertIsNotNone(ds.variables["bt_a_ir"])
         self.assertIsNotNone(ds.variables["bt_b_ir"])
         self.assertIsNotNone(ds.variables["bt_a_wv"])

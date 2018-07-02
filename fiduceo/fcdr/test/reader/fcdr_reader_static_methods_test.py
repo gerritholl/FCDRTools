@@ -92,7 +92,7 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         biggest_variable = R._get_biggest_variable(self.dic, expression)
         dims = biggest_variable.dims
         one_d_vars = R._find_used_one_dimensional_variables_to_extend(self.dic, dims, expression)
-        self.assertEquals(2, len(one_d_vars))
+        self.assertEqual(2, len(one_d_vars))
         self.assertTrue('ody' in one_d_vars)
         self.assertTrue('woody' in one_d_vars)
         var_o = self.dic['ody']

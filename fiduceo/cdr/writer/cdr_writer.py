@@ -2,9 +2,11 @@ import os
 
 import xarray as xr
 
+from fiduceo.common.version import __version__
 from fiduceo.cdr.writer.templates.cdr_template_factory import CDR_TemplateFactory
 from fiduceo.common.writer.writer_utils import WriterUtils
 
+DATE_PATTERN = "%Y%m%d%H%M%S"
 
 class CDRWriter:
 
@@ -60,3 +62,20 @@ class CDRWriter:
             sensor_template.add_variables(dataset, width, height, num_samples)
 
         return dataset
+
+    @staticmethod
+    def create_file_name_CDR(data_type, sensor, platform, start, end, type, version):
+        """
+        Create a file name for CDR format .
+        :param data_type: the data type (UTH, AOT, etc.)
+        :param sensor: the sensor name
+        :param platform: the name of the satellite platform
+        :param start: the acquisition start date and time, type datetime
+        :param end: the acquisition end date and time, type datetime
+        :param version: the processor version string, format "xx.x"
+        :param type: the product type (L2, L3, ENSEMBLE)
+        :return a valid file name
+         """
+        start_string = start.strftime(DATE_PATTERN)
+        end_string = end.strftime(DATE_PATTERN)
+        return "FIDUCEO_CDR_" +data_type + "_"+ sensor + "_" + platform + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + __version__ + ".nc"

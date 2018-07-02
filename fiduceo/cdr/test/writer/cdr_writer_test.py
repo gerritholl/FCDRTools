@@ -1,5 +1,7 @@
 import unittest
 
+import datetime
+
 from fiduceo.cdr.writer.cdr_writer import CDRWriter
 from fiduceo.common.test.assertions import Assertions
 
@@ -41,3 +43,14 @@ class CDRWriterTest(unittest.TestCase):
         Assertions.assert_global_attributes(self, ds.attrs)
         Assertions.assert_cdr_global_attributes(self, ds.attrs)
         Assertions.assert_gridded_global_attributes(self, ds.attrs)
+
+    def test_create_file_name_FCDR_easy(self):
+        start = datetime.datetime(2015, 8, 23, 14, 24, 52)
+        end = datetime.datetime(2015, 8, 23, 15, 25, 53)
+        self.assertEqual("FIDUCEO_CDR_AOT_MVIRI_MET7-0.00_20150823142452_20150823152553_L2_v02.3_fv1.1.5.nc",
+                         CDRWriter.create_file_name_CDR("AOT", "MVIRI", "MET7-0.00", start, end, "L2", "02.3"))
+
+        start = datetime.datetime(2018, 1, 9, 23, 24, 52)
+        end = datetime.datetime(2018, 1, 10, 1, 25, 53)
+        self.assertEqual("FIDUCEO_CDR_SST_AVHRR_NOAA18_20180109232452_20180110012553_ENSEMBLE_v03.3_fv1.1.5.nc",
+                         CDRWriter.create_file_name_CDR("SST", "AVHRR", "NOAA18", start, end, "ENSEMBLE", "03.3"))

@@ -18,25 +18,73 @@ class UTH:
         dataset["time_ranges_ascending"] = UTH._create_time_ranges_variable(height, width, "Minimum and maximum seconds of day pixel contribution time, ascending nodes")
         dataset["time_ranges_descending"] = UTH._create_time_ranges_variable(height, width, "Minimum and maximum seconds of day pixel contribution time, descending nodes")
 
-        dataset["observation_count_ascending"] = UTH._create_observation_counts_variable(height, width, "Number of observations contributing to pixel value, ascending nodes")
-        dataset["observation_count_descending"] = UTH._create_observation_counts_variable(height, width, "Number of observations contributing to pixel value, descending nodes")
+        dataset["observation_count_ascend"] = UTH._create_observation_counts_variable(height, width, "Number of UTH/brightness temperature observations in a grid box for ascending passes")
+        dataset["observation_count_descend"] = UTH._create_observation_counts_variable(height, width, "Number of UTH/brightness temperature observations in a grid box for descending passes")
 
-        dataset["uth_ascending"] = UTH._create_uth_variable(height, width)
-        dataset["uth_descending"] = UTH._create_uth_variable(height, width)
+        dataset["uth_ascend"] = UTH._create_uth_variable(width, height, description="Mean of all UTH retrievals in a grid box for ascending passes")
+        dataset["uth_descend"] = UTH._create_uth_variable(width, height, description="Mean of all UTH retrievals in a grid box for descending passes")
 
-        dataset["u_independent_uth_ascending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to independent effects, ascending nodes", coordinates="lon lat")
-        dataset["u_independent_uth_descending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to independent effects, descending nodes", coordinates="lon lat")
-        dataset["u_structured_uth_ascending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to structured effects, ascending nodes", coordinates="lon lat")
-        dataset["u_structured_uth_descending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to structured effects, descending nodes", coordinates="lon lat")
-        dataset["u_common_uth_ascending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to common effects, ascending nodes", coordinates="lon lat")
-        dataset["u_common_uth_descending"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of uth due to common effects, descending nodes", coordinates="lon lat")
+        dataset["u_independent_uth_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to independent effects for ascending passes", coordinates="lon lat")
+        dataset["u_independent_uth_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to independent effects for descending passes", coordinates="lon lat")
+        dataset["u_structured_uth_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to structured effects for ascending passes", coordinates="lon lat")
+        dataset["u_structured_uth_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to structured effects for descending passes", coordinates="lon lat")
+        dataset["u_common_uth_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to common effects for ascending passes", coordinates="lon lat")
+        dataset["u_common_uth_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to common effects for descending passes", coordinates="lon lat")
+
+        dataset["uth_inhomogeneity_ascend"] = tu.create_CDR_uncertainty(width, height, "Standard deviation of all UTH retrievals in a grid box for ascending passes", coordinates="lon lat")
+        dataset["uth_inhomogeneity_descend"] = tu.create_CDR_uncertainty(width, height, "Standard deviation of all UTH retrievals in a grid box for descending passes", coordinates="lon lat")
+
+        dataset["BT_ascend"] = UTH._create_bt_variable(width, height, description="Mean of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes")
+        dataset["BT_descend"] = UTH._create_bt_variable(width, height, description="Mean of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes")
+
+        dataset["u_independent_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to independent effects for ascending passes", coordinates="lon lat",
+                                                                       units="K")
+        dataset["u_independent_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to independent effects for descending passes", coordinates="lon lat",
+                                                                        units="K")
+
+        dataset["u_structured_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to structured effects for ascending passes", coordinates="lon lat",
+                                                                      units="K")
+        dataset["u_structured_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to structured effects for descending passes", coordinates="lon lat",
+                                                                       units="K")
+
+        dataset["u_common_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to common effects for ascending passes", coordinates="lon lat",
+                                                                  units="K")
+        dataset["u_common_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to common effects for descending passes", coordinates="lon lat",
+                                                                   units="K")
+
+        dataset["BT_inhomogeneity_ascend"] = tu.create_CDR_uncertainty(width, height,
+                                                                       "Standard deviation of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes",
+                                                                       coordinates="lon lat", units="K")
+        dataset["BT_inhomogeneity_descend"] = tu.create_CDR_uncertainty(width, height,
+                                                                       "Standard deviation of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes",
+                                                                       coordinates="lon lat", units="K")
+
+        dataset["observation_count_all_ascend"] = UTH._create_observation_counts_variable(height, width, "Number of all observations in a grid box for ascending passes - no filtering done")
+        dataset["observation_count_all_descend"] = UTH._create_observation_counts_variable(height, width, "Number of all observations in a grid box for descending passes - no filtering done")
 
     @staticmethod
-    def _create_uth_variable(height, width):
+    def _create_uth_variable(width, height, description=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["coordinates"] = "lon lat"
+        tu.add_units(variable, "%")
+        if description is not None:
+            variable.attrs["description"] = description
+        return variable
+
+    @staticmethod
+    def _create_bt_variable(width, height, description=None):
+        default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, np.NaN)
+        variable.attrs["coordinates"] = "lon lat"
+        variable.attrs["standard_name"] = "toa_brightness_temperature"
+        tu.add_units(variable, "K")
+
+        if description is not None:
+            variable.attrs["description"] = description
+
         return variable
 
     @staticmethod

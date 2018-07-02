@@ -14,8 +14,6 @@ class AlbedoTest(unittest.TestCase):
         ds = xr.Dataset()
         Albedo.add_variables(ds, 5000, 5000)
 
-        # @todo 1 tb/tb continue here when geolocation question is resolved 2018-06-25
-
         Assertions.assert_quality_flags(self, ds, 5000, 5000, chunking=self.CHUNKING)
 
         time = ds.variables["time"]

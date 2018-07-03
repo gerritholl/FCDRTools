@@ -196,7 +196,7 @@ class MVIRITest(unittest.TestCase):
 
     def test_add_easy_fcdr_variables(self):
         ds = xr.Dataset()
-        MVIRI.add_easy_fcdr_variables(ds, 8)
+        MVIRI.add_easy_fcdr_variables(ds, 8, lut_size=37)
 
         reflectance = ds.variables["toa_bidirectional_reflectance_vis"]
         self.assertEqual((5000, 5000), reflectance.shape)
@@ -244,6 +244,8 @@ class MVIRITest(unittest.TestCase):
         channel = ds.coords["channel"]
         self.assertEqual((3,), channel.shape)
         self.assertEqual("wv", channel[1])
+
+        Assertions.assert_lookup_tables(self, ds, 3, 37)
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

@@ -1,9 +1,9 @@
 import numpy as np
 from xarray import Variable
 
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.common.writer.default_data import DefaultData
 
 FILL_VALUE = -999.0
 COUNTS_FILL_VALUE = 99999
@@ -35,8 +35,7 @@ class HIRS:
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16, fill_value=0)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["flag_masks"] = "1, 2, 4, 8, 16"
-        variable.attrs[
-            "flag_meanings"] = "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large"
+        variable.attrs["flag_meanings"] = "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large"
         variable.attrs["standard_name"] = "status_flag"
         tu.add_chunking(variable, CHUNKING_2D)
         tu.add_geolocation_attribute(variable)
@@ -100,7 +99,8 @@ class HIRS:
         variable = Variable(["y"], default_vector)
         tu.add_fill_value(variable, 255)
         variable.attrs["long_name"] = 'Indicator of original file'
-        variable.attrs["description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
+        variable.attrs[
+            "description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
         dataset["scanline_map_to_origl1bfile"] = variable
 
         default_vector = DefaultData.create_default_vector(height, np.int16, fill_value=DefaultData.get_default_fill_value(np.int16))
@@ -145,11 +145,14 @@ class HIRS:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
         dataset["u_independent"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from independent errors")
         dataset["u_structured"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from structured errors")
 
         tu.add_correlation_matrices(dataset, NUM_CHANNELS)
+
+        if lut_size is not None:
+            tu.add_lookup_tables(dataset, NUM_CHANNELS, lut_size=lut_size)
 
     @staticmethod
     def _create_easy_fcdr_variable(height, long_name):

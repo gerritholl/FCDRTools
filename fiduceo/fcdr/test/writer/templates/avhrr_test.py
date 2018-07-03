@@ -9,6 +9,7 @@ from fiduceo.fcdr.writer.templates.avhrr import AVHRR
 
 CHUNKING = (1280, 409)
 SRF_SIZE = 512
+LUT_SIZE = 19
 
 
 class AVHRRTest(unittest.TestCase):
@@ -146,7 +147,7 @@ class AVHRRTest(unittest.TestCase):
 
     def test_add_easy_fcdr_variables(self):
         ds = xr.Dataset()
-        AVHRR.add_easy_fcdr_variables(ds, 5)
+        AVHRR.add_easy_fcdr_variables(ds, 5, lut_size=LUT_SIZE)
 
         self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent", valid_min=3, valid_max=5)
@@ -163,6 +164,7 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch5", long_name="structured uncertainty per pixel for channel 5")
 
         Assertions.assert_correlation_matrices(self, ds, 6)
+        Assertions.assert_lookup_tables(self, ds, 6, LUT_SIZE)
 
     def test_add_full_fcdr_variables(self):
         ds = xr.Dataset()

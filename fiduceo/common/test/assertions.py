@@ -32,7 +32,7 @@ class Assertions:
     @staticmethod
     def assert_gridded_geolocation_variables(test_case, dataset, width, height):
         lat = dataset.variables["lat"]
-        test_case.assertEqual((height, ), lat.shape)
+        test_case.assertEqual((height,), lat.shape)
         test_case.assertTrue(np.isnan(lat.data[1]))
         test_case.assertTrue(np.isnan(lat.attrs['_FillValue']))
         test_case.assertEqual("latitude", lat.attrs["standard_name"])
@@ -48,7 +48,7 @@ class Assertions:
         test_case.assertEqual("degrees_north", lat_bnds.attrs["units"])
 
         lon = dataset.variables["lon"]
-        test_case.assertEqual((width, ), lon.shape)
+        test_case.assertEqual((width,), lon.shape)
         test_case.assertTrue(np.isnan(lon.data[3]))
         test_case.assertTrue(np.isnan(lon.attrs['_FillValue']))
         test_case.assertEqual("longitude", lon.attrs["standard_name"])
@@ -80,7 +80,7 @@ class Assertions:
         if meanings_append is not None:
             meanings = meanings + meanings_append
         test_case.assertEqual(meanings, quality.attrs["flag_meanings"])
-        
+
         if chunking is not None:
             test_case.assertEqual(chunking, quality.encoding['chunksizes'])
 
@@ -115,21 +115,33 @@ class Assertions:
         test_case.assertEqual("Channel error correlation matrix for structured effects", ch_corr_stuct.attrs["description"])
 
     @staticmethod
+    def assert_lookup_tables(test_case, ds, num_channels, lut_size):
+        lut_bt = ds.variables["lookup_table_BT"]
+        test_case.assertEqual((lut_size, num_channels), lut_bt.shape)
+        test_case.assertTrue(np.isnan(lut_bt[1, 2]))
+        test_case.assertTrue(np.isnan(lut_bt.attrs["_FillValue"]))
+        test_case.assertEqual("Lookup table to convert radiance to brightness temperatures", lut_bt.attrs["description"])
+
+        lut_rad = ds.variables["lookup_table_radiance"]
+        test_case.assertEqual((lut_size, num_channels), lut_rad.shape)
+        test_case.assertTrue(np.isnan(lut_rad[2, 0]))
+        test_case.assertTrue(np.isnan(lut_rad.attrs["_FillValue"]))
+        test_case.assertEqual("Lookup table to convert brightness temperatures to radiance", lut_rad.attrs["description"])
+
+    @staticmethod
     def assert_global_attributes(test_case, attributes):
         test_case.assertIsNotNone(attributes)
         test_case.assertEqual("CF-1.6", attributes["Conventions"])
         test_case.assertEqual("This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
-                         "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
-                         "Observations\". Grant Agreement: 638822.", attributes["licence"])
+                              "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
+                              "Observations\". Grant Agreement: 638822.", attributes["licence"])
         test_case.assertEqual("1.1.5", attributes["writer_version"])
 
         test_case.assertIsNone(attributes["institution"])
         test_case.assertIsNone(attributes["source"])
         test_case.assertIsNone(attributes["title"])
         test_case.assertIsNone(attributes["history"])
-        test_case.assertIsNone(attributes["references"])
-        # @todo 3 tb/tb add "id" attribute when we have the DOI issue resolved 2018-06-27
-        # test_case.assertIsNone(attributes["id"])
+        test_case.assertIsNone(attributes["references"])  # @todo 3 tb/tb add "id" attribute when we have the DOI issue resolved 2018-06-27  # test_case.assertIsNone(attributes["id"])
 
     @staticmethod
     def assert_cdr_global_attributes(test_case, attributes):

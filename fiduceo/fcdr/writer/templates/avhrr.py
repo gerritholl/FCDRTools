@@ -136,7 +136,7 @@ class AVHRR:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
         # u_independent_Ch1-3a
         long_names = ["independent uncertainty per pixel for channel 1", "independent uncertainty per pixel for channel 2", "independent uncertainty per pixel for channel 3a"]
         names = ["u_independent_Ch1", "u_independent_Ch2", "u_independent_Ch3a"]
@@ -158,6 +158,9 @@ class AVHRR:
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
         tu.add_correlation_matrices(dataset, N_CHANS)
+
+        if lut_size is not None:
+            tu.add_lookup_tables(dataset, N_CHANS, lut_size)
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

@@ -4,12 +4,13 @@ import numpy as np
 import xarray as xr
 
 from fiduceo.common.test.assertions import Assertions
-from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.common.writer.default_data import DefaultData
+from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.fcdr.writer.templates.hirs_2 import HIRS2
 
 CHUNKING_3D = (10, 512, 56)
 CHUNKING_2D = (512, 56)
+
 
 class HIRS2Test(unittest.TestCase):
     def test_add_original_variables(self):
@@ -31,11 +32,12 @@ class HIRS2Test(unittest.TestCase):
     def test_add_easy_fcdr_variables(self):
         ha = HIRSAssert()
         ds = xr.Dataset()
-        HIRS2.add_easy_fcdr_variables(ds, 7)
+        HIRS2.add_easy_fcdr_variables(ds, 7, lut_size=22)
 
         ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
 
         Assertions.assert_correlation_matrices(self, ds, 19)
+        Assertions.assert_lookup_tables(self, ds, 19, 22)
 
     def test_add_full_fcdr_variables(self):
         # @todo 2 tb/tb add something here

@@ -33,11 +33,12 @@ class HIRS3Test(unittest.TestCase):
     def test_add_easy_fcdr_variables(self):
         ha = HIRSAssert()
         ds = xr.Dataset()
-        HIRS3.add_easy_fcdr_variables(ds, 7)
+        HIRS3.add_easy_fcdr_variables(ds, 7, lut_size=23)
 
         ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
 
         Assertions.assert_correlation_matrices(self, ds, 19)
+        Assertions.assert_lookup_tables(self, ds, 19, 23)
 
     def test_add_full_fcdr_variables(self):
         ha = HIRSAssert()

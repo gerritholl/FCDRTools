@@ -199,6 +199,20 @@ class TemplateUtil:
         dataset['channel_correlation_matrix_structured'] = variable
 
     @staticmethod
+    def add_lookup_tables(dataset, num_channels, lut_size):
+        default_array = DefaultData.create_default_array(num_channels, lut_size, np.float32, fill_value=np.NaN)
+        variable = Variable(["lut_size", "channel"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["description"] = "Lookup table to convert radiance to brightness temperatures"
+        dataset['lookup_table_BT'] = variable
+
+        default_array = DefaultData.create_default_array(num_channels, lut_size, np.float32, fill_value=np.NaN)
+        variable = Variable(["lut_size", "channel"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["description"] = "Lookup table to convert brightness temperatures to radiance"
+        dataset['lookup_table_radiance'] = variable
+
+    @staticmethod
     def create_CDR_uncertainty(width, height, description, coordinates=None, units=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)

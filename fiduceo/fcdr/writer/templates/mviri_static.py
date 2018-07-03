@@ -50,7 +50,7 @@ class MVIRI_STATIC:
         dataset.attrs["template_key"] = "MVIRI_STATIC"
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
         pass  # not required in this class
 
     @staticmethod

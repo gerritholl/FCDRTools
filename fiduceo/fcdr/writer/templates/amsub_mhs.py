@@ -1,8 +1,8 @@
 import numpy as np
 from xarray import Variable
 
-from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.common.writer.default_data import DefaultData
+from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 
 NUM_CHANNELS = 5
 BTEMPS_FILL_VALUE = -999999
@@ -11,13 +11,12 @@ SWATH_WIDTH = 90
 
 class AMSUB_MHS:
     @staticmethod
-    def add_original_variables(dataset, height, srf_size=None):
+    def add_original_variables(dataset, height, srf_size=None, corr_dx=None, corr_dy=None, lut_size=None):
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height)
         tu.add_quality_flags(dataset, SWATH_WIDTH, height)
 
         # btemps
-        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32,
-                                                            np.NaN)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         tu.add_encoding(variable, np.int32, -999999, scale_factor=0.01)
@@ -26,8 +25,7 @@ class AMSUB_MHS:
         dataset["btemps"] = variable
 
         # chanqual
-        default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.int32, dims_names=["channel", "y"],
-                                                         fill_value=0)
+        default_array = DefaultData.create_default_array(height, NUM_CHANNELS, np.int32, dims_names=["channel", "y"], fill_value=0)
         variable = Variable(["channel", "y"], default_array)
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["flag_masks"] = "1, 2, 4, 8, 16, 32"
@@ -118,7 +116,7 @@ class AMSUB_MHS:
         return SWATH_WIDTH
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height, srf_size=None, corr_dx=None, corr_dy=None, lut_size=None):
         # u_independent_btemps
         variable = AMSUB_MHS._create_3d_float_variable(height)
         tu.add_units(variable, "K")

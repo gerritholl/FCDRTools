@@ -24,8 +24,8 @@ class HIRS2(HIRS):
         HIRS.add_coordinates(dataset)
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
-        HIRS.add_easy_fcdr_variables(dataset, height)
+    def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
+        HIRS.add_easy_fcdr_variables(dataset, height, corr_dx, corr_dy, lut_size)
 
     @staticmethod
     def add_full_fcdr_variables(dataset, height):

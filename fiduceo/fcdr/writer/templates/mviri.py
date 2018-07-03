@@ -169,7 +169,7 @@ class MVIRI:
         return FULL_SIZE
 
     @staticmethod
-    def add_easy_fcdr_variables(dataset, height):
+    def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
 
         # reflectance
@@ -206,6 +206,9 @@ class MVIRI:
         dataset["sub_satellite_longitude_end"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image end", units="degrees_east")
 
         tu.add_correlation_matrices(dataset, NUM_CHANNELS)
+
+        if lut_size is not None:
+            tu.add_lookup_tables(dataset, NUM_CHANNELS, lut_size=lut_size)
 
         tu.add_coordinates(dataset, ["vis", "wv", "ir"])
 

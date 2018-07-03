@@ -18,7 +18,7 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
         ds['ody'] = xr.Variable(['y'], range(17, 21))
         ds['woody'] = xr.Variable(['y'], np.full([4], 18))
         ds['full'] = xr.Variable(['y_f', 'x_f'], np.full([10, 10], 19))
-        variable = xr.Variable(['y_tie', 'x_tie'], np.full([2, 2], 20))
+        variable = xr.Variable(['y_tie', 'x_tie'], np.full([2, 2], 20, np.int32))
         variable.attrs["tie_points"] = "true"
         ds['tie'] = variable
 

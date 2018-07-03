@@ -127,6 +127,13 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual((6,), channel.shape)
         self.assertEqual("Ch5", channel[5])
 
+        scnlin_map = ds.variables["scanline_map_to_origl1bfile"]
+        self.assertEqual((5,), scnlin_map.shape)
+        self.assertEqual(255, scnlin_map[0])
+        self.assertEqual(255, scnlin_map.attrs['_FillValue'])
+        self.assertEqual("Indicator of original file", scnlin_map.attrs['long_name'])
+        self.assertEqual("Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file.", scnlin_map.attrs['description'])
+
     def test_get_swath_width(self):
         self.assertEqual(409, AVHRR.get_swath_width())
 

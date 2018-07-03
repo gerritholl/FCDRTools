@@ -96,6 +96,13 @@ class HIRS:
         tu.add_units(variable, "nm")
         dataset['SRF_frequencies'] = variable
 
+        default_vector = DefaultData.create_default_vector(height, np.uint8, fill_value=255)
+        variable = Variable(["y"], default_vector)
+        tu.add_fill_value(variable, 255)
+        variable.attrs["long_name"] = 'Indicator of original file'
+        variable.attrs["description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
+        dataset["scanline_map_to_origl1bfile"] = variable
+
     @staticmethod
     def add_common_angles(dataset, height):
         dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height, chunking=CHUNKING_2D)

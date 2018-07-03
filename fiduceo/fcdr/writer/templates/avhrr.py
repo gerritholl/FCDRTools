@@ -115,6 +115,13 @@ class AVHRR:
         tu.add_units(variable, "um")
         dataset['SRF_frequencies'] = variable
 
+        default_vector = DefaultData.create_default_vector(height, np.uint8, fill_value=255)
+        variable = Variable(["y"], default_vector)
+        tu.add_fill_value(variable, 255)
+        variable.attrs["long_name"] = 'Indicator of original file'
+        variable.attrs["description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
+        dataset["scanline_map_to_origl1bfile"] = variable
+
         tu.add_coordinates(dataset, ["Ch1", "Ch2", "Ch3a", "Ch3b", "Ch4", "Ch5"])
 
     @staticmethod

@@ -145,6 +145,13 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("Indicator of original file", scnlin_map.attrs['long_name'])
         self.assertEqual("Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file.", scnlin_map.attrs['description'])
 
+        scnlin_orig = ds.variables["scanline_origl1b"]
+        self.assertEqual((6,), scnlin_orig.shape)
+        self.assertEqual(-32767, scnlin_orig[2])
+        self.assertEqual(-32767, scnlin_orig.attrs['_FillValue'])
+        self.assertEqual("Original_Scan_line_number", scnlin_orig.attrs['long_name'])
+        self.assertEqual("Original scan line numbers from corresponding l1b records", scnlin_orig.attrs['description'])
+
     def assert_extended_quality_flags(self, ds):
         chqualflags = ds.variables["quality_channel_bitmask"]
         self.assertEqual((6, 19), chqualflags.shape)

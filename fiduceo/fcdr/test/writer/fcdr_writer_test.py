@@ -102,7 +102,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(33, len(ds.data_vars))
+        self.assertEqual(34, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -134,7 +134,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(72, len(ds.data_vars))
+        self.assertEqual(73, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -216,7 +216,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(17, len(ds.data_vars))
+        self.assertEqual(18, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -233,6 +233,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["SRF_weights"])
         self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
+        self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -246,7 +247,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(94, len(ds.data_vars))
+        self.assertEqual(95, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -298,6 +299,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["SRF_weights"])
         self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
+        self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
     def testCreateTemplateEasy_HIRS3(self):
         ds = FCDRWriter.createTemplateEasy('HIRS3', 211)
@@ -305,7 +307,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(20, len(ds.data_vars))
+        self.assertEqual(21, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -338,7 +340,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(97, len(ds.data_vars))
+        self.assertEqual(98, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -348,6 +350,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["satellite_azimuth_angle"])
         self.assertIsNotNone(ds.variables["solar_zenith_angle"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
+        self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
 
@@ -388,7 +391,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(20, len(ds.data_vars))
+        self.assertEqual(21, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -408,6 +411,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["SRF_weights"])
         self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
+        self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent"])
@@ -421,7 +425,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(97, len(ds.data_vars))
+        self.assertEqual(98, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -679,3 +683,4 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["SRF_weights"])
         self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
+        self.assertIsNotNone(ds.variables["scanline_origl1b"])

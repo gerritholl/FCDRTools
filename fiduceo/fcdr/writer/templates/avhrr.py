@@ -122,6 +122,13 @@ class AVHRR:
         variable.attrs["description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
         dataset["scanline_map_to_origl1bfile"] = variable
 
+        default_vector = DefaultData.create_default_vector(height, np.int16, fill_value=DefaultData.get_default_fill_value(np.int16))
+        variable = Variable(["y"], default_vector)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.int16))
+        variable.attrs["long_name"] = 'Original_Scan_line_number'
+        variable.attrs["description"] = 'Original scan line numbers from corresponding l1b records'
+        dataset["scanline_origl1b"] = variable
+
         tu.add_coordinates(dataset, ["Ch1", "Ch2", "Ch3a", "Ch3b", "Ch4", "Ch5"])
 
     @staticmethod

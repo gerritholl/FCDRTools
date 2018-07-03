@@ -135,7 +135,7 @@ class FCDRReaderTest(ut.TestCase):
         self.fcdr_reader._load_virtual_variable(ds, 'v_var')
 
         self.assertEqual(3, len(ds.data_vars))
-        expected = np.full([4, 2, 3], 1)
+        expected = np.full([4, 2, 3], 1, np.int32)
         actual = ds['v_var'].values
         self.assertEqual(type(expected), type(actual))
         self.assertEqual(expected.shape, actual.shape)

@@ -11,13 +11,13 @@ class FCDRReaderStaticMethodsTest(ut.TestCase):
 
     def setUp(self):
         ds = xr.Dataset()
-        ds['asd'] = xr.Variable(['z', 'y', 'x'], np.full([3, 4, 5], 13))
-        ds['lsmf'] = xr.Variable(['y', 'x'], np.full([4, 5], 14))
-        ds['bottle'] = xr.Variable(['y', 'x'], np.full([4, 5], 15))
-        ds['ka'] = xr.Variable(['x'], np.full([5], 16))
+        ds['asd'] = xr.Variable(['z', 'y', 'x'], np.full([3, 4, 5], 13, np.int32))
+        ds['lsmf'] = xr.Variable(['y', 'x'], np.full([4, 5], 14, np.int32))
+        ds['bottle'] = xr.Variable(['y', 'x'], np.full([4, 5], 15, np.int32))
+        ds['ka'] = xr.Variable(['x'], np.full([5], 16, np.int32))
         ds['ody'] = xr.Variable(['y'], range(17, 21))
-        ds['woody'] = xr.Variable(['y'], np.full([4], 18))
-        ds['full'] = xr.Variable(['y_f', 'x_f'], np.full([10, 10], 19))
+        ds['woody'] = xr.Variable(['y'], np.full([4], 18, np.int32))
+        ds['full'] = xr.Variable(['y_f', 'x_f'], np.full([10, 10], 19, np.int32))
         variable = xr.Variable(['y_tie', 'x_tie'], np.full([2, 2], 20, np.int32))
         variable.attrs["tie_points"] = "true"
         ds['tie'] = variable

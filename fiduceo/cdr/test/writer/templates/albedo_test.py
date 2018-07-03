@@ -19,7 +19,7 @@ class AlbedoTest(unittest.TestCase):
         time = ds.variables["time"]
         self.assertEqual((5000,), time.shape)
         self.assertEqual(-1, time.values[165])
-        self.assertEqual(4294967295, time.attrs["_FillValue"])
+        self.assertEqual(-1, time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
         self.assertEqual("s", time.attrs["units"])

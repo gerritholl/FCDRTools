@@ -15,9 +15,9 @@ class Albedo:
 
         tu.add_quality_flags(dataset, width, height, chunksizes=CHUNKING)
 
-        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=4294967295)
+        default_array = DefaultData.create_default_vector(height, np.int32, fill_value=-1)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, 4294967295)
+        tu.add_fill_value(variable, -1)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
         tu.add_units(variable, "s")

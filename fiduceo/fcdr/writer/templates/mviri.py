@@ -210,6 +210,9 @@ class MVIRI:
         if lut_size is not None:
             tu.add_lookup_tables(dataset, NUM_CHANNELS, lut_size=lut_size)
 
+        if corr_dx is not None and corr_dy is not None:
+            tu.add_correlation_coefficients(dataset, NUM_CHANNELS, corr_dx, corr_dy)
+
         tu.add_coordinates(dataset, ["vis", "wv", "ir"])
 
     @staticmethod

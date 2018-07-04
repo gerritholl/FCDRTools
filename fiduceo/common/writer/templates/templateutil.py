@@ -213,6 +213,22 @@ class TemplateUtil:
         dataset['lookup_table_radiance'] = variable
 
     @staticmethod
+    def add_correlation_coefficients(dataset, num_channels, delta_x, delta_y):
+        default_array = DefaultData.create_default_array(num_channels, delta_x, np.float32, fill_value=np.NaN)
+        variable = Variable(["delta_x", "channel"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "cross_element_correlation_coefficients"
+        variable.attrs["description"] = "Correlation coefficients per channel for scanline correlation"
+        dataset['cross_element_correlation_coefficients'] = variable
+
+        default_array = DefaultData.create_default_array(num_channels, delta_y, np.float32, fill_value=np.NaN)
+        variable = Variable(["delta_y", "channel"], default_array)
+        TemplateUtil.add_fill_value(variable, np.NaN)
+        variable.attrs["long_name"] = "cross_line_correlation_coefficients"
+        variable.attrs["description"] = "Correlation coefficients per channel for inter scanline correlation"
+        dataset['cross_line_correlation_coefficients'] = variable
+
+    @staticmethod
     def create_CDR_uncertainty(width, height, description, coordinates=None, units=None):
         default_array = DefaultData.create_default_array(width, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)

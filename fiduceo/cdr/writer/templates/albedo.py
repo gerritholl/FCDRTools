@@ -31,7 +31,6 @@ class Albedo:
         tu.add_chunking(variable, CHUNKING)
         dataset["surface_albedo"] = variable
 
-
         dataset["u_independent_surface_albedo"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to independent effects")
         dataset["u_structured_surface_albedo"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to structured effects")
         dataset["u_common_surface_albedo"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of surface_albedo due to common effects")

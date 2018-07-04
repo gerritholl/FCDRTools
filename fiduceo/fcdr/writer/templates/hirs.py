@@ -154,6 +154,9 @@ class HIRS:
         if lut_size is not None:
             tu.add_lookup_tables(dataset, NUM_CHANNELS, lut_size=lut_size)
 
+        if corr_dx is not None and corr_dy is not None:
+            tu.add_correlation_coefficients(dataset, NUM_CHANNELS, corr_dx, corr_dy)
+
     @staticmethod
     def _create_easy_fcdr_variable(height, long_name):
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)

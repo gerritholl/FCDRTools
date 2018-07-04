@@ -97,12 +97,12 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["u_warm_counts"])
 
     def testCreateTemplateEasy_AVHRR(self):
-        ds = FCDRWriter.createTemplateEasy('AVHRR', 12198)
+        ds = FCDRWriter.createTemplateEasy('AVHRR', 12198, srf_size=13, corr_dx=14, corr_dy=15)
         self.assertIsNotNone(ds)
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(34, len(ds.data_vars))
+        self.assertEqual(36, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -127,6 +127,9 @@ class FCDRWriterTest(unittest.TestCase):
 
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
+
+        self.assertIsNotNone(ds.variables["cross_element_correlation_coefficients"])
+        self.assertIsNotNone(ds.variables["cross_line_correlation_coefficients"])
 
     def testCreateTemplateFull_AVHRR(self):
         ds = FCDRWriter.createTemplateFull('AVHRR', 13667)

@@ -162,6 +162,9 @@ class AVHRR:
         if lut_size is not None:
             tu.add_lookup_tables(dataset, N_CHANS, lut_size)
 
+        if corr_dx is not None and corr_dy is not None:
+            tu.add_correlation_coefficients(dataset, N_CHANS, corr_dx, corr_dy)
+
     @staticmethod
     def add_full_fcdr_variables(dataset, height):
         # u_latitude

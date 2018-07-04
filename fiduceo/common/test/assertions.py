@@ -129,6 +129,22 @@ class Assertions:
         test_case.assertEqual("Lookup table to convert brightness temperatures to radiance", lut_rad.attrs["description"])
 
     @staticmethod
+    def assert_correlation_coefficients(test_case, ds, num_channels, delta_x, delta_y):
+        x_element_corr = ds.variables["cross_element_correlation_coefficients"]
+        test_case.assertEqual((delta_x, num_channels), x_element_corr.shape)
+        test_case.assertTrue(np.isnan(x_element_corr[2, 2]))
+        test_case.assertTrue(np.isnan(x_element_corr.attrs["_FillValue"]))
+        test_case.assertEqual("cross_element_correlation_coefficients", x_element_corr.attrs["long_name"])
+        test_case.assertEqual("Correlation coefficients per channel for scanline correlation", x_element_corr.attrs["description"])
+
+        x_line_corr = ds.variables["cross_line_correlation_coefficients"]
+        test_case.assertEqual((delta_y, num_channels), x_line_corr.shape)
+        test_case.assertTrue(np.isnan(x_line_corr[3, 0]))
+        test_case.assertTrue(np.isnan(x_line_corr.attrs["_FillValue"]))
+        test_case.assertEqual("cross_line_correlation_coefficients", x_line_corr.attrs["long_name"])
+        test_case.assertEqual("Correlation coefficients per channel for inter scanline correlation", x_line_corr.attrs["description"])
+
+    @staticmethod
     def assert_global_attributes(test_case, attributes):
         test_case.assertIsNotNone(attributes)
         test_case.assertEqual("CF-1.6", attributes["Conventions"])

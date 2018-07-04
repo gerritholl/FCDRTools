@@ -62,6 +62,17 @@ class MVIRI_FlagMapperTest(unittest.TestCase):
         self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[0, 1])  # use_with_caution
         self.assertEqual(8, self.dataset["quality_pixel_bitmask"].data[1, 1])  # invalid_geoloc
 
+    def test_map_global_flags_not_on_earth(self):
+        self.dataset["quality_pixel_bitmask"].data[1, 1] = gf.INVALID_GEOLOC
+
+        self.dataset["data_quality_bitmask"].data[0, 1] = 8  # not_on_earth
+
+        self.mapper.map_global_flags(self.dataset)
+
+        self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[2, 0])
+        self.assertEqual(1, self.dataset["quality_pixel_bitmask"].data[0, 1])  # invalid
+        self.assertEqual(8, self.dataset["quality_pixel_bitmask"].data[1, 1])  # invalid_geoloc
+
     def test_map_global_flags_suspect_time(self):
         self.dataset["quality_pixel_bitmask"].data[2, 1] = gf.INVALID_TIME
 
@@ -70,7 +81,7 @@ class MVIRI_FlagMapperTest(unittest.TestCase):
         self.mapper.map_global_flags(self.dataset)
 
         self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[0, 1])
-        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[1, 1])  # use_with_caution
+        self.assertEqual(18, self.dataset["quality_pixel_bitmask"].data[1, 1])  # use_with_caution AND invalid_time
         self.assertEqual(16, self.dataset["quality_pixel_bitmask"].data[2, 1])  # invalid_time
 
     def test_map_global_flags_suspect_geolocation(self):
@@ -81,7 +92,7 @@ class MVIRI_FlagMapperTest(unittest.TestCase):
         self.mapper.map_global_flags(self.dataset)
 
         self.assertEqual(0, self.dataset["quality_pixel_bitmask"].data[1, 1])
-        self.assertEqual(2, self.dataset["quality_pixel_bitmask"].data[2, 1])  # use_with_caution
+        self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[2, 1])  # use_with_caution AND invalid_geoloc
         self.assertEqual(32, self.dataset["quality_pixel_bitmask"].data[0, 2])  # sensor_error
 
     def test_map_global_all_flags(self):
@@ -98,7 +109,7 @@ class MVIRI_FlagMapperTest(unittest.TestCase):
         self.mapper.map_global_flags(self.dataset)
 
         self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[0, 0]) # use_with_caution & invalid_geoloc
-        self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[0, 1])  # invalid_input & invalid_geoloc
+        self.assertEqual(26, self.dataset["quality_pixel_bitmask"].data[0, 1])  # invalid_input & invalid_geoloc & invalid_time
         self.assertEqual(10, self.dataset["quality_pixel_bitmask"].data[0, 2])  # invalid_input & invalid_geoloc
         self.assertEqual(8, self.dataset["quality_pixel_bitmask"].data[1, 0])  # invalid_geoloc
         self.assertEqual(8, self.dataset["quality_pixel_bitmask"].data[1, 1])  # invalid_geoloc

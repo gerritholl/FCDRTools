@@ -177,28 +177,28 @@ class MVIRI:
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
+        tu.add_units(variable, "1")
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 3.05176E-05, chunksizes=CHUNKSIZES)
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_independent
         default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "independent uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
+        tu.add_units(variable, "1")
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 3.05176E-05, chunksizes=CHUNKSIZES)
         dataset["u_independent_toa_bidirectional_reflectance"] = variable
 
         # u_structured
         default_array = DefaultData.create_default_array(FULL_SIZE, FULL_SIZE, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["long_name"] = "structured uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05, chunksizes=CHUNKSIZES)
+        tu.add_units(variable, "1")
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 3.05176E-05, chunksizes=CHUNKSIZES)
         dataset["u_structured_toa_bidirectional_reflectance"] = variable
 
         # u_common
-        dataset["u_common_toa_bidirectional_reflectance"] = tu.create_scalar_float_variable(long_name="common uncertainty per slot", units="percent")
+        dataset["u_common_toa_bidirectional_reflectance"] = tu.create_scalar_float_variable(long_name="common uncertainty per slot", units="1")
 
         dataset["sub_satellite_latitude_start"] = tu.create_scalar_float_variable(long_name="Latitude of the sub satellite point at image start", units="degrees_north")
         dataset["sub_satellite_longitude_start"] = tu.create_scalar_float_variable(long_name="Longitude of the sub satellite point at image start", units="degrees_east")

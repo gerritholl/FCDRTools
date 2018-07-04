@@ -54,11 +54,11 @@ class MviriIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_independent_toa_bidirectional_reflectance"]
-            self.assertAlmostEqual(0.04, variable.data[26, 26], 4)
+            self.assertAlmostEqual(1.0400092904, variable.data[26, 26], 4)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_toa_bidirectional_reflectance"]
-            self.assertAlmostEqual(0.35, variable.data[27, 27], 4)
+            self.assertAlmostEqual(1.3500070712000001, variable.data[27, 27], 4)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["sub_satellite_latitude_start"]
@@ -233,7 +233,7 @@ class MviriIoTest(unittest.TestCase):
 
     def assert_global_flags(self, target_data):
         variable = target_data["quality_pixel_bitmask"]
-        self.assertEqual(10, variable.data[10, 10])
+        self.assertEqual(11, variable.data[10, 10])
         self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
     def assert_sensor_variables(self, target_data):

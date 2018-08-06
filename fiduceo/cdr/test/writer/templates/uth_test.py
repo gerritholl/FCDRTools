@@ -17,7 +17,7 @@ class UTHTest(unittest.TestCase):
         Assertions.assert_gridded_geolocation_variables(self, ds, 360, 100)
         Assertions.assert_quality_flags(self, ds, 360, 100)
 
-        time_ranges_asc = ds.variables["time_ranges_ascending"]
+        time_ranges_asc = ds.variables["time_ranges_ascend"]
         self.assertEqual((2, 100, 360), time_ranges_asc.shape)
         self.assertEqual(-1, time_ranges_asc.values[0, 66, 178])
         self.assertEqual(4294967295, time_ranges_asc.attrs["_FillValue"])
@@ -25,7 +25,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("s", time_ranges_asc.attrs["units"])
         self.assertEqual("lon lat", time_ranges_asc.attrs["coordinates"])
 
-        time_ranges_desc = ds.variables["time_ranges_descending"]
+        time_ranges_desc = ds.variables["time_ranges_descend"]
         self.assertEqual((2, 100, 360), time_ranges_desc.shape)
         self.assertEqual(-1, time_ranges_desc.values[1, 67, 179])
         self.assertEqual(4294967295, time_ranges_desc.attrs["_FillValue"])
@@ -47,13 +47,27 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("Number of UTH/brightness temperature observations in a grid box for descending passes", obs_count_desc.attrs["description"])
         self.assertEqual("lon lat", obs_count_desc.attrs["coordinates"])
 
+        overp_count_asc = ds.variables["overpass_count_ascend"]
+        self.assertEqual((100, 360), overp_count_asc.shape)
+        self.assertEqual(255, overp_count_asc.values[69, 179])
+        self.assertEqual(255, overp_count_asc.attrs["_FillValue"])
+        self.assertEqual("Number of satellite overpasses in a grid box for ascending passes", overp_count_asc.attrs["description"])
+        self.assertEqual("lon lat", overp_count_asc.attrs["coordinates"])
+
+        overp_count_desc = ds.variables["overpass_count_descend"]
+        self.assertEqual((100, 360), overp_count_desc.shape)
+        self.assertEqual(255, overp_count_desc.values[70, 180])
+        self.assertEqual(255, overp_count_desc.attrs["_FillValue"])
+        self.assertEqual("Number of satellite overpasses in a grid box for descending passes", overp_count_desc.attrs["description"])
+        self.assertEqual("lon lat", overp_count_desc.attrs["coordinates"])
+
         uth_asc = ds.variables["uth_ascend"]
         self.assertEqual((100, 360), uth_asc.shape)
         self.assertTrue(np.isnan(uth_asc.values[97, 198]))
         self.assertTrue(np.isnan(uth_asc.attrs["_FillValue"]))
         self.assertEqual("lon lat", uth_asc.attrs["coordinates"])
         self.assertEqual("%", uth_asc.attrs["units"])
-        self.assertEqual("Mean of all UTH retrievals in a grid box for ascending passes", uth_asc.attrs["description"])
+        self.assertEqual("Monthly average of all UTH retrievals in a grid box for ascending passes (calculated from daily averages)", uth_asc.attrs["description"])
 
         uth_desc = ds.variables["uth_descend"]
         self.assertEqual((100, 360), uth_desc.shape)
@@ -61,7 +75,7 @@ class UTHTest(unittest.TestCase):
         self.assertTrue(np.isnan(uth_desc.attrs["_FillValue"]))
         self.assertEqual("lon lat", uth_desc.attrs["coordinates"])
         self.assertEqual("%", uth_desc.attrs["units"])
-        self.assertEqual("Mean of all UTH retrievals in a grid box for descending passes", uth_desc.attrs["description"])
+        self.assertEqual("Monthly average of all UTH retrievals in a grid box for descending passes (calculated from daily averages)", uth_desc.attrs["description"])
 
         u_ind_uth_asc = ds.variables["u_independent_uth_ascend"]
         self.assertEqual((100, 360), u_ind_uth_asc.shape)
@@ -115,7 +129,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), uth_inhom_asc.shape)
         self.assertTrue(np.isnan(uth_inhom_asc.values[71, 172]))
         self.assertTrue(np.isnan(uth_inhom_asc.attrs["_FillValue"]))
-        self.assertEqual("Standard deviation of all UTH retrievals in a grid box for ascending passes", uth_inhom_asc.attrs["description"])
+        self.assertEqual("Standard deviation of all daily UTH averages which were used to calculate the monthly UTH average in a grid box for ascending passes", uth_inhom_asc.attrs["description"])
         self.assertEqual("lon lat", uth_inhom_asc.attrs["coordinates"])
         self.assertEqual("%", uth_inhom_asc.attrs["units"])
 
@@ -123,7 +137,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), uth_inhom_desc.shape)
         self.assertTrue(np.isnan(uth_inhom_desc.values[72, 173]))
         self.assertTrue(np.isnan(uth_inhom_desc.attrs["_FillValue"]))
-        self.assertEqual("Standard deviation of all UTH retrievals in a grid box for descending passes", uth_inhom_desc.attrs["description"])
+        self.assertEqual("Standard deviation of all daily UTH averages which were used to calculate the monthly UTH average in a grid box for descending passes", uth_inhom_desc.attrs["description"])
         self.assertEqual("lon lat", uth_inhom_desc.attrs["coordinates"])
         self.assertEqual("%", uth_inhom_desc.attrs["units"])
 
@@ -131,7 +145,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), bt_ascend.shape)
         self.assertTrue(np.isnan(bt_ascend.values[73, 174]))
         self.assertTrue(np.isnan(bt_ascend.attrs["_FillValue"]))
-        self.assertEqual("Mean of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes", bt_ascend.attrs["description"])
+        self.assertEqual("Monthly average of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes (calculated from daily averages)", bt_ascend.attrs["description"])
         self.assertEqual("lon lat", bt_ascend.attrs["coordinates"])
         self.assertEqual("K", bt_ascend.attrs["units"])
         self.assertEqual("toa_brightness_temperature", bt_ascend.attrs["standard_name"])
@@ -140,7 +154,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), bt_descend.shape)
         self.assertTrue(np.isnan(bt_descend.values[74, 175]))
         self.assertTrue(np.isnan(bt_descend.attrs["_FillValue"]))
-        self.assertEqual("Mean of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes", bt_descend.attrs["description"])
+        self.assertEqual("Monthly average of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes (calculated from daily averages)", bt_descend.attrs["description"])
         self.assertEqual("lon lat", bt_descend.attrs["coordinates"])
         self.assertEqual("K", bt_descend.attrs["units"])
         self.assertEqual("toa_brightness_temperature", bt_descend.attrs["standard_name"])
@@ -197,7 +211,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), bt_inhom_asc.shape)
         self.assertTrue(np.isnan(bt_inhom_asc.values[72, 173]))
         self.assertTrue(np.isnan(bt_inhom_asc.attrs["_FillValue"]))
-        self.assertEqual("Standard deviation of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes", bt_inhom_asc.attrs["description"])
+        self.assertEqual("Standard deviation of all daily brightness temperature averages which were used to calculate the monthly brightness temperature average for ascending passes", bt_inhom_asc.attrs["description"])
         self.assertEqual("lon lat", bt_inhom_asc.attrs["coordinates"])
         self.assertEqual("K", bt_inhom_asc.attrs["units"])
 
@@ -205,7 +219,7 @@ class UTHTest(unittest.TestCase):
         self.assertEqual((100, 360), bt_inhom_desc.shape)
         self.assertTrue(np.isnan(bt_inhom_desc.values[73, 174]))
         self.assertTrue(np.isnan(bt_inhom_desc.attrs["_FillValue"]))
-        self.assertEqual("Standard deviation of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes", bt_inhom_desc.attrs["description"])
+        self.assertEqual("Standard deviation of all daily brightness temperature averages which were used to calculate the monthly brightness temperature average for descending passes", bt_inhom_desc.attrs["description"])
         self.assertEqual("lon lat", bt_inhom_desc.attrs["coordinates"])
         self.assertEqual("K", bt_inhom_desc.attrs["units"])
 

@@ -219,7 +219,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(18, len(ds.data_vars))
+        self.assertEqual(19, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -238,11 +238,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
-        # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_independent"])
-        self.assertIsNotNone(ds.variables["u_structured"])
-        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
-        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
+        self._assert_HIRS_easy_uncertainties(ds)
 
     def testCreateTemplateFull_HIRS2(self):
         ds = FCDRWriter.createTemplateFull('HIRS2', 209)
@@ -310,7 +306,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(21, len(ds.data_vars))
+        self.assertEqual(22, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -331,11 +327,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["SRF_frequencies"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
 
-        # easy FCDR variables
-        self.assertIsNotNone(ds.variables["u_independent"])
-        self.assertIsNotNone(ds.variables["u_structured"])
-        self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
-        self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
+        self._assert_HIRS_easy_uncertainties(ds)
 
     def testCreateTemplateFull_HIRS3(self):
         ds = FCDRWriter.createTemplateFull('HIRS3', 209)
@@ -394,7 +386,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(21, len(ds.data_vars))
+        self.assertEqual(22, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -416,9 +408,12 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
-        # easy FCDR variables
+        self._assert_HIRS_easy_uncertainties(ds)
+
+    def _assert_HIRS_easy_uncertainties(self, ds):
         self.assertIsNotNone(ds.variables["u_independent"])
         self.assertIsNotNone(ds.variables["u_structured"])
+        self.assertIsNotNone(ds.variables["u_common"])
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])
 

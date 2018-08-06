@@ -148,6 +148,7 @@ class HIRS:
     def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):
         dataset["u_independent"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from independent errors")
         dataset["u_structured"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from structured errors")
+        dataset["u_common"] = HIRS._create_easy_fcdr_variable(height, "uncertainty from common errors")
 
         tu.add_correlation_matrices(dataset, NUM_CHANNELS)
 

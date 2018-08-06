@@ -171,6 +171,7 @@ class HIRSAssert(unittest.TestCase):
     def assert_easy_fcdr_uncertainties(self, ds, chunking=None):
         self._assert_3d_channel_variable(ds, "u_independent", "uncertainty from independent errors", chunking=chunking)
         self._assert_3d_channel_variable(ds, "u_structured", "uncertainty from structured errors", chunking=chunking)
+        self._assert_3d_channel_variable(ds, "u_common", "uncertainty from common errors", chunking=chunking)
 
     def assert_coordinates(self, ds):
         x = ds.coords["x"]

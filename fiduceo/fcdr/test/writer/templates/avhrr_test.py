@@ -383,6 +383,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
         self.assertEqual(-32767, variable.encoding["_FillValue"])
+        self.assertEqual(np.int16, variable.encoding["dtype"])
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
 
@@ -407,6 +408,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertTrue(np.isnan(variable.data[4, 307]))
         self.assertEqual("longitude latitude", variable.attrs["coordinates"])
         self.assertEqual(-32767, variable.encoding["_FillValue"])
+        self.assertEqual(np.int16, variable.encoding["dtype"])
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
 
         if standard_name is not None:

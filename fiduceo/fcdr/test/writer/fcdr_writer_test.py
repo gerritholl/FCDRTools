@@ -102,7 +102,7 @@ class FCDRWriterTest(unittest.TestCase):
 
         Assertions.assert_global_attributes(self, ds.attrs)
 
-        self.assertEqual(36, len(ds.data_vars))
+        self.assertEqual(42, len(ds.data_vars))
 
         # geolocation + flags
         self._verify_geolocation_variables(ds)
@@ -114,16 +114,22 @@ class FCDRWriterTest(unittest.TestCase):
         # easy FCDR variables
         self.assertIsNotNone(ds.variables["u_independent_Ch1"])
         self.assertIsNotNone(ds.variables["u_structured_Ch1"])
+        self.assertIsNotNone(ds.variables["u_common_Ch1"])
         self.assertIsNotNone(ds.variables["u_independent_Ch2"])
         self.assertIsNotNone(ds.variables["u_structured_Ch2"])
+        self.assertIsNotNone(ds.variables["u_common_Ch2"])
         self.assertIsNotNone(ds.variables["u_independent_Ch3a"])
         self.assertIsNotNone(ds.variables["u_structured_Ch3a"])
+        self.assertIsNotNone(ds.variables["u_common_Ch3a"])
         self.assertIsNotNone(ds.variables["u_independent_Ch3b"])
         self.assertIsNotNone(ds.variables["u_structured_Ch3b"])
+        self.assertIsNotNone(ds.variables["u_common_Ch3b"])
         self.assertIsNotNone(ds.variables["u_independent_Ch4"])
         self.assertIsNotNone(ds.variables["u_structured_Ch4"])
+        self.assertIsNotNone(ds.variables["u_common_Ch4"])
         self.assertIsNotNone(ds.variables["u_independent_Ch5"])
         self.assertIsNotNone(ds.variables["u_structured_Ch5"])
+        self.assertIsNotNone(ds.variables["u_common_Ch5"])
 
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_independent"])
         self.assertIsNotNone(ds.variables["channel_correlation_matrix_structured"])

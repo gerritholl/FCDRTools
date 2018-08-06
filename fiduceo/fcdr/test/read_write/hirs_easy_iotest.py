@@ -94,6 +94,10 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertAlmostEqual(0.7, variable.data[10, 10, 10], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
 
+            variable = target_data["u_common"]
+            self.assertAlmostEqual(0.88, variable.data[11, 11, 11], 8)
+            self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
             self.assert_srf(target_data)
         finally:
             target_data.close()
@@ -175,6 +179,10 @@ class HirsEASYIoTest(unittest.TestCase):
 
             variable = target_data["u_structured"]
             self.assertAlmostEqual(0.77, variable.data[11, 11, 11], 8)
+            self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
+            variable = target_data["u_common"]
+            self.assertAlmostEqual(0.96, variable.data[12, 12, 12], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
 
             self.assert_srf(target_data)
@@ -260,6 +268,10 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertAlmostEqual(0.84, variable.data[12, 12, 12], 8)
             self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
 
+            variable = target_data["u_common"]
+            self.assertAlmostEqual(1.04, variable.data[13, 13, 13], 8)
+            self.assertEqual(EXPECTED_CHUNKING_3D, variable.encoding["chunksizes"])
+
             self.assert_srf(target_data)
         finally:
             target_data.close()
@@ -287,6 +299,7 @@ class HirsEASYIoTest(unittest.TestCase):
             hirs_easy["solar_azimuth_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.05
             hirs_easy["u_independent"].data[:, :, x] = np.ones((944), np.int16) * x * 0.06
             hirs_easy["u_structured"].data[:, :, x] = np.ones((944), np.int16) * x * 0.07
+            hirs_easy["u_common"].data[:, :, x] = np.ones((944), np.int16) * x * 0.08
 
         if type != "HIRS2":
             for x in range(0, 19):

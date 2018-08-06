@@ -152,17 +152,23 @@ class AVHRRTest(unittest.TestCase):
 
         self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch1", long_name="common uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch2", long_name="common uncertainty per pixel for channel 2", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="percent", valid_min=10, valid_max=1000)
         self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch3a", long_name="common uncertainty per pixel for channel 3a", units="percent", valid_min=10, valid_max=1000)
 
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch3b", long_name="independent uncertainty per pixel for channel 3b")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch3b", long_name="structured uncertainty per pixel for channel 3b")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_common_Ch3b", long_name="common uncertainty per pixel for channel 3b")
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch4", long_name="independent uncertainty per pixel for channel 4")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch4", long_name="structured uncertainty per pixel for channel 4")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_common_Ch4", long_name="common uncertainty per pixel for channel 4")
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch5", long_name="independent uncertainty per pixel for channel 5")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch5", long_name="structured uncertainty per pixel for channel 5")
+        self._assert_correct_bt_uncertainty_variable(ds, "u_common_Ch5", long_name="common uncertainty per pixel for channel 5")
 
         Assertions.assert_correlation_matrices(self, ds, NUM_CHANNELS)
         Assertions.assert_lookup_tables(self, ds, NUM_CHANNELS, LUT_SIZE)
@@ -385,7 +391,6 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(-32767, variable.encoding["_FillValue"])
         self.assertEqual(np.int16, variable.encoding["dtype"])
         self.assertEqual(CHUNKING, variable.encoding["chunksizes"])
-        self.assertEqual("longitude latitude", variable.attrs["coordinates"])
 
         if valid_min is not None:
             self.assertEqual(valid_min, variable.attrs["valid_min"])

@@ -98,6 +98,26 @@ class AvhrrIoTest(unittest.TestCase):
             self.assertAlmostEqual(0.506, variable.data[23, 23], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
+            variable = target_data["u_common_Ch1"]
+            self.assertAlmostEqual(0.072, variable.data[24, 24], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_common_Ch2"]
+            self.assertAlmostEqual(0.1, variable.data[25, 25], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_common_Ch3a"]
+            self.assertAlmostEqual(0.13, variable.data[26, 26], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_common_Ch4"]
+            self.assertAlmostEqual(0.162, variable.data[27, 27], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
+            variable = target_data["u_common_Ch5"]
+            self.assertAlmostEqual(0.196, variable.data[28, 28], 8)
+            self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
+
             self.assert_srf_data(target_data)
         finally:
             target_data.close()
@@ -357,6 +377,11 @@ class AvhrrIoTest(unittest.TestCase):
             avhrr_easy["u_structured_Ch3a"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.020
             avhrr_easy["u_structured_Ch4"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.021
             avhrr_easy["u_structured_Ch5"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.022
+            avhrr_easy["u_common_Ch1"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.003
+            avhrr_easy["u_common_Ch2"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.004
+            avhrr_easy["u_common_Ch3a"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.005
+            avhrr_easy["u_common_Ch4"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.006
+            avhrr_easy["u_common_Ch5"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int16) * x * 0.007
 
         for x in range(0, 6):
             avhrr_easy["quality_channel_bitmask"].data[:, x] = np.ones(PRODUCT_HEIGHT, np.int8) * x

@@ -147,6 +147,11 @@ class AVHRR:
         names = ["u_structured_Ch1", "u_structured_Ch2", "u_structured_Ch3a"]
         AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, structured=True)
 
+        # u_common_Ch1-3a
+        long_names = ["common uncertainty per pixel for channel 1", "common uncertainty per pixel for channel 2", "common uncertainty per pixel for channel 3a"]
+        names = ["u_common_Ch1", "u_common_Ch2", "u_common_Ch3a"]
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names)
+
         # u_independent_Ch3b-5
         long_names = ["independent uncertainty per pixel for channel 3b", "independent uncertainty per pixel for channel 4", "independent uncertainty per pixel for channel 5"]
         names = ["u_independent_Ch3b", "u_independent_Ch4", "u_independent_Ch5"]
@@ -155,6 +160,11 @@ class AVHRR:
         # u_structured_Ch3b-5
         long_names = ["structured uncertainty per pixel for channel 3b", "structured uncertainty per pixel for channel 4", "structured uncertainty per pixel for channel 5"]
         names = ["u_structured_Ch3b", "u_structured_Ch4", "u_structured_Ch5"]
+        AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
+
+        # u_common_Ch3b-5
+        long_names = ["common uncertainty per pixel for channel 3b", "common uncertainty per pixel for channel 4", "common uncertainty per pixel for channel 5"]
+        names = ["u_common_Ch3b", "u_common_Ch4", "u_common_Ch5"]
         AVHRR._add_bt_uncertainties_variables(dataset, height, names, long_names)
 
         tu.add_correlation_matrices(dataset, N_CHANS)

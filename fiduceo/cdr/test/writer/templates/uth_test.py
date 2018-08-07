@@ -67,6 +67,7 @@ class UTHTest(unittest.TestCase):
         self.assertTrue(np.isnan(uth_asc.attrs["_FillValue"]))
         self.assertEqual("lon lat", uth_asc.attrs["coordinates"])
         self.assertEqual("%", uth_asc.attrs["units"])
+        self.assertEqual("upper_tropospheric_humidity", uth_asc.attrs["long_name"])
         self.assertEqual("Monthly average of all UTH retrievals in a grid box for ascending passes (calculated from daily averages)", uth_asc.attrs["description"])
 
         uth_desc = ds.variables["uth_descend"]
@@ -75,6 +76,7 @@ class UTHTest(unittest.TestCase):
         self.assertTrue(np.isnan(uth_desc.attrs["_FillValue"]))
         self.assertEqual("lon lat", uth_desc.attrs["coordinates"])
         self.assertEqual("%", uth_desc.attrs["units"])
+        self.assertEqual("upper_tropospheric_humidity", uth_desc.attrs["long_name"])
         self.assertEqual("Monthly average of all UTH retrievals in a grid box for descending passes (calculated from daily averages)", uth_desc.attrs["description"])
 
         u_ind_uth_asc = ds.variables["u_independent_uth_ascend"]

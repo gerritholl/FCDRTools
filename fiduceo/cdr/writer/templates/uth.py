@@ -24,7 +24,7 @@ class UTH:
         dataset["overpass_count_ascend"] = UTH._create_overpass_counts_variable(height, width, "Number of satellite overpasses in a grid box for ascending passes")
         dataset["overpass_count_descend"] = UTH._create_overpass_counts_variable(height, width, "Number of satellite overpasses in a grid box for descending passes")
 
-        dataset["uth_ascend"] = UTH._create_uth_variable(width, height, description="Monthly average of all UTH retrievals in a grid box for ascending passes (calculated from daily averages)")
+        dataset["uth_ascend"] = UTH._create_uth_variable(width, height, description="Monthly average of all UTH retrievals in a grid box for ascending passes (calculated from daily averages)",)
         dataset["uth_descend"] = UTH._create_uth_variable(width, height, description="Monthly average of all UTH retrievals in a grid box for descending passes (calculated from daily averages)")
 
         dataset["u_independent_uth_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of UTH due to independent effects for ascending passes", coordinates="lon lat")
@@ -71,6 +71,7 @@ class UTH:
         variable = Variable(["y", "x"], default_array)
         tu.add_fill_value(variable, np.NaN)
         variable.attrs["coordinates"] = "lon lat"
+        variable.attrs["long_name"] = "upper_tropospheric_humidity"
         tu.add_units(variable, "%")
         if description is not None:
             variable.attrs["description"] = description

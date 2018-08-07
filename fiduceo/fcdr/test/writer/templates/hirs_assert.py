@@ -129,14 +129,14 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
         self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
 
-        srf_freqs = ds.variables["SRF_frequencies"]
+        srf_freqs = ds.variables["SRF_wavelengths"]
         self.assertEqual((19, srf_size), srf_freqs.shape)
         self.assertTrue(np.isnan(srf_freqs.data[5, 7]))
-        self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
-        self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
+        self.assertEqual("Spectral Response Function wavelengths", srf_freqs.attrs["long_name"])
+        self.assertEqual("Per channel: wavelengths for the relative spectral response function", srf_freqs.attrs["description"])
         self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])
         self.assertEqual(0.0001, srf_freqs.encoding['scale_factor'])
-        self.assertEqual("nm", srf_freqs.attrs["units"])
+        self.assertEqual("um", srf_freqs.attrs["units"])
 
         scnlin_map = ds.variables["scanline_map_to_origl1bfile"]
         self.assertEqual((6,), scnlin_map.shape)

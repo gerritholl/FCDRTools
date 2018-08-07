@@ -311,7 +311,7 @@ class HirsEASYIoTest(unittest.TestCase):
 
         for x in range(0, SRF_SIZE):
             hirs_easy["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
-            hirs_easy["SRF_frequencies"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.05
+            hirs_easy["SRF_wavelengths"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.05
 
         if type == "HIRS2":
             hirs_easy["satellite_zenith_angle"].data[:] = np.ones((944), np.int8) * 2
@@ -322,5 +322,5 @@ class HirsEASYIoTest(unittest.TestCase):
         variable = dataset["SRF_weights"]
         self.assertAlmostEqual(0.439989, variable.data[1, 11], 8)
 
-        variable = dataset["SRF_frequencies"]
+        variable = dataset["SRF_wavelengths"]
         self.assertAlmostEqual(0.6, variable.data[2, 12], 8)

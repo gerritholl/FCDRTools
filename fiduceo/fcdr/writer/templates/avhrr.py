@@ -109,11 +109,11 @@ class AVHRR:
 
         default_array = DefaultData.create_default_array(srf_size, N_CHANS, np.float32, fill_value=np.NaN)
         variable = Variable(["channel", "n_frequencies"], default_array)
-        variable.attrs["long_name"] = 'Spectral Response Function frequencies'
-        variable.attrs["description"] = 'Per channel: frequencies for the relative spectral response function'
+        variable.attrs["long_name"] = 'Spectral Response Function wavelengths'
+        variable.attrs["description"] = 'Per channel: wavelengths for the relative spectral response function'
         tu.add_encoding(variable, np.int32, -2147483648, 0.0001)
         tu.add_units(variable, "um")
-        dataset['SRF_frequencies'] = variable
+        dataset['SRF_wavelengths'] = variable
 
         default_vector = DefaultData.create_default_vector(height, np.uint8, fill_value=255)
         variable = Variable(["y"], default_vector)

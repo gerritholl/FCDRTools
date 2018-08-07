@@ -496,7 +496,7 @@ class AvhrrIoTest(unittest.TestCase):
     def add_srf_data(self, dataset):
         for x in range(0, SRF_SIZE):
             dataset["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.03
-            dataset["SRF_frequencies"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
+            dataset["SRF_wavelengths"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
 
     def assert_geolocation_variables(self, target_data):
         variable = target_data["latitude"]
@@ -568,5 +568,5 @@ class AvhrrIoTest(unittest.TestCase):
         variable = target_data["SRF_weights"]
         self.assertAlmostEqual(0.300003, variable.data[0, 10], 8)
 
-        variable = target_data["SRF_frequencies"]
+        variable = target_data["SRF_wavelengths"]
         self.assertAlmostEqual(0.44, variable.data[1, 11], 8)

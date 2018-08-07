@@ -240,7 +240,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self.assertIsNotNone(ds.variables["SRF_wavelengths"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
@@ -302,7 +302,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["data_quality_bitmask"])
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self.assertIsNotNone(ds.variables["SRF_wavelengths"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
@@ -330,7 +330,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
         self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self.assertIsNotNone(ds.variables["SRF_wavelengths"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
 
         self._assert_HIRS_easy_uncertainties(ds)
@@ -410,7 +410,7 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["quality_scanline_bitmask"])
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
         self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self.assertIsNotNone(ds.variables["SRF_wavelengths"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])
 
@@ -685,6 +685,6 @@ class FCDRWriterTest(unittest.TestCase):
         self.assertIsNotNone(ds.variables["quality_channel_bitmask"])
 
         self.assertIsNotNone(ds.variables["SRF_weights"])
-        self.assertIsNotNone(ds.variables["SRF_frequencies"])
+        self.assertIsNotNone(ds.variables["SRF_wavelengths"])
         self.assertIsNotNone(ds.variables["scanline_map_to_origl1bfile"])
         self.assertIsNotNone(ds.variables["scanline_origl1b"])

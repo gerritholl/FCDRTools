@@ -108,14 +108,14 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual(-32768, srf_weights.encoding['_FillValue'])
         self.assertEqual(0.000033, srf_weights.encoding['scale_factor'])
 
-        srf_freqs = ds.variables["SRF_frequencies"]
-        self.assertEqual((6, SRF_SIZE), srf_freqs.shape)
-        self.assertTrue(np.isnan(srf_freqs.data[4, 6]))
-        self.assertEqual("Spectral Response Function frequencies", srf_freqs.attrs["long_name"])
-        self.assertEqual("Per channel: frequencies for the relative spectral response function", srf_freqs.attrs["description"])
-        self.assertEqual(-2147483648, srf_freqs.encoding['_FillValue'])
-        self.assertEqual(0.0001, srf_freqs.encoding['scale_factor'])
-        self.assertEqual("um", srf_freqs.attrs["units"])
+        srf_wls = ds.variables["SRF_wavelengths"]
+        self.assertEqual((6, SRF_SIZE), srf_wls.shape)
+        self.assertTrue(np.isnan(srf_wls.data[4, 6]))
+        self.assertEqual("Spectral Response Function wavelengths", srf_wls.attrs["long_name"])
+        self.assertEqual("Per channel: wavelengths for the relative spectral response function", srf_wls.attrs["description"])
+        self.assertEqual(-2147483648, srf_wls.encoding['_FillValue'])
+        self.assertEqual(0.0001, srf_wls.encoding['scale_factor'])
+        self.assertEqual("um", srf_wls.attrs["units"])
 
         x = ds.coords["x"]
         self.assertEqual((409,), x.shape)

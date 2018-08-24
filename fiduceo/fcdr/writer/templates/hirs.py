@@ -77,7 +77,7 @@ class HIRS:
         variable.attrs[
             "flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824"
         variable.attrs[
-            "flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant reduced_context bad_temp_no_rself"
+            "flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant reduced_context bad_temp_no_rself"
         dataset["quality_scanline_bitmask"] = variable
 
         default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)

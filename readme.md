@@ -4,7 +4,7 @@
 
 # FCDR Tools
 
-Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) files.
+Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) and CDR (Climate Data Record)files.
 
 ## Status
 
@@ -19,7 +19,7 @@ Tools for handling Fiduceo formatted FCDR (Fundamental Climate Data Record) file
 
 ## Dependencies
 
-The FCDR Tools depend on a number of modules, namely:
+The FCDR/CDR Tools depend on a number of modules, namely:
 
 * `xarray`
 * `netcdf4`

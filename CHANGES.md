@@ -1,4 +1,4 @@
-### Updates from version 1.1.5 to 1.1.6
+### Updates from version 1.1.5 to 2.0.0
 
 - updated UTH CDR 
 - added common uncertainties to AVHRR and HIRS FCDR

@@ -61,7 +61,7 @@ class HIRS_FlagMapperTest(unittest.TestCase):
         self.dataset["quality_pixel_bitmask"].data[2, 0] = gf.INCOMPLETE_CHANNEL_DATA
         self.dataset["quality_pixel_bitmask"].data[0, 0] = gf.PADDED_DATA
 
-        self.dataset["quality_scanline_bitmask"].data[1] = 536870912  # reduced_context
+        self.dataset["quality_scanline_bitmask"].data[1] = 2  # reduced_context
 
         self.mapper.map_global_flags(self.dataset)
 
@@ -75,7 +75,7 @@ class HIRS_FlagMapperTest(unittest.TestCase):
         self.dataset["quality_pixel_bitmask"].data[0, 1] = gf.PADDED_DATA
         self.dataset["quality_pixel_bitmask"].data[1, 2] = gf.SENSOR_ERROR
 
-        self.dataset["quality_scanline_bitmask"].data[1] = 1073741824  # bad_temp_no_rself
+        self.dataset["quality_scanline_bitmask"].data[1] = 4  # bad_temp_no_rself
 
         self.mapper.map_global_flags(self.dataset)
 
@@ -135,7 +135,7 @@ class HIRS_FlagMapperTest(unittest.TestCase):
 
         self.dataset["quality_channel_bitmask"].data[1, :] = 2  # uncertainty_suspicious in all channels
 
-        self.dataset["quality_scanline_bitmask"].data[0] = 536870912  # reduced_context
+        self.dataset["quality_scanline_bitmask"].data[0] = 2  # reduced_context
 
         self.mapper.map_global_flags(self.dataset)
 

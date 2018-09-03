@@ -116,7 +116,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("1, 2, 4, 8, 16",
                          qual_scan_bitmask.attrs["flag_masks"])
         self.assertEqual(
-            "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time"
+            "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time",
             qual_scan_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", qual_scan_bitmask.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qual_scan_bitmask.attrs["long_name"])

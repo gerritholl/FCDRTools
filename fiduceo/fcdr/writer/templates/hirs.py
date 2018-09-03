@@ -76,8 +76,7 @@ class HIRS:
         variable.attrs["long_name"] = "quality_indicator_bitfield"
         variable.attrs[
             "flag_masks"] = "1, 2, 4, 8, 16"
-        variable.attrs[
-            "flag_meanings"] = "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time" 
+        variable.attrs["flag_meanings"] = "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time" 
         dataset["quality_scanline_bitmask"] = variable
 
         default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)

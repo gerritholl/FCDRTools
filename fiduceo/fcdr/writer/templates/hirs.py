@@ -80,14 +80,14 @@ class HIRS:
         dataset["quality_scanline_bitmask"] = variable
 
         default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
-        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable = Variable(["channel", "n_wavelengths"], default_array)
         variable.attrs["long_name"] = 'Spectral Response Function weights'
         variable.attrs["description"] = 'Per channel: weights for the relative spectral response function'
         tu.add_encoding(variable, np.int16, -32768, 0.000033)
         dataset['SRF_weights'] = variable
 
         default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)
-        variable = Variable(["channel", "n_frequencies"], default_array)
+        variable = Variable(["channel", "n_wavelengths"], default_array)
         variable.attrs["long_name"] = 'Spectral Response Function wavelengths'
         variable.attrs["description"] = 'Per channel: wavelengths for the relative spectral response function'
         tu.add_encoding(variable, np.int32, -2147483648, 0.0001)

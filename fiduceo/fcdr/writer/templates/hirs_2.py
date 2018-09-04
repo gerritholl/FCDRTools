@@ -15,7 +15,7 @@ class HIRS2(HIRS):
         HIRS.add_quality_flags(dataset, height)
 
         HIRS.add_bt_variable(dataset, height)
-        HIRS2._add_angle_variables(dataset, height)
+        HIRS.add_common_angles(dataset, height)
 
         if srf_size is None:
             srf_size = MAX_SRF_SIZE
@@ -38,15 +38,3 @@ class HIRS2(HIRS):
     @staticmethod
     def add_template_key(dataset):
         dataset.attrs["template_key"] = "HIRS2"
-
-    @staticmethod
-    def _add_angle_variables(dataset, height):
-        default_array = DefaultData.create_default_vector(height, np.float32, fill_value=np.NaN)
-        variable = Variable(["y"], default_array)
-        variable.attrs["standard_name"] = "platform_zenith_angle"
-        tu.add_units(variable, "degree")
-        tu.add_geolocation_attribute(variable)
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0)
-        dataset["satellite_zenith_angle"] = variable
-
-        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=CHUNKING_2D)

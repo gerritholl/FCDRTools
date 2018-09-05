@@ -1,3 +1,8 @@
+### Updates from version 2.0.0 to 2.0.1
+
+- updated HIRS/2 to contain full angles
+- updated HIRS dimension names and flags 
+
 ### Updates from version 1.1.5 to 2.0.0
 
 - updated UTH CDR 

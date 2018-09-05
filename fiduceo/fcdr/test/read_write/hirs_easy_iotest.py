@@ -71,8 +71,12 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual((944,), variable.encoding["chunksizes"])
 
             variable = target_data["satellite_zenith_angle"]
-            self.assertEqual(2, variable.data[5])
-            self.assertEqual((944,), variable.encoding["chunksizes"])
+            self.assertAlmostEqual(0.2, variable.data[5, 5], 8)
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
+            variable = target_data["satellite_azimuth_angle"]
+            self.assertAlmostEqual(0.30, variable.data[6, 6], 8)
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["scanline"]
             self.assertEqual(3, variable.data[6])
@@ -80,6 +84,14 @@ class HirsEASYIoTest(unittest.TestCase):
 
             variable = target_data["solar_azimuth_angle"]
             self.assertAlmostEqual(0.35, variable.data[7, 7], 8)
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
+            variable = target_data["solar_azimuth_angle"]
+            self.assertAlmostEqual(0.4, variable.data[8, 8], 8)
+            self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
+
+            variable = target_data["solar_zenith_angle"]
+            self.assertAlmostEqual(0.54, variable.data[9, 9], 8)
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["time"]
@@ -291,10 +303,10 @@ class HirsEASYIoTest(unittest.TestCase):
             hirs_easy["longitude"].data[:, x] = np.ones((944), np.int16) * x * 0.03
             hirs_easy["data_quality_bitmask"].data[:, x] = np.ones((944), np.int8) * x
             hirs_easy["quality_pixel_bitmask"].data[:, x] = np.ones((944), np.int8) * x
-            if type != "HIRS2":
-                hirs_easy["satellite_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.04
-                hirs_easy["satellite_azimuth_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.05
-                hirs_easy["solar_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.06
+
+            hirs_easy["satellite_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.04
+            hirs_easy["satellite_azimuth_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.05
+            hirs_easy["solar_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.06
 
             hirs_easy["solar_azimuth_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.05
             hirs_easy["u_independent"].data[:, :, x] = np.ones((944), np.int16) * x * 0.06
@@ -312,9 +324,6 @@ class HirsEASYIoTest(unittest.TestCase):
         for x in range(0, SRF_SIZE):
             hirs_easy["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04
             hirs_easy["SRF_wavelengths"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.05
-
-        if type == "HIRS2":
-            hirs_easy["satellite_zenith_angle"].data[:] = np.ones((944), np.int8) * 2
 
         return hirs_easy
 

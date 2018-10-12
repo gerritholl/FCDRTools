@@ -21,6 +21,7 @@ class HIRS2(HIRS):
             srf_size = MAX_SRF_SIZE
 
         HIRS.add_common_sensor_variables(dataset, height, srf_size)
+        HIRS.add_extended_flag_variables(dataset, height)
         HIRS.add_coordinates(dataset)
 
     @staticmethod

@@ -6,8 +6,7 @@ from fiduceo.common.test.assertions import Assertions
 from fiduceo.fcdr.test.writer.templates.hirs_assert import HIRSAssert
 from fiduceo.fcdr.writer.templates.hirs_4 import HIRS4
 
-CHUNKING_3D = (10, 512, 56)
-CHUNKING_2D = (512, 56)
+CHUNKING_2D = (6, 56)
 
 NUM_CHANNELS = 19
 
@@ -21,7 +20,7 @@ class HIRS4Test(unittest.TestCase):
         Assertions.assert_geolocation_variables(self, ds, 56, 6, chunking=CHUNKING_2D)
         Assertions.assert_quality_flags(self, ds, 56, 6, chunking=CHUNKING_2D)
 
-        ha.assert_bt_variable(ds, chunking=CHUNKING_3D)
+        ha.assert_bt_variable(ds, chunking=(10, 6, 56))
         ha.assert_common_angles(ds, chunking=CHUNKING_2D)
         ha.assert_common_sensor_variables(ds, 2751)
         ha.assert_extended_quality_flags(ds)
@@ -37,7 +36,7 @@ class HIRS4Test(unittest.TestCase):
         ds = xr.Dataset()
         HIRS4.add_easy_fcdr_variables(ds, 7, lut_size=24, corr_dx=delta_x, corr_dy=delta_y)
 
-        ha.assert_easy_fcdr_uncertainties(ds, chunking=CHUNKING_3D)
+        ha.assert_easy_fcdr_uncertainties(ds, chunking=(10, 7, 56))
 
         Assertions.assert_correlation_matrices(self, ds, NUM_CHANNELS)
         Assertions.assert_lookup_tables(self, ds, NUM_CHANNELS, 24)

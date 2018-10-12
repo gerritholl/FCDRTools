@@ -26,18 +26,20 @@ CHUNKING_2D = (512, 56)
 class HIRS:
     @staticmethod
     def add_geolocation_variables(dataset, height):
-        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
+        chunking_2d = HIRS._ensure_chunking_2d(height)
+        tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=chunking_2d)
 
     @staticmethod
     def add_quality_flags(dataset, height):
-        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
+        chunking_2d = HIRS._ensure_chunking_2d(height)
+        tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=chunking_2d)
 
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16, fill_value=0)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["flag_masks"] = "1, 2, 4"
         variable.attrs["flag_meanings"] = "suspect_mirror outlier_nos uncertainty_too_large"
         variable.attrs["standard_name"] = "status_flag"
-        tu.add_chunking(variable, CHUNKING_2D)
+        tu.add_chunking(variable, chunking_2d)
         tu.add_geolocation_attribute(variable)
         dataset["data_quality_bitmask"] = variable
 
@@ -123,22 +125,23 @@ class HIRS:
 
     @staticmethod
     def add_common_angles(dataset, height):
-        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height, chunking=CHUNKING_2D)
-        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height, chunking=CHUNKING_2D)
+        chunking_2d = HIRS._ensure_chunking_2d(height)
+        dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height, chunking=chunking_2d)
+        dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height, chunking=chunking_2d)
         dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
 
-        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle", chunking=CHUNKING_2D)
-        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=CHUNKING_2D)
+        dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle", chunking=chunking_2d)
+        dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=chunking_2d)
 
     @staticmethod
     def add_bt_variable(dataset, height):
-        # bt
+        chunking_bt = HIRS._ensure_chunking_BT(height)
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_brightness_temperature"
         variable.attrs["long_name"] = "Brightness temperature, NOAA/EUMETSAT calibrated"
         tu.add_units(variable, "K")
-        tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0, chunksizes=CHUNKING_BT)
+        tu.add_encoding(variable, np.int16, FILL_VALUE, 0.01, 150.0, chunksizes=chunking_bt)
         tu.add_geolocation_attribute(variable)
         variable.attrs["ancilliary_variables"] = "quality_scanline_bitmask quality_channel_bitmask"
         dataset["bt"] = variable
@@ -171,9 +174,10 @@ class HIRS:
 
     @staticmethod
     def _create_easy_fcdr_variable(height, long_name):
+        chunking_bt = HIRS._ensure_chunking_BT(height)
         default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.float32, np.NaN)
         variable = Variable(["channel", "y", "x"], default_array)
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001, chunksizes=CHUNKING_BT)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.001, chunksizes=chunking_bt)
         variable.attrs["long_name"] = long_name
         tu.add_units(variable, "K")
         tu.add_geolocation_attribute(variable)
@@ -653,3 +657,17 @@ class HIRS:
 
         tu.add_units(variable, "degree")
         return variable
+
+    @staticmethod
+    def _ensure_chunking_2d(height):
+        if height < CHUNKING_2D[0]:
+            return (height, CHUNKING_2D[1])
+        else:
+            return CHUNKING_2D
+
+    @staticmethod
+    def _ensure_chunking_BT(height):
+        if height < CHUNKING_BT[1]:
+            return (CHUNKING_BT[0], height, CHUNKING_BT[2])
+        else:
+            return CHUNKING_BT

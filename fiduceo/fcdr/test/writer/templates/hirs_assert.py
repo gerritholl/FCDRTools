@@ -4,8 +4,6 @@ import numpy as np
 
 from fiduceo.common.writer.default_data import DefaultData
 
-CHUNKING_2D = (512, 56)
-
 
 class HIRSAssert(unittest.TestCase):
     # this is a mean hack - there is some error in the framework when using Python 2.7 that requests this method tb 2017-05-10
@@ -104,20 +102,15 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual((6, 56), dq_bitmask.shape)
         self.assertEqual(0, dq_bitmask.data[0, 5])
         self.assertEqual("1, 2, 4", dq_bitmask.attrs["flag_masks"])
-        self.assertEqual(
-            "suspect_mirror outlier_nos uncertainty_too_large",
-            dq_bitmask.attrs["flag_meanings"])
+        self.assertEqual("suspect_mirror outlier_nos uncertainty_too_large", dq_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", dq_bitmask.attrs["standard_name"])
         self.assertEqual("longitude latitude", dq_bitmask.attrs["coordinates"])
 
         qual_scan_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((6,), qual_scan_bitmask.shape)
         self.assertEqual(0, qual_scan_bitmask.data[5])
-        self.assertEqual("1, 2, 4, 8, 16",
-                         qual_scan_bitmask.attrs["flag_masks"])
-        self.assertEqual(
-            "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time",
-            qual_scan_bitmask.attrs["flag_meanings"])
+        self.assertEqual("1, 2, 4, 8, 16", qual_scan_bitmask.attrs["flag_masks"])
+        self.assertEqual("do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time", qual_scan_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", qual_scan_bitmask.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qual_scan_bitmask.attrs["long_name"])
 
@@ -143,7 +136,9 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(255, scnlin_map[1])
         self.assertEqual(255, scnlin_map.attrs['_FillValue'])
         self.assertEqual("Indicator of original file", scnlin_map.attrs['long_name'])
-        self.assertEqual("Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file.", scnlin_map.attrs['description'])
+        self.assertEqual(
+            "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file.",
+            scnlin_map.attrs['description'])
 
         scnlin_orig = ds.variables["scanline_origl1b"]
         self.assertEqual((6,), scnlin_orig.shape)

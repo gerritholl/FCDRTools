@@ -427,6 +427,14 @@ class HIRSTest(unittest.TestCase):
         self.assertEqual("status_flag", scantype.attrs["standard_name"])
         self.assertEqual("scantype_bitfield", scantype.attrs["long_name"])
 
+    def test_ensure_chunking_2D(self):
+        self.assertEqual((512, 56), HIRS._ensure_chunking_2d(1265))
+        self.assertEqual((426, 56), HIRS._ensure_chunking_2d(426))
+
+    def test_ensure_chunking_BT(self):
+        self.assertEqual((10, 512, 56), HIRS._ensure_chunking_BT(1422))
+        self.assertEqual((10, 198, 56), HIRS._ensure_chunking_BT(198))
+
     def _assert_2d_temperature_variable(self, ds, name, long_name, orig_name):
         variable = ds.variables[name]
         self.assertEqual((7, 5), variable.shape)

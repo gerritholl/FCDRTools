@@ -42,6 +42,18 @@ class HIRS:
         dataset["data_quality_bitmask"] = variable
 
     @staticmethod
+    def add_original_variables(dataset, height, srf_size=None):
+        HIRS.add_geolocation_variables(dataset, height)
+        HIRS.add_quality_flags(dataset, height)
+
+        HIRS.add_bt_variable(dataset, height)
+        HIRS.add_common_angles(dataset, height)
+
+        HIRS.add_common_sensor_variables(dataset, height, srf_size)
+        HIRS.add_extended_flag_variables(dataset, height)
+        HIRS.add_coordinates(dataset)
+
+    @staticmethod
     def add_extended_flag_variables(dataset, height):
         # quality_channel_bitmask
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.uint8, dims_names=["y", "channel"], fill_value=0)

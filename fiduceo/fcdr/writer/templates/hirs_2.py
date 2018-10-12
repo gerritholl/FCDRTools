@@ -1,9 +1,4 @@
-import numpy as np
-from xarray import Variable
-
-from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
-from fiduceo.common.writer.default_data import DefaultData
-from fiduceo.fcdr.writer.templates.hirs import HIRS, CHUNKING_2D
+from fiduceo.fcdr.writer.templates.hirs import HIRS
 
 MAX_SRF_SIZE = 102
 
@@ -11,18 +6,10 @@ MAX_SRF_SIZE = 102
 class HIRS2(HIRS):
     @staticmethod
     def add_original_variables(dataset, height, srf_size=None):
-        HIRS.add_geolocation_variables(dataset, height)
-        HIRS.add_quality_flags(dataset, height)
-
-        HIRS.add_bt_variable(dataset, height)
-        HIRS.add_common_angles(dataset, height)
-
         if srf_size is None:
             srf_size = MAX_SRF_SIZE
 
-        HIRS.add_common_sensor_variables(dataset, height, srf_size)
-        HIRS.add_extended_flag_variables(dataset, height)
-        HIRS.add_coordinates(dataset)
+        HIRS.add_original_variables(dataset, height, srf_size)
 
     @staticmethod
     def add_easy_fcdr_variables(dataset, height, corr_dx=None, corr_dy=None, lut_size=None):

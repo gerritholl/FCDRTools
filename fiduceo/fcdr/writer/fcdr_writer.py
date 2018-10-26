@@ -120,4 +120,4 @@ class FCDRWriter:
     def _create_file_name(end, platform, sensor, start, type, version):
         start_string = start.strftime(DATE_PATTERN)
         end_string = end.strftime(DATE_PATTERN)
-        return "FIDUCEO_FCDR_L1C_" + sensor + "_" + platform + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + __version__ + ".nc"
+        return "FIDUCEO_FCDR_L1C_" + sensor.upper() + "_" + platform.upper() + "_" + start_string + "_" + end_string + "_" + type + "_v" + version + "_fv" + __version__ + ".nc"

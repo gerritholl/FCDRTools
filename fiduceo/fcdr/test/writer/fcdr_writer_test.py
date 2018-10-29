@@ -611,6 +611,7 @@ class FCDRWriterTest(unittest.TestCase):
         start = datetime.datetime(2014, 7, 22, 13, 23, 51)
         end = datetime.datetime(2014, 7, 22, 14, 24, 52)
         self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140722132351_20140722142452_EASY_v03.4_fv2.0.0.nc", FCDRWriter.create_file_name_FCDR_easy("HIRS3", "NOAA15", start, end, "03.4"))
+        self.assertEqual("FIDUCEO_FCDR_L1C_HIRS3_NOAA15_20140722132351_20140722142452_EASY_v03.4_fv2.0.0.nc", FCDRWriter.create_file_name_FCDR_easy("hirs3", "noaa15", start, end, "03.4"))
 
         start = datetime.datetime(2013, 6, 21, 12, 23, 50)
         end = datetime.datetime(2013, 6, 21, 13, 23, 51)

@@ -149,11 +149,7 @@ class HIRS:
 
     @staticmethod
     def add_coordinates(dataset):
-        channel_names = []
-        for i in range(1, 20):
-            channel_names.append("Ch" + str(i))
-
-        tu.add_coordinates(dataset, channel_names)
+        tu.add_coordinates(dataset, np.arange(1, 20))
 
     @staticmethod
     def get_swath_width():

@@ -76,12 +76,13 @@ class HIRS:
         tu.add_units(variable, "count")
         dataset["scanline"] = variable
         # time
-        default_array = DefaultData.create_default_vector(height, np.uint32)
+        default_array = DefaultData.create_default_vector(height, np.datetime64)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
+        tu.add_fill_value(variable, 4294967295)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        tu.add_units(variable, "s")
+        tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
+        tu.add_encoding(variable, np.uint32, 4294967295, scale_factor=0.1)
         dataset["time"] = variable
         # quality_scanline_bitmask
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)

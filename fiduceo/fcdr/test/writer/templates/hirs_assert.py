@@ -92,11 +92,10 @@ class HIRSAssert(unittest.TestCase):
 
         time = ds.variables["time"]
         self.assertEqual((6,), time.shape)
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.data[4])
-        self.assertEqual(DefaultData.get_default_fill_value(np.uint32), time.attrs["_FillValue"])
+        self.assertEqual(np.datetime64('NaT'), time.data[4])
+        self.assertEqual(4294967295, time.attrs["_FillValue"])
         self.assertEqual("time", time.attrs["standard_name"])
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
-        self.assertEqual("s", time.attrs["units"])
 
         dq_bitmask = ds.variables["data_quality_bitmask"]
         self.assertEqual((6, 56), dq_bitmask.shape)
@@ -179,7 +178,7 @@ class HIRSAssert(unittest.TestCase):
 
         channel = ds.coords["channel"]
         self.assertEqual((19,), channel.shape)
-        self.assertEqual("Ch7", channel[6])
+        self.assertEqual(7, channel[6])
 
     def _assert_3d_channel_variable(self, ds, name, long_name, chunking=None):
         variable = ds.variables[name]

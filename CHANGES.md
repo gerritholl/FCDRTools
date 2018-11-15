@@ -2,6 +2,7 @@
 
 - updated HIRS/2 to contain full angles and all flags
 - updated HIRS dimension names and flags 
+- updated HIRS time encoding
 
 ### Updates from version 1.1.5 to 2.0.0
 

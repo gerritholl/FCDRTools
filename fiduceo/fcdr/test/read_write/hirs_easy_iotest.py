@@ -95,7 +95,7 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["time"]
-            self.assertEqual(4, variable.data[8])
+            self.assertEqual(np.datetime64('1970-01-05T15:06:40.000000000'), variable.data[8])
             self.assertEqual((944,), variable.encoding["chunksizes"])
 
             variable = target_data["u_independent"]
@@ -182,7 +182,7 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["time"]
-            self.assertEqual(4, variable.data[9])
+            self.assertEqual(np.datetime64('1970-01-05T15:06:40.000000000'), variable.data[9])
             self.assertEqual((944,), variable.encoding["chunksizes"])
 
             variable = target_data["u_independent"]
@@ -269,7 +269,7 @@ class HirsEASYIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING_2D, variable.encoding["chunksizes"])
 
             variable = target_data["time"]
-            self.assertEqual(4, variable.data[10])
+            self.assertEqual(np.datetime64('1970-01-05T15:06:40.000000000'), variable.data[10])
             self.assertEqual((944,), variable.encoding["chunksizes"])
 
             variable = target_data["u_independent"]
@@ -319,7 +319,7 @@ class HirsEASYIoTest(unittest.TestCase):
 
         hirs_easy["quality_scanline_bitmask"].data[:] = np.ones((944), np.int8)
         hirs_easy["scanline"].data[:] = np.ones((944), np.int8) * 3
-        hirs_easy["time"].data[:] = np.ones((944), np.int32) * 4
+        hirs_easy["time"].data[:] = np.ones((944), np.int32) * 400000000000000
 
         for x in range(0, SRF_SIZE):
             hirs_easy["SRF_weights"].data[:, x] = np.ones((NUM_CHANNELS), np.float32) * x * 0.04

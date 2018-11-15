@@ -152,10 +152,15 @@ class TemplateUtil:
 
     @staticmethod
     def add_encoding(variable, data_type, fill_value, scale_factor=1.0, offset=0.0, chunksizes=None):
-        if chunksizes is None:
-            variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset)])
-        else:
-            variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset), ('chunksizes', chunksizes)])
+        encoding_dict ={'dtype': data_type, 'scale_factor': scale_factor, 'add_offset': offset}
+
+        if chunksizes is not None:
+            encoding_dict.update({'chunksizes': chunksizes})
+
+        if fill_value is not None:
+            encoding_dict.update({'_FillValue': fill_value})
+
+        variable.encoding = encoding_dict
 
     @staticmethod
     def add_chunking(variable, chunksizes):

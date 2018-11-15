@@ -81,8 +81,8 @@ class HIRS:
         tu.add_fill_value(variable, 4294967295)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        # do not set 'units' here, xarray sets this from encoding upon storing the file
-        tu.add_encoding(variable, np.uint32, 4294967295, scale_factor=0.1)
+        # do not set 'units' of "_FillValue" here, xarray sets this from encoding upon storing the file
+        tu.add_encoding(variable, np.uint32, None, scale_factor=0.1)
         variable.encoding["units"] = "seconds since 1970-01-01 00:00:00"
         # encoding 'add_offset' varies per file and either needs to be set
         # by the user or intelligently in fiduceo.fcdr.writer.fcdr_writer.FCDRWriter.write

@@ -76,12 +76,16 @@ class HIRS:
         tu.add_units(variable, "count")
         dataset["scanline"] = variable
         # time
-        default_array = DefaultData.create_default_vector(height, np.uint32)
+        default_array = DefaultData.create_default_vector(height, np.datetime64)
         variable = Variable(["y"], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
+        tu.add_fill_value(variable, 4294967295)
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        tu.add_units(variable, "s")
+        # do not set 'units' here, xarray sets this from encoding upon storing the file
+        tu.add_encoding(variable, np.uint32, 4294967295, scale_factor=0.1)
+        variable.encoding["units"] = "seconds since 1970-01-01 00:00:00"
+        # encoding 'add_offset' varies per file and either needs to be set
+        # by the user or intelligently in fiduceo.fcdr.writer.fcdr_writer.FCDRWriter.write
         dataset["time"] = variable
         # quality_scanline_bitmask
         default_array = DefaultData.create_default_vector(height, np.int32, fill_value=0)
@@ -148,11 +152,7 @@ class HIRS:
 
     @staticmethod
     def add_coordinates(dataset):
-        channel_names = []
-        for i in range(1, 20):
-            channel_names.append("Ch" + str(i))
-
-        tu.add_coordinates(dataset, channel_names)
+        tu.add_coordinates(dataset, np.arange(1, 20))
 
     @staticmethod
     def get_swath_width():

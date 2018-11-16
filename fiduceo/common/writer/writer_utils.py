@@ -10,6 +10,10 @@ class WriterUtils:
                          "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth " \
                          "Observations\". Grant Agreement: 638822."
         dataset.attrs["writer_version"] = __version__
+        dataset.attrs["project"] = "FIDUCEO"
+        dataset.attrs["creator_url"] = "http://www.fiduceo.eu/"
+        # the following should be removed for the final version
+        dataset.attrs["comment"] = "beta version, not intended for scientific use"
 
         # The following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None
@@ -18,6 +22,13 @@ class WriterUtils:
         dataset.attrs["history"] = None
         dataset.attrs["references"] = None
         dataset.attrs["comment"] = None
+        dataset.attrs["time_coverage_start"] = None
+        dataset.attrs["time_coverage_end"] = None
+        dataset.attrs["time_coverage_duration"] = None
+        dataset.attrs["creator_name"] = None
+        dataset.attrs["creator_email"] = None
+        dataset.attrs["fcdr_software_version"] = None
+        dataset.attrs["data_version"] = None
 
     @staticmethod
     def add_cdr_global_attributes(dataset):
@@ -25,9 +36,6 @@ class WriterUtils:
         dataset.attrs["source"] = None
         dataset.attrs["auxiliary_data"] = None
         dataset.attrs["configuration"] = None
-        dataset.attrs["time_coverage_start"] = None
-        dataset.attrs["time_coverage_end"] = None
-        dataset.attrs["time_coverage_duration"] = None
         dataset.attrs["time_coverage_resolution"] = None
 
     @staticmethod

@@ -13,7 +13,6 @@ class WriterUtils:
         dataset.attrs["project"] = "FIDUCEO"
         dataset.attrs["creator_url"] = "http://www.fiduceo.eu/"
         # the following should be removed for the final version
-        dataset.attrs["comment"] = "beta version, not intended for scientific use"
 
         # The following dictionary entries have to be supplied by the data generators
         dataset.attrs["institution"] = None

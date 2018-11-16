@@ -154,12 +154,12 @@ class Assertions:
         test_case.assertEqual("2.0.0", attributes["writer_version"])
         test_case.assertEqual("FIDUCEO", attributes["project"])
         test_case.assertEqual("http://www.fiduceo.eu/", attributes["creator_url"])
-        test_case.assertEqual("beta version, not intended for scientific use", attributes["comment"])
 
         test_case.assertIsNone(attributes["institution"])
         test_case.assertIsNone(attributes["source"])
         test_case.assertIsNone(attributes["title"])
         test_case.assertIsNone(attributes["history"])
+        test_case.assertIsNone(attributes["comment"])
         test_case.assertIsNone(attributes["references"])  # @todo 3 tb/tb add "id" attribute when we have the DOI issue resolved 2018-06-27  # test_case.assertIsNone(attributes["id"])
         test_case.assertIsNone(attributes["creator_name"])
         test_case.assertIsNone(attributes["creator_email"])

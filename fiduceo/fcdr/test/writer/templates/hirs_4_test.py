@@ -45,8 +45,8 @@ class HIRS4Test(unittest.TestCase):
     def test_add_specific_global_metadata(self):
         ha = HIRSAssert()
         ds = xr.Dataset()
-        HIRS4.add_specific_global_metadata(dataset)
-        ha.assert_fcdr_global_metadata(dataset)
+        HIRS4.add_specific_global_metadata(ds)
+        ha.assert_fcdr_global_metadata(ds)
 
     def test_add_full_fcdr_variables(self):
         ha = HIRSAssert()

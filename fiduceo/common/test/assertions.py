@@ -152,28 +152,21 @@ class Assertions:
                               "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
                               "Observations\". Grant Agreement: 638822.", attributes["licence"])
         test_case.assertEqual("2.0.0", attributes["writer_version"])
-        test_case.assertEqual("FIDUCEO", attributes["project"])
-        test_case.assertEqual("http://www.fiduceo.eu/", attributes["creator_url"])
 
         test_case.assertIsNone(attributes["institution"])
         test_case.assertIsNone(attributes["source"])
         test_case.assertIsNone(attributes["title"])
         test_case.assertIsNone(attributes["history"])
-        test_case.assertIsNone(attributes["comment"])
         test_case.assertIsNone(attributes["references"])  # @todo 3 tb/tb add "id" attribute when we have the DOI issue resolved 2018-06-27  # test_case.assertIsNone(attributes["id"])
-        test_case.assertIsNone(attributes["creator_name"])
-        test_case.assertIsNone(attributes["creator_email"])
-        test_case.assertIsNone(attributes["fcdr_software_version"])
-        test_case.assertIsNone(attributes["data_version"])
-        test_case.assertIsNone(attributes["time_coverage_start"])
-        test_case.assertIsNone(attributes["time_coverage_end"])
-        test_case.assertIsNone(attributes["time_coverage_duration"])
 
     @staticmethod
     def assert_cdr_global_attributes(test_case, attributes):
         test_case.assertIsNone(attributes["source"])
         test_case.assertIsNone(attributes["auxiliary_data"])
         test_case.assertIsNone(attributes["configuration"])
+        test_case.assertIsNone(attributes["time_coverage_start"])
+        test_case.assertIsNone(attributes["time_coverage_end"])
+        test_case.assertIsNone(attributes["time_coverage_duration"])
         test_case.assertIsNone(attributes["time_coverage_resolution"])
 
     @staticmethod

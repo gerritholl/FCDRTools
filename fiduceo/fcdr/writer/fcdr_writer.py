@@ -64,7 +64,7 @@ class FCDRWriter:
 
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height, srf_size)
-        sensor_template.add_specific_global_metadata(dataset, height, srf_size)
+        sensor_template.add_specific_global_metadata(dataset)
         sensor_template.add_easy_fcdr_variables(dataset, height, corr_dx, corr_dy, lut_size)
         sensor_template.add_template_key(dataset)
 
@@ -86,7 +86,7 @@ class FCDRWriter:
 
         sensor_template = template_factory.get_sensor_template(sensorType)
         sensor_template.add_original_variables(dataset, height)
-        sensor_template.add_specific_global_metadata(dataset, height, srf_size)
+        sensor_template.add_specific_global_metadata(dataset)
         sensor_template.add_full_fcdr_variables(dataset, height)
         sensor_template.add_template_key(dataset)
 

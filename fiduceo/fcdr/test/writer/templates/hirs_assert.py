@@ -150,7 +150,6 @@ class HIRSAssert(unittest.TestCase):
         attributes = ds.attrs
         self.assertEqual(attributes["project"], "FIDUCEO")
         self.assertEqual(attributes["creator_url"], "http://www.fiduceo.eu/")
-        self.assertEqual(attributes["creator_name"])
         self.assertIsNone(attributes["creator_name"])
         self.assertIsNone(attributes["creator_email"])
         self.assertIsNone(attributes["fcdr_software_version"])

@@ -66,6 +66,7 @@ class HIRS:
         dataset.attrs["time_coverage_start"] = None
         dataset.attrs["time_coverage_end"] = None
         dataset.attrs["time_coverage_duration"] = None
+        dataset.attrs["platform"] = None
 
     @staticmethod
     def add_extended_flag_variables(dataset, height):

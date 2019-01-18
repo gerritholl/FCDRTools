@@ -157,6 +157,7 @@ class HIRSAssert(unittest.TestCase):
         self.assertIsNone(attributes["time_coverage_start"])
         self.assertIsNone(attributes["time_coverage_end"])
         self.assertIsNone(attributes["time_coverage_duration"])
+        self.assertIsNone(attributes["platform"])
 
     def assert_extended_quality_flags(self, ds):
         chqualflags = ds.variables["quality_channel_bitmask"]
